@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vectium.cl/sitemap.xml
