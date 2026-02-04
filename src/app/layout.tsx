@@ -17,7 +17,11 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Vectium SpA | Desarrollo de Software, Web y Apps Móviles",
+  metadataBase: new URL("https://vectium.cl"),
+  title: {
+    default: "Vectium SpA | Desarrollo de Software, Web y Apps Móviles",
+    template: "%s | Vectium SpA",
+  },
   description:
     "Empresa tecnológica chilena especializada en desarrollo de software a medida, páginas web y aplicaciones móviles de alto impacto.",
   keywords:
