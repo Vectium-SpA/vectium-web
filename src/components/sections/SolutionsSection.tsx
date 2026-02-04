@@ -91,7 +91,7 @@ export function SolutionsSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-              className="group rounded-2xl border border-vectium-gray-200 bg-white p-8 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1"
+              className="group rounded-2xl border border-vectium-gray-200/60 bg-white/80 backdrop-blur-xl p-8 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1.5 hover:border-vectium-accent/20"
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-vectium-accent/10 text-vectium-accent transition-colors group-hover:bg-vectium-accent group-hover:text-white">
                 <service.icon size={28} />

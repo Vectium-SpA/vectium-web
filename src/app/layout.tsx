@@ -41,6 +41,9 @@ export const metadata: Metadata = {
     description:
       "Transformamos ideas en soluciones digitales. Desarrollo de software, web y apps móviles en Chile.",
   },
+  icons: {
+    icon: "/favicon.ico",
+  },
   robots: {
     index: true,
     follow: true,

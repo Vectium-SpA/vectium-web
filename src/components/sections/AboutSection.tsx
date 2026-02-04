@@ -86,7 +86,7 @@ export function AboutSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                className="group rounded-2xl border border-vectium-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                className="group rounded-2xl border border-vectium-gray-200/60 bg-white/80 backdrop-blur-xl p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-vectium-accent/20"
               >
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-vectium-gray-100 text-vectium-gray-700 transition-colors group-hover:bg-vectium-accent group-hover:text-white">
@@ -118,7 +118,7 @@ export function AboutSection() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="rounded-2xl border border-vectium-gray-200 bg-white p-6 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                className="rounded-2xl border border-vectium-gray-200/60 bg-white/80 backdrop-blur-xl p-6 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-vectium-accent/20"
               >
                 <AnimatedCounter value={stat.value} />
                 <p className="mt-2 text-sm text-vectium-gray-600">

@@ -119,7 +119,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-12 border-t border-vectium-gray-800 pt-8 text-center text-xs">
-          <p>&copy; 2026 Vectium SpA. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Vectium SpA. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

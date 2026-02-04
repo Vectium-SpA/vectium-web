@@ -8,9 +8,13 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
+      <div className="section-divider-dark-to-light" />
       <AboutSection />
+      <div className="section-divider-light-to-white" />
       <SolutionsSection />
+      <div className="section-divider-white-to-dark" />
       <TechStackSection />
+      <div className="section-divider-light-to-dark" />
       <ContactSection />
     </>
   );

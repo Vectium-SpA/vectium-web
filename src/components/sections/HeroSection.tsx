@@ -1,20 +1,116 @@
 "use client";
 
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-export function HeroSection() {
+const subtitles = [
+  "Software a medida",
+  "Páginas Web de alto impacto",
+  "Apps Móviles multiplataforma",
+  "Soluciones Cloud escalables",
+];
+
+function useTypewriter(texts: string[], speed = 60, pause = 2000) {
+  const [display, setDisplay] = useState("");
+  const [textIndex, setTextIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = texts[textIndex];
+    let timeout: NodeJS.Timeout;
+
+    if (!isDeleting && charIndex < current.length) {
+      timeout = setTimeout(() => setCharIndex((c) => c + 1), speed);
+    } else if (!isDeleting && charIndex === current.length) {
+      timeout = setTimeout(() => setIsDeleting(true), pause);
+    } else if (isDeleting && charIndex > 0) {
+      timeout = setTimeout(() => setCharIndex((c) => c - 1), speed / 2);
+    } else if (isDeleting && charIndex === 0) {
+      setIsDeleting(false);
+      setTextIndex((t) => (t + 1) % texts.length);
+    }
+
+    setDisplay(current.substring(0, charIndex));
+    return () => clearTimeout(timeout);
+  }, [charIndex, isDeleting, textIndex, texts, speed, pause]);
+
+  return display;
+}
+
+function FloatingParticles() {
+  const particles = Array.from({ length: 20 }, (_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    size: Math.random() * 3 + 1,
+    duration: Math.random() * 10 + 15,
+    delay: Math.random() * 10,
+  }));
+
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-vectium-black">
+    <div className="absolute inset-0 overflow-hidden">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="absolute rounded-full bg-vectium-accent/20 animate-float"
+          style={{
+            left: p.left,
+            top: p.top,
+            width: p.size,
+            height: p.size,
+            animationDuration: `${p.duration}s`,
+            animationDelay: `${p.delay}s`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+export function HeroSection() {
+  const typed = useTypewriter(subtitles);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (sectionRef.current) {
+      const rect = sectionRef.current.getBoundingClientRect();
+      setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    }
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      onMouseMove={handleMouseMove}
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-vectium-black"
+    >
+      {/* Cursor glow */}
+      <div
+        className="pointer-events-none absolute z-0 hidden lg:block"
+        style={{
+          left: mousePos.x - 200,
+          top: mousePos.y - 200,
+          width: 400,
+          height: 400,
+          background: "radial-gradient(circle, rgba(0,169,165,0.08) 0%, transparent 70%)",
+        }}
+      />
+
       {/* Background gradient */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--color-vectium-gray-900)_0%,_var(--color-vectium-black)_70%)]" />
 
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-grid-pattern" />
+      {/* Grid pattern - animated */}
+      <div className="absolute inset-0 bg-grid-pattern animate-grid-drift" />
 
-      {/* Decorative elements */}
-      <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-vectium-accent/5 blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full bg-vectium-gray-700/10 blur-3xl" />
+      {/* Floating particles */}
+      <FloatingParticles />
+
+      {/* Decorative orbs */}
+      <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-vectium-accent/5 blur-3xl animate-pulse-slow" />
+      <div className="absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full bg-vectium-gray-700/10 blur-3xl animate-pulse-slow" style={{ animationDelay: "2s" }} />
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center lg:px-8">
         {/* Logo mark */}
@@ -44,16 +140,18 @@ export function HeroSection() {
           Soluciones Digitales
         </motion.h1>
 
-        {/* Subtitle */}
-        <motion.p
+        {/* Typewriter subtitle */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-vectium-gray-400 sm:text-xl"
+          className="mx-auto mt-6 max-w-2xl"
         >
-          Desarrollo de software, paginas web y aplicaciones moviles de alto impacto.
-          Innovacion tecnologica para impulsar tu negocio.
-        </motion.p>
+          <p className="text-lg text-vectium-gray-400 sm:text-xl h-8">
+            {typed}
+            <span className="animate-blink text-vectium-accent">|</span>
+          </p>
+        </motion.div>
 
         {/* CTAs */}
         <motion.div
@@ -64,15 +162,16 @@ export function HeroSection() {
         >
           <Link
             href="/soluciones"
-            className="inline-flex items-center rounded-xl bg-vectium-accent px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-vectium-accent/20 transition-all hover:bg-vectium-accent-dark hover:shadow-xl hover:shadow-vectium-accent/30"
+            className="group relative inline-flex items-center overflow-hidden rounded-xl bg-vectium-accent px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-vectium-accent/20 transition-all hover:bg-vectium-accent-dark hover:shadow-xl hover:shadow-vectium-accent/30"
           >
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             Conoce Nuestros Proyectos
           </Link>
           <Link
             href="/contacto"
             className="inline-flex items-center rounded-xl border border-vectium-gray-700 px-8 py-3.5 text-sm font-semibold text-vectium-gray-300 transition-all hover:border-vectium-gray-500 hover:text-vectium-white"
           >
-            Contactanos
+            Contáctanos
           </Link>
         </motion.div>
 

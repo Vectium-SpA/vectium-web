@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
 import { SolutionsSection } from "@/components/sections/SolutionsSection";
+import { TechStackSection } from "@/components/sections/TechStackSection";
+import { PageHero } from "@/components/layout/PageHero";
+import { SolucionesContent } from "./SolucionesContent";
 
 export const metadata: Metadata = {
-  title: "Soluciones | Vectium SpA",
+  title: "Soluciones",
   description:
-    "Descubre Farmateca y nuestras soluciones digitales para el sector salud. Más de 2,556 medicamentos disponibles offline.",
+    "Descubre nuestras soluciones digitales: desarrollo de software, páginas web y aplicaciones móviles de alto impacto.",
 };
 
 export default function SolucionesPage() {
   return (
-    <div className="pt-20">
+    <>
+      <PageHero
+        badge="Nuestros Servicios"
+        title="Soluciones digitales que transforman"
+        description="Desde software a medida hasta apps móviles, creamos productos digitales que impulsan el crecimiento de tu negocio."
+      />
       <SolutionsSection />
-      {/*
-        TODO: Integración futura con Farmateca
-        Ruta: /soluciones/farmateca
-        Opciones:
-        1. iframe apuntando a https://farmateca-web.vercel.app/
-        2. Redirección directa al subdominio farmateca.vectium.cl
-        3. Página detalle con más información del producto
-      */}
-    </div>
+      <SolucionesContent />
+      <TechStackSection />
+    </>
   );
 }
