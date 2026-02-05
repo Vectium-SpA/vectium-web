@@ -243,8 +243,8 @@ export default function TerminosPage() {
               <p className="text-lg text-vectium-gray-900 font-semibold">Vectium SpA</p>
               <p className="text-lg text-vectium-gray-700 mt-2">
                 Email:{" "}
-                <a href="mailto:info@vectium.cl" className="text-vectium-accent hover:underline">
-                  info@vectium.cl
+                <a href="mailto:contacto@vectium.cl" className="text-vectium-accent hover:underline">
+                  contacto@vectium.cl
                 </a>
               </p>
               <p className="text-lg text-vectium-gray-700">Sitio web: https://vectium.cl</p>

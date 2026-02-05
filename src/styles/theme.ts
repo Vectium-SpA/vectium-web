@@ -21,12 +21,13 @@ export const vectiumTheme = {
     { label: 'Inicio', href: '/' },
     { label: 'Sobre Nosotros', href: '/sobre-nosotros' },
     { label: 'Soluciones', href: '/soluciones' },
+    { label: 'Proyectos', href: '/proyectos' },
     { label: 'Contacto', href: '/contacto' },
   ],
   company: {
     name: 'Vectium SpA',
     tagline: 'Innovación Tecnológica para el Sector Salud',
-    email: 'info@vectium.cl',
+    email: 'contacto@vectium.cl',
     location: 'Chile',
   },
 } as const;

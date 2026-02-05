@@ -61,7 +61,7 @@ export default function FAQPage() {
         {
           question: "¿Dónde están ubicados?",
           answer:
-            "Operamos desde Chile con alcance nacional e internacional. Puedes contactarnos en info@vectium.cl para consultas sobre proyectos o servicios.",
+            "Operamos desde Chile con alcance nacional e internacional. Puedes contactarnos en contacto@vectium.cl para consultas sobre proyectos o servicios.",
         },
         {
           question: "¿Qué tecnologías utilizan?",

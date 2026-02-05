@@ -154,8 +154,8 @@ export default function PrivacidadPage() {
             </ul>
             <p className="text-lg text-vectium-gray-700 leading-relaxed mt-4">
               Para ejercer cualquiera de estos derechos, contáctanos en{" "}
-              <a href="mailto:info@vectium.cl" className="text-vectium-accent hover:underline">
-                info@vectium.cl
+              <a href="mailto:contacto@vectium.cl" className="text-vectium-accent hover:underline">
+                contacto@vectium.cl
               </a>
               . Responderemos tu solicitud en un plazo máximo de 10 días hábiles.
             </p>
@@ -224,8 +224,8 @@ export default function PrivacidadPage() {
               <p className="text-lg text-vectium-gray-900 font-semibold">Vectium SpA</p>
               <p className="text-lg text-vectium-gray-700 mt-2">
                 Email:{" "}
-                <a href="mailto:info@vectium.cl" className="text-vectium-accent hover:underline">
-                  info@vectium.cl
+                <a href="mailto:contacto@vectium.cl" className="text-vectium-accent hover:underline">
+                  contacto@vectium.cl
                 </a>
               </p>
               <p className="text-lg text-vectium-gray-700">Domicilio: Chile</p>

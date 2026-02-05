@@ -1,4 +1,16 @@
+# Permitir todos los bots
 User-agent: *
 Allow: /
 
+# Reglas específicas para Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Bloquear acceso a rutas internas
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Sitemap
 Sitemap: https://vectium.cl/sitemap.xml

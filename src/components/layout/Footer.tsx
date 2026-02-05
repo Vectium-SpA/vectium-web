@@ -7,6 +7,7 @@ import { vectiumTheme } from "@/styles/theme";
 const footerLinks = [
   { label: "Sobre Nosotros", href: "/sobre-nosotros" },
   { label: "Soluciones", href: "/soluciones" },
+  { label: "Proyectos", href: "/proyectos" },
   { label: "Contacto", href: "/contacto" },
   { label: "Preguntas Frecuentes", href: "/faq" },
   { label: "Política de Privacidad", href: "/privacidad" },

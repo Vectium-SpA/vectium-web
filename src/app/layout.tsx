@@ -3,6 +3,8 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { Toaster } from "sonner";
+import StructuredData from "@/components/StructuredData";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,34 +21,66 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL("https://vectium.cl"),
   title: {
-    default: "Vectium SpA | Desarrollo de Software, Web y Apps Móviles",
-    template: "%s | Vectium SpA",
+    default: "Vectium | Desarrollo de Software y Aplicaciones Móviles",
+    template: "%s | Vectium",
   },
   description:
-    "Empresa tecnológica chilena especializada en desarrollo de software a medida, páginas web y aplicaciones móviles de alto impacto.",
-  keywords:
-    "desarrollo software chile, desarrollo web, apps móviles, vectium, software a medida, desarrollo aplicaciones",
+    "Desarrollo de software, páginas web y aplicaciones móviles de alto impacto. Transformamos ideas en soluciones digitales.",
+  keywords: [
+    "desarrollo software",
+    "aplicaciones móviles",
+    "páginas web",
+    "desarrollo web",
+    "apps móviles",
+    "software a medida",
+    "Chile",
+    "La Serena",
+  ],
+  authors: [{ name: "Vectium SpA" }],
+  creator: "Vectium SpA",
+  publisher: "Vectium SpA",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
-    title: "Vectium SpA | Desarrollo de Software, Web y Apps Móviles",
-    description:
-      "Transformamos ideas en soluciones digitales. Desarrollo de software, web y apps móviles en Chile.",
-    url: "https://vectium.cl",
-    siteName: "Vectium SpA",
-    locale: "es_CL",
     type: "website",
+    locale: "es_CL",
+    url: "https://vectium.cl",
+    siteName: "Vectium",
+    title: "Vectium | Desarrollo de Software y Aplicaciones Móviles",
+    description:
+      "Desarrollo de software, páginas web y aplicaciones móviles de alto impacto.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Vectium - Desarrollo de Software",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vectium SpA | Desarrollo de Software, Web y Apps Móviles",
+    title: "Vectium | Desarrollo de Software y Aplicaciones Móviles",
     description:
-      "Transformamos ideas en soluciones digitales. Desarrollo de software, web y apps móviles en Chile.",
-  },
-  icons: {
-    icon: "/favicon.ico",
+      "Desarrollo de software, páginas web y aplicaciones móviles de alto impacto.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 
@@ -61,6 +95,8 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <Toaster position="top-right" richColors />
+        <StructuredData />
       </body>
     </html>
   );

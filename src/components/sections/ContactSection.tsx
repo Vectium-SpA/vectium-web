@@ -3,38 +3,67 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Mail, MapPin, Linkedin, Github, Send, CheckCircle } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { Mail, MapPin, Linkedin, Github, Send } from "lucide-react";
 import { vectiumTheme } from "@/styles/theme";
-
-const contactSchema = z.object({
-  nombre: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
-  email: z.string().email("Ingresa un email válido"),
-  empresa: z.string().optional(),
-  mensaje: z.string().min(10, "El mensaje debe tener al menos 10 caracteres"),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
+import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
+import { sendContactEmail } from "@/lib/emailjs";
 
 export function ContactSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
-  } = useForm<ContactFormData>();
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  });
 
   const onSubmit = async (data: ContactFormData) => {
-    // TODO: Integrar con Resend para envío de emails
-    console.log("Form data:", data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSubmitted(true);
-    reset();
-    setTimeout(() => setIsSubmitted(false), 5000);
+    setIsSubmitting(true);
+
+    // Anti-spam: honeypot check
+    const honeypot = (document.querySelector('input[name="website"]') as HTMLInputElement)?.value;
+    if (honeypot) {
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const result = await sendContactEmail({
+        name: data.name,
+        email: data.email,
+        company: data.company,
+        phone: data.phone,
+        message: data.message,
+      });
+
+      if (result.success) {
+        toast.success("¡Mensaje enviado correctamente!", {
+          description: "Te responderemos pronto a tu email.",
+        });
+        reset();
+        setTimeout(() => {
+          window.location.href = "/contacto/gracias";
+        }, 2000);
+      } else {
+        toast.error("Error al enviar el mensaje", {
+          description:
+            "Por favor intenta nuevamente o escríbenos directamente a contacto@vectium.cl",
+        });
+      }
+    } catch {
+      toast.error("Error inesperado", {
+        description: "Por favor intenta nuevamente más tarde.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -144,31 +173,34 @@ export function ContactSection() {
               onSubmit={handleSubmit(onSubmit)}
               className="rounded-2xl border border-vectium-gray-200 bg-white p-8 shadow-sm"
             >
+              {/* Honeypot field - anti spam */}
+              <input
+                type="text"
+                name="website"
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+
               <div className="grid gap-6 sm:grid-cols-2">
                 {/* Nombre */}
                 <div>
                   <label
-                    htmlFor="nombre"
+                    htmlFor="name"
                     className="block text-sm font-medium text-vectium-gray-700"
                   >
-                    Nombre *
+                    Nombre completo *
                   </label>
                   <input
-                    id="nombre"
+                    id="name"
                     type="text"
-                    {...register("nombre", {
-                      required: "El nombre es requerido",
-                      minLength: {
-                        value: 2,
-                        message: "Mínimo 2 caracteres",
-                      },
-                    })}
+                    {...register("name")}
                     className="mt-1.5 w-full rounded-xl border border-vectium-gray-200 bg-vectium-gray-50 px-4 py-3 text-sm text-vectium-black placeholder:text-vectium-gray-400 focus:border-vectium-accent focus:bg-white focus:outline-none focus:ring-1 focus:ring-vectium-accent"
                     placeholder="Tu nombre"
                   />
-                  {errors.nombre && (
+                  {errors.name && (
                     <p className="mt-1 text-xs text-red-500">
-                      {errors.nombre.message}
+                      {errors.name.message}
                     </p>
                   )}
                 </div>
@@ -184,13 +216,7 @@ export function ContactSection() {
                   <input
                     id="email"
                     type="email"
-                    {...register("email", {
-                      required: "El email es requerido",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Email inválido",
-                      },
-                    })}
+                    {...register("email")}
                     className="mt-1.5 w-full rounded-xl border border-vectium-gray-200 bg-vectium-gray-50 px-4 py-3 text-sm text-vectium-black placeholder:text-vectium-gray-400 focus:border-vectium-accent focus:bg-white focus:outline-none focus:ring-1 focus:ring-vectium-accent"
                     placeholder="tu@email.com"
                   />
@@ -202,77 +228,92 @@ export function ContactSection() {
                 </div>
 
                 {/* Empresa */}
-                <div className="sm:col-span-2">
+                <div>
                   <label
-                    htmlFor="empresa"
+                    htmlFor="company"
                     className="block text-sm font-medium text-vectium-gray-700"
                   >
                     Empresa{" "}
                     <span className="text-vectium-gray-400">(opcional)</span>
                   </label>
                   <input
-                    id="empresa"
+                    id="company"
                     type="text"
-                    {...register("empresa")}
+                    {...register("company")}
                     className="mt-1.5 w-full rounded-xl border border-vectium-gray-200 bg-vectium-gray-50 px-4 py-3 text-sm text-vectium-black placeholder:text-vectium-gray-400 focus:border-vectium-accent focus:bg-white focus:outline-none focus:ring-1 focus:ring-vectium-accent"
                     placeholder="Tu empresa o institución"
                   />
+                  {errors.company && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.company.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Teléfono */}
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-vectium-gray-700"
+                  >
+                    Teléfono{" "}
+                    <span className="text-vectium-gray-400">(opcional)</span>
+                  </label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    {...register("phone")}
+                    className="mt-1.5 w-full rounded-xl border border-vectium-gray-200 bg-vectium-gray-50 px-4 py-3 text-sm text-vectium-black placeholder:text-vectium-gray-400 focus:border-vectium-accent focus:bg-white focus:outline-none focus:ring-1 focus:ring-vectium-accent"
+                    placeholder="+56 9 1234 5678"
+                  />
+                  {errors.phone && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.phone.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Mensaje */}
                 <div className="sm:col-span-2">
                   <label
-                    htmlFor="mensaje"
+                    htmlFor="message"
                     className="block text-sm font-medium text-vectium-gray-700"
                   >
                     Mensaje *
                   </label>
                   <textarea
-                    id="mensaje"
+                    id="message"
                     rows={5}
-                    {...register("mensaje", {
-                      required: "El mensaje es requerido",
-                      minLength: {
-                        value: 10,
-                        message: "Mínimo 10 caracteres",
-                      },
-                    })}
+                    {...register("message")}
                     className="mt-1.5 w-full resize-none rounded-xl border border-vectium-gray-200 bg-vectium-gray-50 px-4 py-3 text-sm text-vectium-black placeholder:text-vectium-gray-400 focus:border-vectium-accent focus:bg-white focus:outline-none focus:ring-1 focus:ring-vectium-accent"
                     placeholder="Cuéntanos sobre tu proyecto o consulta..."
                   />
-                  {errors.mensaje && (
+                  {errors.message && (
                     <p className="mt-1 text-xs text-red-500">
-                      {errors.mensaje.message}
+                      {errors.message.message}
                     </p>
                   )}
                 </div>
               </div>
 
               <div className="mt-6">
-                {isSubmitted ? (
-                  <div className="flex items-center gap-2 rounded-xl bg-green-50 px-6 py-3 text-sm font-medium text-green-700">
-                    <CheckCircle size={18} />
-                    Mensaje enviado correctamente. Te contactaremos pronto.
-                  </div>
-                ) : (
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="inline-flex items-center gap-2 rounded-xl bg-vectium-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-vectium-accent/20 transition-all hover:bg-vectium-accent-dark disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        Enviando...
-                      </>
-                    ) : (
-                      <>
-                        <Send size={16} />
-                        Enviar mensaje
-                      </>
-                    )}
-                  </button>
-                )}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center gap-2 rounded-xl bg-vectium-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-vectium-accent/20 transition-all hover:bg-vectium-accent-dark disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={16} />
+                      Enviar mensaje
+                    </>
+                  )}
+                </button>
               </div>
             </form>
           </motion.div>
