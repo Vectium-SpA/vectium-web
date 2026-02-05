@@ -8,8 +8,9 @@ const footerLinks = [
   { label: "Sobre Nosotros", href: "/sobre-nosotros" },
   { label: "Soluciones", href: "/soluciones" },
   { label: "Contacto", href: "/contacto" },
-  { label: "Política de Privacidad", href: "#" },
-  { label: "Términos de Uso", href: "#" },
+  { label: "Preguntas Frecuentes", href: "/faq" },
+  { label: "Política de Privacidad", href: "/privacidad" },
+  { label: "Términos de Uso", href: "/terminos" },
 ];
 
 export function Footer() {
