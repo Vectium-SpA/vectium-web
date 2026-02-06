@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Pill, Smartphone, Clock, ArrowRight, ExternalLink } from "lucide-react";
+import { Pill, Smartphone, Clock, ArrowRight } from "lucide-react";
 
 const features = [
   { icon: Pill, text: "2,556+ medicamentos" },
@@ -95,15 +95,13 @@ export function FarmatecaContent() {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
-              <a
-                href="https://farmateca-web.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/farmateca/web"
                 className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-gray-900 px-8 py-4 rounded-full font-bold text-lg shadow-lg transition-all"
               >
                 Ir a Farmateca Web
-                <ExternalLink size={20} />
-              </a>
+                <ArrowRight size={20} />
+              </Link>
               <Link
                 href="/contacto"
                 className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white border border-white/30 px-8 py-4 rounded-full font-semibold hover:bg-white/20 transition-all"
@@ -182,15 +180,13 @@ export function FarmatecaContent() {
               <Smartphone size={20} />
               iOS
             </span>
-            <a
-              href="https://farmateca-web.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/farmateca/web"
               className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 px-6 py-3 rounded-xl text-gray-900 font-semibold transition-colors"
             >
-              <ExternalLink size={20} />
+              <ArrowRight size={20} />
               Web App
-            </a>
+            </Link>
           </div>
         </div>
       </section>
