@@ -1,0 +1,38 @@
+/**
+ * FARMATECA WEB - ESTILOS GLOBALES
+ *
+ * Estilos específicos para la sección Farmateca Web integrada en vectium.cl.
+ * Layout independiente: oculta Navbar/Footer corporativo de Vectium.
+ *
+ * Fase actual: Estructura base con overrides mínimos.
+ * TODO Fase 2: Migrar tokens de color Farmateca (Teal Premium) a @theme
+ * TODO Fase 2: Migrar clases custom (.btn-primary, .card, .glass, etc.)
+ * TODO Fase 2: Migrar animaciones y utilities de farmateca-web
+ */
+
+/*
+ * Override: Ocultar Navbar (motion.header fixed z-50) y Footer de Vectium
+ * cuando estamos dentro de la sección /farmateca/web.
+ *
+ * Estructura del DOM (root layout):
+ *   <body>
+ *     <header>  ← Navbar component (motion.header)
+ *     <main>
+ *       <div class="farmateca-root">  ← Este layout
+ *     </main>
+ *     <footer>  ← Footer component
+ *   </body>
+ */
+body:has(.farmateca-root) > header {
+  display: none !important;
+}
+
+body:has(.farmateca-root) > footer {
+  display: none !important;
+}
+
+/* Garantizar que el layout Farmateca ocupe todo el viewport */
+.farmateca-root {
+  position: relative;
+  z-index: 1;
+}
