@@ -57,7 +57,7 @@ export function FavoriteButton({
 
   // REAL-TIME: Sincronizar estado con onSnapshot
   useEffect(() => {
-    if (!user) {
+    if (!user || !db) {
       setIsFavorite(false);
       return;
     }
@@ -86,6 +86,8 @@ export function FavoriteButton({
       window.location.href = '/login';
       return;
     }
+
+    if (!db) return;
 
     setIsLoading(true);
 

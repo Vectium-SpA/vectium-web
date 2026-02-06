@@ -17,6 +17,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(user);
 
         // Fetch user data from Firestore
+        if (!db) {
+          console.warn('[Farmateca AuthProvider] Firebase not configured');
+          setLoading(false);
+          return;
+        }
         try {
           const userDoc = await getDoc(doc(db, 'users', user.uid));
           if (userDoc.exists()) {
