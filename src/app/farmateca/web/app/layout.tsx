@@ -86,8 +86,12 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
       <header className="bg-white dark:bg-farmateca-gray-900 border-b border-gray-200 dark:border-farmateca-gray-700 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link href="/farmateca/web/app" className="flex items-center gap-2">
+            {/* Logo → Landing Farmateca */}
+            <Link
+              href="/farmateca"
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              title="Volver al inicio de Farmateca"
+            >
               <div className="w-8 h-8 bg-gradient-farmateca-primary rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">F</span>
               </div>
@@ -97,8 +101,16 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
             {/* Navigation */}
             <nav className="hidden md:flex items-center gap-6">
               <Link
+                href="/farmateca"
+                className="text-gray-600 dark:text-gray-300 hover:text-farmateca-primary transition-colors"
+                title="Página principal de Farmateca"
+              >
+                Página Principal
+              </Link>
+              <Link
                 href="/farmateca/web/app"
                 className="text-gray-600 dark:text-gray-300 hover:text-farmateca-primary transition-colors"
+                title="Dashboard de la aplicación"
               >
                 Inicio
               </Link>
