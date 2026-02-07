@@ -96,7 +96,7 @@ export function FarmatecaContent() {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
               <Link
-                href="/farmateca/web"
+                href="/farmateca/web/app"
                 className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-gray-900 px-8 py-4 rounded-full font-bold text-lg shadow-lg transition-all"
               >
                 Ir a Farmateca Web
@@ -181,7 +181,7 @@ export function FarmatecaContent() {
               iOS
             </span>
             <Link
-              href="/farmateca/web"
+              href="/farmateca/web/app"
               className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 px-6 py-3 rounded-xl text-gray-900 font-semibold transition-colors"
             >
               <ArrowRight size={20} />

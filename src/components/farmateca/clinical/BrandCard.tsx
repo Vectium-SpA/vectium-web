@@ -13,7 +13,7 @@ export function BrandCard({ brand }: BrandCardProps) {
 
   return (
     <div className="bg-white rounded-xl border border-gray-100 p-4 hover:border-farmateca-primary hover:shadow-md transition-all duration-200 relative group">
-      <Link href={`/app/brand/${brand.idMA}`} className="block">
+      <Link href={`/farmateca/web/app/brand/${brand.idMA}`} className="block">
         <div className="flex items-start gap-3">
           {/* Icono */}
           <div className="w-10 h-10 bg-farmateca-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">

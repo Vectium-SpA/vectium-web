@@ -7,22 +7,41 @@ import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
 import { SubscriptionStatusBanner } from '@/components/farmateca/app/PremiumGuard';
 import Link from 'next/link';
 import { signOut } from '@/lib/farmateca/firebase/auth';
+import { AuthProvider } from '@/components/farmateca/providers/AuthProvider';
+import { useThemeStore } from '@/lib/farmateca/store/theme-store';
 import dynamic from 'next/dynamic';
 
 const Onboarding = dynamic(() => import('@/components/farmateca/onboarding/Onboarding'), {
   ssr: false,
 });
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+function AppLayoutInner({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user, userData, loading } = useAuthStore();
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
+
+  // Aplicar clase 'dark' al elemento <html> según el tema
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    // Cleanup: remover dark al desmontar (ej: al salir de /farmateca)
+    return () => {
+      root.classList.remove('dark');
+    };
+  }, [isDarkMode]);
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/farmateca/web/login');
+    if (!loading && !user && !redirecting) {
+      setRedirecting(true);
+      router.replace('/farmateca/web/login');
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, redirecting]);
 
   useEffect(() => {
     // Check if onboarding has been completed
@@ -36,16 +55,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   const handleSignOut = async () => {
     await signOut();
-    router.push('/farmateca/web');
+    router.replace('/farmateca/web');
   };
 
-  // Show loading spinner while checking auth
-  if (loading) {
+  // Show loading spinner while checking auth or redirecting
+  if (loading || redirecting) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-farmateca-background-light">
+      <div className="min-h-screen flex items-center justify-center bg-farmateca-background-light dark:bg-farmateca-background-dark">
         <div className="text-center">
           <LoadingSpinner size="lg" />
-          <p className="mt-4 text-gray-600">Cargando...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">{redirecting ? 'Redirigiendo...' : 'Cargando...'}</p>
         </div>
       </div>
     );
@@ -62,9 +81,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-farmateca-background-light">
+    <div className="min-h-screen bg-farmateca-background-light dark:bg-farmateca-background-dark transition-colors duration-300">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white dark:bg-farmateca-gray-900 border-b border-gray-200 dark:border-farmateca-gray-700 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -72,26 +91,26 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <div className="w-8 h-8 bg-gradient-farmateca-primary rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">F</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">Farmateca</span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">Farmateca</span>
             </Link>
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center gap-6">
               <Link
                 href="/farmateca/web/app"
-                className="text-gray-600 hover:text-farmateca-primary transition-colors"
+                className="text-gray-600 dark:text-gray-300 hover:text-farmateca-primary transition-colors"
               >
                 Inicio
               </Link>
               <Link
                 href="/farmateca/web/app/search"
-                className="text-gray-600 hover:text-farmateca-primary transition-colors"
+                className="text-gray-600 dark:text-gray-300 hover:text-farmateca-primary transition-colors"
               >
                 Búsqueda
               </Link>
               <Link
                 href="/farmateca/web/app/favorites"
-                className="text-gray-600 hover:text-farmateca-primary transition-colors"
+                className="text-gray-600 dark:text-gray-300 hover:text-farmateca-primary transition-colors"
               >
                 Favoritos
               </Link>
@@ -105,17 +124,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </div>
 
               <div className="hidden sm:block text-right">
-                <p className="text-sm font-medium text-gray-900">
+                <p className="text-sm font-medium text-gray-900 dark:text-white">
                   {userData?.alias || userData?.nombre || user.displayName || 'Usuario'}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   {userData?.profesion || 'Profesional de salud'}
                 </p>
               </div>
 
               <Link
                 href="/farmateca/web/app/settings"
-                className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 <svg
                   className="w-6 h-6"
@@ -140,7 +159,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
               <button
                 onClick={handleSignOut}
-                className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                 title="Cerrar sesión"
               >
                 <svg
@@ -167,5 +186,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
     </div>
+  );
+}
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <AuthProvider>
+      <AppLayoutInner>{children}</AppLayoutInner>
+    </AuthProvider>
   );
 }

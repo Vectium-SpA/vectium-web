@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Dark mode class-based (para Farmateca) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Vectium brand colors */
   --color-vectium-black: #1A1A1A;

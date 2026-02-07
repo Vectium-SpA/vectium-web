@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuthStore, useSubscriptionStatus } from '@/lib/farmateca/store/auth-store';
+import { useThemeStore } from '@/lib/farmateca/store/theme-store';
 import { signOut, startTrial, UserData } from '@/lib/farmateca/firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib/farmateca/firebase';
@@ -33,6 +34,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const { user, userData, setUserData } = useAuthStore();
   const subscription = useSubscriptionStatus();
+  const { isDarkMode, toggleTheme } = useThemeStore();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -198,8 +200,8 @@ export default function SettingsPage() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Configuración</h1>
-        <p className="text-gray-600">Gestiona tu cuenta y preferencias.</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Configuración</h1>
+        <p className="text-gray-600 dark:text-gray-400">Gestiona tu cuenta y preferencias.</p>
       </motion.div>
 
       {/* Mensaje de feedback */}
@@ -428,7 +430,7 @@ export default function SettingsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+        className="bg-white dark:bg-farmateca-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-farmateca-gray-700"
       >
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 bg-farmateca-premium/10 rounded-xl flex items-center justify-center">
@@ -440,7 +442,7 @@ export default function SettingsPage() {
               <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-gray-900">Plan Actual</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Plan Actual</h2>
         </div>
 
         {/* Trial activo */}
@@ -538,10 +540,10 @@ export default function SettingsPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-bold text-gray-900">
+                  <p className="font-bold text-gray-900 dark:text-white">
                     Prueba GRATIS 7 días
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     Acceso completo sin compromiso
                   </p>
                 </div>
@@ -560,7 +562,7 @@ export default function SettingsPage() {
         {/* Card del plan */}
         <button
           onClick={() => router.push('/farmateca/web/app/paywall')}
-          className="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-farmateca-primary hover:shadow-md transition-all text-left"
+          className="w-full p-4 bg-gray-50 dark:bg-farmateca-gray-900 rounded-xl border border-gray-200 dark:border-farmateca-gray-600 hover:border-farmateca-primary hover:shadow-md transition-all text-left"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -588,14 +590,14 @@ export default function SettingsPage() {
                 </svg>
               </div>
               <div>
-                <p className="font-semibold text-gray-900">
+                <p className="font-semibold text-gray-900 dark:text-white">
                   {subscription.isSubscriptionActive
                     ? 'Plan Premium'
                     : subscription.isTrialActive
                     ? 'Prueba Gratuita'
                     : 'Plan Gratuito'}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   {subscription.isSubscriptionActive
                     ? 'Acceso completo a todo el contenido'
                     : subscription.isTrialActive
@@ -613,14 +615,84 @@ export default function SettingsPage() {
         </button>
       </motion.div>
 
+      {/* APARIENCIA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25 }}
+        className="bg-white dark:bg-farmateca-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-farmateca-gray-700"
+      >
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <svg
+            className="w-5 h-5 text-farmateca-primary"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+            />
+          </svg>
+          Apariencia
+        </h2>
+
+        <div className="flex items-center justify-between py-3">
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+              isDarkMode
+                ? 'bg-indigo-100 dark:bg-indigo-900/30'
+                : 'bg-amber-100 dark:bg-amber-900/30'
+            }`}>
+              {isDarkMode ? (
+                <svg className="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              )}
+            </div>
+            <div>
+              <p className="font-medium text-gray-900 dark:text-white">
+                Modo Oscuro
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {isDarkMode ? 'Tema oscuro activado' : 'Tema claro activado'}
+              </p>
+            </div>
+          </div>
+
+          {/* Toggle Switch */}
+          <button
+            onClick={toggleTheme}
+            className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-farmateca-primary focus:ring-offset-2 dark:focus:ring-offset-farmateca-gray-800 ${
+              isDarkMode ? 'bg-farmateca-primary' : 'bg-gray-300'
+            }`}
+            role="switch"
+            aria-checked={isDarkMode}
+            aria-label="Alternar modo oscuro"
+          >
+            <span
+              className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
+                isDarkMode ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+      </motion.div>
+
       {/* INFORMACIÓN */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+        className="bg-white dark:bg-farmateca-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-farmateca-gray-700"
       >
-        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <svg
             className="w-5 h-5 text-farmateca-primary"
             fill="none"
@@ -638,8 +710,8 @@ export default function SettingsPage() {
         </h2>
 
         <div className="space-y-3">
-          <div className="flex justify-between items-center py-2 border-b border-gray-100">
-            <span className="text-gray-600 flex items-center gap-2">
+          <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-farmateca-gray-700">
+            <span className="text-gray-600 dark:text-gray-400 flex items-center gap-2">
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -655,10 +727,10 @@ export default function SettingsPage() {
               </svg>
               Versión
             </span>
-            <span className="font-medium text-gray-900">v1.0.0</span>
+            <span className="font-medium text-gray-900 dark:text-white">v1.0.0</span>
           </div>
           <div className="flex justify-between items-center py-2">
-            <span className="text-gray-600 flex items-center gap-2">
+            <span className="text-gray-600 dark:text-gray-400 flex items-center gap-2">
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -692,7 +764,7 @@ export default function SettingsPage() {
       >
         <button
           onClick={handleLogout}
-          className="w-full py-4 bg-red-50 text-red-600 font-semibold rounded-2xl border border-red-200 hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
+          className="w-full py-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-semibold rounded-2xl border border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors flex items-center justify-center gap-2"
         >
           <svg
             className="w-5 h-5"
@@ -718,8 +790,8 @@ export default function SettingsPage() {
         transition={{ delay: 0.5 }}
         className="text-center py-4"
       >
-        <p className="text-gray-400 text-sm">Desarrollado por</p>
-        <p className="text-gray-600 font-medium">Vectium SpA</p>
+        <p className="text-gray-400 dark:text-gray-500 text-sm">Desarrollado por</p>
+        <p className="text-gray-600 dark:text-gray-300 font-medium">Vectium SpA</p>
       </motion.div>
     </div>
   );

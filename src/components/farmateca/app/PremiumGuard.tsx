@@ -123,7 +123,7 @@ export function PremiumUpgradeCard({
   if (compact) {
     return (
       <Link
-        href="/app/paywall"
+        href="/farmateca/web/app/paywall"
         className="inline-flex items-center gap-2 bg-gradient-to-r from-farmateca-primary-dark to-farmateca-primary text-white text-sm font-medium px-4 py-2 rounded-lg hover:shadow-lg transition-all duration-300"
       >
         <svg className="w-4 h-4 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
@@ -161,14 +161,14 @@ export function PremiumUpgradeCard({
       <div className="space-y-2">
         {!hasUsedTrial && (
           <Link
-            href="/app/paywall"
+            href="/farmateca/web/app/paywall"
             className="block w-full bg-farmateca-premium hover:bg-farmateca-premium-dark text-white font-semibold py-3 px-4 rounded-xl text-center transition-all duration-300 shadow-md hover:shadow-lg"
           >
             Prueba GRATIS 7 días
           </Link>
         )}
         <Link
-          href="/app/paywall"
+          href="/farmateca/web/app/paywall"
           className={`block w-full font-semibold py-3 px-4 rounded-xl text-center transition-all duration-300 ${
             hasUsedTrial
               ? 'bg-gradient-to-r from-farmateca-primary-dark to-farmateca-primary text-white shadow-md hover:shadow-lg'
@@ -208,7 +208,7 @@ export function SubscriptionStatusBanner() {
     const isExpiring = trialDaysRemaining <= 2;
     return (
       <Link
-        href="/app/paywall"
+        href="/farmateca/web/app/paywall"
         className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all hover:shadow-md ${
           isExpiring
             ? 'bg-orange-100 text-orange-700 border border-orange-200'
@@ -226,7 +226,7 @@ export function SubscriptionStatusBanner() {
   // Usuario Free
   return (
     <Link
-      href="/app/paywall"
+      href="/farmateca/web/app/paywall"
       className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-full text-sm font-medium transition-all"
     >
       {hasUsedTrial ? (
@@ -300,7 +300,7 @@ export function PremiumPromoBanner() {
           </div>
         </div>
         <Link
-          href="/app/paywall"
+          href="/farmateca/web/app/paywall"
           className={`font-semibold py-2 px-4 rounded-xl transition-all ${
             isExpiring
               ? 'bg-orange-500 hover:bg-orange-600 text-white'
@@ -338,7 +338,7 @@ export function PremiumPromoBanner() {
         </div>
       </div>
       <Link
-        href="/app/paywall"
+        href="/farmateca/web/app/paywall"
         className="bg-white hover:bg-gray-100 text-farmateca-primary-dark font-semibold py-2 px-4 rounded-xl transition-all"
       >
         {hasUsedTrial ? 'Ver planes' : 'Probar GRATIS'}

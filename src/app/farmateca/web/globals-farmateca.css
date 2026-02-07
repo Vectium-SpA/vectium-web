@@ -420,3 +420,49 @@ body:has(.farmateca-root) > footer {
 .dark .farmateca-root ::-webkit-scrollbar-thumb:hover {
   background: var(--color-farmateca-gray-500);
 }
+
+/* ============================================ */
+/* DARK MODE - ESTILOS EXTENDIDOS               */
+/* ============================================ */
+
+/* Inputs en dark mode */
+.dark .input-farmateca {
+  background-color: var(--color-farmateca-gray-800);
+  border-color: var(--color-farmateca-gray-600);
+  color: var(--color-farmateca-gray-100);
+}
+
+.dark .input-farmateca:focus {
+  border-color: var(--color-farmateca-primary);
+  box-shadow: 0 0 0 4px rgba(0, 169, 165, 0.15);
+}
+
+/* Botones secundarios en dark mode */
+.dark .btn-farmateca-secondary {
+  background-color: var(--color-farmateca-gray-800);
+  border-color: var(--color-farmateca-primary);
+  color: var(--color-farmateca-primary-light);
+}
+
+.dark .btn-farmateca-secondary:hover {
+  background-color: rgba(0, 169, 165, 0.15);
+}
+
+/* Selection en dark mode */
+.dark .farmateca-root ::selection {
+  background-color: var(--color-farmateca-primary-dark);
+  color: white;
+}
+
+/* Border defaults en dark mode */
+.dark .farmateca-root * {
+  border-color: var(--color-farmateca-gray-700);
+}
+
+/* Transición suave al cambiar de tema */
+.farmateca-root,
+.farmateca-root * {
+  transition-property: background-color, border-color, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
