@@ -5,53 +5,7 @@ import { useAuthStore, useSubscriptionStatus } from '@/lib/farmateca/store/auth-
 import { SearchCard } from '@/components/farmateca/app/SearchCard';
 import { PremiumPromoBanner } from '@/components/farmateca/app/PremiumGuard';
 import { useFavorites } from '@/lib/farmateca/hooks/useFavorites';
-
-const searchOptions = [
-  {
-    title: 'Búsqueda Rápida',
-    description: 'Busca por nombre comercial o compuesto',
-    icon: (
-      <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-    ),
-    href: '/farmateca/web/app/search',
-    gradient: 'from-farmateca-primary to-farmateca-primary-light',
-  },
-  {
-    title: 'Compuestos',
-    description: 'Principios activos y familias terapéuticas',
-    icon: (
-      <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-      </svg>
-    ),
-    href: '/farmateca/web/app/search/compound',
-    gradient: 'from-farmateca-compound to-blue-400',
-  },
-  {
-    title: 'Marcas',
-    description: 'Comerciales, genéricos y laboratorios',
-    icon: (
-      <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-      </svg>
-    ),
-    href: '/farmateca/web/app/search/brand',
-    gradient: 'from-farmateca-primary-dark to-farmateca-primary',
-  },
-  {
-    title: 'Mis Favoritos',
-    description: 'Acceso rápido a medicamentos guardados',
-    icon: (
-      <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-      </svg>
-    ),
-    href: '/farmateca/web/app/favorites',
-    gradient: 'from-farmateca-favorites to-pink-400',
-  },
-];
+import { useFarmatecaStats } from '@/lib/farmateca/hooks/useFarmatecaStats';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -65,9 +19,69 @@ export default function AppHomePage() {
   const { userData } = useAuthStore();
   const { isPremium, isTrialActive, trialDaysRemaining } = useSubscriptionStatus();
   const { favorites } = useFavorites();
+  const { stats, loading: statsLoading } = useFarmatecaStats();
+
+  // Contadores dinámicos calculados desde farmateca_master.json - NUNCA hardcodeados
+  const totalMedicamentos = stats
+    ? (stats.totalCompounds + stats.totalBrands).toLocaleString()
+    : '...';
+  const totalCompuestos = stats
+    ? stats.totalCompounds.toLocaleString()
+    : '...';
+  const totalMarcas = stats
+    ? stats.totalBrands.toLocaleString()
+    : '...';
+
+  // searchOptions dentro del componente para usar stats dinámicos
+  const searchOptions = [
+    {
+      title: 'Búsqueda Rápida',
+      description: `Accede a ${totalMedicamentos} medicamentos`,
+      icon: (
+        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      ),
+      href: '/farmateca/web/app/search',
+      gradient: 'from-farmateca-primary to-farmateca-primary-light',
+    },
+    {
+      title: 'Compuestos',
+      description: `${totalCompuestos} compuestos disponibles`,
+      icon: (
+        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+      ),
+      href: '/farmateca/web/app/search/compound',
+      gradient: 'from-farmateca-compound to-blue-400',
+    },
+    {
+      title: 'Marcas',
+      description: `${totalMarcas} marcas en catálogo`,
+      icon: (
+        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+        </svg>
+      ),
+      href: '/farmateca/web/app/search/brand',
+      gradient: 'from-farmateca-primary-dark to-farmateca-primary',
+    },
+    {
+      title: 'Mis Favoritos',
+      description: `${favorites.length} guardados`,
+      icon: (
+        <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+      ),
+      href: '/farmateca/web/app/favorites',
+      gradient: 'from-farmateca-favorites to-pink-400',
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Banner promocional (solo para usuarios Free o Trial por expirar) */}
         <PremiumPromoBanner />
@@ -127,7 +141,7 @@ export default function AppHomePage() {
           transition={{ delay: 0.2 }}
           className="mb-8"
         >
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">¿Qué deseas buscar?</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">¿Qué deseas buscar?</h2>
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -140,14 +154,14 @@ export default function AppHomePage() {
           </motion.div>
         </motion.div>
 
-        {/* Stats */}
+        {/* Stats - TODOS calculados dinámicamente desde farmateca_master.json */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
         >
-          <div className="bg-white rounded-2xl p-6 shadow-farmateca-card">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-farmateca-card">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-farmateca-primary/10 rounded-xl flex items-center justify-center">
                 <svg className="w-6 h-6 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,12 +169,14 @@ export default function AppHomePage() {
                 </svg>
               </div>
               <div>
-                <p className="text-3xl font-bold text-gray-900">2,556</p>
-                <p className="text-gray-500">Medicamentos</p>
+                <p className={`text-3xl font-bold text-gray-900 dark:text-white ${statsLoading ? 'animate-pulse' : ''}`}>
+                  {totalMedicamentos}
+                </p>
+                <p className="text-gray-500 dark:text-gray-400">Medicamentos</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-2xl p-6 shadow-farmateca-card">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-farmateca-card">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-farmateca-compound/10 rounded-xl flex items-center justify-center">
                 <svg className="w-6 h-6 text-farmateca-compound" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,12 +184,14 @@ export default function AppHomePage() {
                 </svg>
               </div>
               <div>
-                <p className="text-3xl font-bold text-gray-900">200+</p>
-                <p className="text-gray-500">Compuestos</p>
+                <p className={`text-3xl font-bold text-gray-900 dark:text-white ${statsLoading ? 'animate-pulse' : ''}`}>
+                  {totalCompuestos}
+                </p>
+                <p className="text-gray-500 dark:text-gray-400">Compuestos</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-2xl p-6 shadow-farmateca-card">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-farmateca-card">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-farmateca-favorites/10 rounded-xl flex items-center justify-center">
                 <svg className="w-6 h-6 text-farmateca-favorites" fill="currentColor" viewBox="0 0 24 24">
@@ -181,8 +199,8 @@ export default function AppHomePage() {
                 </svg>
               </div>
               <div>
-                <p className="text-3xl font-bold text-gray-900">{favorites.length}</p>
-                <p className="text-gray-500">Favoritos</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{favorites.length}</p>
+                <p className="text-gray-500 dark:text-gray-400">Favoritos</p>
               </div>
             </div>
           </div>

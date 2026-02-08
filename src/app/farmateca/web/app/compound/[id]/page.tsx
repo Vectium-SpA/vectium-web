@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { Tag, Cross, Settings, Pill, AlertTriangle, Ban, FileText } from 'lucide-react';
 import { fetchCompoundById } from '@/lib/farmateca/api/compounds';
 import { CompoundWithBrands, BrandSummary } from '@/lib/farmateca/types';
 import { DetailSkeleton } from '@/components/farmateca/shared';
 import { BrandCard, FavoriteButton } from '@/components/farmateca/clinical';
+import { PremiumGuard } from '@/components/farmateca/app/PremiumGuard';
 
 export default function CompoundDetailPage() {
   const params = useParams();
@@ -55,7 +57,7 @@ export default function CompoundDetailPage() {
   if (error || !compound) {
     return (
       <div className="text-center py-12">
-        <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
           <svg
             className="w-10 h-10 text-red-500"
             fill="none"
@@ -70,10 +72,10 @@ export default function CompoundDetailPage() {
             />
           </svg>
         </div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
           Compuesto no encontrado
         </h2>
-        <p className="text-gray-500 mb-4">{error}</p>
+        <p className="text-gray-500 dark:text-gray-400 mb-4">{error}</p>
         <button
           onClick={() => router.back()}
           className="text-farmateca-primary hover:underline"
@@ -97,7 +99,7 @@ export default function CompoundDetailPage() {
       >
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-gray-600 hover:text-farmateca-primary transition-colors mb-4"
+          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-farmateca-primary transition-colors mb-4"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -128,7 +130,7 @@ export default function CompoundDetailPage() {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                 {compound.pa}
               </h1>
               {compound.acceso === 'P' && (
@@ -137,7 +139,7 @@ export default function CompoundDetailPage() {
                 </span>
               )}
             </div>
-            <p className="text-gray-600 mt-1">{compound.familia}</p>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">{compound.familia}</p>
           </div>
           <div className="absolute top-0 right-0">
             <FavoriteButton
@@ -151,105 +153,134 @@ export default function CompoundDetailPage() {
         </div>
       </motion.div>
 
-      {/* Contenido */}
+      {/* Contenido - Orden: 1.Familia, 2.Uso, 3.Mecanismo, 4.Posología(P), 5.Efectos(P), 6.Contraindicaciones(P), 7.Consideraciones(P), 8.Marcas */}
       <div className="space-y-6">
-        {/* Uso Terapéutico */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white rounded-xl border border-gray-100 p-6"
-        >
-          <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Uso Terapéutico
-          </h2>
-          <p className="text-gray-700 leading-relaxed">{compound.uso}</p>
-        </motion.section>
 
-        {/* Posología */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="bg-white rounded-xl border border-gray-100 p-6"
-        >
-          <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Posología
-          </h2>
-          <div className="text-gray-700 whitespace-pre-line">{compound.posologia}</div>
-        </motion.section>
+        {/* 1. Familia Farmacológica - FREE */}
+        {compound.familia && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-6"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <Tag className="w-5 h-5 text-farmateca-primary" />
+              Familia Farmacológica
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{compound.familia}</p>
+          </motion.section>
+        )}
 
-        {/* Mecanismo de Acción */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white rounded-xl border border-gray-100 p-6"
-        >
-          <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            Mecanismo de Acción
-          </h2>
-          <p className="text-gray-700 leading-relaxed">{compound.mecanismo}</p>
-        </motion.section>
+        {/* 2. Uso Clínico - FREE */}
+        {compound.uso && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-6"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <Cross className="w-5 h-5 text-farmateca-primary" />
+              Uso Clínico
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{compound.uso}</p>
+          </motion.section>
+        )}
 
-        {/* Consideraciones */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="bg-white rounded-xl border border-gray-100 p-6"
-        >
-          <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Consideraciones
-          </h2>
-          <div className="text-gray-700 whitespace-pre-line">{compound.consideraciones}</div>
-        </motion.section>
+        {/* 3. Mecanismo de Acción - FREE */}
+        {compound.mecanismo && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-6"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <Settings className="w-5 h-5 text-farmateca-primary" />
+              Mecanismo de Acción
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{compound.mecanismo}</p>
+          </motion.section>
+        )}
 
-        {/* Efectos Adversos */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-orange-50 rounded-xl border border-orange-100 p-6"
-        >
-          <h2 className="text-lg font-semibold text-orange-800 mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            Efectos Adversos
-          </h2>
-          <p className="text-orange-700 leading-relaxed">{compound.efectos}</p>
-        </motion.section>
+        {/* 4. Posología - PREMIUM */}
+        {compound.posologia && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <PremiumGuard mode="blur" featureName="Posología">
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                  <Pill className="w-5 h-5 text-farmateca-primary" />
+                  Posología
+                </h2>
+                <div className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{compound.posologia}</div>
+              </div>
+            </PremiumGuard>
+          </motion.section>
+        )}
 
-        {/* Contraindicaciones */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="bg-red-50 rounded-xl border border-red-100 p-6"
-        >
-          <h2 className="text-lg font-semibold text-red-800 mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-            </svg>
-            Contraindicaciones
-          </h2>
-          <div className="text-red-700 whitespace-pre-line">{compound.contraindicaciones}</div>
-        </motion.section>
+        {/* 5. Efectos Adversos - PREMIUM */}
+        {compound.efectos && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+          >
+            <PremiumGuard mode="blur" featureName="Efectos Adversos">
+              <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl border border-orange-100 dark:border-orange-800/30 p-6">
+                <h2 className="text-lg font-semibold text-orange-800 dark:text-orange-300 mb-3 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                  Efectos Adversos
+                </h2>
+                <p className="text-orange-700 dark:text-orange-300 leading-relaxed">{compound.efectos}</p>
+              </div>
+            </PremiumGuard>
+          </motion.section>
+        )}
 
-        {/* Marcas Asociadas - Accordions Colapsables */}
+        {/* 6. Contraindicaciones - PREMIUM */}
+        {compound.contraindicaciones && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <PremiumGuard mode="blur" featureName="Contraindicaciones">
+              <div className="bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-100 dark:border-red-800/30 p-6">
+                <h2 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-3 flex items-center gap-2">
+                  <Ban className="w-5 h-5 text-red-600 dark:text-red-400" />
+                  Contraindicaciones
+                </h2>
+                <div className="text-red-700 dark:text-red-300 whitespace-pre-line">{compound.contraindicaciones}</div>
+              </div>
+            </PremiumGuard>
+          </motion.section>
+        )}
+
+        {/* 7. Consideraciones - PREMIUM */}
+        {compound.consideraciones && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+          >
+            <PremiumGuard mode="blur" featureName="Consideraciones">
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-farmateca-primary" />
+                  Consideraciones
+                </h2>
+                <div className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{compound.consideraciones}</div>
+              </div>
+            </PremiumGuard>
+          </motion.section>
+        )}
+
+        {/* 8. Marcas Asociadas - FREE - Accordions Colapsables */}
         {compound.brands && compound.brands.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
@@ -257,19 +288,17 @@ export default function CompoundDetailPage() {
             transition={{ delay: 0.4 }}
             className="space-y-4"
           >
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-              </svg>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <Tag className="w-5 h-5 text-farmateca-primary" />
               Marcas Disponibles ({compound.brands.length})
             </h2>
 
             {/* Accordion Comerciales */}
             {commercialBrands.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <button
                   onClick={() => setExpandCommercial(!expandCommercial)}
-                  className="w-full px-6 py-4 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors"
+                  className="w-full px-6 py-4 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-farmateca-primary/10 rounded-lg flex items-center justify-center">
@@ -277,7 +306,7 @@ export default function CompoundDetailPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                       </svg>
                     </div>
-                    <span className="font-semibold text-gray-900">
+                    <span className="font-semibold text-gray-900 dark:text-white">
                       Marcas Comerciales ({commercialBrands.length})
                     </span>
                   </div>
@@ -291,7 +320,7 @@ export default function CompoundDetailPage() {
                   </svg>
                 </button>
                 {expandCommercial && (
-                  <div className="p-4 space-y-2 border-t border-gray-100">
+                  <div className="p-4 space-y-2 border-t border-gray-100 dark:border-gray-700">
                     {commercialBrands.map((brand) => (
                       <BrandCard key={brand.idMA} brand={brand} />
                     ))}
@@ -302,18 +331,18 @@ export default function CompoundDetailPage() {
 
             {/* Accordion Genéricos */}
             {genericBrands.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <button
                   onClick={() => setExpandGeneric(!expandGeneric)}
-                  className="w-full px-6 py-4 flex items-center justify-between bg-green-50 hover:bg-green-100 transition-colors"
+                  className="w-full px-6 py-4 flex items-center justify-between bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                      <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                      <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <span className="font-semibold text-gray-900">
+                    <span className="font-semibold text-gray-900 dark:text-white">
                       Genéricos ({genericBrands.length})
                     </span>
                   </div>
@@ -327,7 +356,7 @@ export default function CompoundDetailPage() {
                   </svg>
                 </button>
                 {expandGeneric && (
-                  <div className="p-4 space-y-2 border-t border-gray-100">
+                  <div className="p-4 space-y-2 border-t border-gray-100 dark:border-gray-700">
                     {genericBrands.map((brand) => (
                       <BrandCard key={brand.idMA} brand={brand} />
                     ))}

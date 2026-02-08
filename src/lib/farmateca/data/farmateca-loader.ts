@@ -18,6 +18,7 @@ import {
   parseBrand,
   CompoundSummary,
   toCompoundSummary,
+  isCompoundUpcoming,
   BrandSummary,
   toBrandSummary,
 } from '@/lib/farmateca/types';
@@ -26,6 +27,8 @@ import {
 let cachedData: FarmatecaData | null = null;
 let cachedCompounds: Compound[] | null = null;
 let cachedBrands: Brand[] | null = null;
+// Cache del Set de IDs de compuestos "Próximamente"
+let cachedUpcomingCompoundIds: Set<string> | null = null;
 
 /**
  * Obtiene la ruta al archivo JSON de datos.
@@ -60,6 +63,22 @@ export async function getAllCompounds(): Promise<Compound[]> {
   const data = await loadRawData();
   cachedCompounds = data.compuestos.map((raw: CompoundRaw) => parseCompound(raw));
   return cachedCompounds;
+}
+
+/**
+ * Obtiene el Set de IDs de compuestos "Próximamente".
+ * Cacheado para evitar recalcular en cada llamada de marcas.
+ */
+async function getUpcomingCompoundIds(): Promise<Set<string>> {
+  if (cachedUpcomingCompoundIds) {
+    return cachedUpcomingCompoundIds;
+  }
+
+  const compounds = await getAllCompounds();
+  cachedUpcomingCompoundIds = new Set(
+    compounds.filter((c) => isCompoundUpcoming(c)).map((c) => c.idPA)
+  );
+  return cachedUpcomingCompoundIds;
 }
 
 /**
@@ -131,10 +150,14 @@ export async function getAllBrands(): Promise<Brand[]> {
 
 /**
  * Obtiene todas las marcas en formato resumido.
+ * Calcula isUpcoming cruzando con compuestos.
  */
 export async function getAllBrandsSummary(): Promise<BrandSummary[]> {
-  const brands = await getAllBrands();
-  return brands.map(toBrandSummary);
+  const [brands, upcomingIds] = await Promise.all([
+    getAllBrands(),
+    getUpcomingCompoundIds(),
+  ]);
+  return brands.map((b) => toBrandSummary(b, upcomingIds.has(b.idPAM)));
 }
 
 /**
@@ -149,26 +172,32 @@ export async function getBrandById(idMA: string): Promise<Brand | null> {
  * Obtiene las marcas asociadas a un compuesto.
  */
 export async function getBrandsByCompoundId(idPA: string): Promise<BrandSummary[]> {
-  const brands = await getAllBrands();
+  const [brands, upcomingIds] = await Promise.all([
+    getAllBrands(),
+    getUpcomingCompoundIds(),
+  ]);
   return brands
     .filter((b) => b.idPAM === idPA)
-    .map(toBrandSummary);
+    .map((b) => toBrandSummary(b, upcomingIds.has(b.idPAM)));
 }
 
 /**
  * Busca marcas por nombre (case-insensitive).
  */
 export async function searchBrands(query: string): Promise<BrandSummary[]> {
-  const brands = await getAllBrands();
+  const [brands, upcomingIds] = await Promise.all([
+    getAllBrands(),
+    getUpcomingCompoundIds(),
+  ]);
   const normalizedQuery = query.toLowerCase().trim();
 
   if (!normalizedQuery) {
-    return brands.map(toBrandSummary);
+    return brands.map((b) => toBrandSummary(b, upcomingIds.has(b.idPAM)));
   }
 
   return brands
     .filter((b) => b.ma.toLowerCase().includes(normalizedQuery))
-    .map(toBrandSummary);
+    .map((b) => toBrandSummary(b, upcomingIds.has(b.idPAM)));
 }
 
 /**
@@ -188,19 +217,27 @@ export async function searchAll(query: string): Promise<{
 
 /**
  * Obtiene estadísticas de la base de datos.
+ * Todos los contadores se calculan dinámicamente desde el JSON.
  */
 export async function getStats(): Promise<{
   totalCompounds: number;
   totalBrands: number;
+  totalFamilies: number;
+  totalLaboratories: number;
 }> {
   const [compounds, brands] = await Promise.all([
     getAllCompounds(),
     getAllBrands(),
   ]);
 
+  const families = new Set(compounds.map((c) => c.familia).filter(Boolean));
+  const laboratories = new Set(brands.map((b) => b.labM).filter(Boolean));
+
   return {
     totalCompounds: compounds.length,
     totalBrands: brands.length,
+    totalFamilies: families.size,
+    totalLaboratories: laboratories.size,
   };
 }
 
@@ -211,4 +248,5 @@ export function invalidateCache(): void {
   cachedData = null;
   cachedCompounds = null;
   cachedBrands = null;
+  cachedUpcomingCompoundIds = null;
 }

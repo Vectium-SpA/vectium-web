@@ -68,6 +68,8 @@ export interface CompoundSummary {
   familia: string;
   uso: string;
   acceso: 'F' | 'P';
+  /** true si campos clínicos críticos están vacíos (posología, efectos, mecanismo, uso) */
+  isUpcoming?: boolean;
 }
 
 /**
@@ -124,6 +126,19 @@ export function parseCompound(raw: CompoundRaw): Compound {
 }
 
 /**
+ * Determina si un compuesto es "Próximamente" (datos clínicos incompletos).
+ * Un compuesto es "upcoming" si posología, efectos, mecanismo O uso están vacíos.
+ */
+export function isCompoundUpcoming(compound: Compound): boolean {
+  return (
+    !compound.posologia?.trim() ||
+    !compound.efectos?.trim() ||
+    !compound.mecanismo?.trim() ||
+    !compound.uso?.trim()
+  );
+}
+
+/**
  * Convierte un Compound a su versión resumida.
  */
 export function toCompoundSummary(compound: Compound): CompoundSummary {
@@ -133,5 +148,6 @@ export function toCompoundSummary(compound: Compound): CompoundSummary {
     familia: compound.familia,
     uso: compound.uso,
     acceso: compound.acceso,
+    isUpcoming: isCompoundUpcoming(compound),
   };
 }

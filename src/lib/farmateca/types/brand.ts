@@ -70,6 +70,8 @@ export interface BrandSummary {
   labM: string;
   tipoM: string;
   viaM: string;
+  /** true si el compuesto relacionado tiene datos clínicos incompletos */
+  isUpcoming?: boolean;
 }
 
 /**
@@ -116,8 +118,9 @@ export function parseBrand(raw: BrandRaw): Brand {
 
 /**
  * Convierte una Brand a su versión resumida.
+ * @param isUpcoming - Si el compuesto relacionado es "Próximamente"
  */
-export function toBrandSummary(brand: Brand): BrandSummary {
+export function toBrandSummary(brand: Brand, isUpcoming?: boolean): BrandSummary {
   return {
     idMA: brand.idMA,
     ma: brand.ma,
@@ -125,5 +128,6 @@ export function toBrandSummary(brand: Brand): BrandSummary {
     labM: brand.labM,
     tipoM: brand.tipoM,
     viaM: brand.viaM,
+    isUpcoming: isUpcoming ?? false,
   };
 }

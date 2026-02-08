@@ -3,14 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Tab, TabGroup, TabList, TabPanels, TabPanel } from '@headlessui/react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { SearchBar, CompoundCard } from '@/components/farmateca/clinical';
+import { motion } from 'framer-motion';
+import { SearchBar, CompoundCard, UpcomingCard, UpcomingSeparator } from '@/components/farmateca/clinical';
 import { PremiumGuard } from '@/components/farmateca/app/PremiumGuard';
 import { fetchCompounds } from '@/lib/farmateca/api/compounds';
 import { CompoundSummary } from '@/lib/farmateca/types';
 import { LoadingSpinner, CompoundCardSkeletonList } from '@/components/farmateca/shared';
 import { loadFarmatecaDataClient, FarmatecaCompound } from '@/lib/farmateca/api/data';
 import { getFamilies, filterByFamily, type GroupedItem } from '@/lib/farmateca/utils/search';
+import { sortCompoundResults } from '@/lib/farmateca/utils/search-sort';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -49,7 +50,7 @@ export default function CompoundSearchPage() {
         const data = await loadFarmatecaDataClient();
         const familiesList = getFamilies(data.compuestos);
         setFamilies(familiesList);
-        setFamilyCompounds(data.compuestos); // Guardar todos para filtrar
+        setFamilyCompounds(data.compuestos);
       } catch (error) {
         console.error('Error loading families:', error);
       } finally {
@@ -77,9 +78,8 @@ export default function CompoundSearchPage() {
 
   // Búsqueda tab "TODOS" con debounce
   useEffect(() => {
-    if (selectedIndex !== 0) return; // Solo tab "TODOS"
+    if (selectedIndex !== 0) return;
 
-    // Si hay filtro de laboratorio, buscar automáticamente
     if (laboratoryFilter && !searchQuery.trim()) {
       const searchByLab = async () => {
         setIsLoading(true);
@@ -89,11 +89,8 @@ export default function CompoundSearchPage() {
 
           if (data.success) {
             setAllCompounds(data.data);
-
-            // Extraer familias únicas de resultados
             const uniqueFamilies = Array.from(new Set(data.data.map((c: CompoundSummary) => c.familia).filter(Boolean))) as string[];
             setAvailableFamilies(uniqueFamilies.sort());
-
             setHasSearched(true);
           }
         } catch (error) {
@@ -119,11 +116,8 @@ export default function CompoundSearchPage() {
       try {
         const results = await fetchCompounds(searchQuery);
         setAllCompounds(results);
-
-        // Extraer familias únicas de resultados
         const uniqueFamilies = Array.from(new Set(results.map(c => c.familia).filter(Boolean))).sort();
         setAvailableFamilies(uniqueFamilies);
-
         setHasSearched(true);
       } catch (error) {
         console.error('Error searching compounds:', error);
@@ -141,12 +135,10 @@ export default function CompoundSearchPage() {
 
     let filtered = [...allCompounds];
 
-    // Filtro por acceso
     if (accessFilter !== 'all') {
       filtered = filtered.filter(c => c.acceso === accessFilter);
     }
 
-    // Filtro por familia
     if (familyFilter) {
       filtered = filtered.filter(c => c.familia === familyFilter);
     }
@@ -166,21 +158,18 @@ export default function CompoundSearchPage() {
     setAccessFilter('all');
     setFamilyFilter('');
     setLaboratoryFilter('');
-    // Clear URL params
     router.push('/farmateca/web/app/search/compound');
   };
 
   const handleRemoveFilter = (filterType: 'family' | 'laboratory') => {
     if (filterType === 'family') {
       setFamilyFilter('');
-      // Update URL
       const params = new URLSearchParams(searchParams.toString());
       params.delete('family');
       const newUrl = params.toString() ? `/farmateca/web/app/search/compound?${params.toString()}` : '/farmateca/web/app/search/compound';
       router.push(newUrl);
     } else if (filterType === 'laboratory') {
       setLaboratoryFilter('');
-      // Update URL
       const params = new URLSearchParams(searchParams.toString());
       params.delete('laboratory');
       const newUrl = params.toString() ? `/farmateca/web/app/search/compound?${params.toString()}` : '/farmateca/web/app/search/compound';
@@ -199,7 +188,11 @@ export default function CompoundSearchPage() {
     : [];
 
   const displayCompounds = hasSearched ? filteredCompounds : [];
-  const noResults = hasSearched && displayCompounds.length === 0 && !isLoading;
+
+  // Aplicar algoritmo de ordenamiento 4 niveles
+  const sortedResults = sortCompoundResults(displayCompounds, searchQuery);
+  const hasResults = sortedResults.available.length > 0 || sortedResults.upcoming.length > 0;
+  const noResults = hasSearched && !hasResults && !isLoading;
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -294,7 +287,20 @@ export default function CompoundSearchPage() {
         <TabPanels>
           {/* Panel 1: Todos los compuestos */}
           <TabPanel>
-            {/* Estado inicial - sin búsqueda */}
+            {/* Barra de búsqueda */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8"
+            >
+              <SearchBar
+                onSearch={handleSearch}
+                placeholder="Buscar principio activo..."
+                isLoading={isLoading}
+              />
+            </motion.div>
+
+            {/* Estado inicial */}
             {!hasSearched && !searchQuery && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -303,42 +309,26 @@ export default function CompoundSearchPage() {
                 className="text-center py-12"
               >
                 <div className="w-20 h-20 bg-farmateca-compound/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-10 h-10 text-farmateca-compound"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-                    />
+                  <svg className="w-10 h-10 text-farmateca-compound" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  Comienza a buscar
-                </h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Comienza a buscar</h3>
                 <p className="text-gray-500 max-w-sm mx-auto">
                   Escribe el nombre de un principio activo para encontrar información detallada.
                 </p>
-
-                {/* Sugerencias */}
                 <div className="mt-8">
                   <p className="text-sm text-gray-400 mb-3">Búsquedas frecuentes:</p>
                   <div className="flex flex-wrap justify-center gap-2">
-                    {['Paracetamol', 'Ibuprofeno', 'Amoxicilina', 'Omeprazol'].map(
-                      (suggestion) => (
-                        <button
-                          key={suggestion}
-                          onClick={() => handleSearch(suggestion)}
-                          className="px-3 py-1.5 bg-farmateca-compound/10 text-farmateca-compound rounded-full text-sm hover:bg-farmateca-compound/20 transition-colors"
-                        >
-                          {suggestion}
-                        </button>
-                      )
-                    )}
+                    {['Paracetamol', 'Ibuprofeno', 'Amoxicilina', 'Omeprazol'].map((suggestion) => (
+                      <button
+                        key={suggestion}
+                        onClick={() => handleSearch(suggestion)}
+                        className="px-3 py-1.5 bg-farmateca-compound/10 text-farmateca-compound rounded-full text-sm hover:bg-farmateca-compound/20 transition-colors"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </motion.div>
@@ -346,58 +336,45 @@ export default function CompoundSearchPage() {
 
             {/* Loading */}
             {isLoading && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <CompoundCardSkeletonList count={10} />
               </motion.div>
             )}
 
             {/* Sin resultados */}
             {noResults && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-center py-12"
-              >
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
                 <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-10 h-10 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
+                  <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  No se encontraron resultados
-                </h3>
-                <p className="text-gray-500">
-                  No hay coincidencias para &quot;{searchQuery}&quot;. Intenta con otro término.
-                </p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No se encontraron resultados</h3>
+                <p className="text-gray-500">No hay coincidencias para &quot;{searchQuery}&quot;. Intenta con otro término.</p>
               </motion.div>
             )}
 
-            {/* Resultados */}
-            {!isLoading && hasSearched && allCompounds.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-2"
-              >
+            {/* Resultados con ordenamiento 4 niveles */}
+            {!isLoading && hasSearched && hasResults && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
                 <div className="flex items-center gap-2 mb-4">
                   <h2 className="text-lg font-semibold text-gray-900">Resultados</h2>
-                  <span className="text-sm text-gray-500">({allCompounds.length})</span>
+                  <span className="text-sm text-gray-500">
+                    (Mostrando {displayCompounds.length} de {allCompounds.length} compuestos)
+                  </span>
                 </div>
-                {allCompounds.map((compound) => (
+
+                {/* Nivel 1+2: Disponibles */}
+                {sortedResults.available.map((compound) => (
                   <CompoundCard key={compound.idPA} compound={compound} />
+                ))}
+
+                {/* Nivel 3: Separador */}
+                {sortedResults.hasUpcoming && <UpcomingSeparator />}
+
+                {/* Nivel 4: Próximamente */}
+                {sortedResults.upcoming.map((compound) => (
+                  <UpcomingCard key={compound.idPA} name={compound.pa} subtitle={compound.familia} type="compound" />
                 ))}
               </motion.div>
             )}
@@ -418,7 +395,9 @@ export default function CompoundSearchPage() {
                     onChange={(e) => handleFamilyChange(e.target.value)}
                     disabled={isLoadingFamilies}
                   >
-                    <option value="">Selecciona una familia...</option>
+                    <option value="">
+                      Selecciona una familia ({families.length} disponibles)...
+                    </option>
                     {families.map((family) => (
                       <option key={family.nombre} value={family.nombre}>
                         {family.nombre} ({family.cantidad} compuesto{family.cantidad !== 1 ? 's' : ''})
