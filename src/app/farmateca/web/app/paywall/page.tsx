@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore, useSubscriptionStatus } from '@/lib/farmateca/store/auth-store';
 import { startTrial } from '@/lib/farmateca/firebase/auth';
 import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
@@ -74,10 +74,16 @@ const features = [
 
 export default function PaywallPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, updateLocalTrialData, updateLocalSubscription } = useAuthStore();
   const { isPremium, isTrialActive, hasUsedTrial, trialDaysRemaining } = useSubscriptionStatus();
 
-  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('yearly');
+  // Read ?plan= param from URL (from landing page CTA buttons)
+  const planParam = searchParams.get('plan');
+  const defaultPlan: 'monthly' | 'yearly' =
+    planParam === 'monthly' ? 'monthly' : 'yearly';
+
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>(defaultPlan);
   const [isActivatingTrial, setIsActivatingTrial] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [error, setError] = useState<string | null>(null);

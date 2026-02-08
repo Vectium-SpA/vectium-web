@@ -3,23 +3,23 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-export function Footer() {
+export function FarmatecaFooter() {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
     producto: [
-      { href: '/features', label: 'Caracteristicas' },
-      { href: '/pricing', label: 'Precios' },
-      { href: '/app', label: 'Webapp' },
+      { href: '/farmateca/features', label: 'Caracteristicas' },
+      { href: '/farmateca/pricing', label: 'Precios' },
+      { href: '/farmateca/docs', label: 'Documentacion' },
     ],
     recursos: [
-      { href: '/docs', label: 'Documentacion' },
-      { href: '/blog', label: 'Blog' },
-      { href: '/community', label: 'Comunidad' },
+      { href: '/farmateca/blog', label: 'Blog' },
+      { href: '/farmateca/community', label: 'Comunidad' },
+      { href: '/farmateca/web/app', label: 'Web App' },
     ],
     legal: [
-      { href: '/privacy', label: 'Privacidad' },
-      { href: '/terms', label: 'Terminos' },
+      { href: '/farmateca/privacy', label: 'Privacidad' },
+      { href: '/farmateca/terms', label: 'Terminos' },
     ],
     contacto: [
       { href: 'mailto:farmateca.soporte@gmail.com', label: 'Email', external: true },
@@ -34,8 +34,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-farmateca-primary-dark to-farmateca-primary rounded-xl flex items-center justify-center">
+            <Link href="/farmateca" className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-teal-700 to-teal-500 rounded-xl flex items-center justify-center">
                 <span className="text-white font-bold text-2xl">F</span>
               </div>
               <span className="text-2xl font-bold text-white">Farmateca</span>
@@ -45,8 +45,10 @@ export function Footer() {
               Mas de 2,556 medicamentos disponibles 100% offline.
             </p>
             <div className="flex items-center gap-2">
-              <span className="text-farmateca-premium font-semibold">Desarrollado por</span>
-              <span className="text-white font-bold">Vectium SpA</span>
+              <span className="text-amber-400 font-semibold">Desarrollado por</span>
+              <Link href="/" className="text-white font-bold hover:text-amber-400 transition-colors">
+                Vectium SpA
+              </Link>
             </div>
           </div>
 
@@ -58,7 +60,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-farmateca-primary transition-colors"
+                    className="text-gray-400 hover:text-teal-400 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -75,7 +77,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-farmateca-primary transition-colors"
+                    className="text-gray-400 hover:text-teal-400 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -92,7 +94,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-farmateca-primary transition-colors"
+                    className="text-gray-400 hover:text-teal-400 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -111,7 +113,7 @@ export function Footer() {
                     href={link.href}
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
-                    className="text-gray-400 hover:text-farmateca-primary transition-colors"
+                    className="text-gray-400 hover:text-teal-400 transition-colors"
                   >
                     {link.label}
                   </a>
@@ -119,8 +121,8 @@ export function Footer() {
               ))}
               <li>
                 <Link
-                  href="/contact"
-                  className="text-gray-400 hover:text-farmateca-primary transition-colors"
+                  href="/farmateca/contact"
+                  className="text-gray-400 hover:text-teal-400 transition-colors"
                 >
                   Formulario de contacto
                 </Link>
@@ -141,8 +143,8 @@ export function Footer() {
                 href="https://www.instagram.com/farmatecachile/"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, color: '#00A9A5' }}
-                className="text-gray-500 hover:text-farmateca-primary transition-colors"
+                whileHover={{ scale: 1.1 }}
+                className="text-gray-500 hover:text-teal-400 transition-colors"
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -154,7 +156,7 @@ export function Footer() {
                 href="https://wa.me/56940337486"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, color: '#25D366' }}
+                whileHover={{ scale: 1.1 }}
                 className="text-gray-500 hover:text-green-500 transition-colors"
                 aria-label="WhatsApp"
               >
@@ -165,8 +167,8 @@ export function Footer() {
               {/* Email */}
               <motion.a
                 href="mailto:farmateca.soporte@gmail.com"
-                whileHover={{ scale: 1.1, color: '#00A9A5' }}
-                className="text-gray-500 hover:text-farmateca-primary transition-colors"
+                whileHover={{ scale: 1.1 }}
+                className="text-gray-500 hover:text-teal-400 transition-colors"
                 aria-label="Email"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

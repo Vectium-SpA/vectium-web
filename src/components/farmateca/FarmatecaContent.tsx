@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Pill, Smartphone, Clock, ArrowRight } from "lucide-react";
+import { PricingSection } from "@/components/farmateca/marketing/PricingSection";
+import { FarmatecaFooter } from "@/components/farmateca/marketing/Footer";
 
 const features = [
   { icon: Pill, text: "2,556+ medicamentos" },
@@ -165,6 +167,9 @@ export function FarmatecaContent() {
         </div>
       </section>
 
+      {/* Pricing / Planes */}
+      <PricingSection />
+
       {/* Download Section */}
       <section className="py-16 bg-gradient-to-b from-teal-800 to-teal-900">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
@@ -190,6 +195,9 @@ export function FarmatecaContent() {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <FarmatecaFooter />
     </div>
   );
 }
