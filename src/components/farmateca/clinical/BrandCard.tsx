@@ -12,7 +12,7 @@ export function BrandCard({ brand }: BrandCardProps) {
   const isGeneric = brand.tipoM.toLowerCase().includes('genérico');
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-4 hover:border-farmateca-primary hover:shadow-md transition-all duration-200 relative group">
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 hover:border-farmateca-primary hover:shadow-md transition-all duration-200 relative group">
       <Link href={`/farmateca/web/app/brand/${brand.idMA}`} className="block">
         <div className="flex items-start gap-3">
           {/* Icono */}
@@ -35,26 +35,26 @@ export function BrandCard({ brand }: BrandCardProps) {
           {/* Contenido */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-semibold text-gray-900">{brand.ma}</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white">{brand.ma}</h3>
               <span
                 className={`px-1.5 py-0.5 text-xs font-medium rounded ${
                   isGeneric
-                    ? 'bg-gray-100 text-gray-600'
+                    ? 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                     : 'bg-farmateca-primary/10 text-farmateca-primary-dark'
                 }`}
               >
                 {isGeneric ? 'Genérico' : 'Comercial'}
               </span>
-              <span className="px-1.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 rounded">
+              <span className="px-1.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded">
                 {brand.viaM}
               </span>
             </div>
-            <p className="text-sm text-gray-500">{brand.paM}</p>
-            <p className="text-xs text-gray-400 mt-1">{brand.labM}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{brand.paM}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{brand.labM}</p>
           </div>
 
           {/* Flecha */}
-          <div className="flex-shrink-0 text-gray-400">
+          <div className="flex-shrink-0 text-gray-400 dark:text-gray-500">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"

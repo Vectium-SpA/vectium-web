@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { signOut } from '@/lib/farmateca/firebase/auth';
 import { AuthProvider } from '@/components/farmateca/providers/AuthProvider';
 import { useThemeStore } from '@/lib/farmateca/store/theme-store';
+import { useTypography } from '@/lib/farmateca/hooks/useTypography';
 import dynamic from 'next/dynamic';
 
 const Onboarding = dynamic(() => import('@/components/farmateca/onboarding/Onboarding'), {
@@ -19,6 +20,8 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user, userData, loading } = useAuthStore();
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
+  // Inicializar typography hook para aplicar CSS vars al montar
+  useTypography();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
 

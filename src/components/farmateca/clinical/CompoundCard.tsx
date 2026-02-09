@@ -10,7 +10,7 @@ interface CompoundCardProps {
 
 export function CompoundCard({ compound }: CompoundCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-4 hover:border-farmateca-primary hover:shadow-md transition-all duration-200 relative group">
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 hover:border-farmateca-primary hover:shadow-md transition-all duration-200 relative group">
       <Link href={`/farmateca/web/app/compound/${compound.idPA}`} className="block">
         <div className="flex items-start gap-3">
           {/* Icono */}
@@ -33,18 +33,18 @@ export function CompoundCard({ compound }: CompoundCardProps) {
           {/* Contenido */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-gray-900 truncate">{compound.pa}</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white truncate">{compound.pa}</h3>
               {compound.acceso === 'P' && (
                 <span className="px-1.5 py-0.5 text-xs font-medium bg-farmateca-premium/20 text-farmateca-premium-dark rounded">
                   Premium
                 </span>
               )}
             </div>
-            <p className="text-sm text-gray-500 truncate">{compound.familia}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{compound.familia}</p>
           </div>
 
           {/* Flecha */}
-          <div className="flex-shrink-0 text-gray-400">
+          <div className="flex-shrink-0 text-gray-400 dark:text-gray-500">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"

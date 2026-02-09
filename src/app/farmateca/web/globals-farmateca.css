@@ -168,7 +168,8 @@ body:has(.farmateca-root) > footer {
 
 .farmateca-root {
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-family: var(--font-inter);
+  font-family: var(--farmateca-font-family, var(--font-inter));
+  font-size: var(--farmateca-font-size, 16px);
   color: var(--color-farmateca-gray-900);
   background-color: var(--color-farmateca-background-light);
   -webkit-font-smoothing: antialiased;
@@ -457,6 +458,78 @@ body:has(.farmateca-root) > footer {
 /* Border defaults en dark mode */
 .dark .farmateca-root * {
   border-color: var(--color-farmateca-gray-700);
+}
+
+/* ============================================ */
+/* GRADIENTES DARK MODE PREMIUM                 */
+/* ============================================ */
+
+/* Gradiente primario oscuro - para headers y hero sections */
+.gradient-farmateca-dark-primary {
+  background: linear-gradient(135deg, #004144 0%, #006064 50%, #00838f 100%);
+}
+
+/* Gradiente sutil oscuro - para fondos de sección */
+.gradient-farmateca-dark-subtle {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* Gradiente card oscuro - para tarjetas premium */
+.gradient-farmateca-dark-card {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+/* Gradiente teal metálico - para elementos destacados */
+.gradient-farmateca-dark-teal {
+  background: linear-gradient(135deg, #004d40 0%, #00695c 50%, #00897b 100%);
+}
+
+/* ============================================ */
+/* CONTRASTE MEJORADO DARK MODE                 */
+/* ============================================ */
+
+/* Variables de texto de alto contraste para dark mode */
+.dark .farmateca-root {
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-subtle: #334155;
+  --surface-elevated: #1e293b;
+}
+
+/* Mejorar contraste de textos secundarios en dark mode */
+.dark .farmateca-root .text-gray-500 {
+  color: #94a3b8;
+}
+
+.dark .farmateca-root .text-gray-600 {
+  color: #cbd5e1;
+}
+
+/* Cards en dark mode con borde sutil más visible */
+.dark .card-farmateca {
+  border: 1px solid var(--color-farmateca-gray-700);
+}
+
+/* Range input estilizado */
+.farmateca-root input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-farmateca-primary);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.farmateca-root input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-farmateca-primary);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Transición suave al cambiar de tema */

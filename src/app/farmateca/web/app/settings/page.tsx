@@ -2,14 +2,18 @@
 
 import { useState, useRef } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuthStore, useSubscriptionStatus } from '@/lib/farmateca/store/auth-store';
 import { useThemeStore } from '@/lib/farmateca/store/theme-store';
+import { useTypography, FONT_OPTIONS, FontFamily } from '@/lib/farmateca/hooks/useTypography';
 import { signOut, startTrial, UserData } from '@/lib/farmateca/firebase/auth';
-import { doc, updateDoc } from 'firebase/firestore';
+import { deleteUser } from 'firebase/auth';
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/farmateca/firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { Type, Minus, Plus, FileText, Shield, AlertTriangle, Trash2, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 // Constantes para niveles y áreas (igual que móvil)
@@ -35,9 +39,13 @@ export default function SettingsPage() {
   const { user, userData, setUserData } = useAuthStore();
   const subscription = useSubscriptionStatus();
   const { isDarkMode, toggleTheme } = useThemeStore();
+  const { fontFamily, setFontFamily, fontSize, setFontSize, fontSizeMin, fontSizeMax, fontSizeDefault, resetTypography } = useTypography();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -171,6 +179,39 @@ export default function SettingsPage() {
     } catch (error) {
       console.error('Error signing out:', error);
       toast.error('Error al cerrar sesión');
+    }
+  };
+
+  // Eliminar cuenta
+  const handleDeleteAccount = async () => {
+    if (!user || deleteConfirmText !== 'ELIMINAR') return;
+
+    setIsDeleting(true);
+    try {
+      // Eliminar documento de Firestore
+      if (db) {
+        await deleteDoc(doc(db, 'users', user.uid));
+      }
+
+      // Eliminar usuario de Firebase Auth
+      await deleteUser(user);
+
+      // Cerrar sesión y redirigir
+      await signOut();
+      toast.success('Cuenta eliminada correctamente');
+      router.push('/farmateca/web/login');
+    } catch (error: unknown) {
+      console.error('Error deleting account:', error);
+      const firebaseError = error as { code?: string };
+      if (firebaseError.code === 'auth/requires-recent-login') {
+        toast.error('Por seguridad, debes iniciar sesión nuevamente antes de eliminar tu cuenta');
+      } else {
+        toast.error('Error al eliminar la cuenta');
+      }
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteModal(false);
+      setDeleteConfirmText('');
     }
   };
 
@@ -685,6 +726,104 @@ export default function SettingsPage() {
         </div>
       </motion.div>
 
+      {/* TIPOGRAFÍA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.28 }}
+        className="bg-white dark:bg-farmateca-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-farmateca-gray-700"
+      >
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <Type className="w-5 h-5 text-farmateca-primary" />
+          Tipografía
+        </h2>
+
+        {/* Selector de fuente */}
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Fuente
+            </label>
+            <select
+              value={fontFamily}
+              onChange={(e) => setFontFamily(e.target.value as FontFamily)}
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-farmateca-gray-900 border border-gray-200 dark:border-farmateca-gray-600 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-farmateca-primary focus:border-transparent transition-colors"
+              style={{ fontFamily: FONT_OPTIONS.find((f) => f.value === fontFamily)?.fallback }}
+            >
+              {FONT_OPTIONS.map((font) => (
+                <option key={font.value} value={font.value} style={{ fontFamily: font.fallback }}>
+                  {font.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Slider de tamaño */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Tamaño de texto
+            </label>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setFontSize(fontSize - 1)}
+                disabled={fontSize <= fontSizeMin}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-farmateca-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-farmateca-gray-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <Minus className="w-4 h-4" />
+              </button>
+              <div className="flex-1">
+                <input
+                  type="range"
+                  min={fontSizeMin}
+                  max={fontSizeMax}
+                  value={fontSize}
+                  onChange={(e) => setFontSize(parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-200 dark:bg-farmateca-gray-700 rounded-full appearance-none cursor-pointer accent-farmateca-primary"
+                />
+              </div>
+              <button
+                onClick={() => setFontSize(fontSize + 1)}
+                disabled={fontSize >= fontSizeMax}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-farmateca-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-farmateca-gray-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+              <span className="text-sm font-mono text-gray-500 dark:text-gray-400 w-12 text-center">
+                {fontSize}px
+              </span>
+            </div>
+          </div>
+
+          {/* Preview */}
+          <div className="p-4 bg-gray-50 dark:bg-farmateca-gray-900 rounded-xl border border-gray-200 dark:border-farmateca-gray-600">
+            <p
+              className="text-gray-600 dark:text-gray-300 text-xs uppercase tracking-wider mb-1"
+            >
+              Vista previa
+            </p>
+            <p
+              className="text-gray-900 dark:text-white"
+              style={{
+                fontFamily: FONT_OPTIONS.find((f) => f.value === fontFamily)?.fallback,
+                fontSize: `${fontSize}px`,
+              }}
+            >
+              Paracetamol 500mg cada 8 horas
+            </p>
+          </div>
+
+          {/* Botón restablecer */}
+          {(fontFamily !== 'Inter' || fontSize !== fontSizeDefault) && (
+            <button
+              onClick={resetTypography}
+              className="text-sm text-farmateca-primary hover:text-farmateca-primary-dark transition-colors"
+            >
+              Restablecer valores por defecto
+            </button>
+          )}
+        </div>
+      </motion.div>
+
       {/* INFORMACIÓN */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -755,6 +894,147 @@ export default function SettingsPage() {
           </div>
         </div>
       </motion.div>
+
+      {/* LEGAL */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+        className="bg-white dark:bg-farmateca-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-farmateca-gray-700"
+      >
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <Shield className="w-5 h-5 text-farmateca-primary" />
+          Legal
+        </h2>
+
+        <div className="space-y-1">
+          <Link
+            href="/farmateca/terms"
+            className="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-gray-50 dark:hover:bg-farmateca-gray-700 transition-colors group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-gray-100 dark:bg-farmateca-gray-700 rounded-lg flex items-center justify-center">
+                <FileText className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+              </div>
+              <span className="text-gray-900 dark:text-white font-medium">Términos y Condiciones</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-farmateca-primary transition-colors" />
+          </Link>
+
+          <Link
+            href="/farmateca/privacy"
+            className="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-gray-50 dark:hover:bg-farmateca-gray-700 transition-colors group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-gray-100 dark:bg-farmateca-gray-700 rounded-lg flex items-center justify-center">
+                <Shield className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+              </div>
+              <span className="text-gray-900 dark:text-white font-medium">Política de Privacidad</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-farmateca-primary transition-colors" />
+          </Link>
+        </div>
+      </motion.div>
+
+      {/* ZONA DE PELIGRO - ELIMINAR CUENTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.38 }}
+        className="bg-white dark:bg-farmateca-gray-800 rounded-2xl p-6 shadow-sm border border-red-200 dark:border-red-800/50"
+      >
+        <h2 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-2 flex items-center gap-2">
+          <AlertTriangle className="w-5 h-5" />
+          Zona de Peligro
+        </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          Acciones irreversibles que afectan tu cuenta permanentemente.
+        </p>
+
+        <button
+          onClick={() => setShowDeleteModal(true)}
+          className="w-full py-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-semibold rounded-xl border border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors flex items-center justify-center gap-2"
+        >
+          <Trash2 className="w-4 h-4" />
+          Eliminar Cuenta
+        </button>
+      </motion.div>
+
+      {/* Modal de confirmación de eliminación */}
+      <AnimatePresence>
+        {showDeleteModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+            onClick={() => { setShowDeleteModal(false); setDeleteConfirmText(''); }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white dark:bg-farmateca-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            >
+              <div className="flex items-center justify-center w-14 h-14 bg-red-100 dark:bg-red-900/30 rounded-full mx-auto mb-4">
+                <AlertTriangle className="w-7 h-7 text-red-600 dark:text-red-400" />
+              </div>
+
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
+                Eliminar Cuenta
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-6">
+                Esta acción es <span className="font-bold text-red-600 dark:text-red-400">irreversible</span>.
+                Se eliminarán todos tus datos, favoritos y preferencias permanentemente.
+              </p>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Escribe <span className="font-mono font-bold text-red-600 dark:text-red-400">ELIMINAR</span> para confirmar
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  placeholder="ELIMINAR"
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-farmateca-gray-900 border border-gray-200 dark:border-farmateca-gray-600 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  autoComplete="off"
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => { setShowDeleteModal(false); setDeleteConfirmText(''); }}
+                  className="flex-1 py-2.5 bg-gray-100 dark:bg-farmateca-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-200 dark:hover:bg-farmateca-gray-600 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={deleteConfirmText !== 'ELIMINAR' || isDeleting}
+                  className="flex-1 py-2.5 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {isDeleting ? (
+                    <>
+                      <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" />
+                        <path fill="currentColor" className="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                      Eliminando...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-4 h-4" />
+                      Confirmar
+                    </>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* CERRAR SESIÓN */}
       <motion.div

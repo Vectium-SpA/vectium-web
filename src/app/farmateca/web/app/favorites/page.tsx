@@ -125,7 +125,7 @@ function FavoriteItemRow({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ delay: index * 0.03 }}
-      className="w-full bg-white rounded-xl p-4 border border-gray-200 hover:border-farmateca-primary hover:shadow-md transition-all flex items-center gap-4"
+      className="w-full bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hover:border-farmateca-primary hover:shadow-md transition-all flex items-center gap-4"
     >
       <button
         onClick={() => onNavigate(item)}
@@ -144,8 +144,8 @@ function FavoriteItemRow({
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 truncate">{item.nombre}</h3>
-          <p className="text-sm text-gray-500">
+          <h3 className="font-semibold text-gray-900 dark:text-white truncate">{item.nombre}</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             {item.tipo === 'compuesto' && item.familia
               ? `Familia: ${item.familia}`
               : item.tipo === 'marca' && item.laboratorio
@@ -164,7 +164,7 @@ function FavoriteItemRow({
       <button
         onClick={(e) => onDelete(e, item)}
         disabled={isDeleting}
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-100 transition-colors flex-shrink-0 disabled:opacity-50"
+        className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 dark:bg-red-900/30 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors flex-shrink-0 disabled:opacity-50"
         aria-label="Eliminar de favoritos"
       >
         {isDeleting ? (
@@ -198,16 +198,16 @@ function CollapsibleGroup({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-5 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+        className="w-full px-5 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
       >
         <div className="flex items-center gap-3">
           <div className={`w-2 h-8 rounded-full ${colorClass}`} />
           <div className="text-left">
-            <h3 className="font-semibold text-gray-900">{group.name}</h3>
-            <p className="text-sm text-gray-500">
+            <h3 className="font-semibold text-gray-900 dark:text-white">{group.name}</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {group.items.length} favorito{group.items.length !== 1 ? 's' : ''}
             </p>
           </div>
@@ -230,7 +230,7 @@ function CollapsibleGroup({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-4 pb-4 space-y-2 border-t border-gray-100 pt-3">
+            <div className="px-4 pb-4 space-y-2 border-t border-gray-100 dark:border-gray-700 pt-3">
               {group.items.map((item, idx) => (
                 <FavoriteItemRow
                   key={item.docId}
@@ -260,8 +260,8 @@ function PremiumLockedTab({ tabName }: { tabName: string }) {
       <div className="w-24 h-24 bg-gradient-to-br from-farmateca-primary-dark to-farmateca-primary rounded-full flex items-center justify-center mx-auto mb-6">
         <LockIcon className="w-10 h-10 text-farmateca-premium" />
       </div>
-      <h3 className="text-xl font-bold text-gray-900 mb-2">Contenido Premium</h3>
-      <p className="text-gray-600 mb-6 max-w-sm mx-auto">
+      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Contenido Premium</h3>
+      <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-sm mx-auto">
         La vista &quot;{tabName}&quot; es exclusiva para usuarios Premium. Accede a
         todas las funcionalidades de Farmateca.
       </p>
@@ -291,8 +291,8 @@ function EmptyState({ message, description }: { message: string; description: st
           />
         </svg>
       </div>
-      <h3 className="text-lg font-medium text-gray-900 mb-2">{message}</h3>
-      <p className="text-gray-500 max-w-sm mx-auto">{description}</p>
+      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{message}</h3>
+      <p className="text-gray-500 dark:text-gray-400 max-w-sm mx-auto">{description}</p>
       <button
         onClick={() => router.push('/farmateca/web/app/search')}
         className="mt-4 px-6 py-2 bg-farmateca-primary text-white font-semibold rounded-xl hover:bg-farmateca-primary-dark transition-colors"
@@ -369,13 +369,13 @@ export default function FavoritesPage() {
     return (
       <div className="max-w-4xl mx-auto">
         <div className="text-center py-12">
-          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <LockIcon className="w-10 h-10 text-gray-400" />
+          <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+            <LockIcon className="w-10 h-10 text-gray-400 dark:text-gray-500" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
             Inicia sesion para ver tus favoritos
           </h3>
-          <p className="text-gray-500 mb-4">
+          <p className="text-gray-500 dark:text-gray-400 mb-4">
             Guarda compuestos y marcas para acceder rapidamente.
           </p>
           <button
@@ -407,8 +407,8 @@ export default function FavoritesPage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-6"
       >
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Favoritos</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Favoritos</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Accede rapidamente a tus medicamentos guardados.
         </p>
       </motion.div>
@@ -434,8 +434,8 @@ export default function FavoritesPage() {
                   isActive
                     ? 'bg-farmateca-primary text-white shadow-md'
                     : isLocked
-                    ? 'bg-gray-50 text-gray-400 border border-gray-200'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }
               `}
             >
@@ -550,7 +550,7 @@ export default function FavoritesPage() {
                 />
               ) : (
                 <div className="space-y-3">
-                  <p className="text-sm text-gray-500 mb-2">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                     {familyGroups.length} familia{familyGroups.length !== 1 ? 's' : ''} con
                     favoritos
                   </p>
@@ -589,8 +589,7 @@ export default function FavoritesPage() {
               ) : (
                 <div className="space-y-3">
                   <p className="text-sm text-gray-500 mb-2">
-                    {labGroups.length} laboratorio{labGroups.length !== 1 ? 's' : ''} con
-                    favoritos
+                    {labGroups.length} laboratorio{labGroups.length !== 1 ? 's' : ''} con favoritos
                   </p>
                   {labGroups.map((group, idx) => (
                     <CollapsibleGroup
