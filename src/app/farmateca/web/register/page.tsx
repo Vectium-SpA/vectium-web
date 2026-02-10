@@ -21,12 +21,20 @@ export default function RegisterPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     // Validations
+    if (!acceptedTerms) {
+      const errorMsg = 'Debes aceptar los Términos y Política de Privacidad';
+      toast.error(errorMsg);
+      setError(errorMsg);
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       const errorMsg = 'Las contraseñas no coinciden';
       toast.error(errorMsg);
@@ -237,12 +245,42 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Terms and Conditions Checkbox */}
+            <div className="flex items-start gap-3 mt-6">
+              <input
+                type="checkbox"
+                id="acceptTerms"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-1 w-4 h-4 text-farmateca-primary border-gray-300 rounded focus:ring-farmateca-primary focus:ring-2"
+                disabled={loading}
+              />
+              <label htmlFor="acceptTerms" className="text-sm text-gray-600">
+                Acepto los{' '}
+                <Link
+                  href="/farmateca/web/terminos"
+                  target="_blank"
+                  className="text-farmateca-primary hover:text-farmateca-primary-dark font-medium underline"
+                >
+                  Términos y Condiciones
+                </Link>
+                {' '}y la{' '}
+                <Link
+                  href="/farmateca/web/privacidad"
+                  target="_blank"
+                  className="text-farmateca-primary hover:text-farmateca-primary-dark font-medium underline"
+                >
+                  Política de Privacidad
+                </Link>
+              </label>
+            </div>
+
             {/* Submit Button */}
             <motion.button
               type="submit"
-              disabled={loading}
-              whileHover={{ scale: loading ? 1 : 1.01 }}
-              whileTap={{ scale: loading ? 1 : 0.99 }}
+              disabled={loading || !acceptedTerms}
+              whileHover={{ scale: loading || !acceptedTerms ? 1 : 1.01 }}
+              whileTap={{ scale: loading || !acceptedTerms ? 1 : 0.99 }}
               className="w-full bg-gradient-to-r from-farmateca-primary-dark to-farmateca-primary text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
             >
               {loading ? (
