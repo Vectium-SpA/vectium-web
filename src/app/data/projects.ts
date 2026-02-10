@@ -19,8 +19,8 @@ export const projects: Project[] = [
     ],
     status: "En producción",
     featured: true,
-    image: "/projects/farmateca-preview.png",
-    link: "https://farmateca.cl",
+    image: "/farmateca/logos/isotipo_farmateca.png",
+    link: "https://www.vectium.cl/farmateca",
   },
 ];
 
