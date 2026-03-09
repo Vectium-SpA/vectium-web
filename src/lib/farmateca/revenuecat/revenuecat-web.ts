@@ -179,7 +179,7 @@ export async function purchasePackageWeb(
  * ```ts
  * import { Purchases } from '@revenuecat/purchases-js';
  * const customerInfo = await Purchases.getSharedInstance().getCustomerInfo();
- * const entitlement = customerInfo.entitlements.active['Farmateca Premium'];
+ * const entitlement = customerInfo.entitlements.active['premium'];
  * return {
  *   isActive: !!entitlement,
  *   plan: entitlement ? (entitlement.productIdentifier.includes('annual') ? 'annual' : 'monthly') : null,
@@ -230,7 +230,7 @@ export async function restorePurchasesWeb(): Promise<FarmatecaSubscriptionStatus
  */
 export const REVENUECAT_WEB_CONFIG = {
   /** Entitlement ID configured in RevenueCat dashboard */
-  entitlementId: 'Farmateca Premium',
+  entitlementId: 'premium',
   /** Default offering identifier */
   offeringId: 'default',
   /** Monthly product identifier (must match dashboard) */

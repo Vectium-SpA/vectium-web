@@ -76,8 +76,8 @@ export async function purchasePackage(packageToPurchase: any): Promise<any> {
  */
 export function isUserPremium(customerInfo: any): boolean {
   if (!customerInfo) return false;
-  // Verificar entitlement "Farmateca Premium" (configurado en dashboard)
-  const entitlement = customerInfo?.entitlements?.active?.['Farmateca Premium'];
+  // Verificar entitlement "premium" (configurado en dashboard)
+  const entitlement = customerInfo?.entitlements?.active?.['premium'];
   return !!entitlement;
 }
 
@@ -85,6 +85,6 @@ export function isUserPremium(customerInfo: any): boolean {
  * RevenueCat configuration constants
  */
 export const REVENUECAT_CONFIG = {
-  entitlementId: 'Farmateca Premium', // Debe coincidir con dashboard
+  entitlementId: 'premium', // Debe coincidir con dashboard
   offeringId: 'default', // Offering configurado en dashboard
 };
