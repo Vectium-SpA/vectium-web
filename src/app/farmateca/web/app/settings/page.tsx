@@ -562,10 +562,10 @@ export default function SettingsPage() {
 
         {/* Ofrecer trial si nunca lo ha usado */}
         {!subscription.hasUsedTrial && !subscription.isSubscriptionActive && (
-          <div className="mb-4 p-4 bg-gradient-to-r from-farmateca-premium/10 to-orange-50 rounded-xl border border-farmateca-premium/30">
+          <div className="mb-4 p-4 bg-gradient-to-r from-farmateca-premium/10 to-orange-50 dark:from-orange-900/20 dark:to-orange-800/10 rounded-xl border border-farmateca-premium/30 dark:border-orange-700/40">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-farmateca-premium/20 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-farmateca-premium/20 dark:bg-orange-700/30 rounded-full flex items-center justify-center">
                   <svg
                     className="w-5 h-5 text-farmateca-premium"
                     fill="none"
@@ -584,7 +584,7 @@ export default function SettingsPage() {
                   <p className="font-bold text-gray-900 dark:text-white">
                     Prueba GRATIS 7 días
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Acceso completo sin compromiso
                   </p>
                 </div>
@@ -611,14 +611,14 @@ export default function SettingsPage() {
                 className={`w-10 h-10 rounded-full flex items-center justify-center ${
                   subscription.isPremium
                     ? 'bg-farmateca-premium/20'
-                    : 'bg-gray-200'
+                    : 'bg-gray-200 dark:bg-gray-700'
                 }`}
               >
                 <svg
                   className={`w-5 h-5 ${
                     subscription.isPremium
                       ? 'text-farmateca-premium'
-                      : 'text-gray-500'
+                      : 'text-gray-500 dark:text-gray-300'
                   }`}
                   fill="currentColor"
                   viewBox="0 0 24 24"
@@ -914,7 +914,7 @@ export default function SettingsPage() {
           >
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 bg-gray-100 dark:bg-farmateca-gray-700 rounded-lg flex items-center justify-center">
-                <FileText className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <FileText className="w-4 h-4 text-gray-600 dark:text-gray-200" />
               </div>
               <span className="text-gray-900 dark:text-white font-medium">Términos y Condiciones</span>
             </div>
@@ -927,7 +927,7 @@ export default function SettingsPage() {
           >
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 bg-gray-100 dark:bg-farmateca-gray-700 rounded-lg flex items-center justify-center">
-                <Shield className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <Shield className="w-4 h-4 text-gray-600 dark:text-gray-200" />
               </div>
               <span className="text-gray-900 dark:text-white font-medium">Política de Privacidad</span>
             </div>

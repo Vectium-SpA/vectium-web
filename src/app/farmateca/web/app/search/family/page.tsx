@@ -16,19 +16,13 @@ export default function SearchByFamilyPage() {
   const [filteredFamilies, setFilteredFamilies] = useState<Family[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [accessFilter, setAccessFilter] = useState<'all' | 'F' | 'P'>('all');
 
   // Cargar familias
   useEffect(() => {
     async function loadFamilies() {
       try {
         setLoading(true);
-        const params = new URLSearchParams();
-        if (accessFilter !== 'all') {
-          params.set('access', accessFilter);
-        }
-
-        const response = await fetch(`/api/farmateca/families?${params.toString()}`);
+        const response = await fetch('/api/farmateca/families');
         const data = await response.json();
 
         if (data.success) {
@@ -43,7 +37,7 @@ export default function SearchByFamilyPage() {
     }
 
     loadFamilies();
-  }, [accessFilter]);
+  }, []);
 
   // Filtrar por búsqueda
   useEffect(() => {
@@ -81,13 +75,6 @@ export default function SearchByFamilyPage() {
           {/* Search bar skeleton */}
           <div className="mb-6 h-12 bg-gray-200 rounded-lg animate-pulse" />
 
-          {/* Filter buttons skeleton */}
-          <div className="mb-6 flex gap-2">
-            <div className="h-10 w-20 bg-gray-200 rounded-lg animate-pulse" />
-            <div className="h-10 w-20 bg-gray-200 rounded-lg animate-pulse" />
-            <div className="h-10 w-24 bg-gray-200 rounded-lg animate-pulse" />
-          </div>
-
           {/* List skeleton */}
           <FamilyCardSkeletonList count={8} />
         </div>
@@ -124,40 +111,6 @@ export default function SearchByFamilyPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-farmateca-primary focus:border-transparent"
           />
-        </div>
-
-        {/* Filtros */}
-        <div className="mb-6 flex gap-2">
-          <button
-            onClick={() => setAccessFilter('all')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              accessFilter === 'all'
-                ? 'bg-farmateca-primary text-white'
-                : 'bg-white text-gray-700 border border-gray-300'
-            }`}
-          >
-            Todos
-          </button>
-          <button
-            onClick={() => setAccessFilter('F')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              accessFilter === 'F'
-                ? 'bg-green-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300'
-            }`}
-          >
-            Free
-          </button>
-          <button
-            onClick={() => setAccessFilter('P')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              accessFilter === 'P'
-                ? 'bg-farmateca-premium text-white'
-                : 'bg-white text-gray-700 border border-gray-300'
-            }`}
-          >
-            Premium
-          </button>
         </div>
 
         {/* Contador */}

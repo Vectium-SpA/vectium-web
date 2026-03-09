@@ -28,8 +28,6 @@ export default function CompoundSearchPage() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   // Estado para filtros avanzados
-  const [showFilters, setShowFilters] = useState(false);
-  const [accessFilter, setAccessFilter] = useState<'all' | 'F' | 'P'>('all');
   const [familyFilter, setFamilyFilter] = useState<string>('');
   const [laboratoryFilter, setLaboratoryFilter] = useState<string>('');
 
@@ -68,11 +66,9 @@ export default function CompoundSearchPage() {
 
     if (familyParam) {
       setFamilyFilter(familyParam);
-      setShowFilters(true);
     }
     if (laboratoryParam) {
       setLaboratoryFilter(laboratoryParam);
-      setShowFilters(true);
     }
   }, [searchParams]);
 
@@ -135,16 +131,12 @@ export default function CompoundSearchPage() {
 
     let filtered = [...allCompounds];
 
-    if (accessFilter !== 'all') {
-      filtered = filtered.filter(c => c.acceso === accessFilter);
-    }
-
     if (familyFilter) {
       filtered = filtered.filter(c => c.familia === familyFilter);
     }
 
     setFilteredCompounds(filtered);
-  }, [allCompounds, accessFilter, familyFilter, hasSearched]);
+  }, [allCompounds, familyFilter, hasSearched]);
 
   const handleSearch = (value: string) => {
     setSearchQuery(value);
@@ -152,13 +144,6 @@ export default function CompoundSearchPage() {
 
   const handleFamilyChange = (familia: string) => {
     setSelectedFamily(familia);
-  };
-
-  const handleClearFilters = () => {
-    setAccessFilter('all');
-    setFamilyFilter('');
-    setLaboratoryFilter('');
-    router.push('/farmateca/web/app/search/compound');
   };
 
   const handleRemoveFilter = (filterType: 'family' | 'laboratory') => {
@@ -176,11 +161,6 @@ export default function CompoundSearchPage() {
       router.push(newUrl);
     }
   };
-
-  const activeFiltersCount =
-    (accessFilter !== 'all' ? 1 : 0) +
-    (familyFilter ? 1 : 0) +
-    (laboratoryFilter ? 1 : 0);
 
   // Filtrar compuestos por familia seleccionada (tab Premium)
   const filteredFamilyCompounds = selectedFamily

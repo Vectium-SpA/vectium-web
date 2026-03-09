@@ -133,11 +133,6 @@ export default function CompoundDetailPage() {
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                 {compound.pa}
               </h1>
-              {compound.acceso === 'P' && (
-                <span className="px-2 py-1 text-xs font-medium bg-farmateca-premium/20 text-farmateca-premium-dark rounded">
-                  Premium
-                </span>
-              )}
             </div>
             <p className="text-gray-600 dark:text-gray-400 mt-1">{compound.familia}</p>
           </div>

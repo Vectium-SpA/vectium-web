@@ -34,11 +34,6 @@ export function CompoundCard({ compound }: CompoundCardProps) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <h3 className="font-semibold text-gray-900 dark:text-white truncate">{compound.pa}</h3>
-              {compound.acceso === 'P' && (
-                <span className="px-1.5 py-0.5 text-xs font-medium bg-farmateca-premium/20 text-farmateca-premium-dark rounded">
-                  Premium
-                </span>
-              )}
             </div>
             <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{compound.familia}</p>
           </div>
