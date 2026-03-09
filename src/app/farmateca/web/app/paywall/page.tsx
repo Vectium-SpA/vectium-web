@@ -7,12 +7,6 @@ import Image from 'next/image';
 import { useAuthStore, useSubscriptionStatus } from '@/lib/farmateca/store/auth-store';
 import { startTrial } from '@/lib/farmateca/firebase/auth';
 import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
-import {
-  initializeRevenueCat,
-  getCurrentOfferings,
-  purchasePackage,
-  isUserPremium,
-} from '@/lib/farmateca/revenuecat/config';
 import toast from 'react-hot-toast';
 
 // ─── Feature Cards Data ──────────────────────────────────────
@@ -76,26 +70,6 @@ export default function PaywallPage() {
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [offerings, setOfferings] = useState<any>(null);
-  const [loadingOfferings, setLoadingOfferings] = useState(true);
-
-  useEffect(() => {
-    if (!user) return;
-    initializeRevenueCat(user.uid);
-
-    async function loadOfferings() {
-      try {
-        setLoadingOfferings(true);
-        const currentOfferings = await getCurrentOfferings();
-        setOfferings(currentOfferings);
-      } catch {
-        // Stub mode: ignora el error silenciosamente
-      } finally {
-        setLoadingOfferings(false);
-      }
-    }
-    loadOfferings();
-  }, [user]);
 
   const handleActivateTrial = async () => {
     if (!user) return;
@@ -128,38 +102,35 @@ export default function PaywallPage() {
     setError(null);
 
     try {
-      const packageToPurchase = selectedPlan === 'yearly'
-        ? offerings?.current?.annual
-        : offerings?.current?.monthly;
+      // ── Llamar a la API de Flow para crear la suscripción ──
+      const response = await fetch('/api/farmateca/flow/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plan: selectedPlan,
+          uid: user.uid,
+          email: user.email ?? '',
+          name: user.displayName ?? undefined,
+        }),
+      });
 
-      const customerInfo = await purchasePackage(packageToPurchase);
+      const data = await response.json() as { url?: string; subscriptionId?: string; error?: string };
 
-      // Stub mode: purchasePackage devuelve null
-      if (customerInfo === null) {
-        toast('Integración de pagos próximamente', {
-          icon: '⏳',
-          style: { background: '#007B7F', color: '#fff' },
-        });
-        return;
+      if (!response.ok || !data.url) {
+        throw new Error(data.error ?? 'Error al iniciar el proceso de pago');
       }
 
-      if (isUserPremium(customerInfo)) {
-        updateLocalSubscription(selectedPlan === 'yearly' ? 'yearly' : 'monthly', true);
-        const successMsg = `¡Suscripción ${selectedPlan === 'yearly' ? 'anual' : 'mensual'} activada!`;
-        toast.success(successMsg);
-        setSuccessMessage(successMsg);
-        setTimeout(() => router.push('/farmateca/web/app'), 2000);
-      } else {
-        throw new Error('La compra no se completó correctamente');
+      // Guardar subscriptionId en sessionStorage para verificar al volver
+      if (data.subscriptionId) {
+        sessionStorage.setItem('flow_subscription_id', data.subscriptionId);
       }
-    } catch (err: any) {
-      let errorMsg = 'Integración de pagos próximamente';
-      if (err.code === 'PURCHASE_CANCELLED') errorMsg = 'Compra cancelada';
-      else if (err.code === 'PURCHASE_NOT_ALLOWED') errorMsg = 'No tienes permisos para realizar compras';
-      else if (err.message && !err.message.includes('completó')) errorMsg = err.message;
 
-      toast(errorMsg, { icon: '⏳', style: { background: '#007B7F', color: '#fff' } });
-    } finally {
+      // Redirigir a Flow para que el usuario complete el pago
+      window.location.href = data.url;
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : 'Error al procesar el pago';
+      toast.error(errorMsg);
+      setError(errorMsg);
       setIsSubscribing(false);
     }
   };
@@ -378,7 +349,7 @@ export default function PaywallPage() {
           {/* CTA Principal */}
           <motion.button
             onClick={handleSubscribe}
-            disabled={isSubscribing || loadingOfferings}
+            disabled={isSubscribing}
             whileHover={{ scale: isSubscribing ? 1 : 1.03 }}
             whileTap={{ scale: isSubscribing ? 1 : 0.97 }}
             className="w-full bg-[#FFB800] text-black font-bold py-4 px-6 rounded-xl text-lg shadow-[0_0_30px_rgba(255,184,0,0.3)] hover:shadow-[0_0_40px_rgba(255,184,0,0.5)] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mb-4"
