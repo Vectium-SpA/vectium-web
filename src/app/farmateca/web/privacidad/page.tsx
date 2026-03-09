@@ -22,20 +22,20 @@ export default async function PrivacidadPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm">
+      <div className="bg-gradient-to-r from-[#007B7F] to-[#00A9A5] shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-3xl font-bold text-white">
               Política de Privacidad
             </h1>
             <Link
-              href="/farmateca/web/app"
-              className="text-farmateca-primary hover:text-farmateca-primary-dark dark:text-teal-400 dark:hover:text-teal-300 font-medium transition-colors"
+              href="/farmateca/web"
+              className="text-white/80 hover:text-white font-medium transition-colors text-sm"
             >
               ← Volver
             </Link>
           </div>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-sm text-white/70">
             Última actualización: Enero 2025
           </p>
         </div>
