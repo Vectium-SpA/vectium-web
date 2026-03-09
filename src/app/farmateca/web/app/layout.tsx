@@ -10,6 +10,7 @@ import { signOut } from '@/lib/farmateca/firebase/auth';
 import { AuthProvider } from '@/components/farmateca/providers/AuthProvider';
 import { useThemeStore } from '@/lib/farmateca/store/theme-store';
 import { useTypography } from '@/lib/farmateca/hooks/useTypography';
+import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
 const Onboarding = dynamic(() => import('@/components/farmateca/onboarding/Onboarding'), {
@@ -95,9 +96,13 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
               title="Volver al inicio de Farmateca"
             >
-              <div className="w-8 h-8 bg-gradient-farmateca-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">F</span>
-              </div>
+              <Image
+                src="/farmateca/logos/isotipo_farmateca.png"
+                alt="Farmateca"
+                width={36}
+                height={36}
+                className="rounded-lg"
+              />
               <span className="text-xl font-bold text-gray-900 dark:text-white">Farmateca</span>
             </Link>
 
