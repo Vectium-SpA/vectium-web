@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import { useAuthStore, useSubscriptionStatus } from '@/lib/farmateca/store/auth-store';
 import { startTrial } from '@/lib/farmateca/firebase/auth';
 import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
@@ -11,64 +12,53 @@ import {
   getCurrentOfferings,
   purchasePackage,
   isUserPremium,
-  getCustomerInfo,
 } from '@/lib/farmateca/revenuecat/config';
 import toast from 'react-hot-toast';
 
-const features = [
+// ─── Feature Cards Data ──────────────────────────────────────
+const featureCards = [
   {
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
       </svg>
     ),
-    title: 'Filtros avanzados',
-    subtitle: 'Busca por familia, laboratorio y tipo',
+    title: 'Información clínica completa',
+    items: [
+      'Busca sin límites todos los compuestos y marcas comerciales',
+      'Posología y vías de administración',
+      'Contraindicaciones y efectos adversos',
+      'Precauciones especiales: embarazo, renal, hepático y más',
+      'Mecanismos de acción, indicaciones, dosis y más',
+    ],
   },
   {
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
     ),
-    title: 'Información completa',
-    subtitle: 'Posología, efectos adversos, interacciones',
+    title: 'Buscador Pro y filtros avanzados',
+    items: [
+      'Catálogos completos por laboratorio',
+      'Busca por familia farmacológica y sus compuestos',
+      'Encuentra marcas comerciales o genéricas al instante',
+      'Accede a marcas asociadas a compuestos en un solo clic',
+      'Navega rápidamente entre marcas y principios activos',
+    ],
   },
   {
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
       </svg>
     ),
-    title: '200+ compuestos y 2,500+ marcas',
-    subtitle: 'Base de datos actualizada constantemente',
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414" />
-      </svg>
-    ),
-    title: 'Acceso offline',
-    subtitle: 'Funciona sin conexión a internet',
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-      </svg>
-    ),
-    title: 'Favoritos ilimitados',
-    subtitle: 'Guarda todos tus medicamentos frecuentes',
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-      </svg>
-    ),
-    title: 'Soporte prioritario',
-    subtitle: 'Respuesta rápida a tus consultas',
+    title: 'Favoritos y acceso completo',
+    items: [
+      'Filtra tus guardados por marcas o compuestos',
+      'Todo sin conexión: contenido Premium 100% disponible',
+      'Dudas: Soporte preferencial las 24 horas del día',
+    ],
   },
 ];
 
@@ -78,10 +68,8 @@ export default function PaywallPage() {
   const { user, updateLocalTrialData, updateLocalSubscription } = useAuthStore();
   const { isPremium, isTrialActive, hasUsedTrial, trialDaysRemaining } = useSubscriptionStatus();
 
-  // Read ?plan= param from URL (from landing page CTA buttons)
   const planParam = searchParams.get('plan');
-  const defaultPlan: 'monthly' | 'yearly' =
-    planParam === 'monthly' ? 'monthly' : 'yearly';
+  const defaultPlan: 'monthly' | 'yearly' = planParam === 'monthly' ? 'monthly' : 'yearly';
 
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>(defaultPlan);
   const [isActivatingTrial, setIsActivatingTrial] = useState(false);
@@ -91,35 +79,26 @@ export default function PaywallPage() {
   const [offerings, setOfferings] = useState<any>(null);
   const [loadingOfferings, setLoadingOfferings] = useState(true);
 
-  // Inicializar RevenueCat y cargar offerings
   useEffect(() => {
     if (!user) return;
-
-    // Inicializar RevenueCat con Firebase UID
     initializeRevenueCat(user.uid);
 
-    // Cargar offerings
     async function loadOfferings() {
       try {
         setLoadingOfferings(true);
         const currentOfferings = await getCurrentOfferings();
         setOfferings(currentOfferings);
-      } catch (error) {
-        console.error('Error loading offerings:', error);
-        const errorMsg = 'No se pudieron cargar los planes disponibles';
-        toast.error(errorMsg);
-        setError(errorMsg);
+      } catch {
+        // Stub mode: ignora el error silenciosamente
       } finally {
         setLoadingOfferings(false);
       }
     }
-
     loadOfferings();
   }, [user]);
 
   const handleActivateTrial = async () => {
     if (!user) return;
-
     setIsActivatingTrial(true);
     setError(null);
 
@@ -129,112 +108,82 @@ export default function PaywallPage() {
       const now = new Date();
       const trialEnd = new Date(now);
       trialEnd.setDate(trialEnd.getDate() + 7);
-
       updateLocalTrialData(now, trialEnd);
       const successMsg = '¡Prueba activada! Tienes 7 días de acceso Premium completo.';
       toast.success(successMsg);
       setSuccessMessage(successMsg);
-
-      setTimeout(() => {
-        router.push('/farmateca/web/app');
-      }, 2000);
+      setTimeout(() => router.push('/farmateca/web/app'), 2000);
     } else {
       const errorMsg = result.error || 'Error al activar la prueba';
       toast.error(errorMsg);
       setError(errorMsg);
     }
-
     setIsActivatingTrial(false);
   };
 
   const handleSubscribe = async () => {
     if (!user) return;
-    if (!offerings?.current) {
-      setError('No hay planes disponibles');
-      return;
-    }
 
     setIsSubscribing(true);
     setError(null);
 
     try {
-      // Obtener el package correcto según plan seleccionado
-      const packageToPurchase =
-        selectedPlan === 'yearly'
-          ? offerings.current.annual // Debe coincidir con identifier en dashboard
-          : offerings.current.monthly;
+      const packageToPurchase = selectedPlan === 'yearly'
+        ? offerings?.current?.annual
+        : offerings?.current?.monthly;
 
-      if (!packageToPurchase) {
-        throw new Error(`Plan ${selectedPlan} no disponible`);
-      }
-
-      // Realizar compra a través de RevenueCat
       const customerInfo = await purchasePackage(packageToPurchase);
 
-      // Verificar si la compra fue exitosa
+      // Stub mode: purchasePackage devuelve null
+      if (customerInfo === null) {
+        toast('Integración de pagos próximamente', {
+          icon: '⏳',
+          style: { background: '#007B7F', color: '#fff' },
+        });
+        return;
+      }
+
       if (isUserPremium(customerInfo)) {
-        updateLocalSubscription(selectedPlan, true);
+        updateLocalSubscription(selectedPlan === 'yearly' ? 'yearly' : 'monthly', true);
         const successMsg = `¡Suscripción ${selectedPlan === 'yearly' ? 'anual' : 'mensual'} activada!`;
         toast.success(successMsg);
         setSuccessMessage(successMsg);
-
-        // RevenueCat ya sincronizó con backend, redirect después de 2s
-        setTimeout(() => {
-          router.push('/farmateca/web/app');
-        }, 2000);
+        setTimeout(() => router.push('/farmateca/web/app'), 2000);
       } else {
         throw new Error('La compra no se completó correctamente');
       }
-    } catch (error: any) {
-      console.error('Error subscribing:', error);
+    } catch (err: any) {
+      let errorMsg = 'Integración de pagos próximamente';
+      if (err.code === 'PURCHASE_CANCELLED') errorMsg = 'Compra cancelada';
+      else if (err.code === 'PURCHASE_NOT_ALLOWED') errorMsg = 'No tienes permisos para realizar compras';
+      else if (err.message && !err.message.includes('completó')) errorMsg = err.message;
 
-      // Manejo de errores específicos de RevenueCat
-      let errorMsg = 'Error al procesar la suscripción';
-      if (error.code === 'PURCHASE_CANCELLED') {
-        errorMsg = 'Compra cancelada';
-      } else if (error.code === 'PURCHASE_NOT_ALLOWED') {
-        errorMsg = 'No tienes permisos para realizar compras';
-      } else if (error.code === 'PAYMENT_PENDING') {
-        errorMsg = 'Pago pendiente. Te notificaremos cuando se complete.';
-      } else if (error.message) {
-        errorMsg = error.message;
-      }
-      toast.error(errorMsg);
-      setError(errorMsg);
+      toast(errorMsg, { icon: '⏳', style: { background: '#007B7F', color: '#fff' } });
     } finally {
       setIsSubscribing(false);
     }
   };
 
-  // Mostrar loading mientras carga offerings
-  if (loadingOfferings) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner size="lg" />
-          <p className="mt-4 text-gray-600">Cargando planes...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Si ya es premium, redirigir
+  // Si ya es premium
   if (isPremium && !successMessage) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="min-h-screen bg-gradient-to-br from-[#0a2a2b] via-[#007B7F] to-[#0d1117] flex items-center justify-center p-6">
+        <div className="text-center text-white">
+          <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Ya tienes acceso Premium</h2>
-          <p className="text-gray-600 mb-4">
+          <h2 className="text-3xl font-bold mb-3">Ya tienes acceso Premium</h2>
+          <p className="text-white/70 mb-8">
             {isTrialActive
               ? `Tu prueba gratuita está activa (${trialDaysRemaining} días restantes)`
               : 'Tu suscripción está activa'}
           </p>
-          <button onClick={() => router.push('/farmateca/web/app')} className="btn-farmateca-primary">
+          <button
+            onClick={() => router.push('/farmateca/web/app')}
+            className="px-8 py-4 bg-[#FFB800] text-black font-bold rounded-xl hover:bg-[#FFB800]/90 transition-all hover:scale-105"
+          >
             Ir al Dashboard
           </button>
         </div>
@@ -243,349 +192,241 @@ export default function PaywallPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-8">
-      {/* Header con botón cerrar */}
-      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-gray-100">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-lg font-semibold text-gray-900">Planes Premium</h1>
-          <button
-            onClick={() => router.back()}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#0a2a2b] via-[#007B7F] to-[#0d1117]">
+      {/* Close button */}
+      <div className="sticky top-0 z-20 flex justify-end p-4">
+        <button
+          onClick={() => router.back()}
+          className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 pt-6">
-        {/* Hero Header */}
+      <div className="max-w-4xl mx-auto px-4 pb-16 -mt-6">
+        {/* HEADER */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-farmateca-primary-dark via-farmateca-primary to-farmateca-primary-light rounded-3xl p-8 text-white mb-6 shadow-xl"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
         >
-          <div className="flex justify-center mb-4">
-            <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
-              <svg className="w-10 h-10 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-              </svg>
-            </div>
+          <div className="flex justify-center mb-6">
+            <Image
+              src="/farmateca/logos/logotipo_farmateca.png"
+              alt="Farmateca"
+              width={180}
+              height={54}
+              className="drop-shadow-lg brightness-0 invert"
+              priority
+            />
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">
-            Desbloquea Todo el Potencial
-          </h2>
-          <p className="text-white/90 text-center text-sm md:text-base">
-            Únete a miles de profesionales de la salud que confían en Farmateca
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+            Decide con seguridad<br className="hidden sm:block" /> en segundos
+          </h1>
+          <p className="text-lg text-white/70 max-w-xl mx-auto">
+            Información clínica completa del vademécum farmacológico chileno
           </p>
         </motion.div>
 
-        {/* Mensajes de error/éxito */}
+        {/* SUCCESS / ERROR messages */}
         <AnimatePresence>
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4"
-            >
-              {error}
-            </motion.div>
-          )}
           {successMessage && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl mb-4 flex items-center gap-2"
+              exit={{ opacity: 0 }}
+              className="bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 px-4 py-3 rounded-xl mb-6 flex items-center gap-2 backdrop-blur-sm"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               {successMessage}
             </motion.div>
           )}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="bg-red-500/20 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl mb-6 backdrop-blur-sm"
+            >
+              {error}
+            </motion.div>
+          )}
         </AnimatePresence>
 
-        {/* Trial Card (solo si no ha usado trial) */}
-        {!hasUsedTrial && !isTrialActive && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="relative bg-gradient-to-br from-farmateca-premium/10 to-farmateca-premium/5 border-2 border-farmateca-premium rounded-2xl p-6 mb-6 overflow-hidden"
-          >
-            {/* Efecto de brillo */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_3s_infinite]" />
-
-            <div className="relative">
-              <div className="flex items-center justify-center mb-4">
-                <div className="w-14 h-14 bg-farmateca-premium/20 rounded-full flex items-center justify-center">
-                  <svg className="w-7 h-7 text-farmateca-premium" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                  </svg>
-                </div>
-              </div>
-
-              <h3 className="text-xl font-bold text-center text-gray-900 mb-2">
-                Prueba GRATIS por 7 días
-              </h3>
-              <p className="text-gray-600 text-center text-sm mb-4">
-                Acceso completo a todas las funcionalidades. Sin tarjeta de crédito.
-              </p>
-
-              <button
-                onClick={handleActivateTrial}
-                disabled={isActivatingTrial}
-                className="w-full bg-farmateca-premium hover:bg-farmateca-premium-dark text-white font-bold py-3.5 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {isActivatingTrial ? (
-                  <LoadingSpinner size="sm" />
-                ) : (
-                  <>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                    Comenzar Prueba Gratuita
-                  </>
-                )}
-              </button>
-
-              <p className="text-xs text-gray-500 text-center mt-3 flex items-center justify-center gap-1">
-                <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Cancela cuando quieras. Sin compromisos.
-              </p>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Trial Activo Card */}
+        {/* Trial Activo Banner */}
         {isTrialActive && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-6 flex items-center gap-4"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-emerald-500/20 border border-emerald-500/30 rounded-2xl p-4 mb-8 flex items-center gap-4 backdrop-blur-sm"
           >
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
             <div>
-              <h4 className="font-semibold text-green-800">Prueba Gratuita Activa</h4>
-              <p className="text-sm text-green-700">
+              <p className="font-semibold text-emerald-300">Prueba gratuita activa</p>
+              <p className="text-sm text-emerald-400/80">
                 Te quedan {trialDaysRemaining} día{trialDaysRemaining !== 1 ? 's' : ''} de acceso Premium
               </p>
             </div>
           </motion.div>
         )}
 
-        {/* Trial Expirado Card */}
-        {hasUsedTrial && !isTrialActive && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-100 border border-gray-200 rounded-2xl p-4 mb-6 flex items-center gap-4"
-          >
-            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-700">Tu prueba gratuita ha finalizado</h4>
-              <p className="text-sm text-gray-600">
-                Suscríbete para continuar con acceso Premium
-              </p>
-            </div>
-          </motion.div>
-        )}
+        {/* FEATURE CARDS — 3 column grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+          {featureCards.map((card, i) => (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
+              className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-white"
+            >
+              <div className="w-12 h-12 bg-white/15 rounded-xl flex items-center justify-center mb-4 text-white/90">
+                {card.icon}
+              </div>
+              <h3 className="font-bold text-base mb-4 text-white">{card.title}</h3>
+              <ul className="space-y-2">
+                {card.items.map((item, j) => (
+                  <li key={j} className="flex items-start gap-2 text-sm text-white/75">
+                    <svg className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </div>
 
-        {/* Social Proof */}
+        {/* PRICING SECTION */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="bg-farmateca-primary-light/10 rounded-xl px-4 py-3 mb-6 flex items-center justify-center gap-2"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-8 max-w-xl mx-auto"
         >
-          <div className="flex">
-            {[...Array(5)].map((_, i) => (
-              <svg key={i} className="w-4 h-4 text-farmateca-premium" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-            ))}
+          {/* Toggle Mensual / Anual */}
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <button
+              onClick={() => setSelectedPlan('monthly')}
+              className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                selectedPlan === 'monthly'
+                  ? 'bg-white text-[#007B7F]'
+                  : 'text-white/60 hover:text-white'
+              }`}
+            >
+              Mensual
+            </button>
+            <motion.button
+              onClick={() => setSelectedPlan('yearly')}
+              className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all relative ${
+                selectedPlan === 'yearly'
+                  ? 'bg-white text-[#007B7F]'
+                  : 'text-white/60 hover:text-white'
+              }`}
+            >
+              Anual
+              <span className="absolute -top-2.5 -right-2 bg-emerald-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                -23%
+              </span>
+            </motion.button>
           </div>
-          <span className="text-xs font-medium text-gray-600">
-            Más de 1,000 profesionales confían en Farmateca
-          </span>
-        </motion.div>
 
-        {/* Planes de suscripción */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mb-6"
-        >
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Planes de Suscripción</h3>
+          {/* Precio */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedPlan}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="text-center mb-8"
+            >
+              {selectedPlan === 'yearly' ? (
+                <>
+                  <div className="inline-flex items-center gap-2 mb-2">
+                    <span className="bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      Más Popular
+                    </span>
+                    <span className="text-white/60 text-sm">= 2 meses gratis</span>
+                  </div>
+                  <div className="text-6xl font-bold text-white mb-1">
+                    $34.990
+                  </div>
+                  <div className="text-white/60 text-sm">CLP/año · $2.916/mes</div>
+                </>
+              ) : (
+                <>
+                  <div className="text-6xl font-bold text-white mb-1">
+                    $3.790
+                  </div>
+                  <div className="text-white/60 text-sm">CLP/mes</div>
+                </>
+              )}
+            </motion.div>
+          </AnimatePresence>
 
-          {/* Plan Anual */}
-          <button
-            onClick={() => setSelectedPlan('yearly')}
-            className={`w-full mb-3 p-5 rounded-2xl border-2 transition-all duration-300 text-left ${
-              selectedPlan === 'yearly'
-                ? 'border-farmateca-primary-dark bg-farmateca-primary-light/10 shadow-lg'
-                : 'border-gray-200 bg-white hover:border-gray-300'
-            }`}
-          >
-            <div className="flex items-center gap-4">
-              <div
-                className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                  selectedPlan === 'yearly' ? 'border-farmateca-primary-dark' : 'border-gray-300'
-                }`}
-              >
-                {selectedPlan === 'yearly' && (
-                  <div className="w-3 h-3 rounded-full bg-farmateca-primary-dark" />
-                )}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-bold text-gray-900">Premium Anual</span>
-                  <span className="text-xs font-bold text-white bg-gradient-to-r from-farmateca-premium to-farmateca-premium-dark px-2 py-0.5 rounded">
-                    AHORRA 23%
-                  </span>
-                </div>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-2xl font-bold text-farmateca-primary-dark">$2.916</span>
-                  <span className="text-gray-500">/mes</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                  <span>Facturado $34.990 CLP/año</span>
-                  <span className="line-through">$45.480</span>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          {/* Plan Mensual */}
-          <button
-            onClick={() => setSelectedPlan('monthly')}
-            className={`w-full p-5 rounded-2xl border-2 transition-all duration-300 text-left ${
-              selectedPlan === 'monthly'
-                ? 'border-farmateca-primary-dark bg-farmateca-primary-light/10 shadow-lg'
-                : 'border-gray-200 bg-white hover:border-gray-300'
-            }`}
-          >
-            <div className="flex items-center gap-4">
-              <div
-                className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                  selectedPlan === 'monthly' ? 'border-farmateca-primary-dark' : 'border-gray-300'
-                }`}
-              >
-                {selectedPlan === 'monthly' && (
-                  <div className="w-3 h-3 rounded-full bg-farmateca-primary-dark" />
-                )}
-              </div>
-              <div className="flex-1">
-                <span className="font-bold text-gray-900">Premium Mensual</span>
-                <div className="flex items-baseline gap-1 mt-1">
-                  <span className="text-2xl font-bold text-farmateca-primary-dark">$3.790</span>
-                  <span className="text-gray-500 text-sm"> CLP/mes</span>
-                </div>
-              </div>
-            </div>
-          </button>
-        </motion.div>
-
-        {/* Features */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mb-6"
-        >
-          <h3 className="text-lg font-bold text-gray-900 mb-4">¿Qué incluye Premium?</h3>
-          <div className="space-y-3">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 + index * 0.05 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 text-green-600">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-900 text-sm">{feature.title}</p>
-                  <p className="text-xs text-gray-500">{feature.subtitle}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Botón Suscribirse */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="space-y-3"
-        >
-          <button
+          {/* CTA Principal */}
+          <motion.button
             onClick={handleSubscribe}
-            disabled={isSubscribing}
-            className="w-full bg-gradient-to-r from-farmateca-primary-dark to-farmateca-primary text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            disabled={isSubscribing || loadingOfferings}
+            whileHover={{ scale: isSubscribing ? 1 : 1.03 }}
+            whileTap={{ scale: isSubscribing ? 1 : 0.97 }}
+            className="w-full bg-[#FFB800] text-black font-bold py-4 px-6 rounded-xl text-lg shadow-[0_0_30px_rgba(255,184,0,0.3)] hover:shadow-[0_0_40px_rgba(255,184,0,0.5)] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mb-4"
           >
             {isSubscribing ? (
-              <LoadingSpinner size="sm" />
-            ) : (
               <>
-                Suscribirse - {selectedPlan === 'yearly' ? '$34.990 CLP/año' : '$3.790 CLP/mes'}
+                <LoadingSpinner size="sm" />
+                <span>Procesando...</span>
               </>
+            ) : (
+              'Comenzar ahora'
             )}
-          </button>
+          </motion.button>
 
+          {/* Trial link (solo si no ha usado trial) */}
+          {!hasUsedTrial && !isTrialActive && (
+            <button
+              onClick={handleActivateTrial}
+              disabled={isActivatingTrial}
+              className="w-full text-white/70 hover:text-white text-sm py-2 transition-colors flex items-center justify-center gap-2 mb-3"
+            >
+              {isActivatingTrial ? (
+                <LoadingSpinner size="sm" />
+              ) : (
+                '✨ Probar gratis 7 días'
+              )}
+            </button>
+          )}
+
+          {/* Restaurar compra */}
           <button
-            onClick={() => {
-              // TODO: Implementar restauración de compras con RevenueCat
-              alert('La restauración de compras estará disponible pronto con RevenueCat/Stripe.');
-            }}
-            className="w-full text-farmateca-primary-dark font-semibold py-2 hover:underline"
+            onClick={() => toast('Para restaurar tu compra contacta a soporte', { icon: 'ℹ️' })}
+            className="w-full text-white/40 hover:text-white/60 text-xs py-1 transition-colors"
           >
-            Restaurar Compras
+            Restaurar compra
           </button>
         </motion.div>
 
-        {/* Footer Legal */}
+        {/* Footer legal */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="text-xs text-gray-400 text-center mt-6 leading-relaxed"
+          className="text-center text-white/30 text-xs mt-8 px-4 leading-relaxed"
         >
-          Al suscribirte, aceptas los Términos de Servicio y la Política de Privacidad.
-          La suscripción se renueva automáticamente a menos que se cancele 24 horas antes del fin del período.
+          Al suscribirte aceptas los Términos de Servicio y la Política de Privacidad. La suscripción se renueva automáticamente a menos que se cancele 24 horas antes del fin del período.
         </motion.p>
       </div>
-
-      {/* CSS para animación shimmer */}
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-      `}</style>
     </div>
   );
 }
