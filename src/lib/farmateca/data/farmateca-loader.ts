@@ -114,6 +114,29 @@ export async function searchCompounds(query: string): Promise<CompoundSummary[]>
 }
 
 /**
+ * Busca compuestos por familia farmacológica.
+ */
+export async function searchCompoundsByFamily(family: string): Promise<CompoundSummary[]> {
+  const compounds = await getAllCompounds();
+  return compounds
+    .filter((c) => c.familia === family)
+    .map(toCompoundSummary);
+}
+
+/**
+ * Busca marcas por laboratorio.
+ */
+export async function searchBrandsByLaboratory(laboratory: string): Promise<BrandSummary[]> {
+  const [brands, upcomingIds] = await Promise.all([
+    getAllBrands(),
+    getUpcomingCompoundIds(),
+  ]);
+  return brands
+    .filter((b) => b.labM === laboratory)
+    .map((b) => toBrandSummary(b, upcomingIds.has(b.idPAM)));
+}
+
+/**
  * Busca compuestos que tienen marcas de un laboratorio específico.
  */
 export async function searchCompoundsByLaboratory(laboratory: string): Promise<CompoundSummary[]> {

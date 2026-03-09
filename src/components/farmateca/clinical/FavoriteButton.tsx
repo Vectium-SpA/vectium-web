@@ -14,13 +14,13 @@ import { db } from '@/lib/farmateca/firebase';
 import toast from 'react-hot-toast';
 
 interface FavoriteButtonProps {
-  /** ID del item (idPA para compuesto, idMA para marca) */
+  /** ID del item */
   itemId: string;
-  /** Tipo de item: 'compound' | 'brand' */
-  itemType: 'compound' | 'brand';
+  /** Tipo de item */
+  itemType: 'compound' | 'brand' | 'familia' | 'laboratorio';
   /** Nombre del item (para guardar en Firestore) */
   itemName?: string;
-  /** Familia o laboratorio (metadata adicional) */
+  /** Metadata adicional */
   itemMeta?: string;
   /** Tamaño del botón */
   size?: 'sm' | 'md' | 'lg';
@@ -48,11 +48,12 @@ export function FavoriteButton({
   const [isFavorite, setIsFavorite] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Generar el docId para la subcolección (formato móvil)
+  // Generar el docId para la subcolección
   const getDocId = () => {
-    return itemType === 'compound'
-      ? `compuestos_${itemId}`
-      : `marcas_${itemId}`;
+    if (itemType === 'compound') return `compuestos_${itemId}`;
+    if (itemType === 'brand') return `marcas_${itemId}`;
+    if (itemType === 'familia') return `familias_${itemId}`;
+    return `laboratorios_${itemId}`;
   };
 
   // REAL-TIME: Sincronizar estado con onSnapshot
@@ -102,22 +103,15 @@ export function FavoriteButton({
         console.log(`[FavoriteButton] Deleted: ${docId}`);
       } else {
         // Agregar a favoritos con datos completos
+        const baseData = { id: itemId, nombre: itemName, fechaAgregado: serverTimestamp() };
         const favoriteData =
           itemType === 'compound'
-            ? {
-                tipo: 'compuesto',
-                id: itemId,
-                nombre: itemName,
-                familia: itemMeta,
-                fechaAgregado: serverTimestamp(),
-              }
-            : {
-                tipo: 'marca',
-                id: itemId,
-                nombre: itemName,
-                laboratorio: itemMeta,
-                fechaAgregado: serverTimestamp(),
-              };
+            ? { ...baseData, tipo: 'compuesto', familia: itemMeta }
+            : itemType === 'brand'
+            ? { ...baseData, tipo: 'marca', laboratorio: itemMeta }
+            : itemType === 'familia'
+            ? { ...baseData, tipo: 'familia' }
+            : { ...baseData, tipo: 'laboratorio' };
 
         await setDoc(favoriteRef, favoriteData);
         toast.success('Agregado a favoritos ❤️');

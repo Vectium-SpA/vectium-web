@@ -58,10 +58,9 @@ export default function SearchByFamilyPage() {
     setFilteredFamilies(filtered);
   }, [searchTerm, families]);
 
-  // Handler para seleccionar familia
+  // Handler para seleccionar familia → página de detalle
   const handleSelectFamily = (familia: string) => {
-    // Redirigir a búsqueda de compuestos con filtro de familia
-    router.push(`/farmateca/web/app/search/compound?family=${encodeURIComponent(familia)}`);
+    router.push(`/farmateca/web/app/family/${encodeURIComponent(familia)}`);
   };
 
   if (loading) {

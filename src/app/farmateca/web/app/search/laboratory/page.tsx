@@ -52,10 +52,9 @@ export default function SearchByLaboratoryPage() {
     setFilteredLaboratories(filtered);
   }, [searchTerm, laboratories]);
 
-  // Handler para seleccionar laboratorio
+  // Handler para seleccionar laboratorio → página de detalle
   const handleSelectLaboratory = (laboratorio: string) => {
-    // Redirigir a búsqueda de compuestos con filtro de laboratorio
-    router.push(`/farmateca/web/app/search/compound?laboratory=${encodeURIComponent(laboratorio)}`);
+    router.push(`/farmateca/web/app/laboratory/${encodeURIComponent(laboratorio)}`);
   };
 
   if (loading) {

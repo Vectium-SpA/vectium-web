@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAllCompoundsSummary, searchCompounds, searchCompoundsByLaboratory } from '@/lib/farmateca/data/farmateca-loader';
+import { getAllCompoundsSummary, searchCompounds, searchCompoundsByFamily, searchCompoundsByLaboratory } from '@/lib/farmateca/data/farmateca-loader';
 
 /**
  * GET /api/farmateca/compounds
@@ -7,22 +7,31 @@ import { getAllCompoundsSummary, searchCompounds, searchCompoundsByLaboratory } 
  * Obtiene lista de compuestos (principios activos).
  * Query params:
  *   - q: string (opcional) - Término de búsqueda
+ *   - family: string (opcional) - Filtrar por familia farmacológica
  *   - laboratory: string (opcional) - Filtrar por laboratorio
  *
  * Ejemplo:
  *   GET /api/farmateca/compounds → Todos los compuestos
  *   GET /api/farmateca/compounds?q=paracetamol → Busca "paracetamol"
+ *   GET /api/farmateca/compounds?family=Analgesicos → Compuestos de esa familia
  *   GET /api/farmateca/compounds?laboratory=Bayer → Compuestos con marcas de Bayer
  */
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q');
+    const family = searchParams.get('family');
     const laboratory = searchParams.get('laboratory');
 
     let compounds;
 
-    if (laboratory) {
+    if (family) {
+      compounds = await searchCompoundsByFamily(family);
+      if (query) {
+        const normalizedQuery = query.toLowerCase().trim();
+        compounds = compounds.filter(c => c.pa.toLowerCase().includes(normalizedQuery));
+      }
+    } else if (laboratory) {
       // Si hay filtro de laboratorio, buscar compuestos de ese laboratorio
       compounds = await searchCompoundsByLaboratory(laboratory);
       // Si también hay query, filtrar los resultados
