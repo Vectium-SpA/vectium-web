@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { FarmatecaFooter } from '@/components/farmateca/marketing/Footer';
 
 import type { Metadata } from 'next';

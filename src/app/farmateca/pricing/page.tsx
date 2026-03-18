@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { PricingSection } from '@/components/farmateca/marketing/PricingSection';
 import { FarmatecaFooter } from '@/components/farmateca/marketing/Footer';
 import Link from 'next/link';

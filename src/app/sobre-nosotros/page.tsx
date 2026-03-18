@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import type { Metadata } from "next";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { PageHero } from "@/components/layout/PageHero";
