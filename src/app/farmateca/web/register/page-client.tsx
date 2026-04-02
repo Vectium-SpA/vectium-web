@@ -62,7 +62,7 @@ export default function RegisterPage() {
 
     if (result.success) {
       toast.success('¡Cuenta creada exitosamente!');
-      router.push('/farmateca/web/app');
+      window.location.href = '/farmateca/web/app';
     } else {
       const errorMessage = result.error || 'Error al crear la cuenta';
       toast.error(errorMessage);
@@ -88,7 +88,7 @@ export default function RegisterPage() {
 
     if (result.success) {
       toast.success('¡Bienvenido!');
-      router.push('/farmateca/web/app');
+      window.location.href = '/farmateca/web/app';
     } else {
       const errorMessage = result.error || 'Error al registrarse con Google';
       toast.error(errorMessage);

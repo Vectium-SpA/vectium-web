@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/farmateca/store/auth-store';
 import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
 import { SubscriptionStatusBanner } from '@/components/farmateca/app/PremiumGuard';
+import { ChatbotFAB } from '@/components/farmateca/app/ChatbotFAB';
 import Link from 'next/link';
 import { signOut } from '@/lib/farmateca/firebase/auth';
 import { AuthProvider } from '@/components/farmateca/providers/AuthProvider';
@@ -205,6 +206,9 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
+
+      {/* Chatbot FAB */}
+      <ChatbotFAB />
 
       {/* Footer */}
       <footer className="bg-white dark:bg-farmateca-gray-900 border-t border-gray-200 dark:border-farmateca-gray-700 mt-auto">

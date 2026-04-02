@@ -26,7 +26,7 @@ export default function LoginPage() {
 
     if (result.success) {
       toast.success('¡Bienvenido!');
-      router.push('/farmateca/web/app');
+      window.location.href = '/farmateca/web/app';
     } else {
       const errorMessage = result.error || 'Credenciales incorrectas';
       toast.error(errorMessage);
@@ -50,7 +50,7 @@ export default function LoginPage() {
 
     if (result.success) {
       toast.success('¡Bienvenido!');
-      router.push('/farmateca/web/app');
+      window.location.href = '/farmateca/web/app';
     } else {
       const errorMessage = result.error || 'Error al iniciar sesión con Google';
       toast.error(errorMessage);
