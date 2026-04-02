@@ -213,20 +213,23 @@ export default function BrandDetailPage() {
           </div>
         </motion.section>
 
-        {/* Presentación */}
+        {/* Presentación - PREMIUM */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-6"
         >
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
-            Presentación
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300">{brand.presentacionM}</p>
+          <PremiumGuard mode="blur" featureName="Presentación">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-6">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                Presentación
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300">{brand.presentacionM}</p>
+            </div>
+          </PremiumGuard>
         </motion.section>
 
         {/* Uso Terapéutico */}
@@ -245,20 +248,23 @@ export default function BrandDetailPage() {
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{brand.usoM}</p>
         </motion.section>
 
-        {/* Contraindicaciones */}
+        {/* Contraindicaciones - PREMIUM */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-100 dark:border-red-800/30 p-6"
         >
-          <h2 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-            </svg>
-            Contraindicaciones
-          </h2>
-          <div className="text-red-700 dark:text-red-300 whitespace-pre-line">{brand.contraindicacionesM}</div>
+          <PremiumGuard mode="blur" featureName="Contraindicaciones">
+            <div className="bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-100 dark:border-red-800/30 p-6">
+              <h2 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-3 flex items-center gap-2">
+                <svg className="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                </svg>
+                Contraindicaciones
+              </h2>
+              <div className="text-red-700 dark:text-red-300 whitespace-pre-line">{brand.contraindicacionesM}</div>
+            </div>
+          </PremiumGuard>
         </motion.section>
 
         {/* Disclaimer ISP */}

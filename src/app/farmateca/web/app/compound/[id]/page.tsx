@@ -277,90 +277,93 @@ export default function CompoundDetailPage() {
           </motion.section>
         )}
 
-        {/* 8. Marcas Asociadas - FREE - Accordions Colapsables */}
+        {/* 8. Marcas Asociadas - PREMIUM */}
         {compound.brands && compound.brands.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="space-y-4"
           >
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              <Tag className="w-5 h-5 text-farmateca-primary" />
-              Marcas Disponibles ({compound.brands.length})
-            </h2>
+            <PremiumGuard mode="blur" featureName="Marcas Disponibles">
+              <div className="space-y-4">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <Tag className="w-5 h-5 text-farmateca-primary" />
+                  Marcas Disponibles ({compound.brands.length})
+                </h2>
 
-            {/* Accordion Comerciales */}
-            {commercialBrands.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <button
-                  onClick={() => setExpandCommercial(!expandCommercial)}
-                  className="w-full px-6 py-4 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-farmateca-primary/10 rounded-lg flex items-center justify-center">
-                      <svg className="w-4 h-4 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                {/* Accordion Comerciales */}
+                {commercialBrands.length > 0 && (
+                  <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <button
+                      onClick={() => setExpandCommercial(!expandCommercial)}
+                      className="w-full px-6 py-4 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-farmateca-primary/10 rounded-lg flex items-center justify-center">
+                          <svg className="w-4 h-4 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                          </svg>
+                        </div>
+                        <span className="font-semibold text-gray-900 dark:text-white">
+                          Marcas Comerciales ({commercialBrands.length})
+                        </span>
+                      </div>
+                      <svg
+                        className={`w-5 h-5 text-gray-500 transition-transform ${expandCommercial ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
-                    </div>
-                    <span className="font-semibold text-gray-900 dark:text-white">
-                      Marcas Comerciales ({commercialBrands.length})
-                    </span>
+                    </button>
+                    {expandCommercial && (
+                      <div className="p-4 space-y-2 border-t border-gray-100 dark:border-gray-700">
+                        {commercialBrands.map((brand) => (
+                          <BrandCard key={brand.idMA} brand={brand} />
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <svg
-                    className={`w-5 h-5 text-gray-500 transition-transform ${expandCommercial ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {expandCommercial && (
-                  <div className="p-4 space-y-2 border-t border-gray-100 dark:border-gray-700">
-                    {commercialBrands.map((brand) => (
-                      <BrandCard key={brand.idMA} brand={brand} />
-                    ))}
+                )}
+
+                {/* Accordion Genéricos */}
+                {genericBrands.length > 0 && (
+                  <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <button
+                      onClick={() => setExpandGeneric(!expandGeneric)}
+                      className="w-full px-6 py-4 flex items-center justify-between bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                          <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <span className="font-semibold text-gray-900 dark:text-white">
+                          Genéricos ({genericBrands.length})
+                        </span>
+                      </div>
+                      <svg
+                        className={`w-5 h-5 text-gray-500 transition-transform ${expandGeneric ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {expandGeneric && (
+                      <div className="p-4 space-y-2 border-t border-gray-100 dark:border-gray-700">
+                        {genericBrands.map((brand) => (
+                          <BrandCard key={brand.idMA} brand={brand} />
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
-            )}
-
-            {/* Accordion Genéricos */}
-            {genericBrands.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <button
-                  onClick={() => setExpandGeneric(!expandGeneric)}
-                  className="w-full px-6 py-4 flex items-center justify-between bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                      <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <span className="font-semibold text-gray-900 dark:text-white">
-                      Genéricos ({genericBrands.length})
-                    </span>
-                  </div>
-                  <svg
-                    className={`w-5 h-5 text-gray-500 transition-transform ${expandGeneric ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {expandGeneric && (
-                  <div className="p-4 space-y-2 border-t border-gray-100 dark:border-gray-700">
-                    {genericBrands.map((brand) => (
-                      <BrandCard key={brand.idMA} brand={brand} />
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+            </PremiumGuard>
           </motion.section>
         )}
       </div>

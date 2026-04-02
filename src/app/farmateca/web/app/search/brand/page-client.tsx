@@ -6,6 +6,7 @@ import { Tab, TabGroup, TabList, TabPanels, TabPanel } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import { SearchBar, BrandCard, UpcomingCard, UpcomingSeparator } from '@/components/farmateca/clinical';
 import { PremiumGuard } from '@/components/farmateca/app/PremiumGuard';
+import { useIsPremium } from '@/lib/farmateca/store/auth-store';
 import { fetchBrands } from '@/lib/farmateca/api/brands';
 import { BrandSummary } from '@/lib/farmateca/types';
 import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
@@ -24,6 +25,7 @@ function classNames(...classes: string[]) {
 
 export default function BrandSearchPage() {
   const router = useRouter();
+  const isPremium = useIsPremium();
   const [searchQueryCommercial, setSearchQueryCommercial] = useState('');
   const [searchQueryGeneric, setSearchQueryGeneric] = useState('');
   const [commercialBrands, setCommercialBrands] = useState<BrandSummary[]>([]);
@@ -164,7 +166,7 @@ export default function BrandSearchPage() {
 
       {/* Tabs de navegación con contadores dinámicos */}
       <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-        <TabList className="flex space-x-1 bg-gray-100 p-1 mb-8 rounded-xl">
+        <TabList className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 mb-8 rounded-xl">
           <Tab
             className={({ selected }) =>
               classNames(
@@ -176,7 +178,14 @@ export default function BrandSearchPage() {
               )
             }
           >
-            COMERCIAL{typeCounts.commercial > 0 ? ` (${typeCounts.commercial.toLocaleString()})` : ''}
+            <div className="flex items-center justify-center gap-1.5">
+              <span>COMERCIAL{typeCounts.commercial > 0 ? ` (${typeCounts.commercial.toLocaleString()})` : ''}</span>
+              {!isPremium && (
+                <svg className="w-3.5 h-3.5 text-farmateca-premium flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                </svg>
+              )}
+            </div>
           </Tab>
           <Tab
             className={({ selected }) =>
@@ -189,7 +198,14 @@ export default function BrandSearchPage() {
               )
             }
           >
-            {`GEN\u00C9RICO`}{typeCounts.generic > 0 ? ` (${typeCounts.generic.toLocaleString()})` : ''}
+            <div className="flex items-center justify-center gap-1.5">
+              <span>{`GEN\u00C9RICO`}{typeCounts.generic > 0 ? ` (${typeCounts.generic.toLocaleString()})` : ''}</span>
+              {!isPremium && (
+                <svg className="w-3.5 h-3.5 text-farmateca-premium flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                </svg>
+              )}
+            </div>
           </Tab>
           <Tab
             className={({ selected }) =>
@@ -212,104 +228,112 @@ export default function BrandSearchPage() {
         </TabList>
 
         <TabPanels>
-          {/* Panel 1: Marcas Comerciales */}
+          {/* Panel 1: Marcas Comerciales - PREMIUM */}
           <TabPanel>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-              <SearchBar onSearch={handleSearchCommercial} placeholder="Buscar marca comercial..." isLoading={isLoadingCommercial} />
-            </motion.div>
+            <PremiumGuard mode="hide" featureName="Búsqueda por tipo Comercial">
+              <div>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+                  <SearchBar onSearch={handleSearchCommercial} placeholder="Buscar marca comercial..." isLoading={isLoadingCommercial} />
+                </motion.div>
 
-            {!hasSearchedCommercial && !searchQueryCommercial && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
-                <div className="w-20 h-20 bg-farmateca-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-10 h-10 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Buscar marcas comerciales</h3>
-                <p className="text-gray-500 max-w-sm mx-auto">Escribe el nombre de una marca comercial.</p>
-              </motion.div>
-            )}
-
-            {isLoadingCommercial && searchQueryCommercial && (
-              <div className="flex justify-center py-12"><LoadingSpinner size="lg" /></div>
-            )}
-
-            {noResultsCommercial && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">No hay marcas comerciales para &quot;{searchQueryCommercial}&quot;.</p>
-              </div>
-            )}
-
-            {!isLoadingCommercial && hasSearchedCommercial && hasCommercialResults && (
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900">Marcas Comerciales</h2>
-                  <span className="text-sm text-gray-500">({commercialBrands.length})</span>
-                </div>
-                {sortedCommercial.available.slice(0, 50).map((brand) => (
-                  <BrandCard key={brand.idMA} brand={brand} />
-                ))}
-                {sortedCommercial.available.length > 50 && (
-                  <p className="text-center text-sm text-gray-500 py-2">
-                    Mostrando 50 de {sortedCommercial.available.length} resultados. Refina tu búsqueda.
-                  </p>
+                {!hasSearchedCommercial && !searchQueryCommercial && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
+                    <div className="w-20 h-20 bg-farmateca-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-10 h-10 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Buscar marcas comerciales</h3>
+                    <p className="text-gray-500 dark:text-gray-400 max-w-sm mx-auto">Escribe el nombre de una marca comercial.</p>
+                  </motion.div>
                 )}
-                {sortedCommercial.hasUpcoming && <UpcomingSeparator />}
-                {sortedCommercial.upcoming.map((brand) => (
-                  <UpcomingCard key={brand.idMA} name={brand.ma} subtitle={brand.labM} type="brand" />
-                ))}
+
+                {isLoadingCommercial && searchQueryCommercial && (
+                  <div className="flex justify-center py-12"><LoadingSpinner size="lg" /></div>
+                )}
+
+                {noResultsCommercial && (
+                  <div className="text-center py-12">
+                    <p className="text-gray-500 dark:text-gray-400">No hay marcas comerciales para &quot;{searchQueryCommercial}&quot;.</p>
+                  </div>
+                )}
+
+                {!isLoadingCommercial && hasSearchedCommercial && hasCommercialResults && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 mb-4">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Marcas Comerciales</h2>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">({commercialBrands.length})</span>
+                    </div>
+                    {sortedCommercial.available.slice(0, 50).map((brand) => (
+                      <BrandCard key={brand.idMA} brand={brand} />
+                    ))}
+                    {sortedCommercial.available.length > 50 && (
+                      <p className="text-center text-sm text-gray-500 dark:text-gray-400 py-2">
+                        Mostrando 50 de {sortedCommercial.available.length} resultados. Refina tu búsqueda.
+                      </p>
+                    )}
+                    {sortedCommercial.hasUpcoming && <UpcomingSeparator />}
+                    {sortedCommercial.upcoming.map((brand) => (
+                      <UpcomingCard key={brand.idMA} name={brand.ma} subtitle={brand.labM} type="brand" />
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+            </PremiumGuard>
           </TabPanel>
 
-          {/* Panel 2: Genéricos */}
+          {/* Panel 2: Genéricos - PREMIUM */}
           <TabPanel>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-              <SearchBar onSearch={handleSearchGeneric} placeholder="Buscar genérico..." isLoading={isLoadingGeneric} />
-            </motion.div>
+            <PremiumGuard mode="hide" featureName="Búsqueda por tipo Genérico">
+              <div>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+                  <SearchBar onSearch={handleSearchGeneric} placeholder="Buscar genérico..." isLoading={isLoadingGeneric} />
+                </motion.div>
 
-            {!hasSearchedGeneric && !searchQueryGeneric && (
-              <div className="text-center py-12">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Buscar genéricos</h3>
-                <p className="text-gray-500 max-w-sm mx-auto">Encuentra alternativas genéricas.</p>
-              </div>
-            )}
-
-            {isLoadingGeneric && searchQueryGeneric && (
-              <div className="flex justify-center py-12"><LoadingSpinner size="lg" /></div>
-            )}
-
-            {noResultsGeneric && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">No hay genéricos para &quot;{searchQueryGeneric}&quot;.</p>
-              </div>
-            )}
-
-            {!isLoadingGeneric && hasSearchedGeneric && hasGenericResults && (
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900">Genéricos</h2>
-                  <span className="text-sm text-gray-500">({genericBrands.length})</span>
-                </div>
-                {sortedGeneric.available.slice(0, 50).map((brand) => (
-                  <BrandCard key={brand.idMA} brand={brand} />
-                ))}
-                {sortedGeneric.available.length > 50 && (
-                  <p className="text-center text-sm text-gray-500 py-2">
-                    Mostrando 50 de {sortedGeneric.available.length} resultados. Refina tu búsqueda.
-                  </p>
+                {!hasSearchedGeneric && !searchQueryGeneric && (
+                  <div className="text-center py-12">
+                    <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-10 h-10 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Buscar genéricos</h3>
+                    <p className="text-gray-500 dark:text-gray-400 max-w-sm mx-auto">Encuentra alternativas genéricas.</p>
+                  </div>
                 )}
-                {sortedGeneric.hasUpcoming && <UpcomingSeparator />}
-                {sortedGeneric.upcoming.map((brand) => (
-                  <UpcomingCard key={brand.idMA} name={brand.ma} subtitle={brand.labM} type="brand" />
-                ))}
+
+                {isLoadingGeneric && searchQueryGeneric && (
+                  <div className="flex justify-center py-12"><LoadingSpinner size="lg" /></div>
+                )}
+
+                {noResultsGeneric && (
+                  <div className="text-center py-12">
+                    <p className="text-gray-500 dark:text-gray-400">No hay genéricos para &quot;{searchQueryGeneric}&quot;.</p>
+                  </div>
+                )}
+
+                {!isLoadingGeneric && hasSearchedGeneric && hasGenericResults && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 mb-4">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Genéricos</h2>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">({genericBrands.length})</span>
+                    </div>
+                    {sortedGeneric.available.slice(0, 50).map((brand) => (
+                      <BrandCard key={brand.idMA} brand={brand} />
+                    ))}
+                    {sortedGeneric.available.length > 50 && (
+                      <p className="text-center text-sm text-gray-500 dark:text-gray-400 py-2">
+                        Mostrando 50 de {sortedGeneric.available.length} resultados. Refina tu búsqueda.
+                      </p>
+                    )}
+                    {sortedGeneric.hasUpcoming && <UpcomingSeparator />}
+                    {sortedGeneric.upcoming.map((brand) => (
+                      <UpcomingCard key={brand.idMA} name={brand.ma} subtitle={brand.labM} type="brand" />
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+            </PremiumGuard>
           </TabPanel>
 
           {/* Panel 3: Por Laboratorio (Premium) */}

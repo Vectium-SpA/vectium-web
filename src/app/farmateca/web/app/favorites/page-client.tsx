@@ -11,7 +11,7 @@ import { useIsPremium } from '@/lib/farmateca/store/auth-store';
 import { useFavorites, FavoriteItem } from '@/lib/farmateca/hooks/useFavorites';
 import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
 
-type TabId = 'compuestos' | 'marcas' | 'familia' | 'laboratorio' | 'recientes';
+type TabId = 'todos' | 'compuestos' | 'marcas' | 'familia' | 'laboratorio';
 
 interface TabConfig {
   id: TabId;
@@ -20,11 +20,11 @@ interface TabConfig {
 }
 
 const TABS: TabConfig[] = [
-  { id: 'compuestos', label: 'Compuestos', premium: false },
-  { id: 'marcas', label: 'Marcas', premium: false },
+  { id: 'todos', label: 'Todos', premium: false },
+  { id: 'compuestos', label: 'Compuestos', premium: true },
+  { id: 'marcas', label: 'Marcas', premium: true },
   { id: 'familia', label: 'Por Familia', premium: true },
   { id: 'laboratorio', label: 'Por Lab', premium: true },
-  { id: 'recientes', label: 'Recientes', premium: true },
 ];
 
 // ─── Agrupación por Familia ─────────────────────────────────
@@ -311,7 +311,7 @@ export default function FavoritesPage() {
   const { user } = useAuthStore();
   const isPremium = useIsPremium();
   const { favorites, isLoading, compuestosCount, marcasCount } = useFavorites();
-  const [activeTab, setActiveTab] = useState<TabId>('compuestos');
+  const [activeTab, setActiveTab] = useState<TabId>('todos');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // ─── Datos derivados ──────────────────────────────────────
@@ -325,13 +325,6 @@ export default function FavoritesPage() {
   );
   const familyGroups = useMemo(() => groupByFamily(compuestos), [compuestos]);
   const labGroups = useMemo(() => groupByLaboratory(marcas), [marcas]);
-  const recientes = useMemo(
-    () =>
-      [...favorites].sort(
-        (a, b) => b.fechaAgregado.getTime() - a.fechaAgregado.getTime()
-      ),
-    [favorites]
-  );
 
   // ─── Handlers ─────────────────────────────────────────────
   const handleItemClick = (item: FavoriteItem) => {
@@ -357,10 +350,6 @@ export default function FavoritesPage() {
   };
 
   const handleTabClick = (tab: TabConfig) => {
-    if (tab.premium && !isPremium) {
-      router.push('/farmateca/web/app/paywall');
-      return;
-    }
     setActiveTab(tab.id);
   };
 
@@ -391,11 +380,11 @@ export default function FavoritesPage() {
 
   // ─── Tab counts ───────────────────────────────────────────
   const tabCounts: Record<TabId, number> = {
+    todos: favorites.length,
     compuestos: compuestosCount,
     marcas: marcasCount,
     familia: familyGroups.length,
     laboratorio: labGroups.length,
-    recientes: favorites.length,
   };
 
   // ─── Render ───────────────────────────────────────────────
@@ -470,7 +459,38 @@ export default function FavoritesPage() {
       {/* ─── Tab Content ─────────────────────────────────────── */}
       {!isLoading && (
         <AnimatePresence mode="wait">
-          {/* ──── Tab: Compuestos ──── */}
+          {/* ──── Tab: Todos ──── */}
+          {activeTab === 'todos' && (
+            <motion.div
+              key="todos"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.15 }}
+            >
+              {favorites.length === 0 ? (
+                <EmptyState
+                  message="No tienes favoritos aun"
+                  description="Agrega compuestos y marcas a favoritos tocando el corazon en su pagina de detalle."
+                />
+              ) : (
+                <div className="space-y-2">
+                  {favorites.map((item, idx) => (
+                    <FavoriteItemRow
+                      key={item.docId}
+                      item={item}
+                      onNavigate={handleItemClick}
+                      onDelete={handleDeleteFavorite}
+                      isDeleting={deletingId === item.docId}
+                      index={idx}
+                    />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* ──── Tab: Compuestos (Premium) ──── */}
           {activeTab === 'compuestos' && (
             <motion.div
               key="compuestos"
@@ -479,7 +499,9 @@ export default function FavoritesPage() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.15 }}
             >
-              {compuestos.length === 0 ? (
+              {!isPremium ? (
+                <PremiumLockedTab tabName="Compuestos" />
+              ) : compuestos.length === 0 ? (
                 <EmptyState
                   message="No hay compuestos favoritos"
                   description="Agrega compuestos a favoritos tocando el corazon en su pagina de detalle."
@@ -501,7 +523,7 @@ export default function FavoritesPage() {
             </motion.div>
           )}
 
-          {/* ──── Tab: Marcas ──── */}
+          {/* ──── Tab: Marcas (Premium) ──── */}
           {activeTab === 'marcas' && (
             <motion.div
               key="marcas"
@@ -510,7 +532,9 @@ export default function FavoritesPage() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.15 }}
             >
-              {marcas.length === 0 ? (
+              {!isPremium ? (
+                <PremiumLockedTab tabName="Marcas" />
+              ) : marcas.length === 0 ? (
                 <EmptyState
                   message="No hay marcas favoritas"
                   description="Agrega marcas a favoritos tocando el corazon en su pagina de detalle."
@@ -588,7 +612,7 @@ export default function FavoritesPage() {
                 />
               ) : (
                 <div className="space-y-3">
-                  <p className="text-sm text-gray-500 mb-2">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                     {labGroups.length} laboratorio{labGroups.length !== 1 ? 's' : ''} con favoritos
                   </p>
                   {labGroups.map((group, idx) => (
@@ -606,64 +630,9 @@ export default function FavoritesPage() {
               )}
             </motion.div>
           )}
-
-          {/* ──── Tab: Recientes (Premium) ──── */}
-          {activeTab === 'recientes' && (
-            <motion.div
-              key="recientes"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.15 }}
-            >
-              {!isPremium ? (
-                <PremiumLockedTab tabName="Recientes" />
-              ) : recientes.length === 0 ? (
-                <EmptyState
-                  message="No hay favoritos recientes"
-                  description="Agrega compuestos o marcas a favoritos para verlos ordenados por fecha."
-                />
-              ) : (
-                <div className="space-y-2">
-                  {recientes.map((item, idx) => (
-                    <div key={item.docId}>
-                      {/* Separador de fecha si cambió el día */}
-                      {idx === 0 ||
-                      recientes[idx - 1].fechaAgregado.toDateString() !==
-                        item.fechaAgregado.toDateString() ? (
-                        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mt-4 mb-2 first:mt-0">
-                          {formatRelativeDate(item.fechaAgregado)}
-                        </p>
-                      ) : null}
-                      <FavoriteItemRow
-                        item={item}
-                        onNavigate={handleItemClick}
-                        onDelete={handleDeleteFavorite}
-                        isDeleting={deletingId === item.docId}
-                        index={idx}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          )}
         </AnimatePresence>
       )}
     </div>
   );
 }
 
-// ─── Helper: Formato de fecha relativa ──────────────────────
-function formatRelativeDate(date: Date): string {
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const dateDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const diffDays = Math.floor((today.getTime() - dateDay.getTime()) / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) return 'Hoy';
-  if (diffDays === 1) return 'Ayer';
-  if (diffDays < 7) return `Hace ${diffDays} dias`;
-  if (diffDays < 30) return `Hace ${Math.floor(diffDays / 7)} semana${Math.floor(diffDays / 7) > 1 ? 's' : ''}`;
-  return date.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
-}
