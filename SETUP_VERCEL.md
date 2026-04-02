@@ -1,6 +1,6 @@
 # Setup Variables Vercel - vectium-web
 
-## Metodo 1: Vercel Dashboard (RECOMENDADO para Andresito)
+## Metodo 1: Vercel Dashboard (RECOMENDADO)
 
 ### Pasos:
 
@@ -14,31 +14,40 @@
 
 Para CADA variable, hacer:
 - **Name**: copiar el nombre exacto
-- **Value**: copiar el valor exacto
+- **Value**: copiar el valor desde Firebase Console / Flow Dashboard
 - **Environments**: marcar **Production** + **Preview** + **Development**
 - Click **Save**
 
 ```
 Name:  NEXT_PUBLIC_FARMATECA_FIREBASE_API_KEY
-Value: AIzaSyAHzT1nlp2tjmcgcsoabeP9iAoqHTfnoj4
+Value: <ver Firebase Console → Configuración del proyecto → Tus apps>
 
 Name:  NEXT_PUBLIC_FARMATECA_FIREBASE_AUTH_DOMAIN
-Value: farmateca.firebaseapp.com
+Value: <tu-proyecto>.firebaseapp.com
 
 Name:  NEXT_PUBLIC_FARMATECA_FIREBASE_PROJECT_ID
-Value: farmateca
+Value: <tu-proyecto-id>
 
 Name:  NEXT_PUBLIC_FARMATECA_FIREBASE_STORAGE_BUCKET
-Value: farmateca.firebasestorage.app
+Value: <tu-proyecto>.firebasestorage.app
 
 Name:  NEXT_PUBLIC_FARMATECA_FIREBASE_MESSAGING_SENDER_ID
-Value: 54136909728
+Value: <sender-id>
 
 Name:  NEXT_PUBLIC_FARMATECA_FIREBASE_APP_ID
-Value: 1:54136909728:web:dae836e974372c571c3ec5
+Value: <app-id>
 
 Name:  NEXT_PUBLIC_FARMATECA_APP_URL
 Value: https://vectium.cl/farmateca/web
+
+Name:  FLOW_API_KEY
+Value: <ver Flow Dashboard → Credenciales>
+
+Name:  FLOW_SECRET_KEY
+Value: <ver Flow Dashboard → Credenciales>
+
+Name:  FLOW_ENV
+Value: production
 ```
 
 6. Despues de agregar TODAS las variables:
@@ -58,35 +67,31 @@ npm install -g vercel
 # 2. Login
 vercel login
 
-# 3. Link al proyecto (ejecutar desde la carpeta del proyecto)
-cd C:\Vectium\vectium-web
+# 3. Link al proyecto
 vercel link
 
 # 4. Agregar variables (pegar el valor cuando lo pida)
 vercel env add NEXT_PUBLIC_FARMATECA_FIREBASE_API_KEY production preview development
-# Pegar: AIzaSyAHzT1nlp2tjmcgcsoabeP9iAoqHTfnoj4
-
 vercel env add NEXT_PUBLIC_FARMATECA_FIREBASE_AUTH_DOMAIN production preview development
-# Pegar: farmateca.firebaseapp.com
-
 vercel env add NEXT_PUBLIC_FARMATECA_FIREBASE_PROJECT_ID production preview development
-# Pegar: farmateca
-
 vercel env add NEXT_PUBLIC_FARMATECA_FIREBASE_STORAGE_BUCKET production preview development
-# Pegar: farmateca.firebasestorage.app
-
 vercel env add NEXT_PUBLIC_FARMATECA_FIREBASE_MESSAGING_SENDER_ID production preview development
-# Pegar: 54136909728
-
 vercel env add NEXT_PUBLIC_FARMATECA_FIREBASE_APP_ID production preview development
-# Pegar: 1:54136909728:web:dae836e974372c571c3ec5
-
 vercel env add NEXT_PUBLIC_FARMATECA_APP_URL production preview development
-# Pegar: https://vectium.cl/farmateca/web
+vercel env add FLOW_API_KEY production
+vercel env add FLOW_SECRET_KEY production
+vercel env add FLOW_ENV production
 
 # 5. Redeploy para aplicar cambios
 vercel --prod
 ```
+
+---
+
+## Donde encontrar los valores
+
+- **Firebase**: https://console.firebase.google.com → tu proyecto → Configuracion del proyecto → Tus apps → SDK config
+- **Flow**: https://app.flow.cl → Integraciones → Credenciales API
 
 ---
 
@@ -96,7 +101,6 @@ vercel --prod
 2. Limpiar cache del navegador: **Ctrl+Shift+R** (o Cmd+Shift+R en Mac)
 3. Ir a **https://vectium.cl/farmateca/web/login**
 4. Probar login con email/password
-5. Si funciona: LISTO!
 
 ---
 
@@ -111,9 +115,9 @@ vercel --prod
 - Verificar en Firebase Console que el dominio `vectium.cl` esta autorizado:
   1. https://console.firebase.google.com/
   2. Proyecto: farmateca
-  3. Authentication -> Settings -> Authorized domains
+  3. Authentication → Settings → Authorized domains
   4. Agregar `vectium.cl` si no esta
 
 ### Google Sign-In no funciona
 - Mismo paso anterior: autorizar `vectium.cl` en Firebase Authorized domains
-- Verificar que Google sign-in esta habilitado en Authentication -> Sign-in method
+- Verificar que Google sign-in esta habilitado en Authentication → Sign-in method
