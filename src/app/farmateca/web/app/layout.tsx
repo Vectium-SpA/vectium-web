@@ -11,6 +11,7 @@ import { signOut } from '@/lib/farmateca/firebase/auth';
 import { AuthProvider } from '@/components/farmateca/providers/AuthProvider';
 import { useThemeStore } from '@/lib/farmateca/store/theme-store';
 import { useTypography } from '@/lib/farmateca/hooks/useTypography';
+import { useIsPremium } from '@/lib/farmateca/store/auth-store';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
@@ -22,6 +23,7 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user, userData, loading } = useAuthStore();
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
+  const isPremium = useIsPremium();
   // Inicializar typography hook para aplicar CSS vars al montar
   useTypography();
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -135,6 +137,18 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
               >
                 Favoritos
               </Link>
+              {isPremium && (
+                <Link
+                  href="/farmateca/web/app/chat"
+                  className="text-gray-600 dark:text-gray-300 hover:text-farmateca-primary transition-colors flex items-center gap-1"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                  Asistente
+                </Link>
+              )}
             </nav>
 
             {/* User Menu */}

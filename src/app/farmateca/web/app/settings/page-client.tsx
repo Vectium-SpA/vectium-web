@@ -886,10 +886,10 @@ export default function SettingsPage() {
               Soporte
             </span>
             <a
-              href="mailto:soporte@farmateca.cl"
+              href="mailto:farmatecachile.soporte@gmail.com"
               className="font-medium text-farmateca-primary hover:underline"
             >
-              soporte@farmateca.cl
+              farmatecachile.soporte@gmail.com
             </a>
           </div>
         </div>
