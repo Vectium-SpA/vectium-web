@@ -52,11 +52,11 @@ export default function SearchPage() {
 
   const getFilteredResults = () => {
     switch (selectedTab) {
-      case 0:
-        return { compounds: results.compounds, brands: [] };
       case 1:
-        return { compounds: [], brands: results.brands };
+        return { compounds: results.compounds, brands: [] };
       case 2:
+        return { compounds: [], brands: results.brands };
+      case 0:
       default:
         return { compounds: results.compounds, brands: results.brands };
     }
@@ -77,9 +77,9 @@ export default function SearchPage() {
 
   const getPlaceholder = () => {
     switch (selectedTab) {
-      case 0:
-        return 'Buscar principio activo...';
       case 1:
+        return 'Buscar principio activo...';
+      case 2:
         return 'Buscar marca comercial o genérico...';
       default:
         return 'Buscar medicamento o compuesto...';
@@ -112,6 +112,19 @@ export default function SearchPage() {
               )
             }
           >
+            TODOS
+          </Tab>
+          <Tab
+            className={({ selected }) =>
+              classNames(
+                'w-full py-2.5 text-sm font-medium leading-5 rounded-lg transition-all',
+                'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-farmateca-primary ring-white ring-opacity-60',
+                selected
+                  ? 'bg-white text-farmateca-primary shadow'
+                  : 'text-gray-600 hover:bg-white/50 hover:text-gray-900'
+              )
+            }
+          >
             COMPUESTOS
           </Tab>
           <Tab
@@ -126,19 +139,6 @@ export default function SearchPage() {
             }
           >
             MARCAS
-          </Tab>
-          <Tab
-            className={({ selected }) =>
-              classNames(
-                'w-full py-2.5 text-sm font-medium leading-5 rounded-lg transition-all',
-                'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-farmateca-primary ring-white ring-opacity-60',
-                selected
-                  ? 'bg-white text-farmateca-primary shadow'
-                  : 'text-gray-600 hover:bg-white/50 hover:text-gray-900'
-              )
-            }
-          >
-            TODOS
           </Tab>
         </TabList>
       </TabGroup>

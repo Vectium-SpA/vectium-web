@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Tab, TabGroup, TabList, TabPanels, TabPanel } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import { SearchBar, BrandCard, UpcomingCard, UpcomingSeparator } from '@/components/farmateca/clinical';
-import { PremiumGuard } from '@/components/farmateca/app/PremiumGuard';
+import { PremiumSection } from '@/components/farmateca/app/PremiumSection';
 import { useIsPremium } from '@/lib/farmateca/store/auth-store';
 import { fetchBrands } from '@/lib/farmateca/api/brands';
 import { BrandSummary } from '@/lib/farmateca/types';
@@ -230,8 +230,17 @@ export default function BrandSearchPage() {
         <TabPanels>
           {/* Panel 1: Marcas Comerciales - PREMIUM */}
           <TabPanel>
-            <PremiumGuard mode="hide" featureName="Búsqueda por tipo Comercial">
-              <div>
+            <PremiumSection
+              title="Marcas Comerciales"
+              icon={
+                <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                </svg>
+              }
+              featureName="Búsqueda por tipo Comercial"
+              defaultOpen={true}
+            >
+              <div className="p-4">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
                   <SearchBar onSearch={handleSearchCommercial} placeholder="Buscar marca comercial..." isLoading={isLoadingCommercial} />
                 </motion.div>
@@ -279,13 +288,22 @@ export default function BrandSearchPage() {
                   </div>
                 )}
               </div>
-            </PremiumGuard>
+            </PremiumSection>
           </TabPanel>
 
           {/* Panel 2: Genéricos - PREMIUM */}
           <TabPanel>
-            <PremiumGuard mode="hide" featureName="Búsqueda por tipo Genérico">
-              <div>
+            <PremiumSection
+              title="Medicamentos Genéricos"
+              icon={
+                <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              }
+              featureName="Búsqueda por tipo Genérico"
+              defaultOpen={true}
+            >
+              <div className="p-4">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
                   <SearchBar onSearch={handleSearchGeneric} placeholder="Buscar genérico..." isLoading={isLoadingGeneric} />
                 </motion.div>
@@ -333,13 +351,22 @@ export default function BrandSearchPage() {
                   </div>
                 )}
               </div>
-            </PremiumGuard>
+            </PremiumSection>
           </TabPanel>
 
           {/* Panel 3: Por Laboratorio (Premium) */}
           <TabPanel>
-            <PremiumGuard mode="blur" featureName="Filtros por laboratorio">
-              <div className="space-y-6">
+            <PremiumSection
+              title="Por Laboratorio"
+              icon={
+                <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+              }
+              featureName="Filtros por laboratorio"
+              defaultOpen={true}
+            >
+              <div className="space-y-6 p-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Seleccionar laboratorio
@@ -383,7 +410,7 @@ export default function BrandSearchPage() {
                   </div>
                 )}
               </div>
-            </PremiumGuard>
+            </PremiumSection>
           </TabPanel>
         </TabPanels>
       </TabGroup>

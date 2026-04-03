@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Tab, TabGroup, TabList, TabPanels, TabPanel } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import { SearchBar, CompoundCard, UpcomingCard, UpcomingSeparator } from '@/components/farmateca/clinical';
-import { PremiumGuard } from '@/components/farmateca/app/PremiumGuard';
+import { PremiumSection } from '@/components/farmateca/app/PremiumSection';
 import { fetchCompounds } from '@/lib/farmateca/api/compounds';
 import { CompoundSummary } from '@/lib/farmateca/types';
 import { LoadingSpinner, CompoundCardSkeletonList } from '@/components/farmateca/shared';
@@ -362,8 +362,17 @@ export default function CompoundSearchPage() {
 
           {/* Panel 2: Por Familia (Premium) */}
           <TabPanel>
-            <PremiumGuard mode="blur" featureName="Filtros por familia terapéutica">
-              <div className="space-y-6">
+            <PremiumSection
+              title="Por Familia Farmacológica"
+              icon={
+                <svg className="w-5 h-5 text-farmateca-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              }
+              featureName="Filtros por familia terapéutica"
+              defaultOpen={true}
+            >
+              <div className="space-y-6 p-4">
                 {/* Dropdown de familias */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -408,7 +417,7 @@ export default function CompoundSearchPage() {
                   </div>
                 )}
               </div>
-            </PremiumGuard>
+            </PremiumSection>
           </TabPanel>
         </TabPanels>
       </TabGroup>
