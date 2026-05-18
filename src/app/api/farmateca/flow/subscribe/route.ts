@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { flowPost, FLOW_PLAN_IDS } from '@/lib/farmateca/flow/flow-client';
+import { getAdminDb } from '@/lib/farmateca/firebase/admin';
+import { FieldValue } from 'firebase-admin/firestore';
 
 interface FlowSubscribeResult {
   subscriptionId: string;
@@ -34,14 +36,29 @@ export async function POST(req: NextRequest) {
       planId,
       email,
       name: name ?? email.split('@')[0],
-      // Flow redirige aquí después del pago
+      // uid como customerId para que el webhook pueda identificar al usuario
+      customerId: uid,
       urlReturn: `${appUrl}/farmateca/web/app/payment-return?plan=${plan}`,
-      // Flow notifica aquí en cada cobro (inicial + renovaciones)
       urlConfirmation: `${appUrl}/api/farmateca/flow/webhook`,
     });
 
     if (!result.url || !result.token) {
       throw new Error('Flow no devolvió URL de pago válida');
+    }
+
+    // Guardar mapping subscriptionId → {uid, plan} para el webhook
+    try {
+      const db = getAdminDb();
+      await db.collection('flow_subscriptions').doc(result.subscriptionId).set({
+        uid,
+        plan,
+        email,
+        planId,
+        createdAt: FieldValue.serverTimestamp(),
+      });
+    } catch (dbErr) {
+      // No bloquear el flujo de pago si falla el guardado del mapping
+      console.error('[Flow Subscribe] Error guardando mapping en Firestore:', dbErr);
     }
 
     return NextResponse.json({

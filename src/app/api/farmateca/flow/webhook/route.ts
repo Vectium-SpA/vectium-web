@@ -1,31 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyFlowSignature, flowGet } from '@/lib/farmateca/flow/flow-client';
+import { verifyFlowSignature, flowGet, FLOW_PLAN_IDS } from '@/lib/farmateca/flow/flow-client';
+import { getAdminDb } from '@/lib/farmateca/firebase/admin';
+import { FieldValue } from 'firebase-admin/firestore';
 
-interface FlowSubscriptionEvent {
-  subscriptionId: string;
-  planId: string;
-  status: number;
-  customerId: string;
-  currentPeriodStart?: string;
-  currentPeriodEnd?: string;
+interface FlowPaymentStatus {
+  status: number; // 1=pendiente, 2=pagado, 3=rechazado, 4=cancelado
+  amount: number;
+  currency: string;
+  commerceOrder: string;
+  subject?: string;
+  email?: string;
+  customerId?: string;
+  subscription?: {
+    subscriptionId: string;
+    planId: string;
+    status: number;
+    currentPeriodStart?: string;
+    currentPeriodEnd?: string;
+  };
 }
 
 /**
  * Webhook de Flow — recibe notificaciones de pagos y renovaciones.
- *
  * Flow llama aquí con POST en cada evento de cobro (inicial + renovaciones).
- * Se verifica la firma HMAC antes de procesar.
- *
- * TODO Phase 2: Actualizar Firestore para renovaciones usando Firebase Admin SDK.
  */
 export async function POST(req: NextRequest) {
   try {
     const body = await req.text();
     const params = Object.fromEntries(new URLSearchParams(body));
 
-    // ── Verificar firma HMAC de Flow ──────────────────────────
+    // Verificar firma HMAC de Flow
     if (!verifyFlowSignature(params)) {
-      console.error('[Flow Webhook] Firma HMAC inválida. Posible request fraudulento.');
+      console.error('[Flow Webhook] Firma HMAC inválida.');
       return NextResponse.json({ error: 'Firma inválida' }, { status: 401 });
     }
 
@@ -36,44 +42,76 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Token requerido' }, { status: 400 });
     }
 
-    // ── Obtener detalles de la suscripción ────────────────────
-    const subscription = await flowGet<FlowSubscriptionEvent>(
-      '/subscription/get',
-      { subscriptionId: token }
-    );
+    // Obtener detalles del PAGO por token (no subscription/get)
+    const payment = await flowGet<FlowPaymentStatus>('/payment/getStatusByToken', { token });
 
-    const isActive = subscription.status === 1;
+    // Solo procesar pagos confirmados
+    if (payment.status !== 2) {
+      console.log('[Flow Webhook] Pago no confirmado, status:', payment.status);
+      return NextResponse.json({ received: true, status: payment.status });
+    }
 
-    console.log('[Flow Webhook] Evento recibido:', {
-      subscriptionId: subscription.subscriptionId,
-      planId: subscription.planId,
-      status: subscription.status,
-      isActive,
-      customerId: subscription.customerId,
+    const subscriptionId = payment.subscription?.subscriptionId;
+    const flowPlanId = payment.subscription?.planId;
+
+    if (!subscriptionId) {
+      console.warn('[Flow Webhook] Pago sin subscriptionId asociado:', token);
+      return NextResponse.json({ received: true });
+    }
+
+    // Determinar plan desde planId de Flow
+    const plan: 'monthly' | 'yearly' =
+      flowPlanId === FLOW_PLAN_IDS.monthly ? 'monthly' : 'yearly';
+
+    // Calcular fecha de término según el plan
+    const now = new Date();
+    const endDate = new Date(now);
+    if (plan === 'monthly') {
+      endDate.setMonth(endDate.getMonth() + 1);
+    } else {
+      endDate.setFullYear(endDate.getFullYear() + 1);
+    }
+
+    const db = getAdminDb();
+
+    // Buscar uid: primero por customerId (= uid pasado en /subscribe)
+    // Si no, por el mapping en flow_subscriptions
+    let uid: string | null = payment.customerId ?? null;
+
+    if (!uid) {
+      const mappingDoc = await db.collection('flow_subscriptions').doc(subscriptionId).get();
+      if (mappingDoc.exists) {
+        uid = (mappingDoc.data() as { uid: string }).uid;
+      }
+    }
+
+    if (!uid) {
+      console.error('[Flow Webhook] No se pudo identificar al usuario para subscriptionId:', subscriptionId);
+      return NextResponse.json({ received: true, error: 'Usuario no encontrado' });
+    }
+
+    // Actualizar suscripción del usuario en Firestore
+    await db.collection('users').doc(uid).update({
+      'suscripcion.plan': plan,
+      'suscripcion.is_active': true,
+      'suscripcion.fecha_inicio': FieldValue.serverTimestamp(),
+      'suscripcion.fecha_termino': endDate,
+      'suscripcion.flow_subscription_id': subscriptionId,
     });
 
-    // ── TODO Phase 2: Actualizar Firestore para renovaciones ──
-    // Necesita Firebase Admin SDK para poder escribir server-side sin auth.
-    // Por ahora el pago inicial se confirma vía /payment-return page.
-    //
-    // Implementación futura:
-    // if (isActive) {
-    //   await adminFirestore.collection('users')
-    //     .where('flow_customer_id', '==', subscription.customerId)
-    //     .get()
-    //     .then(snapshot => {
-    //       snapshot.forEach(doc => {
-    //         doc.ref.update({ 'suscripcion.plan': ..., 'suscripcion.is_active': true });
-    //       });
-    //     });
-    // }
+    // Actualizar mapping con última renovación
+    await db.collection('flow_subscriptions').doc(subscriptionId).set(
+      { uid, plan, lastRenewedAt: FieldValue.serverTimestamp() },
+      { merge: true }
+    );
 
-    // Siempre responder 200 para que Flow no reintente
-    return NextResponse.json({ received: true, subscriptionId: subscription.subscriptionId });
+    console.log('[Flow Webhook] Suscripción activada/renovada:', { uid, plan, subscriptionId });
+
+    return NextResponse.json({ received: true, subscriptionId });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Error desconocido';
     console.error('[Flow Webhook] Error:', msg);
-    // Responder 200 de todas formas para evitar reintentos de Flow en errores internos
+    // Responder 200 para evitar reintentos de Flow en errores internos
     return NextResponse.json({ received: true, error: msg });
   }
 }

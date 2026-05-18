@@ -1,19 +1,18 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsPremium, useHasUsedTrial } from '@/lib/farmateca/store/auth-store';
-import { getNLPEngine, ChatMessage } from '@/lib/farmateca/chatbot/nlp-engine';
+import { getNLPEngine, type ChatMessage } from '@/lib/farmateca/chatbot/nlp-engine';
 
-// ─── Quick suggestions ────────────────────────────────────────────
+// ─── Default quick suggestions ────────────────────────────────────
 
-const QUICK_SUGGESTIONS = [
-  { label: 'Paracetamol', query: '¿Para qué sirve el paracetamol?' },
-  { label: 'Ibuprofeno', query: '¿Cuál es la dosis del ibuprofeno?' },
-  { label: 'Antibióticos', query: 'Buscar antibióticos' },
-  { label: 'Ayuda', query: 'ayuda' },
+const DEFAULT_SUGGESTIONS = [
+  { label: '💊 Paracetamol', query: '¿Para qué sirve el paracetamol?' },
+  { label: '🤕 Fiebre', query: '¿Qué tomo para la fiebre?' },
+  { label: '🦠 Antibióticos', query: 'Buscar antibióticos' },
+  { label: '❓ Ayuda', query: 'ayuda' },
 ];
 
 // ─── Typing indicator ──────────────────────────────────────────────
@@ -21,7 +20,6 @@ const QUICK_SUGGESTIONS = [
 function TypingIndicator() {
   return (
     <div className="flex items-end gap-3 mb-4">
-      {/* Bot avatar */}
       <div
         className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center"
         style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
@@ -47,9 +45,94 @@ function TypingIndicator() {
   );
 }
 
+// ─── Rich text renderer — primera línea en negrita si ≤80 chars ───
+
+function RichText({ text }: { text: string }) {
+  const lines = text.split('\n');
+  const firstLine = lines[0];
+  const rest = lines.slice(1).join('\n');
+  const isTitleLine = firstLine.length <= 80 && !firstLine.startsWith('•');
+
+  if (!isTitleLine || lines.length === 1) {
+    return <span className="whitespace-pre-line">{text}</span>;
+  }
+
+  return (
+    <>
+      <span className="font-semibold">{firstLine}</span>
+      {rest && <span className="whitespace-pre-line">{'\n' + rest}</span>}
+    </>
+  );
+}
+
+// ─── Action chips under medication responses ───────────────────────
+
+function ActionChips({ medicationName, onSend }: { medicationName: string; onSend: (q: string) => void }) {
+  const chips = [
+    { label: '🎯 Para qué sirve', query: `¿Para qué sirve el ${medicationName}?` },
+    { label: '💊 Dosis', query: `Dosis del ${medicationName}` },
+    { label: '⚠️ Efectos', query: `Efectos adversos del ${medicationName}` },
+    { label: '🚫 Contraindicaciones', query: `Contraindicaciones del ${medicationName}` },
+  ];
+
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-2">
+      {chips.map(chip => (
+        <button
+          key={chip.label}
+          onClick={() => onSend(chip.query)}
+          className="text-xs px-2.5 py-1 rounded-full border transition-colors"
+          style={{
+            borderColor: 'var(--farmateca-primary)',
+            color: 'var(--farmateca-primary)',
+            backgroundColor: 'transparent',
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--farmateca-primary)';
+            (e.currentTarget as HTMLButtonElement).style.color = 'white';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
+            (e.currentTarget as HTMLButtonElement).style.color = 'var(--farmateca-primary)';
+          }}
+        >
+          {chip.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ─── Suggestion chips (medicationList / suggestions types) ────────
+
+function MedChips({ meds, onSend }: { meds: string[]; onSend: (q: string) => void }) {
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-2">
+      {meds.slice(0, 5).map(med => (
+        <button
+          key={med}
+          onClick={() => onSend(`¿Para qué sirve el ${med}?`)}
+          className="text-xs px-2.5 py-1 rounded-full border transition-colors flex items-center gap-1"
+          style={{ borderColor: 'var(--farmateca-primary)', color: 'var(--farmateca-primary)', backgroundColor: 'transparent' }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--farmateca-primary)';
+            (e.currentTarget as HTMLButtonElement).style.color = 'white';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
+            (e.currentTarget as HTMLButtonElement).style.color = 'var(--farmateca-primary)';
+          }}
+        >
+          💊 {med}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // ─── Message bubble ────────────────────────────────────────────────
 
-function MessageBubble({ msg }: { msg: ChatMessage }) {
+function MessageBubble({ msg, onSend }: { msg: ChatMessage; onSend: (q: string) => void }) {
   const isUser = msg.isUser;
   const time = msg.timestamp.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
 
@@ -74,6 +157,9 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
     );
   }
 
+  const medicationName = msg.metadata?.medicationName as string | undefined;
+  const suggestedMeds = msg.metadata?.suggestedMeds as string[] | undefined;
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -93,7 +179,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
       </div>
       <div className="max-w-xs sm:max-w-md">
         <div
-          className={`px-4 py-3 rounded-2xl rounded-bl-sm text-sm leading-relaxed whitespace-pre-line shadow-sm border
+          className={`px-4 py-3 rounded-2xl rounded-bl-sm text-sm leading-relaxed shadow-sm border
             ${msg.type === 'error'
               ? 'bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800 text-red-700 dark:text-red-300'
               : msg.type === 'system'
@@ -101,15 +187,26 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
               : 'bg-white dark:bg-farmateca-gray-800 border-gray-100 dark:border-farmateca-gray-700 text-gray-800 dark:text-gray-200'
             }`}
         >
-          {msg.text}
+          <RichText text={msg.text} />
         </div>
+
+        {/* Chips de acción bajo respuestas de medicamento */}
+        {msg.type === 'medicationDetail' && medicationName && !medicationName.includes(' vs ') && (
+          <ActionChips medicationName={medicationName} onSend={onSend} />
+        )}
+
+        {/* Chips de medicamentos sugeridos bajo listas */}
+        {(msg.type === 'medicationList' || msg.type === 'suggestions') && suggestedMeds && suggestedMeds.length > 0 && (
+          <MedChips meds={suggestedMeds} onSend={onSend} />
+        )}
+
         <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 px-1">{time}</p>
       </div>
     </motion.div>
   );
 }
 
-// ─── Paywall screen (for free users) ──────────────────────────────
+// ─── Paywall screen ────────────────────────────────────────────────
 
 function PaywallScreen({ hasUsedTrial }: { hasUsedTrial: boolean }) {
   return (
@@ -163,7 +260,6 @@ function PaywallScreen({ hasUsedTrial }: { hasUsedTrial: boolean }) {
 // ─── Main chat UI ──────────────────────────────────────────────────
 
 export default function ChatPage() {
-  const router = useRouter();
   const isPremium = useIsPremium();
   const hasUsedTrial = useHasUsedTrial();
 
@@ -174,17 +270,13 @@ export default function ChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Init: welcome message + preload data
   useEffect(() => {
     if (!isPremium) return;
     const engine = getNLPEngine();
-    const welcome = engine.getWelcomeMessage();
-    setMessages([welcome]);
-    // Preload data in background
+    setMessages([engine.getWelcomeMessage()]);
     engine.loadData().then(() => setEngineReady(true));
   }, [isPremium]);
 
-  // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
@@ -204,7 +296,6 @@ export default function ChatPage() {
     setInput('');
     setIsTyping(true);
 
-    // Simulate small delay for UX
     await new Promise(r => setTimeout(r, 600 + Math.random() * 400));
 
     const engine = getNLPEngine();
@@ -212,6 +303,19 @@ export default function ChatPage() {
     setIsTyping(false);
     setMessages(prev => [...prev, response]);
   }, [isTyping]);
+
+  // Sugerencias contextuales: basadas en el último medicamento encontrado
+  const getContextualSuggestions = () => {
+    const engine = getNLPEngine();
+    const active = engine.activeMedication;
+    if (active) {
+      return engine.getSuggestionsForMedication(active).map((q, i) => ({
+        label: ['🎯 Para qué sirve', '💊 Dosis', '⚠️ Efectos', '🚫 Contraindicaciones'][i] ?? q,
+        query: q,
+      }));
+    }
+    return DEFAULT_SUGGESTIONS;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -229,6 +333,8 @@ export default function ChatPage() {
     const engine = getNLPEngine();
     setMessages([engine.getWelcomeMessage()]);
   };
+
+  const suggestions = getContextualSuggestions();
 
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] max-w-2xl mx-auto -mt-4">
@@ -274,40 +380,39 @@ export default function ChatPage() {
           <div className="flex-1 overflow-y-auto px-2 py-2 space-y-0">
             <AnimatePresence>
               {messages.map(msg => (
-                <MessageBubble key={msg.id} msg={msg} />
+                <MessageBubble key={msg.id} msg={msg} onSend={sendMessage} />
               ))}
             </AnimatePresence>
             {isTyping && <TypingIndicator />}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick suggestions */}
-          {messages.length <= 1 && (
-            <div className="flex gap-2 overflow-x-auto py-2 px-1 scrollbar-hide">
-              {QUICK_SUGGESTIONS.map(s => (
-                <button
-                  key={s.label}
-                  onClick={() => sendMessage(s.query)}
-                  className="flex-shrink-0 text-xs px-3 py-1.5 rounded-full border transition-colors"
-                  style={{
-                    borderColor: 'var(--farmateca-primary)',
-                    color: 'var(--farmateca-primary)',
-                    backgroundColor: 'transparent',
-                  }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--farmateca-primary)';
-                    (e.currentTarget as HTMLButtonElement).style.color = 'white';
-                  }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-                    (e.currentTarget as HTMLButtonElement).style.color = 'var(--farmateca-primary)';
-                  }}
-                >
-                  {s.label}
-                </button>
-              ))}
-            </div>
-          )}
+          {/* Quick / contextual suggestions */}
+          <div className="flex gap-2 overflow-x-auto py-2 px-1 scrollbar-hide">
+            {suggestions.map(s => (
+              <button
+                key={s.label}
+                onClick={() => sendMessage(s.query)}
+                disabled={isTyping}
+                className="flex-shrink-0 text-xs px-3 py-1.5 rounded-full border transition-colors disabled:opacity-40"
+                style={{
+                  borderColor: 'var(--farmateca-primary)',
+                  color: 'var(--farmateca-primary)',
+                  backgroundColor: 'transparent',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--farmateca-primary)';
+                  (e.currentTarget as HTMLButtonElement).style.color = 'white';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
+                  (e.currentTarget as HTMLButtonElement).style.color = 'var(--farmateca-primary)';
+                }}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
 
           {/* Input */}
           <form

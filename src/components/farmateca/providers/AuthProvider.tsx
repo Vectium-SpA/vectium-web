@@ -5,9 +5,13 @@ import { onAuthStateChange, parseFirestoreUserData } from '@/lib/farmateca/fireb
 import { useAuthStore } from '@/lib/farmateca/store/auth-store';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/farmateca/firebase/config';
+import { useSyncRevenueCat } from '@/lib/farmateca/revenuecat/hooks';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { setUser, setUserData, setLoading } = useAuthStore();
+
+  // Sincroniza entitlements de RevenueCat al estado local (paridad con app móvil)
+  useSyncRevenueCat();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChange(async (user) => {

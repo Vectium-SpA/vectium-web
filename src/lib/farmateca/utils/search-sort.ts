@@ -1,15 +1,26 @@
 /**
  * Algoritmo de ordenamiento de resultados de búsqueda.
- * Réplica EXACTA de la lógica Flutter con 4 niveles de prioridad:
+ * 4 niveles de prioridad + scoring de relevancia:
  *
- * Nivel 1: Disponibles + coincidencia por NOMBRE → alfabético
- * Nivel 2: Disponibles + coincidencia por otros campos → alfabético
- * Nivel 3: Separador visual (flag hasUpcoming)
- * Nivel 4: Próximamente → alfabético
+ * Nivel 1 (score 3): Disponibles + nombre empieza con query
+ * Nivel 2 (score 2): Disponibles + nombre empieza con query tras espacio/guion
+ * Nivel 3 (score 1): Disponibles + nombre contiene query
+ * Nivel 4: Próximamente → al final, alfabético
  */
 
 import type { CompoundSummary } from '@/lib/farmateca/types/compound';
 import type { BrandSummary } from '@/lib/farmateca/types/brand';
+
+/** Calcula el score de relevancia de un nombre respecto al query (mayor = mejor match). */
+function nameScore(name: string, query: string): number {
+  const n = name.toLowerCase();
+  const q = query.toLowerCase();
+  if (n.startsWith(q)) return 3;
+  // Empieza tras espacio o guion (inicio de palabra)
+  if (new RegExp(`(?<=\\s|-)${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`).test(n)) return 2;
+  if (n.includes(q)) return 1;
+  return 0;
+}
 
 /**
  * Resultado del algoritmo de ordenamiento.
@@ -49,21 +60,14 @@ export function sortCompoundResults(
     }
   }
 
-  // Ordenar disponibles: Nivel 1 (nombre match) antes de Nivel 2 (otros), ambos alfabéticos
+  // Ordenar disponibles por score de relevancia, luego alfabético dentro de mismo score
   if (normalizedQuery) {
     available.sort((a, b) => {
-      const aNameMatch = a.pa.toLowerCase().includes(normalizedQuery);
-      const bNameMatch = b.pa.toLowerCase().includes(normalizedQuery);
-
-      // Name matches primero
-      if (aNameMatch && !bNameMatch) return -1;
-      if (!aNameMatch && bNameMatch) return 1;
-
-      // Dentro del mismo nivel, alfabético
+      const diff = nameScore(b.pa, normalizedQuery) - nameScore(a.pa, normalizedQuery);
+      if (diff !== 0) return diff;
       return a.pa.localeCompare(b.pa, 'es');
     });
   } else {
-    // Sin query, simplemente alfabético
     available.sort((a, b) => a.pa.localeCompare(b.pa, 'es'));
   }
 
@@ -102,21 +106,14 @@ export function sortBrandResults(
     }
   }
 
-  // Ordenar disponibles: Nivel 1 (nombre match) antes de Nivel 2 (otros), ambos alfabéticos
+  // Ordenar disponibles por score de relevancia, luego alfabético dentro de mismo score
   if (normalizedQuery) {
     available.sort((a, b) => {
-      const aNameMatch = a.ma.toLowerCase().includes(normalizedQuery);
-      const bNameMatch = b.ma.toLowerCase().includes(normalizedQuery);
-
-      // Name matches primero
-      if (aNameMatch && !bNameMatch) return -1;
-      if (!aNameMatch && bNameMatch) return 1;
-
-      // Dentro del mismo nivel, alfabético
+      const diff = nameScore(b.ma, normalizedQuery) - nameScore(a.ma, normalizedQuery);
+      if (diff !== 0) return diff;
       return a.ma.localeCompare(b.ma, 'es');
     });
   } else {
-    // Sin query, simplemente alfabético
     available.sort((a, b) => a.ma.localeCompare(b.ma, 'es'));
   }
 

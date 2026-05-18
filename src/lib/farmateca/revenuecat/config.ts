@@ -1,90 +1,81 @@
+'use client';
+
 /**
- * RevenueCat Web SDK Configuration (STUB)
- * Unified subscriptions for mobile (Flutter) + web (Next.js)
- *
- * Project: Vectium SpA / Farmateca
+ * RevenueCat Web SDK — Farmateca
  * Dashboard: https://app.revenuecat.com/projects/fa1ef75c/overview
  *
- * NOTE: This is a stub implementation. The actual @revenuecat/purchases-js
- * dependency will be added when RevenueCat integration is activated.
- * For now, all functions are no-ops that log warnings.
+ * Requiere: NEXT_PUBLIC_FARMATECA_REVENUECAT_WEB_KEY en .env.local
+ * Crear en: RevenueCat Dashboard → Apps → Add new app → Web → Public API Key
  */
 
-// RevenueCat API Key (Web platform)
-const REVENUECAT_WEB_API_KEY = process.env.NEXT_PUBLIC_FARMATECA_REVENUECAT_WEB_KEY || '';
+import { Purchases, type CustomerInfo } from '@revenuecat/purchases-js';
 
-if (!REVENUECAT_WEB_API_KEY && typeof window !== 'undefined') {
-  console.warn(
-    '[Farmateca RevenueCat] Missing NEXT_PUBLIC_FARMATECA_REVENUECAT_WEB_KEY. ' +
-    'Get it from RevenueCat Dashboard → Apps → Web → Public API Key. ' +
-    'Subscription features will be disabled.'
-  );
+const REVENUECAT_WEB_API_KEY = process.env.NEXT_PUBLIC_FARMATECA_REVENUECAT_WEB_KEY ?? '';
+
+export const REVENUECAT_CONFIG = {
+  entitlementId: 'premium',
+  offeringId: 'default',
+} as const;
+
+export function isRevenueCatConfigured(): boolean {
+  return Boolean(REVENUECAT_WEB_API_KEY);
 }
 
 /**
- * Initialize RevenueCat SDK (client-side only)
- * STUB: Logs a warning and returns. Will be implemented when dependency is added.
+ * Inicializa RevenueCat Web SDK con el uid de Firebase.
+ * Llama esto una vez al hacer login. No-op si falta la API key.
  */
 export function initializeRevenueCat(userId: string): void {
-  if (typeof window === 'undefined') return; // Server-side guard
-
+  if (typeof window === 'undefined') return;
   if (!REVENUECAT_WEB_API_KEY) {
-    console.warn('[Farmateca RevenueCat] Not configured. Skipping initialization.');
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        '[Farmateca RC] NEXT_PUBLIC_FARMATECA_REVENUECAT_WEB_KEY no configurado. ' +
+        'Crea una app Web en RevenueCat Dashboard para activar esta integración.'
+      );
+    }
     return;
   }
 
-  // TODO: Uncomment when @revenuecat/purchases-js is installed
-  // import { Purchases } from '@revenuecat/purchases-js';
-  // Purchases.configure({
-  //   apiKey: REVENUECAT_WEB_API_KEY,
-  //   appUserId: userId,
-  // });
-
-  console.log('[Farmateca RevenueCat] Stub initialized for user:', userId);
+  try {
+    if (!Purchases.isConfigured()) {
+      Purchases.configure(REVENUECAT_WEB_API_KEY, userId);
+    }
+  } catch (e) {
+    console.warn('[Farmateca RC] Error al inicializar:', e);
+  }
 }
 
 /**
- * Get customer info (subscription status, entitlements)
- * STUB: Returns null. Will be implemented when dependency is added.
+ * Obtiene la info del cliente (entitlements activos).
+ * Retorna null si RevenueCat no está configurado o hay error.
  */
-export async function getCustomerInfo(): Promise<any> {
-  console.warn('[Farmateca RevenueCat] getCustomerInfo() is a stub. Returning null.');
-  return null;
+export async function getCustomerInfo(): Promise<CustomerInfo | null> {
+  if (!REVENUECAT_WEB_API_KEY) return null;
+  try {
+    return await Purchases.getSharedInstance().getCustomerInfo();
+  } catch {
+    return null;
+  }
 }
 
 /**
- * Get current offerings (packages available for purchase)
- * STUB: Returns null. Will be implemented when dependency is added.
+ * Verifica si el usuario tiene el entitlement 'premium' activo en RevenueCat.
  */
-export async function getCurrentOfferings(): Promise<any> {
-  console.warn('[Farmateca RevenueCat] getCurrentOfferings() is a stub. Returning null.');
-  return null;
-}
-
-/**
- * Purchase a package
- * STUB: Returns null. Will be implemented when dependency is added.
- */
-export async function purchasePackage(packageToPurchase: any): Promise<any> {
-  console.warn('[Farmateca RevenueCat] purchasePackage() is a stub. Returning null.');
-  return null;
-}
-
-/**
- * Check if user has active premium subscription
- * STUB: Returns false. Will be implemented when dependency is added.
- */
-export function isUserPremium(customerInfo: any): boolean {
+export function isUserPremium(customerInfo: CustomerInfo | null): boolean {
   if (!customerInfo) return false;
-  // Verificar entitlement "premium" (configurado en dashboard)
-  const entitlement = customerInfo?.entitlements?.active?.['premium'];
-  return !!entitlement;
+  return customerInfo.entitlements.active[REVENUECAT_CONFIG.entitlementId]?.isActive === true;
 }
 
 /**
- * RevenueCat configuration constants
+ * Obtiene el plan del usuario desde RevenueCat ('monthly' | 'yearly' | null).
  */
-export const REVENUECAT_CONFIG = {
-  entitlementId: 'premium', // Debe coincidir con dashboard
-  offeringId: 'default', // Offering configurado en dashboard
-};
+export function getUserPlan(customerInfo: CustomerInfo | null): 'monthly' | 'yearly' | null {
+  if (!customerInfo) return null;
+  const entitlement = customerInfo.entitlements.active[REVENUECAT_CONFIG.entitlementId];
+  if (!entitlement?.isActive) return null;
+  const productId = entitlement.productIdentifier ?? '';
+  return productId.includes('annual') || productId.includes('yearly') || productId === 'Anual'
+    ? 'yearly'
+    : 'monthly';
+}

@@ -1,30 +1,42 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getCustomerInfo, isUserPremium } from './config';
+import { useEffect, useRef } from 'react';
+import { useAuthStore } from '@/lib/farmateca/store/auth-store';
+import { initializeRevenueCat, getCustomerInfo, isUserPremium, getUserPlan } from './config';
 
 /**
- * Hook para verificar estado de suscripción via RevenueCat.
- * STUB: Returns isPremium=false until RevenueCat is fully integrated.
+ * Hook que inicializa RevenueCat y sincroniza el estado premium al store.
+ * Llámalo UNA VEZ en el AuthProvider.
+ *
+ * Si RevenueCat dice premium pero Firestore no, actualiza el estado local
+ * para que useIsPremium() refleje correctamente (paridad con la app móvil).
  */
-export function useRevenueCatSubscription() {
-  const [isPremium, setIsPremium] = useState(false);
-  const [loading, setLoading] = useState(true);
+export function useSyncRevenueCat(): void {
+  const user = useAuthStore((s) => s.user);
+  const userData = useAuthStore((s) => s.userData);
+  const updateLocalSubscription = useAuthStore((s) => s.updateLocalSubscription);
+  const synced = useRef(false);
 
   useEffect(() => {
-    async function checkSubscription() {
-      try {
-        const customerInfo = await getCustomerInfo();
-        setIsPremium(isUserPremium(customerInfo));
-      } catch (error) {
-        console.error('[Farmateca RevenueCat] Error checking subscription:', error);
-      } finally {
-        setLoading(false);
+    if (!user || synced.current) return;
+
+    initializeRevenueCat(user.uid);
+
+    getCustomerInfo().then((info) => {
+      if (!info) return;
+      const rcPremium = isUserPremium(info);
+      const firestorePremium = userData?.suscripcion?.isActive ?? false;
+
+      if (rcPremium && !firestorePremium) {
+        const plan = getUserPlan(info) ?? 'monthly';
+        updateLocalSubscription(plan, true);
       }
-    }
 
-    checkSubscription();
-  }, []);
-
-  return { isPremium, loading };
+      synced.current = true;
+    }).catch(() => {
+      synced.current = true;
+    });
+  // userData excluido de deps a propósito: solo queremos sincronizar una vez al login
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, updateLocalSubscription]);
 }
