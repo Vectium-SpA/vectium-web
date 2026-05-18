@@ -163,7 +163,9 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
                   {userData?.alias || userData?.nombre || user.displayName || 'Usuario'}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  {userData?.profesion || 'Profesional de salud'}
+                  {userData?.nivel && userData?.area
+                    ? `${userData.nivel} - ${userData.area}`
+                    : userData?.nivel || userData?.area || 'Profesional de salud'}
                 </p>
               </div>
 
