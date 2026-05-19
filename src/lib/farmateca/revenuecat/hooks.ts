@@ -2,41 +2,42 @@
 
 import { useEffect, useRef } from 'react';
 import { useAuthStore } from '@/lib/farmateca/store/auth-store';
-import { initializeRevenueCat, getCustomerInfo, isUserPremium, getUserPlan } from './config';
+import { checkRevenueCatPremium } from './config';
 
 /**
- * Hook que inicializa RevenueCat y sincroniza el estado premium al store.
- * Llámalo UNA VEZ en el AuthProvider.
+ * Sincroniza el estado premium de RevenueCat al store de Zustand.
+ * Llámalo una vez en el AuthProvider.
  *
- * Si RevenueCat dice premium pero Firestore no, actualiza el estado local
- * para que useIsPremium() refleje correctamente (paridad con la app móvil).
+ * Si RC dice premium pero Firestore no → llama updateLocalSubscription
+ * para que useIsPremium() refleje correctamente (paridad web↔móvil).
+ *
+ * Espera a que userData esté cargado desde Firestore antes de comparar,
+ * evitando una race condition donde RC resuelve antes que Firestore.
  */
 export function useSyncRevenueCat(): void {
   const user = useAuthStore((s) => s.user);
   const userData = useAuthStore((s) => s.userData);
   const updateLocalSubscription = useAuthStore((s) => s.updateLocalSubscription);
-  const synced = useRef(false);
+  // Key por uid: evita re-llamar RC si userData cambia por otro motivo
+  const syncedUid = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!user || synced.current) return;
+    // Esperar a que user Y userData estén disponibles (userData carga async desde Firestore)
+    if (!user || !userData) return;
+    // Solo sincronizar una vez por sesión de usuario
+    if (syncedUid.current === user.uid) return;
 
-    initializeRevenueCat(user.uid);
+    syncedUid.current = user.uid;
 
-    getCustomerInfo().then((info) => {
-      if (!info) return;
-      const rcPremium = isUserPremium(info);
-      const firestorePremium = userData?.suscripcion?.isActive ?? false;
+    checkRevenueCatPremium(user.uid).then(({ isPremium, plan }) => {
+      const firestorePremium = userData.suscripcion?.isActive ?? false;
 
-      if (rcPremium && !firestorePremium) {
-        const plan = getUserPlan(info) ?? 'monthly';
-        updateLocalSubscription(plan, true);
+      // Si RC dice premium pero Firestore no lo refleja, actualizar store local
+      if (isPremium && !firestorePremium) {
+        updateLocalSubscription(plan ?? 'monthly', true);
       }
-
-      synced.current = true;
     }).catch(() => {
-      synced.current = true;
+      // Silencioso — no degradar la experiencia si RC falla
     });
-  // userData excluido de deps a propósito: solo queremos sincronizar una vez al login
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, updateLocalSubscription]);
+  }, [user, userData, updateLocalSubscription]);
 }
