@@ -38,7 +38,7 @@ export default async function TerminosPage() {
             </Link>
           </div>
           <p className="mt-2 text-sm text-white/70">
-            Última actualización: Enero 2025
+            Última actualización: Junio 2026
           </p>
         </div>
       </div>

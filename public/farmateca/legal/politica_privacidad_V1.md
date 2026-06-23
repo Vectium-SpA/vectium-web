@@ -1,6 +1,6 @@
 📄 POLÍTICA DE PRIVACIDAD - FARMATECA CHILE
 
-Última actualización: Febrero 2026
+Última actualización: Junio 2026
 
 
 1. IDENTIFICACIÓN DEL RESPONSABLE DEL TRATAMIENTO DE DATOS
@@ -138,7 +138,7 @@ Los datos personales recopilados se utilizan para las siguientes finalidades esp
 Crear y administrar cuentas de usuario.
 
 
-Autenticar el acceso a la Aplicación (login con email/contraseña, Apple ID o cuenta de Google).
+Autenticar el acceso a la Aplicación (login con email/contraseña o Google).
 
 
 Sincronizar datos entre dispositivos (favoritos, configuraciones) mediante Cloud Firestore.
@@ -303,6 +303,12 @@ Información de pago (tarjeta), correo electrónico, dirección de facturación 
 
 
 Política de privacidad de Stripe: https://stripe.com/privacy
+
+6.6. Asistente / Chatbot (procesamiento 100% local)
+
+La función de asistente ("Chatbot") de Farmateca opera de forma totalmente local en el dispositivo del usuario. Las consultas que el usuario escribe se procesan en el propio dispositivo, contra la base de datos local de la Aplicación.
+
+Esta función NO envía las consultas ni ninguna otra información del usuario a servidores externos, ni a servicios de inteligencia artificial de terceros. Los datos asociados al uso del Chatbot no se comparten, transmiten ni almacenan fuera del dispositivo.
 
 
 
@@ -661,4 +667,5 @@ La versión oficial de esta Política de Privacidad es en español. En caso de e
 
 21. FECHA DE ENTRADA EN VIGOR
 
-Esta Política de Privacidad entra en vigor a partir del: 10 de febrero del 2026 - Versión: 1.0
+Esta Política de Privacidad entra en vigor a partir del: 22 de junio del 2026 - Versión: 1.1
+
