@@ -19,7 +19,7 @@ export default function TermsPage() {
               Términos y Condiciones
             </h1>
             <p className="text-xl text-gray-600">
-              Farmateca Chile — Última actualización: Marzo 2026
+              Farmateca Chile — Última actualización: Junio 2026
             </p>
           </motion.div>
 
@@ -51,6 +51,7 @@ export default function TermsPage() {
               <ul className="list-disc list-inside space-y-2 ml-4 text-gray-600">
                 <li><span className="font-medium">No es un Dispositivo Médico:</span> Esta Aplicación no es un dispositivo médico, ni un software de diagnóstico, tratamiento o cura de enfermedades. No cuenta con certificación sanitaria gubernamental para tales fines.</li>
                 <li><span className="font-medium">Herramienta de Referencia:</span> La Aplicación funciona como un recopilador de información para consulta rápida, incluyendo funcionalidades de acceso "offline" a bases de datos de medicamentos.</li>
+                <li><span className="font-medium">Asistente / Chatbot:</span> La Aplicación incluye una función de asistente ("Chatbot") de carácter meramente informativo que opera de forma 100% local en el dispositivo del usuario; no constituye consejo médico ni sustituye el criterio profesional, y no envía las consultas a servidores externos ni a servicios de inteligencia artificial de terceros.</li>
               </ul>
             </section>
 

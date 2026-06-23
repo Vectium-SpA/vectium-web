@@ -19,7 +19,7 @@ export default function PrivacyPage() {
               Política de Privacidad
             </h1>
             <p className="text-xl text-gray-600">
-              Farmateca Chile — Última actualización: Febrero 2026
+              Farmateca Chile — Última actualización: Junio 2026
             </p>
           </motion.div>
 
@@ -280,6 +280,11 @@ export default function PrivacyPage() {
                   <p className="text-gray-600 mb-1">Servicio utilizado: Procesamiento de pagos con tarjeta de crédito/débito en la versión web.</p>
                   <p className="text-gray-600 mb-1">Datos compartidos: Información de pago (tarjeta), correo electrónico, dirección de facturación (procesado exclusivamente por Stripe, NO por Vectium SpA).</p>
                   <p className="text-gray-600">Política de privacidad de Stripe: https://stripe.com/privacy</p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800 mb-2">6.6. Asistente / Chatbot (procesamiento 100% local)</h3>
+                  <p className="text-gray-600 mb-1">La función de asistente ("Chatbot") de Farmateca opera de forma totalmente local en el dispositivo del usuario. Las consultas que el usuario escribe se procesan en el propio dispositivo, contra la base de datos local de la Aplicación.</p>
+                  <p className="text-gray-600">Esta función NO envía las consultas ni ninguna otra información del usuario a servidores externos, ni a servicios de inteligencia artificial de terceros. Los datos asociados al uso del Chatbot no se comparten, transmiten ni almacenan fuera del dispositivo.</p>
                 </div>
               </div>
             </section>
@@ -658,7 +663,7 @@ export default function PrivacyPage() {
                 21. FECHA DE ENTRADA EN VIGOR
               </h2>
               <p className="text-gray-600 leading-relaxed">
-                Esta Política de Privacidad entra en vigor a partir del: 10 de febrero del 2026 - Versión: 1.0
+                Esta Política de Privacidad entra en vigor a partir del: 22 de junio del 2026 - Versión: 1.1
               </p>
             </section>
           </motion.div>
