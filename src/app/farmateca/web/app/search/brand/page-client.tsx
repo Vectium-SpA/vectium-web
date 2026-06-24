@@ -158,8 +158,8 @@ export default function BrandSearchPage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Buscar Marcas</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Buscar Marcas</h1>
+        <p className="text-gray-600 dark:text-gray-300">
           Encuentra información sobre marcas comerciales, genéricos y laboratorios.
         </p>
       </motion.div>
@@ -173,8 +173,8 @@ export default function BrandSearchPage() {
                 'w-full py-2.5 text-sm font-medium leading-5 rounded-lg transition-all',
                 'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-farmateca-primary ring-white ring-opacity-60',
                 selected
-                  ? 'bg-white text-farmateca-primary shadow'
-                  : 'text-gray-600 hover:bg-white/50 hover:text-gray-900'
+                  ? 'bg-white dark:bg-gray-700 text-farmateca-primary dark:text-white shadow'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'
               )
             }
           >
@@ -193,8 +193,8 @@ export default function BrandSearchPage() {
                 'w-full py-2.5 text-sm font-medium leading-5 rounded-lg transition-all',
                 'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-farmateca-primary ring-white ring-opacity-60',
                 selected
-                  ? 'bg-white text-farmateca-primary shadow'
-                  : 'text-gray-600 hover:bg-white/50 hover:text-gray-900'
+                  ? 'bg-white dark:bg-gray-700 text-farmateca-primary dark:text-white shadow'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'
               )
             }
           >
@@ -213,8 +213,8 @@ export default function BrandSearchPage() {
                 'w-full py-2.5 text-sm font-medium leading-5 rounded-lg transition-all',
                 'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-farmateca-primary ring-white ring-opacity-60',
                 selected
-                  ? 'bg-white text-farmateca-primary shadow'
-                  : 'text-gray-600 hover:bg-white/50 hover:text-gray-900'
+                  ? 'bg-white dark:bg-gray-700 text-farmateca-primary dark:text-white shadow'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'
               )
             }
           >
@@ -368,11 +368,11 @@ export default function BrandSearchPage() {
             >
               <div className="space-y-6 p-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Seleccionar laboratorio
                   </label>
                   <select
-                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-farmateca-primary focus:border-transparent"
+                    className="w-full px-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-farmateca-primary focus:border-transparent"
                     value={selectedLab}
                     onChange={(e) => handleLabChange(e.target.value)}
                     disabled={isLoadingLabs}
@@ -391,8 +391,8 @@ export default function BrandSearchPage() {
                 {selectedLab && (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 mb-4">
-                      <h2 className="text-lg font-semibold text-gray-900">{selectedLab}</h2>
-                      <span className="text-sm text-gray-500">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{selectedLab}</h2>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
                         ({filteredLabBrands.length} marca{filteredLabBrands.length !== 1 ? 's' : ''})
                       </span>
                     </div>
@@ -400,11 +400,11 @@ export default function BrandSearchPage() {
                       <button
                         key={brand.ID_MA}
                         onClick={() => router.push(`/farmateca/web/app/brand/${brand.ID_MA}`)}
-                        className="w-full text-left bg-white rounded-xl p-4 border border-gray-200 hover:border-farmateca-primary hover:shadow-md transition-all cursor-pointer"
+                        className="w-full text-left bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hover:border-farmateca-primary hover:shadow-md transition-all cursor-pointer"
                       >
-                        <h3 className="font-semibold text-gray-900">{brand.MA}</h3>
-                        <p className="text-sm text-gray-600">Principio activo: {brand.PA_M}</p>
-                        <p className="text-sm text-gray-500 mt-1">{brand.Presentacion_M}</p>
+                        <h3 className="font-semibold text-gray-900 dark:text-white">{brand.MA}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">Principio activo: {brand.PA_M}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{brand.Presentacion_M}</p>
                       </button>
                     ))}
                   </div>

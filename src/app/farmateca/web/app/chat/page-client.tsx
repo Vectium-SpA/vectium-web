@@ -22,7 +22,7 @@ function TypingIndicator() {
     <div className="flex items-end gap-3 mb-4">
       <div
         className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center"
-        style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
+        style={{ background: 'linear-gradient(135deg, var(--color-farmateca-primary-dark), var(--color-farmateca-primary))' }}
       >
         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -83,17 +83,17 @@ function ActionChips({ medicationName, onSend }: { medicationName: string; onSen
           onClick={() => onSend(chip.query)}
           className="text-xs px-2.5 py-1 rounded-full border transition-colors"
           style={{
-            borderColor: 'var(--farmateca-primary)',
-            color: 'var(--farmateca-primary)',
+            borderColor: 'var(--color-farmateca-primary)',
+            color: 'var(--color-farmateca-primary)',
             backgroundColor: 'transparent',
           }}
           onMouseEnter={e => {
-            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--farmateca-primary)';
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-farmateca-primary)';
             (e.currentTarget as HTMLButtonElement).style.color = 'white';
           }}
           onMouseLeave={e => {
             (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-            (e.currentTarget as HTMLButtonElement).style.color = 'var(--farmateca-primary)';
+            (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-farmateca-primary)';
           }}
         >
           {chip.label}
@@ -113,14 +113,14 @@ function MedChips({ meds, onSend }: { meds: string[]; onSend: (q: string) => voi
           key={med}
           onClick={() => onSend(`¿Para qué sirve el ${med}?`)}
           className="text-xs px-2.5 py-1 rounded-full border transition-colors flex items-center gap-1"
-          style={{ borderColor: 'var(--farmateca-primary)', color: 'var(--farmateca-primary)', backgroundColor: 'transparent' }}
+          style={{ borderColor: 'var(--color-farmateca-primary)', color: 'var(--color-farmateca-primary)', backgroundColor: 'transparent' }}
           onMouseEnter={e => {
-            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--farmateca-primary)';
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-farmateca-primary)';
             (e.currentTarget as HTMLButtonElement).style.color = 'white';
           }}
           onMouseLeave={e => {
             (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-            (e.currentTarget as HTMLButtonElement).style.color = 'var(--farmateca-primary)';
+            (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-farmateca-primary)';
           }}
         >
           💊 {med}
@@ -147,7 +147,7 @@ function MessageBubble({ msg, onSend }: { msg: ChatMessage; onSend: (q: string) 
         <div className="max-w-xs sm:max-w-md">
           <div
             className="px-4 py-3 rounded-2xl rounded-br-sm text-white text-sm leading-relaxed"
-            style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
+            style={{ background: 'linear-gradient(135deg, var(--color-farmateca-primary-dark), var(--color-farmateca-primary))' }}
           >
             {msg.text}
           </div>
@@ -170,7 +170,7 @@ function MessageBubble({ msg, onSend }: { msg: ChatMessage; onSend: (q: string) 
       {/* Bot avatar */}
       <div
         className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center mb-5"
-        style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
+        style={{ background: 'linear-gradient(135deg, var(--color-farmateca-primary-dark), var(--color-farmateca-primary))' }}
       >
         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -213,7 +213,7 @@ function PaywallScreen({ hasUsedTrial }: { hasUsedTrial: boolean }) {
     <div className="flex flex-col items-center justify-center flex-1 gap-6 px-6 py-12 text-center">
       <div
         className="w-20 h-20 rounded-full flex items-center justify-center shadow-lg"
-        style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
+        style={{ background: 'linear-gradient(135deg, var(--color-farmateca-primary-dark), var(--color-farmateca-primary))' }}
       >
         <svg className="w-10 h-10 text-farmateca-premium" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -245,7 +245,7 @@ function PaywallScreen({ hasUsedTrial }: { hasUsedTrial: boolean }) {
         <Link
           href="/farmateca/web/app/paywall"
           className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-semibold text-sm text-white shadow-md hover:shadow-lg transition-all"
-          style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
+          style={{ background: 'linear-gradient(135deg, var(--color-farmateca-primary-dark), var(--color-farmateca-primary))' }}
         >
           <svg className="w-4 h-4 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
@@ -342,7 +342,7 @@ export default function ChatPage() {
       <div className="flex items-center gap-3 px-4 py-3 bg-white dark:bg-farmateca-gray-800 border border-gray-100 dark:border-farmateca-gray-700 rounded-2xl mb-4 shadow-sm">
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
+          style={{ background: 'linear-gradient(135deg, var(--color-farmateca-primary-dark), var(--color-farmateca-primary))' }}
         >
           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -396,17 +396,17 @@ export default function ChatPage() {
                 disabled={isTyping}
                 className="flex-shrink-0 text-xs px-3 py-1.5 rounded-full border transition-colors disabled:opacity-40"
                 style={{
-                  borderColor: 'var(--farmateca-primary)',
-                  color: 'var(--farmateca-primary)',
+                  borderColor: 'var(--color-farmateca-primary)',
+                  color: 'var(--color-farmateca-primary)',
                   backgroundColor: 'transparent',
                 }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--farmateca-primary)';
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-farmateca-primary)';
                   (e.currentTarget as HTMLButtonElement).style.color = 'white';
                 }}
                 onMouseLeave={e => {
                   (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-                  (e.currentTarget as HTMLButtonElement).style.color = 'var(--farmateca-primary)';
+                  (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-farmateca-primary)';
                 }}
               >
                 {s.label}
@@ -439,7 +439,7 @@ export default function ChatPage() {
               disabled={!input.trim() || isTyping}
               whileTap={{ scale: 0.9 }}
               className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 disabled:opacity-40 transition-all"
-              style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
+              style={{ background: 'linear-gradient(135deg, var(--color-farmateca-primary-dark), var(--color-farmateca-primary))' }}
             >
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}

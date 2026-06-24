@@ -59,7 +59,7 @@ export default function SearchByFamilyPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
         {/* Header */}
         <div className="bg-gradient-to-r from-farmateca-primary to-farmateca-primary-dark text-white p-6 shadow-lg">
           <div className="max-w-4xl mx-auto">
@@ -73,7 +73,7 @@ export default function SearchByFamilyPage() {
 
         <div className="max-w-4xl mx-auto px-4 py-6">
           {/* Search bar skeleton */}
-          <div className="mb-6 h-12 bg-gray-200 rounded-lg animate-pulse" />
+          <div className="mb-6 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
 
           {/* List skeleton */}
           <FamilyCardSkeletonList count={8} />
@@ -83,7 +83,7 @@ export default function SearchByFamilyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
       {/* Header */}
       <div className="bg-gradient-to-r from-farmateca-primary to-farmateca-primary-dark text-white p-6 shadow-lg">
         <div className="max-w-4xl mx-auto">
@@ -109,19 +109,19 @@ export default function SearchByFamilyPage() {
             placeholder="Buscar familia farmacológica..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-farmateca-primary focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-farmateca-primary focus:border-transparent"
           />
         </div>
 
         {/* Contador */}
-        <div className="mb-4 text-gray-600">
+        <div className="mb-4 text-gray-600 dark:text-gray-300">
           {filteredFamilies.length} familia{filteredFamilies.length !== 1 ? 's' : ''} encontrada{filteredFamilies.length !== 1 ? 's' : ''}
         </div>
 
         {/* Lista de familias */}
         <div className="space-y-2">
           {filteredFamilies.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-12 text-gray-500 dark:text-gray-400">
               No se encontraron familias farmacológicas
             </div>
           ) : (
@@ -132,14 +132,14 @@ export default function SearchByFamilyPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 onClick={() => handleSelectFamily(family.familia)}
-                className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-farmateca-primary hover:shadow-md transition-all text-left"
+                className="w-full bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-farmateca-primary hover:shadow-md transition-all text-left"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">
                       {family.familia}
                     </h3>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {family.count} compuesto{family.count !== 1 ? 's' : ''}
                     </p>
                   </div>

@@ -20,10 +20,12 @@
   --color-vectium-accent: #00A9A5;
   --color-vectium-accent-dark: #008B87;
 
-  /* Farmateca brand colors (teal palette) */
-  --color-farmateca-primary: #00A9A5;
-  --color-farmateca-primary-dark: #007B7F;
-  --color-farmateca-primary-light: #92DCE5;
+  /* Farmateca brand colors (paleta oficial 2026) */
+  --color-farmateca-primary: #1e9db9;
+  --color-farmateca-primary-dark: #147790;
+  --color-farmateca-primary-light: #b4e5f4;
+  --color-farmateca-bright: #27c2d1;
+  --color-farmateca-blue: #0c88ba;
   --color-farmateca-premium: #FFB800;
 
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;

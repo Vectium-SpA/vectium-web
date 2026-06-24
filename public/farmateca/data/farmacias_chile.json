@@ -1,0 +1,2000 @@
+[
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "21 de Mayo 301",
+    "lat": -18.4816329,
+    "lng": -70.3155606
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "21 de Mayo 359",
+    "lat": -18.4786889,
+    "lng": -70.3184506
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "21 de Mayo 495",
+    "lat": -18.4816329,
+    "lng": -70.3155606
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "18 de Septiembre 1402-1406",
+    "lat": -18.4845214,
+    "lng": -70.305379
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Av. Diego Portales 2291",
+    "lat": -18.4826157,
+    "lng": -70.2935089
+  },
+  {
+    "nombre": "Farmacias Ahumada (Local 357 Arica)",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "(Datos API UberEats/Delivery)",
+    "lat": -18.4785288,
+    "lng": -70.3211394
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Colón 601",
+    "lat": -18.4772726,
+    "lng": -70.3175078
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "21 de Mayo 299",
+    "lat": -18.4782935,
+    "lng": -70.3188657
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "21 de Mayo 399",
+    "lat": -18.4789826,
+    "lng": -70.3182024
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "18 de Septiembre 1063",
+    "lat": -18.4839255,
+    "lng": -70.3085202
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "18 de Septiembre 2501",
+    "lat": -18.4845214,
+    "lng": -70.305379
+  },
+  {
+    "nombre": "Farmacia Móvil Cruz Verde (Itinerante)",
+    "tipo": "Cadena Grande (Móvil)",
+    "region": "Arica y Parinacota",
+    "comuna": "Putre",
+    "direccion": "Operativo (Frente al Municipio)",
+    "lat": -18.1963825,
+    "lng": -69.5592242
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Colón 598",
+    "lat": -18.4774502,
+    "lng": -70.3175321
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "21 de Mayo 300",
+    "lat": -18.4816329,
+    "lng": -70.3155606
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Bolognesi 361",
+    "lat": -18.4776497,
+    "lng": -70.3197074
+  },
+  {
+    "nombre": "Salcobrand (Local Arica 3)",
+    "tipo": "Cadena Grande",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "(Datos API UberEats/Delivery)",
+    "lat": -18.4785288,
+    "lng": -70.3211394
+  },
+  {
+    "nombre": "Farmacias Dr. Simi",
+    "tipo": "Cadena Regional",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Baquedano 561",
+    "lat": -18.4804434,
+    "lng": -70.3192997
+  },
+  {
+    "nombre": "Farmacias Dr. Simi",
+    "tipo": "Cadena Regional",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "21 de Mayo 345-A",
+    "lat": -18.4816329,
+    "lng": -70.3155606
+  },
+  {
+    "nombre": "Farmacia Municipal DISAM",
+    "tipo": "Popular-Comunal",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "18 de Septiembre 453",
+    "lat": -18.4788052,
+    "lng": -70.3172851
+  },
+  {
+    "nombre": "Farmacia Arumi",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Juan de Dios Flores 1281, Local 48",
+    "lat": -18.4785288,
+    "lng": -70.3211394
+  },
+  {
+    "nombre": "Farmacia Qullani",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Av. Diego Portales 1599",
+    "lat": -18.4785762,
+    "lng": -70.2980346
+  },
+  {
+    "nombre": "Farmacia Concepción",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Colón 517",
+    "lat": -18.4775943,
+    "lng": -70.3179248
+  },
+  {
+    "nombre": "Redfarma Urgencia",
+    "tipo": "Cadena Regional",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "18 de Septiembre 302",
+    "lat": -18.4845214,
+    "lng": -70.305379
+  },
+  {
+    "nombre": "Farmahorizonte",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Vicuña Mackenna 538",
+    "lat": -18.4822355,
+    "lng": -70.3127164
+  },
+  {
+    "nombre": "Farmax CV 507",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Manuel Castillo Ibaceta 3431",
+    "lat": -18.4938812,
+    "lng": -70.2882125
+  },
+  {
+    "nombre": "Farmacia Celin",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Av. Capitán Avalos 2010, Local 13",
+    "lat": -18.4785288,
+    "lng": -70.3211394
+  },
+  {
+    "nombre": "Farmacia Celin II",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Av. Santa María 2141, Local 7",
+    "lat": -18.4785288,
+    "lng": -70.3211394
+  },
+  {
+    "nombre": "Farmacia M&M",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Tucapel 2119",
+    "lat": -18.4715202,
+    "lng": -70.2875512
+  },
+  {
+    "nombre": "Farmacia Isaías",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Cancha Rayada 4136",
+    "lat": -18.4350779,
+    "lng": -70.2915409
+  },
+  {
+    "nombre": "Farmacia Isaías II",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Tucapel 2334",
+    "lat": -18.4769686,
+    "lng": -70.2919848
+  },
+  {
+    "nombre": "Farmacia Zuñagua",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Diego Portales 1380",
+    "lat": -18.4770277,
+    "lng": -70.2999485
+  },
+  {
+    "nombre": "Farmacia Arica",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Av. Santa María 1361",
+    "lat": -18.4669282,
+    "lng": -70.3014635
+  },
+  {
+    "nombre": "Farmacia Cancha Rayada",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Cancha Rayada 3468",
+    "lat": -18.450114,
+    "lng": -70.2924794
+  },
+  {
+    "nombre": "Farmacia Vida Sana",
+    "tipo": "Independiente",
+    "region": "Arica y Parinacota",
+    "comuna": "Arica",
+    "direccion": "Cancha Rayada 4130",
+    "lat": -18.4381815,
+    "lng": -70.2902072
+  },
+  {
+    "nombre": "Farmacias Ahumada (Local 437)",
+    "tipo": "Cadena Grande",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Interior Lider Iquique",
+    "lat": -20.2140657,
+    "lng": -70.1524646
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Tarapacá 599 esq. Ramirez",
+    "lat": -20.2140657,
+    "lng": -70.1524646
+  },
+  {
+    "nombre": "Farmacia Unimarc (Sector Los Álamos)",
+    "tipo": "Cadena Grande",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Los Álamos N°580",
+    "lat": -20.2140657,
+    "lng": -70.1524646
+  },
+  {
+    "nombre": "Farmacias Knop",
+    "tipo": "Cadena Regional",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Local 140, Iquique",
+    "lat": -20.2657813,
+    "lng": -70.1240193
+  },
+  {
+    "nombre": "Farmacia Municipal Dr. Pedro Pulgar",
+    "tipo": "Popular-Comunal",
+    "region": "Tarapacá",
+    "comuna": "Alto Hospicio",
+    "direccion": "Los Nogales 3009",
+    "lat": -20.268562,
+    "lng": -70.0983808
+  },
+  {
+    "nombre": "Farmacia Comunal de Pozo Almonte",
+    "tipo": "Popular-Comunal",
+    "region": "Tarapacá",
+    "comuna": "Pozo Almonte",
+    "direccion": "Salitrera Victoria 401",
+    "lat": -20.2597061,
+    "lng": -69.7861372
+  },
+  {
+    "nombre": "Farmacia Municipal Iquique",
+    "tipo": "Popular-Comunal",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Serrano 134, 3er Piso",
+    "lat": -20.2140657,
+    "lng": -70.1524646
+  },
+  {
+    "nombre": "Farmacia Algarrobos",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Ramón Pérez Opazo 2621",
+    "lat": -20.2700346,
+    "lng": -70.1016563
+  },
+  {
+    "nombre": "Farmacia Bello",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Av. La Tirana 3745, Local 19",
+    "lat": -20.2140657,
+    "lng": -70.1524646
+  },
+  {
+    "nombre": "Farmacia Tri-O Farma",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Arturo Fernández 1371",
+    "lat": -20.2218086,
+    "lng": -70.1443949
+  },
+  {
+    "nombre": "Farmacia Tri-O Farma (Sucursal Allende)",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Av. Salvador Allende 2399, Local 3",
+    "lat": -20.2140657,
+    "lng": -70.1524646
+  },
+  {
+    "nombre": "Farmacia Rednorte",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Eleuterio Ramirez 1340",
+    "lat": -20.2218106,
+    "lng": -70.149629
+  },
+  {
+    "nombre": "Liga Chile Contra La Epilepsia",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Gorastiaga 451",
+    "lat": -20.2140657,
+    "lng": -70.1524646
+  },
+  {
+    "nombre": "Farmacia Playa Brava",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Iquique",
+    "direccion": "Avenida Playa Brava 1890",
+    "lat": -20.2140657,
+    "lng": -70.1524646
+  },
+  {
+    "nombre": "Farmacia Vital Santa Rosa",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Alto Hospicio",
+    "direccion": "Av. Valparaíso 4382",
+    "lat": -20.2775694,
+    "lng": -70.0814529
+  },
+  {
+    "nombre": "Farmacia Jerusalen",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Pozo Almonte",
+    "direccion": "Comercio 307",
+    "lat": -20.2586907,
+    "lng": -69.7857401
+  },
+  {
+    "nombre": "Farmacia Jerusalem",
+    "tipo": "Independiente",
+    "region": "Tarapacá",
+    "comuna": "Pica",
+    "direccion": "Balmaceda 272",
+    "lat": -20.4909708,
+    "lng": -69.3282817
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Av. Argentina 1105",
+    "lat": -23.6652453,
+    "lng": -70.3989018
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Zenteno 21, Local 1 (Líder)",
+    "lat": -23.6463741,
+    "lng": -70.3980033
+  },
+  {
+    "nombre": "Farmacia Ahumada (Turno O'Higgins)",
+    "tipo": "Cadena Grande",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "O'Higgins 561",
+    "lat": -22.4546963,
+    "lng": -68.9345184
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Antofagasta",
+    "comuna": "San Pedro de Atacama",
+    "direccion": "Caracoles 359",
+    "lat": -22.9117015,
+    "lng": -68.199786
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Antofagasta",
+    "comuna": "Calama",
+    "direccion": "Vivar 1902",
+    "lat": -22.4555197,
+    "lng": -68.9250875
+  },
+  {
+    "nombre": "Farmacias Dr. Simi",
+    "tipo": "Cadena Regional",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Maipú 364",
+    "lat": -23.6482419,
+    "lng": -70.4001614
+  },
+  {
+    "nombre": "Farmacia Redfarma",
+    "tipo": "Cadena Regional",
+    "region": "Antofagasta",
+    "comuna": "Calama",
+    "direccion": "Av. Aconcagua 2588",
+    "lat": -22.4753649,
+    "lng": -68.9429634
+  },
+  {
+    "nombre": "Farmacia Redfarma",
+    "tipo": "Cadena Regional",
+    "region": "Antofagasta",
+    "comuna": "Calama",
+    "direccion": "Latorre 1903",
+    "lat": -22.4539319,
+    "lng": -68.9267424
+  },
+  {
+    "nombre": "Farmacia Comunal de Antofagasta",
+    "tipo": "Popular-Comunal",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Av. Séptimo de Línea 3505 (Edificio I. Municipalidad)",
+    "lat": -23.6463741,
+    "lng": -70.3980033
+  },
+  {
+    "nombre": "Farmacia Ciudadana de Calama",
+    "tipo": "Popular-Comunal",
+    "region": "Antofagasta",
+    "comuna": "Calama",
+    "direccion": "Bernardo O'Higgins 768 / Esmeralda 1814",
+    "lat": -22.4623917,
+    "lng": -68.9272181
+  },
+  {
+    "nombre": "Almacén Farmacéutico Fracción",
+    "tipo": "Almacén / Popular-Privada",
+    "region": "Antofagasta",
+    "comuna": "Sierra Gorda",
+    "direccion": "Eduardo Frei Montalva s/n",
+    "lat": -22.8916766,
+    "lng": -69.3200101
+  },
+  {
+    "nombre": "Farmacia Integral Fracción",
+    "tipo": "Popular-Privada",
+    "region": "Antofagasta",
+    "comuna": "María Elena",
+    "direccion": "Costado Cesfam María Elena",
+    "lat": -22.3451485,
+    "lng": -69.6618035
+  },
+  {
+    "nombre": "Farmacia Digital Fracción",
+    "tipo": "Popular-Privada",
+    "region": "Antofagasta",
+    "comuna": "Ollagüe",
+    "direccion": "Plaza de Armas (Itinerante/Digital)",
+    "lat": -21.2242235,
+    "lng": -68.2534522
+  },
+  {
+    "nombre": "Liga Chile Contra La Epilepsia",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Arturo Prat 272",
+    "lat": -23.6460863,
+    "lng": -70.3992832
+  },
+  {
+    "nombre": "Farmacia Gacema",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Pedro Aguirre Cerda 5900",
+    "lat": -23.5768241,
+    "lng": -70.3911956
+  },
+  {
+    "nombre": "Farmacia Gacema II",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Av. Argentina 1667",
+    "lat": -23.646001,
+    "lng": -70.3926445
+  },
+  {
+    "nombre": "Farmalife (Local 2)",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Prat 796",
+    "lat": -23.6502745,
+    "lng": -70.395235
+  },
+  {
+    "nombre": "Farmacia Galeno (Maipú)",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Maipú 220",
+    "lat": -23.6469953,
+    "lng": -70.4012317
+  },
+  {
+    "nombre": "Farmacia Galeno (Las Cruces)",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Las Cruces 790",
+    "lat": -23.6752674,
+    "lng": -70.4081695
+  },
+  {
+    "nombre": "Farmacia del Norte",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Pedro Aguirre Cerda 5750",
+    "lat": -23.5768241,
+    "lng": -70.3911956
+  },
+  {
+    "nombre": "Farmacia La Económica",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Antofagasta",
+    "direccion": "Av. Argentina 1975",
+    "lat": -23.692849,
+    "lng": -70.4102516
+  },
+  {
+    "nombre": "Farmacias S y G (Granaderos)",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Calama",
+    "direccion": "Av. Granaderos 2205",
+    "lat": -22.4492445,
+    "lng": -68.9285273
+  },
+  {
+    "nombre": "Farmacias S y G (Prat)",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Calama",
+    "direccion": "Av. Arturo Prat 1597-B",
+    "lat": -22.4428653,
+    "lng": -68.9402823
+  },
+  {
+    "nombre": "Farmacias S y G (Grecia)",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Calama",
+    "direccion": "Av. Grecia 2510",
+    "lat": -22.4767276,
+    "lng": -68.9300292
+  },
+  {
+    "nombre": "Red Popular",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Calama",
+    "direccion": "Latorre 1903",
+    "lat": -22.4539319,
+    "lng": -68.9267424
+  },
+  {
+    "nombre": "Independiente El Loa",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Calama",
+    "direccion": "Vicuña Mackenna 2201",
+    "lat": -22.4635966,
+    "lng": -68.9319919
+  },
+  {
+    "nombre": "Farmacia Figuesan",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Mejillones",
+    "direccion": "Latorre 637",
+    "lat": -23.100073,
+    "lng": -70.448719
+  },
+  {
+    "nombre": "Farmacia Vizcacha",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "San Pedro de Atacama",
+    "direccion": "Pasaje Villama 425E",
+    "lat": -23.3545489,
+    "lng": -67.9026571
+  },
+  {
+    "nombre": "Farmacia del Desierto",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Taltal",
+    "direccion": "Prat 711",
+    "lat": -25.4017195,
+    "lng": -70.4755612
+  },
+  {
+    "nombre": "Farmacia Tocopilla",
+    "tipo": "Independiente",
+    "region": "Antofagasta",
+    "comuna": "Tocopilla",
+    "direccion": "21 de Mayo 1532",
+    "lat": -22.0937447,
+    "lng": -70.201608
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Atacama",
+    "comuna": "Copiapó",
+    "direccion": "Prat 1100",
+    "lat": -27.4140797,
+    "lng": -70.2720171
+  },
+  {
+    "nombre": "Botica Comunal La Estrella",
+    "tipo": "Popular-Comunal",
+    "region": "Atacama",
+    "comuna": "Copiapó",
+    "direccion": "Calle Los Concejales S/N",
+    "lat": -27.3664685,
+    "lng": -70.3322753
+  },
+  {
+    "nombre": "Farmacia Mi Victoria",
+    "tipo": "Independiente",
+    "region": "Atacama",
+    "comuna": "Copiapó",
+    "direccion": "Los Carrera 1160",
+    "lat": -27.3794563,
+    "lng": -70.3132279
+  },
+  {
+    "nombre": "Farmacia Mulet",
+    "tipo": "Independiente",
+    "region": "Atacama",
+    "comuna": "Vallenar",
+    "direccion": "Calle Arturo Prat 1410",
+    "lat": -28.5750438,
+    "lng": -70.7616398
+  },
+  {
+    "nombre": "Farmacia Comunal Caldera ''Dr. Manuel González Méndez''",
+    "tipo": "Popular-Comunal",
+    "region": "Atacama",
+    "comuna": "Caldera",
+    "direccion": "Calle Carvallo 559",
+    "lat": -27.0675545,
+    "lng": -70.8222047
+  },
+  {
+    "nombre": "Farmacia Aurora",
+    "tipo": "Independiente",
+    "region": "Atacama",
+    "comuna": "Caldera",
+    "direccion": "Carvallo 307",
+    "lat": -27.0673841,
+    "lng": -70.8207558
+  },
+  {
+    "nombre": "Farmacia Cruz",
+    "tipo": "Independiente",
+    "region": "Atacama",
+    "comuna": "Caldera",
+    "direccion": "Paseo Gana 298",
+    "lat": -27.0675545,
+    "lng": -70.8222047
+  },
+  {
+    "nombre": "Farmacia Comunitaria Nicolas Naranjo Palacios",
+    "tipo": "Popular-Comunal",
+    "region": "Atacama",
+    "comuna": "Vallenar",
+    "direccion": "Calle Merced 1455",
+    "lat": -28.5750438,
+    "lng": -70.7616398
+  },
+  {
+    "nombre": "Farmacia Popular Alcalde Carlos Iribarren Ahumada",
+    "tipo": "Popular-Comunal",
+    "region": "Atacama",
+    "comuna": "Tierra Amarilla",
+    "direccion": "Avenida Ojancos 24",
+    "lat": -27.4680505,
+    "lng": -70.2649307
+  },
+  {
+    "nombre": "Farmacia Portofino",
+    "tipo": "Independiente",
+    "region": "Atacama",
+    "comuna": "Chañaral",
+    "direccion": "Calle Merino Jarpa 547",
+    "lat": -26.347934,
+    "lng": -70.6223617
+  },
+  {
+    "nombre": "Farmacia Varas",
+    "tipo": "Independiente",
+    "region": "Atacama",
+    "comuna": "Chañaral",
+    "direccion": "Las Ánimas / Zuleta 150",
+    "lat": -26.347934,
+    "lng": -70.6223617
+  },
+  {
+    "nombre": "Farmacia San Miguel",
+    "tipo": "Independiente",
+    "region": "Atacama",
+    "comuna": "Diego de Almagro",
+    "direccion": "Av. 4 de Julio 706",
+    "lat": -26.2459232,
+    "lng": -69.6266431
+  },
+  {
+    "nombre": "Farmacia Karal",
+    "tipo": "Independiente",
+    "region": "Atacama",
+    "comuna": "Diego de Almagro",
+    "direccion": "Av. Juan Martínez 714",
+    "lat": -26.3915186,
+    "lng": -70.046118
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Atacama",
+    "comuna": "Diego de Almagro",
+    "direccion": "Campamento Minero El Salvador",
+    "lat": -26.3910794,
+    "lng": -70.0459281
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Coquimbo",
+    "comuna": "Coquimbo",
+    "direccion": "Los Álamos 580",
+    "lat": -29.9882552,
+    "lng": -71.3358787
+  },
+  {
+    "nombre": "Farmacia San Cristóbal",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Coquimbo",
+    "direccion": "José Joaquín Pérez 3505, Local 7 y 8",
+    "lat": -29.9531851,
+    "lng": -71.3379503
+  },
+  {
+    "nombre": "Farmacia Farmaskin",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Coquimbo",
+    "direccion": "Avenida Videla 348",
+    "lat": -29.9635852,
+    "lng": -71.3359168
+  },
+  {
+    "nombre": "Farmacias Calafate",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Coquimbo",
+    "direccion": "Rene Schnneider 1440",
+    "lat": -29.9531851,
+    "lng": -71.3379503
+  },
+  {
+    "nombre": "Farmacias Eco Nat",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Illapel",
+    "direccion": "Constitucion 490",
+    "lat": -31.6314264,
+    "lng": -71.1649678
+  },
+  {
+    "nombre": "Farmacia Diaguita",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "El Litre 2103",
+    "lat": -29.9229101,
+    "lng": -71.2021673
+  },
+  {
+    "nombre": "Farmacia Dr. Amigo",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "Balmaceda 438",
+    "lat": -29.878809,
+    "lng": -71.2504793
+  },
+  {
+    "nombre": "Farmacia La Botica",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "Alberto Hurtado 4192",
+    "lat": -29.9470401,
+    "lng": -71.2471654
+  },
+  {
+    "nombre": "Farmacia Metfarma",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "Avenida Balmaceda 4271",
+    "lat": -29.9417607,
+    "lng": -71.263744
+  },
+  {
+    "nombre": "Farmacia Punto Blanco",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "Huanhuali 501",
+    "lat": -29.91643,
+    "lng": -71.2446971
+  },
+  {
+    "nombre": "Farmacia La Providencia",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "Los Arrayanes 905",
+    "lat": -29.9308793,
+    "lng": -71.277302
+  },
+  {
+    "nombre": "Farmacia Alejandro Rodriguez",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Ovalle",
+    "direccion": "Benavente 83",
+    "lat": -30.6014393,
+    "lng": -71.1963379
+  },
+  {
+    "nombre": "Farmacia San Francisco",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Ovalle",
+    "direccion": "Damian Heredia 915",
+    "lat": -30.5968401,
+    "lng": -71.2008092
+  },
+  {
+    "nombre": "Farmacia Punto Blanco (Ovalle)",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Ovalle",
+    "direccion": "Vicuña Mackenna 212",
+    "lat": -30.6026847,
+    "lng": -71.2000402
+  },
+  {
+    "nombre": "Farmacia Nueva Central",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Combarbalá",
+    "direccion": "Comercio 272",
+    "lat": -31.1759314,
+    "lng": -71.0082705
+  },
+  {
+    "nombre": "Farmacia Popular Municipalidad de Ovalle",
+    "tipo": "Popular-Comunal",
+    "region": "Coquimbo",
+    "comuna": "Ovalle",
+    "direccion": "Ariztía Poniente N° 7",
+    "lat": -30.6036639,
+    "lng": -71.1971925
+  },
+  {
+    "nombre": "Farmacia Comunitaria Municipal de Salamanca",
+    "tipo": "Popular-Comunal",
+    "region": "Coquimbo",
+    "comuna": "Salamanca",
+    "direccion": "Matilde Salamanca N° 113",
+    "lat": -31.7761995,
+    "lng": -70.9633674
+  },
+  {
+    "nombre": "Farmacia Municipal P. Contreras",
+    "tipo": "Popular-Comunal",
+    "region": "Coquimbo",
+    "comuna": "Vicuña",
+    "direccion": "Gabriela Mistral / San Martín 275",
+    "lat": -30.0340482,
+    "lng": -70.7126702
+  },
+  {
+    "nombre": "Farmacia Popular Andacollo",
+    "tipo": "Popular-Comunal",
+    "region": "Coquimbo",
+    "comuna": "Andacollo",
+    "direccion": "Recinto Ex Beneficencia Urmeneta",
+    "lat": -30.2322048,
+    "lng": -71.0847556
+  },
+  {
+    "nombre": "Farmacia Popular Los Vilos",
+    "tipo": "Popular-Comunal",
+    "region": "Coquimbo",
+    "comuna": "Los Vilos",
+    "direccion": "Av. Caupolicán / Edificio Municipal",
+    "lat": -31.9121725,
+    "lng": -71.5138659
+  },
+  {
+    "nombre": "Easyfarma Ovalle",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Ovalle",
+    "direccion": "Avenida Manuel Peñafiel Olivares 1480",
+    "lat": -30.5772617,
+    "lng": -71.1881734
+  },
+  {
+    "nombre": "Esbal",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "Calle Las Orquideas 4369",
+    "lat": -29.902705,
+    "lng": -71.2519575
+  },
+  {
+    "nombre": "Farma Ofertas",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Ovalle",
+    "direccion": "Vicuña Mackenna 233",
+    "lat": -30.6026847,
+    "lng": -71.2000402
+  },
+  {
+    "nombre": "Farmacia Mi Barrio",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "Avenida Balmaceda 4958",
+    "lat": -29.9417607,
+    "lng": -71.263744
+  },
+  {
+    "nombre": "Farmacia A.L.A.",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "Avenida Gabriel González Videla 3445",
+    "lat": -29.945222,
+    "lng": -71.261844
+  },
+  {
+    "nombre": "Farmacia Choapa",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Salamanca",
+    "direccion": "Manuel Bulnes 401-499 / Av. Lagos 498",
+    "lat": -31.7804674,
+    "lng": -70.9649896
+  },
+  {
+    "nombre": "Farmacia City Farma",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "Coquimbo",
+    "direccion": "Avenida Alessandri 147",
+    "lat": -29.9615479,
+    "lng": -71.2638884
+  },
+  {
+    "nombre": "Farmacia Clinicalpharma",
+    "tipo": "Independiente",
+    "region": "Coquimbo",
+    "comuna": "La Serena",
+    "direccion": "Avenida Balmaceda 4271",
+    "lat": -29.9417607,
+    "lng": -71.263744
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Valparaíso",
+    "comuna": "La Calera",
+    "direccion": "Lautaro 78-Ruta 60ch 13420",
+    "lat": -32.788981,
+    "lng": -71.203546
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Valparaíso",
+    "comuna": "Quilpué",
+    "direccion": "Ramón Freire 1351",
+    "lat": -33.0454671,
+    "lng": -71.4164879
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Valparaíso",
+    "comuna": "Villa Alemana",
+    "direccion": "Av. Valparaíso 1982",
+    "lat": -33.0448379,
+    "lng": -71.3906413
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Valparaíso",
+    "comuna": "Juan Fernández",
+    "direccion": "Manzana 16, Sitio 7",
+    "lat": -33.6444501,
+    "lng": -78.8262238
+  },
+  {
+    "nombre": "Farmacias Dr. Simi",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "El Tabo",
+    "direccion": "Baquedano 1277",
+    "lat": -33.4550356,
+    "lng": -71.6681836
+  },
+  {
+    "nombre": "Farmacia Comunal de Valparaíso",
+    "tipo": "Popular-Comunal",
+    "region": "Valparaíso",
+    "comuna": "Valparaíso",
+    "direccion": "Calle Molina 468",
+    "lat": -32.8082809,
+    "lng": -71.2267588
+  },
+  {
+    "nombre": "Farmacia Gálvez",
+    "tipo": "Independiente",
+    "region": "Valparaíso",
+    "comuna": "Algarrobo",
+    "direccion": "Luz Divina 1273",
+    "lat": -33.3715751,
+    "lng": -71.6673369
+  },
+  {
+    "nombre": "Farmacia Sana Sana",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "Algarrobo",
+    "direccion": "Luz Divina 1181, Local 6 Y 7",
+    "lat": -33.369172,
+    "lng": -71.6680533
+  },
+  {
+    "nombre": "Farmacias Eco",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "Cabildo",
+    "direccion": "Av. Humeres 688, Local 2",
+    "lat": -32.4265909,
+    "lng": -71.0663299
+  },
+  {
+    "nombre": "Farmacia Concón",
+    "tipo": "Independiente",
+    "region": "Valparaíso",
+    "comuna": "Concón",
+    "direccion": "Calle Siete 685",
+    "lat": -32.9213868,
+    "lng": -71.5165574
+  },
+  {
+    "nombre": "Farmacia Hogan",
+    "tipo": "Independiente",
+    "region": "Valparaíso",
+    "comuna": "Concón",
+    "direccion": "Av. Bosques de Montemar 65",
+    "lat": -32.9488603,
+    "lng": -71.5344443
+  },
+  {
+    "nombre": "Farmacia Sana Sana",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "Concón",
+    "direccion": "Av. Concón Reñaca 296",
+    "lat": -32.9339225,
+    "lng": -71.5316191
+  },
+  {
+    "nombre": "Farmacias Eco",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "Curauma",
+    "direccion": "Cardenal Samore 2290, Local 14",
+    "lat": -33.127419,
+    "lng": -71.5696552
+  },
+  {
+    "nombre": "Farmacia Sana Sana",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "El Quisco",
+    "direccion": "Isidoro Dubornais 320, Local 4",
+    "lat": -33.400311,
+    "lng": -71.693998
+  },
+  {
+    "nombre": "Farmacias Tamanaco",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "La Calera",
+    "direccion": "Aldunate 222",
+    "lat": -32.7866417,
+    "lng": -71.191078
+  },
+  {
+    "nombre": "Farmacias Tamanaco",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "La Calera",
+    "direccion": "José Joaquín Pérez 305",
+    "lat": -32.7886593,
+    "lng": -71.1895039
+  },
+  {
+    "nombre": "Aquafarma",
+    "tipo": "Independiente",
+    "region": "Valparaíso",
+    "comuna": "La Ligua",
+    "direccion": "Ortiz de Rosas 902",
+    "lat": -32.4518023,
+    "lng": -71.2525342
+  },
+  {
+    "nombre": "Farmacias Eco",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "La Ligua",
+    "direccion": "Ortiz de Rosas 434, Local 1",
+    "lat": -32.4496375,
+    "lng": -71.2316695
+  },
+  {
+    "nombre": "Farmacias Eco",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "La Ligua",
+    "direccion": "Ortiz de Rosas 498",
+    "lat": -32.4518023,
+    "lng": -71.2525342
+  },
+  {
+    "nombre": "SuFarma",
+    "tipo": "Independiente",
+    "region": "Valparaíso",
+    "comuna": "La Ligua",
+    "direccion": "Ortiz de Rosas 754",
+    "lat": -32.4518023,
+    "lng": -71.2525342
+  },
+  {
+    "nombre": "SuFarma 2",
+    "tipo": "Independiente",
+    "region": "Valparaíso",
+    "comuna": "La Ligua",
+    "direccion": "Uribe 434",
+    "lat": -32.4494413,
+    "lng": -71.2301493
+  },
+  {
+    "nombre": "Farmacia Municipal de Los Andes",
+    "tipo": "Popular-Comunal",
+    "region": "Valparaíso",
+    "comuna": "Los Andes",
+    "direccion": "Calle Yerbas Buenas N°345",
+    "lat": -32.8336867,
+    "lng": -70.5981609
+  },
+  {
+    "nombre": "Farmacia Municipal de San Antonio",
+    "tipo": "Popular-Comunal",
+    "region": "Valparaíso",
+    "comuna": "San Antonio",
+    "direccion": "Ramón Barros Luco 2291",
+    "lat": -33.5808615,
+    "lng": -71.6132377
+  },
+  {
+    "nombre": "Farmacias Eco",
+    "tipo": "Cadena Regional",
+    "region": "Valparaíso",
+    "comuna": "Llay Llay",
+    "direccion": "Balmaceda 57",
+    "lat": -32.8349022,
+    "lng": -70.9722952
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Valparaíso",
+    "comuna": "Isla de Pascua (Rapa Nui)",
+    "direccion": "Atamu Tekena s/n",
+    "lat": -27.1484932,
+    "lng": -109.4301678
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "O'Higgins",
+    "comuna": "Rancagua",
+    "direccion": "Independencia 665",
+    "lat": -34.1844996,
+    "lng": -70.7572107
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "O'Higgins",
+    "comuna": "San Fernando",
+    "direccion": "Manuel Rodriguez 499",
+    "lat": -34.6182887,
+    "lng": -70.947639
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "O'Higgins",
+    "comuna": "Santa Cruz",
+    "direccion": "Claudio Cancino 44",
+    "lat": -34.6405822,
+    "lng": -71.3677238
+  },
+  {
+    "nombre": "Farmacias Dr. Simi",
+    "tipo": "Cadena Regional",
+    "region": "O'Higgins",
+    "comuna": "Quinta de Tilcoco",
+    "direccion": "Centro",
+    "lat": -34.3531792,
+    "lng": -70.9659321
+  },
+  {
+    "nombre": "Farmacia Comunal Rancagua",
+    "tipo": "Popular-Comunal",
+    "region": "O'Higgins",
+    "comuna": "Rancagua",
+    "direccion": "Av. Capitán Antonio Millán 920",
+    "lat": -34.1744356,
+    "lng": -70.7450848
+  },
+  {
+    "nombre": "Farmacia Rengo",
+    "tipo": "Independiente",
+    "region": "O'Higgins",
+    "comuna": "Rengo",
+    "direccion": "Condell 100",
+    "lat": -34.4101533,
+    "lng": -70.8604087
+  },
+  {
+    "nombre": "Farmacias Dr. Simi",
+    "tipo": "Cadena Regional",
+    "region": "O'Higgins",
+    "comuna": "Nancagua",
+    "direccion": "Armando Jaramillo N°217",
+    "lat": -34.6503096,
+    "lng": -71.2011792
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Maule",
+    "comuna": "Talca",
+    "direccion": "1 Sur 1557",
+    "lat": -35.4292014,
+    "lng": -71.6398417
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Maule",
+    "comuna": "Curicó",
+    "direccion": "Peña 630",
+    "lat": -34.9784875,
+    "lng": -71.2422571
+  },
+  {
+    "nombre": "Farmacias Dr. Simi",
+    "tipo": "Cadena Regional",
+    "region": "Maule",
+    "comuna": "Curicó",
+    "direccion": "Avenida O'Higgins 898",
+    "lat": -34.9928748,
+    "lng": -71.2440228
+  },
+  {
+    "nombre": "Farmacia Comunal de Talca",
+    "tipo": "Popular-Comunal",
+    "region": "Maule",
+    "comuna": "Talca",
+    "direccion": "1 Norte 1374",
+    "lat": -35.428246,
+    "lng": -71.6391565
+  },
+  {
+    "nombre": "Farmacia Lircay",
+    "tipo": "Independiente",
+    "region": "Maule",
+    "comuna": "San Clemente",
+    "direccion": "Huamachuco 850",
+    "lat": -35.5319704,
+    "lng": -71.4976321
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Ñuble",
+    "comuna": "Chillán",
+    "direccion": "El Roble 655",
+    "lat": -36.6086197,
+    "lng": -72.1022183
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Ñuble",
+    "comuna": "Chillán",
+    "direccion": "5 de Abril 654",
+    "lat": -36.6072516,
+    "lng": -72.1010443
+  },
+  {
+    "nombre": "Farmacia Comunal de Chillán",
+    "tipo": "Popular-Comunal",
+    "region": "Ñuble",
+    "comuna": "Chillán",
+    "direccion": "18 de Septiembre 477",
+    "lat": -36.6083548,
+    "lng": -72.1047932
+  },
+  {
+    "nombre": "Farmacia San Juan",
+    "tipo": "Independiente",
+    "region": "Ñuble",
+    "comuna": "San Carlos",
+    "direccion": "Independencia 420",
+    "lat": -36.4152328,
+    "lng": -71.9540683
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Biobío",
+    "comuna": "Concepción",
+    "direccion": "Barros Arana 660",
+    "lat": -36.8244582,
+    "lng": -73.0455166
+  },
+  {
+    "nombre": "Farmacias Dr. Simi",
+    "tipo": "Cadena Regional",
+    "region": "Biobío",
+    "comuna": "Coronel",
+    "direccion": "Cousiño 131",
+    "lat": -37.0255842,
+    "lng": -73.1476585
+  },
+  {
+    "nombre": "Farmacia Bernardino Yáñez Quinteros",
+    "tipo": "Popular-Comunal",
+    "region": "Biobío",
+    "comuna": "Mulchén",
+    "direccion": "Gana 242",
+    "lat": -37.7183059,
+    "lng": -72.2441903
+  },
+  {
+    "nombre": "Farmacia Municipal de Concepción",
+    "tipo": "Popular-Comunal",
+    "region": "Biobío",
+    "comuna": "Concepción",
+    "direccion": "O'Higgins 525",
+    "lat": -36.8280877,
+    "lng": -73.0514713
+  },
+  {
+    "nombre": "Redfarma",
+    "tipo": "Cadena Regional",
+    "region": "Biobío",
+    "comuna": "Talcahuano",
+    "direccion": "Colón 500",
+    "lat": -36.7143529,
+    "lng": -73.1120986
+  },
+  {
+    "nombre": "Farmacia Lientur",
+    "tipo": "Independiente",
+    "region": "Biobío",
+    "comuna": "Concepción",
+    "direccion": "Lientur 1200",
+    "lat": -36.8108809,
+    "lng": -73.0420201
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "La Araucanía",
+    "comuna": "Temuco",
+    "direccion": "Arturo Prat 595",
+    "lat": -38.7327071,
+    "lng": -72.5889727
+  },
+  {
+    "nombre": "Farmacia Municipal de Padre Las Casas",
+    "tipo": "Popular-Comunal",
+    "region": "La Araucanía",
+    "comuna": "Padre Las Casas",
+    "direccion": "Maquehue 1441",
+    "lat": -38.7733861,
+    "lng": -72.5971109
+  },
+  {
+    "nombre": "Farmacia Arias",
+    "tipo": "Independiente",
+    "region": "La Araucanía",
+    "comuna": "Curacautín",
+    "direccion": "Av. M. Rodriguez 885",
+    "lat": -38.4384782,
+    "lng": -71.8738158
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "La Araucanía",
+    "comuna": "Villarrica",
+    "direccion": "Camilo Henríquez 420",
+    "lat": -39.2791167,
+    "lng": -72.2239515
+  },
+  {
+    "nombre": "Farmacia Alemana",
+    "tipo": "Independiente",
+    "region": "La Araucanía",
+    "comuna": "Temuco",
+    "direccion": "Av. Alemania 0425",
+    "lat": -38.7355505,
+    "lng": -72.6075624
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Los Ríos",
+    "comuna": "Valdivia",
+    "direccion": "Picarte 451",
+    "lat": -39.814525,
+    "lng": -73.2434681
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Los Ríos",
+    "comuna": "Valdivia",
+    "direccion": "Independencia 495",
+    "lat": -39.8133282,
+    "lng": -73.24676
+  },
+  {
+    "nombre": "Farmacia Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Los Ríos",
+    "comuna": "La Unión",
+    "direccion": "Letelier 344",
+    "lat": -40.2947357,
+    "lng": -73.0862746
+  },
+  {
+    "nombre": "Farmacia Comunal Valdivia",
+    "tipo": "Popular-Comunal",
+    "region": "Los Ríos",
+    "comuna": "Valdivia",
+    "direccion": "Av. Picarte 2500",
+    "lat": -39.8411682,
+    "lng": -73.2074316
+  },
+  {
+    "nombre": "Farmacia Klenner",
+    "tipo": "Independiente",
+    "region": "Los Ríos",
+    "comuna": "Río Bueno",
+    "direccion": "Comercio 491",
+    "lat": -40.3397952,
+    "lng": -72.9562496
+  },
+  {
+    "nombre": "Farmacia Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Los Lagos",
+    "comuna": "Puerto Montt",
+    "direccion": "Antonio Varas 423",
+    "lat": -41.4735486,
+    "lng": -72.945827
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Los Lagos",
+    "comuna": "Osorno",
+    "direccion": "Eleuterio Ramírez 1002",
+    "lat": -40.5732955,
+    "lng": -73.1448475
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Los Lagos",
+    "comuna": "Castro",
+    "direccion": "Blanco Encalada 210",
+    "lat": -42.4826817,
+    "lng": -73.760778
+  },
+  {
+    "nombre": "Farmacia Ciudadana Puerto Montt",
+    "tipo": "Popular-Comunal",
+    "region": "Los Lagos",
+    "comuna": "Puerto Montt",
+    "direccion": "San Martín 80",
+    "lat": -41.4718401,
+    "lng": -72.9406167
+  },
+  {
+    "nombre": "Farmacia Reloncaví",
+    "tipo": "Independiente",
+    "region": "Los Lagos",
+    "comuna": "Puerto Varas",
+    "direccion": "San Francisco 413",
+    "lat": -41.3174871,
+    "lng": -72.9845807
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Aysén",
+    "comuna": "Coyhaique",
+    "direccion": "Condell 175",
+    "lat": -45.5701968,
+    "lng": -72.0662315
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Aysén",
+    "comuna": "Coyhaique",
+    "direccion": "Arturo Prat 302",
+    "lat": -45.5724196,
+    "lng": -72.0707261
+  },
+  {
+    "nombre": "Farmacia Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Aysén",
+    "comuna": "Puerto Aysén",
+    "direccion": "Sargento Aldea 855",
+    "lat": -45.4038166,
+    "lng": -72.69192
+  },
+  {
+    "nombre": "Farmacia Regional Aysén",
+    "tipo": "Popular-Comunal",
+    "region": "Aysén",
+    "comuna": "Coyhaique",
+    "direccion": "Cochrane 330",
+    "lat": -45.5730033,
+    "lng": -72.0694561
+  },
+  {
+    "nombre": "Farmacia Patagonia",
+    "tipo": "Independiente",
+    "region": "Aysén",
+    "comuna": "Coyhaique",
+    "direccion": "21 de Mayo 430",
+    "lat": -45.5698054,
+    "lng": -72.0669781
+  },
+  {
+    "nombre": "Farmacia Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Magallanes",
+    "comuna": "Punta Arenas",
+    "direccion": "Bories 901",
+    "lat": -53.1612224,
+    "lng": -70.9072628
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Magallanes",
+    "comuna": "Punta Arenas",
+    "direccion": "Bories 971",
+    "lat": -53.1702551,
+    "lng": -70.9270564
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Magallanes",
+    "comuna": "Puerto Natales",
+    "direccion": "Baquedano 375",
+    "lat": -51.7276849,
+    "lng": -72.5012712
+  },
+  {
+    "nombre": "Farmacia Comunal Punta Arenas",
+    "tipo": "Popular-Comunal",
+    "region": "Magallanes",
+    "comuna": "Punta Arenas",
+    "direccion": "Chiloé 1830",
+    "lat": -53.1542633,
+    "lng": -70.9025103
+  },
+  {
+    "nombre": "Farmacia Estrella",
+    "tipo": "Independiente",
+    "region": "Magallanes",
+    "comuna": "Punta Arenas",
+    "direccion": "Magallanes 616",
+    "lat": -53.1427959,
+    "lng": -70.9069457
+  },
+  {
+    "nombre": "Almacén Farmacéutico Drokita",
+    "tipo": "Almacén / Independiente",
+    "region": "Magallanes",
+    "comuna": "Cabo de Hornos",
+    "direccion": "O'Higgins 218, Puerto Williams",
+    "lat": -54.9353184,
+    "lng": -67.6053304
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Las Condes",
+    "direccion": "Bilbao N° 4144",
+    "lat": -33.4289916,
+    "lng": -70.5297082
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Las Condes",
+    "direccion": "Kennedy N° 9001",
+    "lat": -33.3890526,
+    "lng": -70.5460511
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Santiago",
+    "direccion": "Teatinos N° 4",
+    "lat": -33.4338302,
+    "lng": -70.6559783
+  },
+  {
+    "nombre": "Farmacias Ahumada (Urgencia)",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Providencia",
+    "direccion": "Los Leones 1160",
+    "lat": -33.4301537,
+    "lng": -70.6022304
+  },
+  {
+    "nombre": "Farmacias Ahumada (Urgencia)",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Ñuñoa",
+    "direccion": "Irarrázaval N° 4221",
+    "lat": -33.4535635,
+    "lng": -70.6223843
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Vitacura",
+    "direccion": "Santa María Manquehue N° 6938",
+    "lat": -33.3730963,
+    "lng": -70.5808664
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Maipú",
+    "direccion": "Av. Pajaritos N° 1790",
+    "lat": -33.4904648,
+    "lng": -70.7527422
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Providencia",
+    "direccion": "Av. El Bosque N° 164",
+    "lat": -33.4271113,
+    "lng": -70.5965668
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "San Bernardo",
+    "direccion": "Arturo Prat N° 589",
+    "lat": -33.5931113,
+    "lng": -70.7033346
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Puente Alto",
+    "direccion": "Av. Concha y Toro N° 1149",
+    "lat": -33.5721985,
+    "lng": -70.583029
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Buin",
+    "direccion": "San Martín N° 174",
+    "lat": -33.7327327,
+    "lng": -70.7356056
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Quilicura",
+    "direccion": "Av. O'Higgins 314",
+    "lat": -33.3562731,
+    "lng": -70.7276633
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "La Florida",
+    "direccion": "Av. La Florida 9497",
+    "lat": -33.5175297,
+    "lng": -70.5829834
+  },
+  {
+    "nombre": "Farmacias Ahumada",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Independencia",
+    "direccion": "Av. Independencia 565",
+    "lat": -33.4242119,
+    "lng": -70.6538024
+  },
+  {
+    "nombre": "Farmacias Dr. Simi",
+    "tipo": "Cadena Regional",
+    "region": "Metropolitana",
+    "comuna": "Independencia",
+    "direccion": "Av. Independencia 565",
+    "lat": -33.4242119,
+    "lng": -70.6538024
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Peñaflor",
+    "direccion": "21 de Mayo 4540",
+    "lat": -33.6104919,
+    "lng": -70.901801
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Providencia",
+    "direccion": "Av. Providencia 2301",
+    "lat": -33.4208254,
+    "lng": -70.6079179
+  },
+  {
+    "nombre": "Salcobrand",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Vitacura",
+    "direccion": "Avda. Vitacura N° 6805",
+    "lat": -33.3911188,
+    "lng": -70.5735712
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Padre Hurtado",
+    "direccion": "San Ignacio 1624",
+    "lat": -33.5614447,
+    "lng": -70.8280228
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Talagante",
+    "direccion": "Av. Bernardo O'Higgins 1092",
+    "lat": -33.6737171,
+    "lng": -70.9488782
+  },
+  {
+    "nombre": "Farmacias Cruz Verde",
+    "tipo": "Cadena Grande",
+    "region": "Metropolitana",
+    "comuna": "Las Condes",
+    "direccion": "Av. Francisco Bilbao 8750",
+    "lat": -33.4281735,
+    "lng": -70.5410097
+  },
+  {
+    "nombre": "Municipal Solidaria de Quilicura",
+    "tipo": "Popular-Comunal",
+    "region": "Metropolitana",
+    "comuna": "Quilicura",
+    "direccion": "Covadonga 520",
+    "lat": -33.3696039,
+    "lng": -70.731875
+  },
+  {
+    "nombre": "Farmacia Comunal de Vitacura (Vitabotica)",
+    "tipo": "Popular-Comunal",
+    "region": "Metropolitana",
+    "comuna": "Vitacura",
+    "direccion": "Padre Hurtado Norte 1873",
+    "lat": -33.3875888,
+    "lng": -70.5491394
+  },
+  {
+    "nombre": "Farmacia Solidaria de Puente Alto",
+    "tipo": "Popular-Comunal",
+    "region": "Metropolitana",
+    "comuna": "Puente Alto",
+    "direccion": "Balmaceda 265",
+    "lat": -33.6094962,
+    "lng": -70.5748791
+  },
+  {
+    "nombre": "Farmacia Comunal de San Bernardo",
+    "tipo": "Popular-Comunal",
+    "region": "Metropolitana",
+    "comuna": "San Bernardo",
+    "direccion": "Eyzaguirre 650 / Bulnes 577",
+    "lat": -33.5922859,
+    "lng": -70.7045838
+  },
+  {
+    "nombre": "Farmacia Popular Ricardo Silva Soto",
+    "tipo": "Popular-Comunal",
+    "region": "Metropolitana",
+    "comuna": "Recoleta",
+    "direccion": "Av. Recoleta 2774",
+    "lat": -33.4017671,
+    "lng": -70.6432325
+  }
+]

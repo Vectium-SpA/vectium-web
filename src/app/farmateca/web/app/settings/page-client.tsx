@@ -175,7 +175,7 @@ export default function SettingsPage() {
     try {
       await signOut();
       toast.success('Sesión cerrada');
-      router.push('/farmateca/web/login');
+      router.push('/farmateca');
     } catch (error) {
       console.error('Error signing out:', error);
       toast.error('Error al cerrar sesión');
@@ -199,7 +199,7 @@ export default function SettingsPage() {
       // Cerrar sesión y redirigir
       await signOut();
       toast.success('Cuenta eliminada correctamente');
-      router.push('/farmateca/web/login');
+      router.push('/farmateca');
     } catch (error: unknown) {
       console.error('Error deleting account:', error);
       const firebaseError = error as { code?: string };

@@ -58,16 +58,18 @@ body:has(.farmateca-root) > footer {
   /* COLORES PRINCIPALES - Paleta Teal Premium   */
   /* ------------------------------------------ */
 
-  /* Primary (Teal) */
-  --color-farmateca-primary-dark: #007B7F;
-  --color-farmateca-primary: #00A9A5;
-  --color-farmateca-primary-medium: #00A9A5;
-  --color-farmateca-primary-light: #92DCE5;
+  /* Primary (Teal) — Paleta oficial Farmateca 2026 */
+  --color-farmateca-primary-dark: #147790;
+  --color-farmateca-primary: #1e9db9;
+  --color-farmateca-primary-medium: #1e9db9;
+  --color-farmateca-primary-light: #b4e5f4;
+  --color-farmateca-bright: #27c2d1;
+  --color-farmateca-blue: #0c88ba;
 
   /* Secondary */
-  --color-farmateca-secondary-dark: #005F60;
-  --color-farmateca-secondary: #00CEC9;
-  --color-farmateca-secondary-light: #81ECEC;
+  --color-farmateca-secondary-dark: #0c88ba;
+  --color-farmateca-secondary: #27c2d1;
+  --color-farmateca-secondary-light: #b4e5f4;
 
   /* ------------------------------------------ */
   /* COLORES FUNCIONALES                         */
@@ -117,7 +119,7 @@ body:has(.farmateca-root) > footer {
   --shadow-farmateca-premium: 0 4px 20px rgba(255, 184, 0, 0.3);
   --shadow-farmateca-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-farmateca-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  --shadow-farmateca-teal: 0 4px 20px rgba(0, 169, 165, 0.3);
+  --shadow-farmateca-teal: 0 4px 20px rgba(30, 157, 185, 0.3);
 
   /* ------------------------------------------ */
   /* ANIMATIONS                                  */

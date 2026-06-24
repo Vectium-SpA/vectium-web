@@ -124,7 +124,7 @@ function PremiumLockedContent({ featureName }: { featureName: string }) {
         {/* Ícono candado grande */}
         <div
           className="w-14 h-14 rounded-full flex items-center justify-center shadow-md"
-          style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
+          style={{ background: 'linear-gradient(135deg, var(--color-farmateca-primary-dark), var(--color-farmateca-primary))' }}
         >
           <svg className="w-7 h-7 text-farmateca-premium" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -145,7 +145,7 @@ function PremiumLockedContent({ featureName }: { featureName: string }) {
         <Link
           href="/farmateca/web/app/paywall"
           className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm text-white transition-all hover:shadow-lg"
-          style={{ background: 'linear-gradient(135deg, var(--farmateca-primary-dark), var(--farmateca-primary))' }}
+          style={{ background: 'linear-gradient(135deg, var(--color-farmateca-primary-dark), var(--color-farmateca-primary))' }}
         >
           <svg className="w-4 h-4 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />

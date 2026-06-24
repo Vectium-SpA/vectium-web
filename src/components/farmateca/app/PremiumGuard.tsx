@@ -86,7 +86,7 @@ export function PremiumGuard({
           </div>
 
           {/* Overlay con mensaje de upgrade */}
-          <div className="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[2px]">
+          <div className="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-[2px]">
             {fallback || defaultFallback}
           </div>
         </div>
@@ -138,7 +138,7 @@ export function PremiumUpgradeCard({
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-white rounded-2xl shadow-xl p-6 max-w-sm mx-auto border border-gray-100"
+      className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 max-w-sm mx-auto border border-gray-100 dark:border-gray-700"
     >
       {/* Icono */}
       <div className="w-14 h-14 bg-gradient-to-br from-farmateca-primary-dark to-farmateca-primary rounded-full flex items-center justify-center mx-auto mb-4">
@@ -148,12 +148,12 @@ export function PremiumUpgradeCard({
       </div>
 
       {/* Título */}
-      <h3 className="text-lg font-bold text-gray-900 text-center mb-2">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white text-center mb-2">
         {title || defaultTitle}
       </h3>
 
       {/* Descripción */}
-      <p className="text-sm text-gray-600 text-center mb-4">
+      <p className="text-sm text-gray-600 dark:text-gray-300 text-center mb-4">
         {description || defaultDescription}
       </p>
 
@@ -172,7 +172,7 @@ export function PremiumUpgradeCard({
           className={`block w-full font-semibold py-3 px-4 rounded-xl text-center transition-all duration-300 ${
             hasUsedTrial
               ? 'bg-gradient-to-r from-farmateca-primary-dark to-farmateca-primary text-white shadow-md hover:shadow-lg'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
           }`}
         >
           {hasUsedTrial ? 'Ver planes Premium' : 'Ver planes de suscripción'}

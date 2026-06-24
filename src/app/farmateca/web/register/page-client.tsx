@@ -1,15 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { signUpWithEmailAndPassword, signInWithGoogle } from '@/lib/farmateca/firebase/auth';
+import { signUpWithEmailAndPassword, signInWithGoogle, onAuthStateChange } from '@/lib/farmateca/firebase/auth';
 import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
 import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
   const router = useRouter();
+  // Si ya hay sesión Firebase activa, entrar directo a la app.
+  const [checkingSession, setCheckingSession] = useState(true);
+
+  useEffect(() => {
+    const unsub = onAuthStateChange((user) => {
+      if (user) {
+        router.replace('/farmateca/web/app');
+      } else {
+        setCheckingSession(false);
+      }
+    });
+    return () => unsub();
+  }, [router]);
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -97,20 +111,37 @@ export default function RegisterPage() {
     }
   };
 
+  // Mientras se resuelve la sesión persistida, mostrar spinner.
+  if (checkingSession) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-farmateca-primary-dark via-farmateca-primary to-farmateca-bright">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 to-blue-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-farmateca-primary-dark via-farmateca-primary to-farmateca-bright p-4 relative overflow-hidden">
+      {/* Blobs decorativos */}
+      <div className="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-farmateca-bright/20 blur-3xl" />
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
+        className="w-full max-w-md relative"
       >
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-farmateca-primary-dark to-farmateca-primary rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-3xl">F</span>
-            </div>
-          </div>
+        <div className="bg-white rounded-3xl shadow-2xl p-8">
+          <Link href="/farmateca" className="flex justify-center mb-6" title="Volver al inicio">
+            <Image
+              src="/farmateca/logos/isotipo_farmateca.png"
+              alt="Farmateca"
+              width={72}
+              height={72}
+              className="h-18 w-18 object-contain drop-shadow-md"
+            />
+          </Link>
 
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -281,7 +312,7 @@ export default function RegisterPage() {
               disabled={loading || !acceptedTerms}
               whileHover={{ scale: loading || !acceptedTerms ? 1 : 1.01 }}
               whileTap={{ scale: loading || !acceptedTerms ? 1 : 0.99 }}
-              className="w-full bg-gradient-to-r from-farmateca-primary-dark to-farmateca-primary text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
+              className="w-full bg-gradient-to-r from-farmateca-primary-dark to-farmateca-bright text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
             >
               {loading ? (
                 <>

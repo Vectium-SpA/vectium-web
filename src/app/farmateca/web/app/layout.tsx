@@ -62,7 +62,7 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
 
   const handleSignOut = async () => {
     await signOut();
-    router.replace('/farmateca/web');
+    router.replace('/farmateca');
   };
 
   // Show loading spinner while checking auth or redirecting
@@ -136,6 +136,12 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
                 className="text-gray-600 dark:text-gray-300 hover:text-farmateca-primary transition-colors"
               >
                 Favoritos
+              </Link>
+              <Link
+                href="/farmateca/web/app/farmacias"
+                className="text-gray-600 dark:text-gray-300 hover:text-farmateca-primary transition-colors"
+              >
+                Farmacias
               </Link>
               {isPremium && (
                 <Link

@@ -1,29 +1,46 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface OnboardingProps {
   onComplete: () => void;
 }
 
-const screens = [
+interface Slide {
+  id: number;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  features: string[];
+}
+
+const screens: Slide[] = [
   {
     id: 1,
     title: 'Bienvenido a Farmateca',
-    description: 'Tu enciclopedia médica en línea',
+    description: 'Tu bibliomédica chilena para estudiantes y profesionales de la salud.',
+    features: ['Datos ISP · MINSAL', 'Siempre actualizado', 'Multiplataforma'],
     icon: (
-      <div className="w-32 h-32 bg-gradient-to-br from-farmateca-primary-dark to-farmateca-primary rounded-3xl flex items-center justify-center shadow-2xl">
-        <span className="text-white font-bold text-6xl">F</span>
+      <div className="w-32 h-32 rounded-3xl bg-white/15 backdrop-blur-md flex items-center justify-center shadow-2xl ring-1 ring-white/30">
+        <Image
+          src="/farmateca/logos/isotipo_farmateca.png"
+          alt="Farmateca"
+          width={88}
+          height={88}
+          className="h-22 w-22 object-contain drop-shadow-lg"
+        />
       </div>
     ),
   },
   {
     id: 2,
     title: 'Busca medicamentos',
-    description: 'Por nombre, familia o laboratorio',
+    description: 'Por nombre comercial, principio activo, familia farmacológica o laboratorio.',
+    features: ['+2.500 marcas', 'Fichas clínicas', 'Búsqueda avanzada'],
     icon: (
-      <div className="w-32 h-32 bg-gradient-to-br from-farmateca-compound to-blue-400 rounded-3xl flex items-center justify-center shadow-2xl">
+      <div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-farmateca-blue to-farmateca-bright flex items-center justify-center shadow-2xl ring-1 ring-white/30">
         <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
@@ -32,10 +49,11 @@ const screens = [
   },
   {
     id: 3,
-    title: 'Accede al contenido Premium',
-    description: 'Información completa y detallada',
+    title: 'Todo en un solo lugar',
+    description: 'Favoritos sincronizados, Farmacias de Chile con mapa y asistente integrado.',
+    features: ['Favoritos en la nube', 'Farmacias + mapa', 'Asistente'],
     icon: (
-      <div className="w-32 h-32 bg-gradient-to-br from-farmateca-premium via-yellow-300 to-farmateca-premium rounded-3xl flex items-center justify-center shadow-2xl">
+      <div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-farmateca-premium to-yellow-400 flex items-center justify-center shadow-2xl ring-1 ring-white/30">
         <svg className="w-16 h-16 text-gray-900" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
         </svg>
@@ -91,23 +109,27 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-gradient-to-br from-farmateca-primary-dark via-farmateca-primary to-farmateca-primary-light flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-gradient-to-br from-farmateca-primary-dark via-farmateca-primary to-farmateca-bright flex items-center justify-center p-4 overflow-hidden"
     >
-      <div className="w-full max-w-md">
+      {/* Blobs decorativos */}
+      <div className="pointer-events-none absolute -top-28 -left-24 w-[26rem] h-[26rem] rounded-full bg-white/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -right-24 w-[30rem] h-[30rem] rounded-full bg-farmateca-bright/25 blur-3xl" />
+
+      <div className="w-full max-w-md relative">
         {/* Skip button */}
         {!isLastScreen && (
           <motion.button
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             onClick={handleSkip}
-            className="absolute top-8 right-8 text-white/80 hover:text-white font-medium transition-colors"
+            className="absolute top-2 right-2 text-white/80 hover:text-white font-medium transition-colors z-10"
           >
             Omitir
           </motion.button>
         )}
 
         {/* Content */}
-        <div className="relative h-[500px] flex items-center justify-center">
+        <div className="relative h-[520px] flex items-center justify-center">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
               key={currentScreenData.id}
@@ -147,10 +169,27 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-lg text-white/90 max-w-sm"
+                className="text-lg text-white/90 max-w-sm mb-6"
               >
                 {currentScreenData.description}
               </motion.p>
+
+              {/* Feature chips */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex flex-wrap justify-center gap-2 max-w-sm"
+              >
+                {currentScreenData.features.map((f) => (
+                  <span
+                    key={f}
+                    className="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-sm ring-1 ring-white/25 text-white text-sm font-medium"
+                  >
+                    {f}
+                  </span>
+                ))}
+              </motion.div>
             </motion.div>
           </AnimatePresence>
         </div>

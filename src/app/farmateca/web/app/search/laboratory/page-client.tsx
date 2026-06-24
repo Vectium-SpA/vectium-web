@@ -59,7 +59,7 @@ export default function SearchByLaboratoryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
         {/* Header */}
         <div className="bg-gradient-to-r from-farmateca-primary to-farmateca-primary-dark text-white p-6 shadow-lg">
           <div className="max-w-4xl mx-auto">
@@ -73,10 +73,10 @@ export default function SearchByLaboratoryPage() {
 
         <div className="max-w-4xl mx-auto px-4 py-6">
           {/* Search bar skeleton */}
-          <div className="mb-6 h-12 bg-gray-200 rounded-lg animate-pulse" />
+          <div className="mb-6 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
 
           {/* Counter skeleton */}
-          <div className="mb-4 h-5 w-48 bg-gray-200 rounded animate-pulse" />
+          <div className="mb-4 h-5 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
 
           {/* List skeleton */}
           <FamilyCardSkeletonList count={8} />
@@ -86,7 +86,7 @@ export default function SearchByLaboratoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
       {/* Header */}
       <div className="bg-gradient-to-r from-farmateca-primary to-farmateca-primary-dark text-white p-6 shadow-lg">
         <div className="max-w-4xl mx-auto">
@@ -112,19 +112,19 @@ export default function SearchByLaboratoryPage() {
             placeholder="Buscar laboratorio..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-farmateca-primary focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-farmateca-primary focus:border-transparent"
           />
         </div>
 
         {/* Contador */}
-        <div className="mb-4 text-gray-600">
+        <div className="mb-4 text-gray-600 dark:text-gray-300">
           {filteredLaboratories.length} laboratorio{filteredLaboratories.length !== 1 ? 's' : ''} encontrado{filteredLaboratories.length !== 1 ? 's' : ''}
         </div>
 
         {/* Lista de laboratorios */}
         <div className="space-y-2">
           {filteredLaboratories.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-12 text-gray-500 dark:text-gray-400">
               No se encontraron laboratorios
             </div>
           ) : (
@@ -135,14 +135,14 @@ export default function SearchByLaboratoryPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 onClick={() => handleSelectLaboratory(lab.laboratorio)}
-                className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-farmateca-primary hover:shadow-md transition-all text-left"
+                className="w-full bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-farmateca-primary hover:shadow-md transition-all text-left"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">
                       {lab.laboratorio}
                     </h3>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {lab.count} producto{lab.count !== 1 ? 's' : ''}
                     </p>
                   </div>

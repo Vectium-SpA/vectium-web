@@ -6,6 +6,7 @@
 import { resolvePharmacyBrandsInText } from './kb-pharmacy';
 import { findSymptomMatch, type SymptomMatch } from './kb-symptoms';
 import { findDrugClassMatch, type DrugClassMatch } from './kb-drug-classes';
+import { normalizeMedicalQuery } from './kb-glossary';
 
 // ────────────────────────────────────────────────────────────────
 // TIPOS
@@ -1026,7 +1027,9 @@ class NLPEngine {
       this.tickCounter();
 
       const corrected = this.correctSpelling(safeQuery);
-      const normalized = this.normalize(corrected);
+      // Normalizar terminología médica (abreviaciones + términos técnicos → español
+      // coloquial) sobre la query normalizada. Paridad con la app móvil (effectiveQuery).
+      const normalized = normalizeMedicalQuery(this.normalize(corrected));
       const [intent, confidence, _keywords] = this.detectIntent(normalized);
       const entities = this.extractEntities(normalized);
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { onAuthStateChange } from "@/lib/farmateca/firebase/auth";
 
 const NAV_H = 72; // alto del navbar (px) — usado para el overlay del hero en la landing
 
@@ -63,12 +64,19 @@ export function FarmatecaChrome({ children }: { children: React.ReactNode }) {
 
 function FarmatecaNav({ isLanding }: { isLanding: boolean }) {
   const [scrolled, setScrolled] = useState(false);
+  // Detecta sesión Firebase activa para ofrecer "Ir a la app" en vez de re-loguear.
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const unsub = onAuthStateChange((user) => setLoggedIn(!!user));
+    return () => unsub();
   }, []);
 
   // Transparente solo sobre el hero de la landing; sólido en el resto y al hacer scroll.
@@ -114,20 +122,32 @@ function FarmatecaNav({ isLanding }: { isLanding: boolean }) {
               </Link>
             ))}
           </div>
-          <Link
-            href="/farmateca/web/login"
-            className="hidden text-[15px] font-semibold transition-opacity hover:opacity-80 sm:block"
-            style={{ color: transparent ? "#fff" : "#147790" }}
-          >
-            Iniciar sesión
-          </Link>
-          <Link
-            href="/farmateca/web/register"
-            className="rounded-full px-5 py-2.5 text-[15px] font-bold text-white transition-transform hover:scale-[1.04]"
-            style={{ background: "linear-gradient(90deg,#147790 0%,#27c2d1 100%)" }}
-          >
-            Prueba Gratis
-          </Link>
+          {loggedIn ? (
+            <Link
+              href="/farmateca/web/app"
+              className="rounded-full px-5 py-2.5 text-[15px] font-bold text-white transition-transform hover:scale-[1.04]"
+              style={{ background: "linear-gradient(90deg,#147790 0%,#27c2d1 100%)" }}
+            >
+              Ir a la app
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/farmateca/web/login"
+                className="hidden text-[15px] font-semibold transition-opacity hover:opacity-80 sm:block"
+                style={{ color: transparent ? "#fff" : "#147790" }}
+              >
+                Iniciar sesión
+              </Link>
+              <Link
+                href="/farmateca/web/register"
+                className="rounded-full px-5 py-2.5 text-[15px] font-bold text-white transition-transform hover:scale-[1.04]"
+                style={{ background: "linear-gradient(90deg,#147790 0%,#27c2d1 100%)" }}
+              >
+                Prueba Gratis
+              </Link>
+            </>
+          )}
         </nav>
       </div>
     </header>

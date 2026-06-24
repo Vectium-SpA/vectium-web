@@ -76,7 +76,7 @@ export function SearchBar({
         value={query}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full pl-12 pr-12 py-4 text-lg bg-white border-2 border-gray-200 rounded-2xl
+        className="w-full pl-12 pr-12 py-4 text-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 border-2 border-gray-200 dark:border-gray-700 rounded-2xl
                    focus:border-farmateca-primary focus:ring-4 focus:ring-farmateca-primary/20 outline-none
                    transition-all duration-300 shadow-sm"
       />

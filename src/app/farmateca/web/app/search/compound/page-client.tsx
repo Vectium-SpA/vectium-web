@@ -182,8 +182,8 @@ export default function CompoundSearchPage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Buscar Compuestos</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Buscar Compuestos</h1>
+        <p className="text-gray-600 dark:text-gray-300">
           Encuentra información detallada sobre principios activos y familias terapéuticas.
         </p>
       </motion.div>
@@ -230,15 +230,15 @@ export default function CompoundSearchPage() {
 
       {/* Tabs de navegación */}
       <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-        <TabList className="flex space-x-1 bg-gray-100 p-1 mb-8 rounded-xl">
+        <TabList className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 mb-8 rounded-xl">
           <Tab
             className={({ selected }) =>
               classNames(
                 'w-full py-2.5 text-sm font-medium leading-5 rounded-lg transition-all',
                 'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-farmateca-primary ring-white ring-opacity-60',
                 selected
-                  ? 'bg-white text-farmateca-primary shadow'
-                  : 'text-gray-600 hover:bg-white/50 hover:text-gray-900'
+                  ? 'bg-white dark:bg-gray-700 text-farmateca-primary dark:text-white shadow'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'
               )
             }
           >
@@ -250,8 +250,8 @@ export default function CompoundSearchPage() {
                 'w-full py-2.5 text-sm font-medium leading-5 rounded-lg transition-all',
                 'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-farmateca-primary ring-white ring-opacity-60',
                 selected
-                  ? 'bg-white text-farmateca-primary shadow'
-                  : 'text-gray-600 hover:bg-white/50 hover:text-gray-900'
+                  ? 'bg-white dark:bg-gray-700 text-farmateca-primary dark:text-white shadow'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'
               )
             }
           >
@@ -293,12 +293,12 @@ export default function CompoundSearchPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Comienza a buscar</h3>
-                <p className="text-gray-500 max-w-sm mx-auto">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Comienza a buscar</h3>
+                <p className="text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
                   Escribe el nombre de un principio activo para encontrar información detallada.
                 </p>
                 <div className="mt-8">
-                  <p className="text-sm text-gray-400 mb-3">Búsquedas frecuentes:</p>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 mb-3">Búsquedas frecuentes:</p>
                   <div className="flex flex-wrap justify-center gap-2">
                     {['Paracetamol', 'Ibuprofeno', 'Amoxicilina', 'Omeprazol'].map((suggestion) => (
                       <button
@@ -324,13 +324,13 @@ export default function CompoundSearchPage() {
             {/* Sin resultados */}
             {noResults && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
-                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-10 h-10 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No se encontraron resultados</h3>
-                <p className="text-gray-500">No hay coincidencias para &quot;{searchQuery}&quot;. Intenta con otro término.</p>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No se encontraron resultados</h3>
+                <p className="text-gray-500 dark:text-gray-400">No hay coincidencias para &quot;{searchQuery}&quot;. Intenta con otro término.</p>
               </motion.div>
             )}
 
@@ -338,8 +338,8 @@ export default function CompoundSearchPage() {
             {!isLoading && hasSearched && hasResults && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
                 <div className="flex items-center gap-2 mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900">Resultados</h2>
-                  <span className="text-sm text-gray-500">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Resultados</h2>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
                     (Mostrando {displayCompounds.length} de {allCompounds.length} compuestos)
                   </span>
                 </div>
@@ -375,11 +375,11 @@ export default function CompoundSearchPage() {
               <div className="space-y-6 p-4">
                 {/* Dropdown de familias */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Seleccionar familia terapéutica
                   </label>
                   <select
-                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-farmateca-primary focus:border-transparent"
+                    className="w-full px-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-farmateca-primary focus:border-transparent"
                     value={selectedFamily}
                     onChange={(e) => handleFamilyChange(e.target.value)}
                     disabled={isLoadingFamilies}
@@ -399,8 +399,8 @@ export default function CompoundSearchPage() {
                 {selectedFamily && (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 mb-4">
-                      <h2 className="text-lg font-semibold text-gray-900">{selectedFamily}</h2>
-                      <span className="text-sm text-gray-500">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{selectedFamily}</h2>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
                         ({filteredFamilyCompounds.length} compuesto{filteredFamilyCompounds.length !== 1 ? 's' : ''})
                       </span>
                     </div>
@@ -408,10 +408,10 @@ export default function CompoundSearchPage() {
                       <button
                         key={compound.ID_PA}
                         onClick={() => router.push(`/farmateca/web/app/compound/${compound.ID_PA}`)}
-                        className="w-full text-left bg-white rounded-xl p-4 border border-gray-200 hover:border-farmateca-primary hover:shadow-md transition-all cursor-pointer"
+                        className="w-full text-left bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hover:border-farmateca-primary hover:shadow-md transition-all cursor-pointer"
                       >
-                        <h3 className="font-semibold text-gray-900">{compound.PA}</h3>
-                        <p className="text-sm text-gray-600 mt-1">{compound.Uso.substring(0, 150)}...</p>
+                        <h3 className="font-semibold text-gray-900 dark:text-white">{compound.PA}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{compound.Uso.substring(0, 150)}...</p>
                       </button>
                     ))}
                   </div>
