@@ -27,6 +27,24 @@
   --color-farmateca-bright: #27c2d1;
   --color-farmateca-blue: #0c88ba;
   --color-farmateca-premium: #FFB800;
+  --color-farmateca-premium-dark: #E5A600;
+
+  /* Farmateca backgrounds (usados con dark:bg-farmateca-background-*) */
+  --color-farmateca-background-light: #F5F7FA;
+  --color-farmateca-background-white: #FFFFFF;
+  --color-farmateca-background-dark: #0F172A;
+
+  /* Farmateca grises (usados con dark:bg/text/border-farmateca-gray-*) */
+  --color-farmateca-gray-50: #F9FAFB;
+  --color-farmateca-gray-100: #F3F4F6;
+  --color-farmateca-gray-200: #E5E7EB;
+  --color-farmateca-gray-300: #D1D5DB;
+  --color-farmateca-gray-400: #9CA3AF;
+  --color-farmateca-gray-500: #6B7280;
+  --color-farmateca-gray-600: #4B5563;
+  --color-farmateca-gray-700: #374151;
+  --color-farmateca-gray-800: #1F2937;
+  --color-farmateca-gray-900: #111827;
 
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Playfair Display', 'Georgia', serif;
