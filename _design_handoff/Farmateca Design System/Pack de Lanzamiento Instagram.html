@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pack de Lanzamiento · Farmateca Instagram</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',var(--font-sans);background:#080c10;color:#fff;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── TOOLBAR ── */
+.toolbar{height:52px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 18px;gap:12px;flex-shrink:0}
+.tb-logo{height:20px;filter:brightness(0) invert(1);opacity:.7}
+.tb-sep{width:1px;height:18px;background:rgba(255,255,255,.1)}
+.tab{font-size:12px;font-weight:600;padding:6px 14px;border-radius:7px;border:none;cursor:pointer;background:transparent;color:rgba(255,255,255,.38);font-family:inherit;transition:all .18s;letter-spacing:.3px}
+.tab.on{background:rgba(30,157,185,.22);color:#b4e5f4}
+.tab:hover:not(.on){background:rgba(255,255,255,.06);color:rgba(255,255,255,.65)}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tb-badge{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:100px;background:rgba(255,184,0,.1);color:rgba(255,184,0,.8)}
+.slide-counter{font-size:12px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.5px}
+.nav-btn{width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.nav-btn:hover{background:rgba(30,157,185,.2);color:#b4e5f4;border-color:rgba(30,157,185,.35)}
+
+/* ── LAYOUT ── */
+.main{flex:1;display:flex;overflow:hidden}
+
+/* ── PANEL ── */
+.panel{width:264px;flex-shrink:0;background:rgba(255,255,255,.03);border-right:1px solid rgba(255,255,255,.07);overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.panel::-webkit-scrollbar{width:3px}
+.panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.plabel{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.thumbgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.thumb{aspect-ratio:1;border-radius:7px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all .15s;opacity:.5;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px}
+.thumb.on{border-color:#1e9db9;opacity:1}
+.thumb:hover:not(.on){opacity:.78}
+.thumb-n{font-size:9px;font-weight:700;position:relative}
+.thumb[data-c="dark"]{background:#070e12}
+.thumb[data-c="dark"] .thumb-n{color:rgba(255,255,255,.45)}
+.thumb[data-c="white"]{background:#fff}
+.thumb[data-c="white"] .thumb-n{color:rgba(0,0,0,.3)}
+.thumb[data-c="gray"]{background:#f1f5f9}
+.thumb[data-c="gray"] .thumb-n{color:rgba(0,0,0,.25)}
+.thumb[data-c="teal"]{background:linear-gradient(150deg,#147790,#27c2d1)}
+.thumb[data-c="teal"] .thumb-n{color:rgba(255,255,255,.5)}
+.thumb-bar{position:absolute;bottom:0;left:0;right:0;height:3px}
+
+.sep{height:1px;background:rgba(255,255,255,.07)}
+.field{display:flex;flex-direction:column;gap:5px}
+.flabel{font-size:11px;font-weight:600;color:rgba(255,255,255,.4)}
+.finput,.ftextarea{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#fff;font-family:inherit;font-size:12px;padding:7px 10px;outline:none;resize:none;transition:border-color .2s;width:100%}
+.finput:focus,.ftextarea:focus{border-color:#1e9db9;background:rgba(30,157,185,.1)}
+.ftextarea{min-height:58px}
+.exportbox{background:rgba(255,184,0,.06);border:1px solid rgba(255,184,0,.16);border-radius:8px;padding:10px 12px;font-size:11px;color:rgba(255,184,0,.72);line-height:1.55}
+.exportbox strong{color:rgba(255,184,0,.95)}
+
+/* ── STAGE ── */
+.stage{flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;padding:28px;background:#060a0d}
+.stage::-webkit-scrollbar{width:5px}
+.stage::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+.cwrap{position:relative;flex-shrink:0}
+
+/* ══════════════════════════════════════════
+   CAROUSEL SLIDES — 1080 × 1080
+══════════════════════════════════════════ */
+.cslide{width:1080px;height:1080px;position:absolute;top:0;left:0;transform-origin:top left;overflow:hidden;display:none;flex-direction:column}
+.cslide.on{display:flex}
+
+/* S1 — HOOK (dark) */
+.s1{background:#070e12;padding:74px 80px;justify-content:space-between;position:relative;display:flex;flex-direction:column;flex:1}
+.s1-glow{position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(ellipse,rgba(30,157,185,.15) 0%,transparent 65%);pointer-events:none}
+.s1-top{display:flex;justify-content:space-between;align-items:center}
+.s1-chip{font-size:20px;font-weight:700;letter-spacing:4.5px;text-transform:uppercase;color:#27c2d1;border:1.5px solid rgba(39,194,209,.28);padding:8px 24px;border-radius:100px}
+.s1-logomark{height:26px;opacity:.35;filter:brightness(0) invert(1)}
+.s1-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:10px 0}
+.s1-pre{font-size:34px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.5px;margin-bottom:8px}
+.s1-number{font-size:210px;font-weight:900;line-height:.88;letter-spacing:-7px;color:#fff;position:relative}
+.s1-post{font-size:50px;font-weight:700;color:#27c2d1;letter-spacing:-1px;margin-top:18px}
+.s1-desc{font-size:40px;font-weight:400;color:rgba(255,255,255,.42);margin-top:6px}
+.s1-bottom{display:flex;justify-content:space-between;align-items:flex-end}
+.s1-q{font-size:36px;font-weight:700;color:#fff}
+.s1-swipe{font-size:28px;font-weight:600;color:#27c2d1;display:flex;align-items:center;gap:8px}
+
+/* S2 — PROBLEMA (white) */
+.s2{background:#fff;padding:74px 80px;justify-content:space-between;position:relative;display:flex;flex-direction:column;flex:1}
+.s2-accent{position:absolute;bottom:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#147790,#27c2d1)}
+.s2-top{display:flex;justify-content:space-between;align-items:center}
+.s2-num{font-size:20px;font-weight:900;color:#dde3ea}
+.s2-logomark{height:24px;opacity:.42}
+.s2-chip{display:inline-flex;align-items:center;gap:10px;background:#fff1f0;border:1.5px solid #fcd4d0;border-radius:100px;padding:8px 24px;font-size:20px;font-weight:700;color:#dc2626;letter-spacing:2.5px;text-transform:uppercase;margin-top:40px;align-self:flex-start}
+.s2-chip-dot{width:9px;height:9px;border-radius:50%;background:#dc2626;flex-shrink:0}
+.s2-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:28px 0}
+.s2-title{font-size:84px;font-weight:900;color:#0f172a;line-height:1.05;letter-spacing:-2.5px;text-wrap:pretty}
+.s2-sub{font-size:36px;font-weight:400;color:#64748b;line-height:1.45}
+.s2-bottom{display:flex;justify-content:flex-end;align-items:flex-end;padding-bottom:8px}
+.s2-swipe{font-size:27px;font-weight:600;color:#1e9db9;display:flex;align-items:center;gap:8px}
+
+/* S3 — DATO (light) */
+.s3{background:#f1f5f9;padding:74px 80px;justify-content:space-between;position:relative;display:flex;flex-direction:column;flex:1}
+.s3-top{display:flex;justify-content:space-between;align-items:center}
+.s3-num{font-size:20px;font-weight:900;color:#d0d8e4}
+.s3-logomark{height:24px;opacity:.38}
+.s3-label{font-size:20px;font-weight:700;letter-spacing:4.5px;text-transform:uppercase;color:#1e9db9;margin-top:38px}
+.s3-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:26px;padding:16px 0}
+.s3-title{font-size:72px;font-weight:900;color:#0f172a;line-height:1.08;letter-spacing:-2px;text-wrap:pretty}
+.s3-title .hl{color:#1e9db9}
+.s3-list{display:flex;flex-direction:column;gap:12px}
+.s3-item{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:16px;padding:22px 28px;box-shadow:0 2px 14px rgba(0,0,0,.05)}
+.s3-drug{font-size:30px;font-weight:700;color:#0f172a}
+.s3-right{display:flex;align-items:baseline;gap:7px}
+.s3-count{font-size:50px;font-weight:900;color:#1e9db9;line-height:1;letter-spacing:-1.5px}
+.s3-unit{font-size:22px;font-weight:500;color:#94a3b8}
+.s3-bottom{display:flex;justify-content:flex-end}
+.s3-swipe{font-size:27px;font-weight:600;color:#1e9db9;display:flex;align-items:center;gap:8px}
+
+/* S4 — SOLUCIÓN (teal gradient) */
+.s4{background:linear-gradient(150deg,#147790 0%,#1e9db9 52%,#27c2d1 100%);padding:74px 80px;justify-content:space-between;position:relative;display:flex;flex-direction:column;flex:1}
+.s4-glow{position:absolute;bottom:-60px;right:-60px;width:560px;height:560px;background:radial-gradient(ellipse,rgba(255,255,255,.1) 0%,transparent 65%);pointer-events:none}
+.s4-top{display:flex;justify-content:space-between;align-items:center}
+.s4-num{font-size:20px;font-weight:900;color:rgba(255,255,255,.18)}
+.s4-logo{height:42px;filter:brightness(0) invert(1);opacity:.88}
+.s4-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:20px 0}
+.s4-over{font-size:24px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.48)}
+.s4-title{font-size:100px;font-weight:900;color:#fff;line-height:.97;letter-spacing:-3px}
+.s4-sub{font-size:44px;font-weight:400;color:rgba(255,255,255,.8);line-height:1.35}
+.s4-pills{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.s4-pill{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.24);border-radius:100px;padding:10px 26px;font-size:26px;font-weight:600;color:#fff}
+.s4-bottom{display:flex;justify-content:space-between;align-items:flex-end}
+.s4-src{font-size:19px;color:rgba(255,255,255,.36);font-style:italic}
+.s4-swipe{font-size:27px;font-weight:600;color:rgba(255,255,255,.72);display:flex;align-items:center;gap:8px}
+
+/* S5 — FUNCIONES (white) */
+.s5{background:#fff;padding:68px 72px;justify-content:space-between;position:relative;display:flex;flex-direction:column;flex:1}
+.s5-top{display:flex;justify-content:space-between;align-items:center}
+.s5-num{font-size:20px;font-weight:900;color:#dde3ea}
+.s5-logomark{height:24px;opacity:.42}
+.s5-label{font-size:20px;font-weight:700;letter-spacing:4.5px;text-transform:uppercase;color:#1e9db9;margin-top:34px}
+.s5-title{font-size:62px;font-weight:900;color:#0f172a;line-height:1.1;letter-spacing:-1.5px;margin-top:6px}
+.s5-features{display:flex;gap:0;flex:1;margin-top:38px}
+.s5-feat{flex:1;display:flex;flex-direction:column;gap:14px;padding:0 30px;border-right:1.5px solid #e8edf3}
+.s5-feat:first-child{padding-left:0}
+.s5-feat:last-child{border-right:none;padding-right:0}
+.s5-icon{width:70px;height:70px;background:linear-gradient(135deg,rgba(30,157,185,.12),rgba(39,194,209,.2));border-radius:18px;display:flex;align-items:center;justify-content:center}
+.s5-icon svg{width:34px;height:34px}
+.s5-fnum{font-size:56px;font-weight:900;color:#1e9db9;line-height:1;letter-spacing:-2px}
+.s5-flabel{font-size:26px;font-weight:700;color:#0f172a;line-height:1.2}
+.s5-fsub{font-size:20px;font-weight:400;color:#64748b;line-height:1.4}
+.s5-bottom{display:flex;justify-content:space-between;align-items:flex-end}
+.s5-source{font-size:18px;color:#94a3b8;font-style:italic}
+.s5-swipe{font-size:27px;font-weight:600;color:#1e9db9;display:flex;align-items:center;gap:8px}
+
+/* S6 — CTA (dark) */
+.s6{background:#070e12;padding:74px 80px;justify-content:space-between;align-items:center;position:relative;display:flex;flex-direction:column;flex:1}
+.s6-glow{position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(30,157,185,.13) 0%,transparent 65%);pointer-events:none}
+.s6-bar{position:absolute;bottom:0;left:0;right:0;height:7px;background:linear-gradient(90deg,#147790,#27c2d1)}
+.s6-top{width:100%;display:flex;justify-content:space-between;align-items:center}
+.s6-num{font-size:20px;font-weight:900;color:rgba(255,255,255,.08)}
+.s6-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;position:relative}
+.s6-logo{height:48px;filter:brightness(0) invert(1);opacity:.88;margin-bottom:4px}
+.s6-title{font-size:90px;font-weight:900;color:#fff;line-height:1.0;letter-spacing:-2.5px}
+.s6-sub{font-size:36px;font-weight:400;color:rgba(255,255,255,.45)}
+.s6-trial{background:rgba(30,157,185,.15);border:1.5px solid rgba(30,157,185,.3);border-radius:100px;padding:14px 52px;font-size:28px;font-weight:700;color:#b4e5f4}
+.s6-badges{display:flex;gap:18px;align-items:center;margin-top:6px}
+.s6-badge{height:56px}
+.s6-bottom{width:100%;display:flex;justify-content:center;position:relative}
+.s6-handle{font-size:23px;font-weight:500;color:rgba(255,255,255,.22);letter-spacing:1px}
+/* Plan comparison row */
+.s6-prices{display:flex;gap:16px;align-items:stretch;margin-top:4px}
+.s6-plan{text-align:center;padding:18px 26px;border-radius:16px;border:1.5px solid rgba(255,255,255,.14);display:flex;flex-direction:column;gap:6px}
+.s6-plan.feat{border-color:rgba(30,157,185,.45);background:rgba(30,157,185,.1)}
+.s6-pname{font-size:18px;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:2.5px}
+.s6-pprice{font-size:48px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1}
+.s6-pprice span{font-size:22px;font-weight:500;color:rgba(255,255,255,.45);letter-spacing:0}
+.s6-peq{font-size:20px;font-weight:500;color:#b4e5f4}
+.s6-save{display:inline-block;background:linear-gradient(90deg,#1e9db9,#27c2d1);color:white;font-size:16px;font-weight:800;padding:3px 10px;border-radius:6px;margin-left:8px;letter-spacing:.5px}
+.s6-valuepills{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.s6-vpill{background:rgba(30,157,185,.14);border:1.5px solid rgba(30,157,185,.32);border-radius:100px;padding:11px 30px;font-size:25px;font-weight:600;color:#b4e5f4}
+
+/* ══════════════════════════════════════════
+   STORY CANVAS — 1080 × 1920
+══════════════════════════════════════════ */
+.story{width:1080px;height:1920px;position:absolute;top:0;left:0;transform-origin:top left;overflow:hidden;display:none;flex-direction:column}
+.story.on{display:flex}
+
+/* ST1 — ¿Sabías que...? (teal gradient) */
+.st1{background:linear-gradient(150deg,#147790 0%,#1e9db9 50%,#27c2d1 100%);padding:256px 90px 346px;justify-content:space-between;align-items:center;position:relative;display:flex;flex-direction:column;flex:1}
+.st1-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:980px;height:980px;background:radial-gradient(ellipse,rgba(255,255,255,.07) 0%,transparent 62%);pointer-events:none}
+.st1-logo{height:52px;filter:brightness(0) invert(1);opacity:.88;position:relative}
+.st1-center{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:32px;justify-content:center;padding:40px 0;position:relative}
+.st1-over{font-size:30px;font-weight:700;letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,.52)}
+.st1-dato{font-size:78px;font-weight:900;line-height:1.18;color:#fff;letter-spacing:-1.5px;text-wrap:pretty}
+.st1-dato .hl{color:#b4e5f4;text-decoration:underline;text-underline-offset:14px;text-decoration-thickness:4px}
+.st1-sub{font-size:44px;font-weight:400;color:rgba(255,255,255,.78);line-height:1.4}
+.st1-bottom{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;position:relative}
+.st1-cta{background:rgba(255,255,255,.17);border:2.5px solid rgba(255,255,255,.3);border-radius:100px;padding:20px 68px;font-size:34px;font-weight:700;color:#fff}
+.st1-cite{font-size:21px;font-style:italic;color:rgba(255,255,255,.32);text-align:center;line-height:1.45}
+
+/* ST2 — Feature highlight (white) */
+.st2{background:#fff;padding:256px 90px 346px;justify-content:space-between;align-items:flex-start;position:relative;display:flex;flex-direction:column;flex:1}
+.st2-top{width:100%;display:flex;flex-direction:column;gap:0}
+.st2-hdr{display:flex;justify-content:space-between;align-items:flex-start}
+.st2-chip{background:rgba(30,157,185,.1);border:1.5px solid rgba(30,157,185,.2);border-radius:100px;padding:10px 28px;font-size:21px;font-weight:700;color:#1e9db9;letter-spacing:3px;text-transform:uppercase}
+.st2-logo{height:34px;opacity:.5}
+.st2-title{font-size:88px;font-weight:900;color:#0f172a;line-height:1.0;letter-spacing:-2.5px;text-wrap:pretty;margin-top:40px}
+.st2-title .acc{color:#1e9db9}
+.st2-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:0;width:100%}
+.st2-feat{display:flex;align-items:flex-start;gap:26px;padding:34px 0;border-bottom:1.5px solid #eef2f7}
+.st2-feat:last-child{border-bottom:none}
+.st2-check{width:52px;height:52px;flex-shrink:0;background:linear-gradient(135deg,#1e9db9,#27c2d1);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-top:8px}
+.st2-check svg{width:26px;height:26px}
+.st2-ft{display:flex;flex-direction:column;gap:6px}
+.st2-fnum{font-size:56px;font-weight:900;color:#0f172a;line-height:1;letter-spacing:-1.5px}
+.st2-flabel{font-size:28px;font-weight:500;color:#64748b;line-height:1.3}
+.st2-bot{width:100%;display:flex;flex-direction:column;gap:18px}
+.st2-src{font-size:21px;font-style:italic;color:#94a3b8}
+.st2-ctabtn{background:linear-gradient(90deg,#147790,#27c2d1);border-radius:100px;padding:32px 0;font-size:36px;font-weight:700;color:#fff;text-align:center;width:100%}
+.st2-footer{display:flex;justify-content:space-between;align-items:center}
+.st2-handle{font-size:23px;font-weight:500;color:#94a3b8}
+.st2-badges{display:flex;gap:14px;align-items:center}
+.st2-fbadge{height:42px}
+/* ── Safe zone overlay ── */
+.sz-overlay{position:absolute;inset:0;pointer-events:none;z-index:50;display:none}
+.story.sz-on .sz-overlay{display:block}
+.sz-top-bar{position:absolute;top:0;left:0;right:0;height:250px;background:rgba(255,160,0,.08);border-bottom:2px dashed rgba(255,160,0,.38);display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px}
+.sz-bot-bar{position:absolute;bottom:0;left:0;right:0;height:340px;background:rgba(255,160,0,.08);border-top:2px dashed rgba(255,160,0,.38);display:flex;align-items:flex-start;justify-content:center;padding-top:14px}
+.sz-label{font-size:20px;font-weight:700;color:rgba(255,160,0,.65);letter-spacing:3px;text-transform:uppercase}
+.sz-btn{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;border:1px solid rgba(255,160,0,.28);background:transparent;color:rgba(255,160,0,.5);cursor:pointer;font-family:inherit;transition:all .18s;display:none;align-items:center;gap:5px}
+.sz-btn.vis{display:flex}
+.sz-btn.on{background:rgba(255,160,0,.14);color:rgba(255,160,0,.9);border-color:rgba(255,160,0,.5)}
+</style>
+</head>
+<body style="font-size: 25px">
+
+<!-- ── TOOLBAR ── -->
+<div class="toolbar">
+  <img class="tb-logo" src="assets/logo-full.png" alt="Farmateca">
+  <div class="tb-sep"></div>
+  <button class="tab on" onclick="switchPiece('carousel',this)">Carrusel · 6 slides</button>
+  <button class="tab" onclick="switchPiece('t1',this)">Historia T1</button>
+  <button class="tab" onclick="switchPiece('t2',this)">Historia T2</button>
+  <div class="tb-right">
+    <button class="nav-btn" id="btn-prev" onclick="nav(-1)">&#8592;</button>
+    <span class="slide-counter" id="counter">1 / 6</span>
+    <button class="nav-btn" id="btn-next" onclick="nav(1)">&#8594;</button>
+    <button class="sz-btn" id="btn-sz" onclick="toggleSZ()">SAFE ZONE</button>
+    <div class="tb-badge" id="tb-dim">1080 × 1080 · 1:1</div>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- PANEL -->
+  <aside class="panel" id="panel">
+
+    <!-- Panel carrusel -->
+    <div id="pc">
+      <div class="plabel">Slides del carrusel</div>
+      <div class="thumbgrid" id="thumbs">
+        <div class="thumb on" data-c="dark" onclick="goTo(0)"><div class="thumb-bar" style="background:linear-gradient(90deg,#147790,#27c2d1)"></div><span class="thumb-n">01</span></div>
+        <div class="thumb" data-c="white" onclick="goTo(1)"><div class="thumb-bar" style="background:#dc2626"></div><span class="thumb-n">02</span></div>
+        <div class="thumb" data-c="gray" onclick="goTo(2)"><div class="thumb-bar" style="background:#1e9db9"></div><span class="thumb-n">03</span></div>
+        <div class="thumb" data-c="teal" onclick="goTo(3)"><div class="thumb-bar" style="background:rgba(255,255,255,.3)"></div><span class="thumb-n">04</span></div>
+        <div class="thumb" data-c="white" onclick="goTo(4)"><div class="thumb-bar" style="background:#1e9db9"></div><span class="thumb-n">05</span></div>
+        <div class="thumb" data-c="dark" onclick="goTo(5)"><div class="thumb-bar" style="background:linear-gradient(90deg,#147790,#27c2d1)"></div><span class="thumb-n">06</span></div>
+      </div>
+      <div class="sep"></div>
+      <div class="plabel">Editar</div>
+      <div class="field">
+        <div class="flabel">Título CTA (slide 6)</div>
+        <input class="finput" id="e-cta" type="text" value="Descárgala gratis" oninput="document.getElementById('s6-title').textContent=this.value">
+      </div>
+      <div class="field">
+        <div class="flabel">Handle (@ Instagram)</div>
+        <input class="finput" id="e-handle" type="text" value="@farmatecachile" oninput="[...document.querySelectorAll('.s6-handle')].forEach(el=>el.textContent=this.value)">
+      </div>
+      <div class="sep"></div>
+      <div class="exportbox"><strong>Proporción 1:1 (cuadrada)</strong> · 1080 × 1080 px · Screenshot slide a slide (Cmd+Shift+4 Mac / Recorte Windows)</div>
+    </div>
+
+    <!-- Panel T1 -->
+    <div id="pt1" style="display:none">
+      <div class="plabel">Historia T1 · ¿Sabías que...?</div>
+      <div class="field">
+        <div class="flabel">Overline</div>
+        <input class="finput" id="e-t1-over" type="text" value="¿SABÍAS QUE...?" oninput="document.getElementById('t1-over').textContent=this.value">
+      </div>
+      <div class="field">
+        <div class="flabel">Dato principal</div>
+        <textarea class="ftextarea" id="e-t1-dato" oninput="renderDato()">El paracetamol tiene más de 50 marcas comerciales registradas en Chile</textarea>
+      </div>
+      <div class="field">
+        <div class="flabel">Texto a destacar (azul claro)</div>
+        <input class="finput" id="e-t1-hl" type="text" value="más de 50 marcas" oninput="renderDato()">
+      </div>
+      <div class="field">
+        <div class="flabel">Subtexto</div>
+        <input class="finput" id="e-t1-sub" type="text" value="Y eso es solo un medicamento. Búscalos todos offline." oninput="document.getElementById('t1-sub').textContent=this.value">
+      </div>
+      <div class="field">
+        <div class="flabel">CTA</div>
+        <input class="finput" id="e-t1-cta" type="text" value="Descárgala gratis · 7 días" oninput="document.getElementById('t1-cta').textContent=this.value">
+      </div>
+      <div class="sep"></div>
+      <div class="exportbox"><strong>Proporción 9:16 (Historia/Reel)</strong> · 1080 × 1920 px · Safe zone: 250px top / 340px bottom</div>
+    </div>
+
+    <!-- Panel T2 -->
+    <div id="pt2" style="display:none">
+      <div class="plabel">Historia T2 · Feature Highlight</div>
+      <div class="field">
+        <div class="flabel">Título (usa / para salto)</div>
+        <textarea class="ftextarea" id="e-t2-title" oninput="renderT2Title()">Decide con seguridad en segundos.</textarea>
+      </div>
+      <div class="field">
+        <div class="flabel">CTA</div>
+        <input class="finput" id="e-t2-cta" type="text" value="Prueba gratis 7 días · $3.790/mes" oninput="document.getElementById('t2-cta').textContent=this.value">
+      </div>
+      <div class="field">
+        <div class="flabel">Handle</div>
+        <input class="finput" id="e-t2-handle" type="text" value="@farmateca.cl" oninput="document.getElementById('t2-handle').textContent=this.value">
+      </div>
+      <div class="sep"></div>
+      <div class="exportbox"><strong>Proporción 9:16 (Historia/Reel)</strong> · 1080 × 1920 px · Safe zone: 250px top / 340px bottom</div>
+    </div>
+
+  </aside>
+
+  <!-- STAGE -->
+  <div class="stage" id="stage">
+
+    <!-- ── CAROUSEL PIECE ── -->
+    <div id="piece-carousel">
+      <div class="cwrap" id="cwrap-c">
+
+        <!-- S1: HOOK -->
+        <div class="cslide on" id="cs0">
+          <div class="s1">
+            <div class="s1-glow"></div>
+            <div class="s1-top">
+              <div class="s1-chip">DATO · CHILE</div>
+              <img class="s1-logomark" src="assets/logo-full.png" alt="" style="width: 260px; height: 260px">
+            </div>
+            <div class="s1-body">
+              <div class="s1-pre">Chile tiene</div>
+              <div class="s1-number">2.556</div>
+              <div class="s1-post">nombres comerciales</div>
+              <div class="s1-desc">de medicamentos registrados.</div>
+            </div>
+            <div class="s1-bottom">
+              <div class="s1-q">¿Los conoces todos?</div>
+              <div class="s1-swipe">desliza <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S2: PROBLEMA -->
+        <div class="cslide" id="cs1">
+          <div class="s2">
+            <div class="s2-accent"></div>
+            <div class="s2-top">
+              <div class="s2-num">02</div>
+              <img class="s2-logomark" src="assets/logo-full.png" alt="">
+            </div>
+            <div class="s2-chip">
+              <div class="s2-chip-dot"></div>
+              EL PROBLEMA
+            </div>
+            <div class="s2-body">
+              <div class="s2-title">Sin señal. Sin tiempo. Sin respuesta.</div>
+              <div class="s2-sub">Cada turno, guardia o consulta tiene ese momento donde necesitas información farmacológica y no hay acceso.</div>
+            </div>
+            <div class="s2-bottom">
+              <div class="s2-swipe">seguir <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S3: DATO -->
+        <div class="cslide" id="cs2">
+          <div class="s3">
+            <div class="s3-top">
+              <div class="s3-num">03</div>
+              <img class="s3-logomark" src="assets/logo-full.png" alt="">
+            </div>
+            <div class="s3-label">Y ENCIMA...</div>
+            <div class="s3-body">
+              <div class="s3-title">El mismo principio activo tiene <span class="hl">decenas de nombres</span> distintos en Chile.</div>
+              <div class="s3-list">
+                <div class="s3-item">
+                  <div class="s3-drug">Paracetamol</div>
+                  <div class="s3-right"><div class="s3-count">+50</div><div class="s3-unit">marcas</div></div>
+                </div>
+                <div class="s3-item">
+                  <div class="s3-drug">Amoxicilina</div>
+                  <div class="s3-right"><div class="s3-count">+60</div><div class="s3-unit">marcas</div></div>
+                </div>
+                <div class="s3-item">
+                  <div class="s3-drug">Ibuprofeno</div>
+                  <div class="s3-right"><div class="s3-count">+40</div><div class="s3-unit">marcas</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="s3-bottom">
+              <div class="s3-swipe">la solución <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S4: SOLUCIÓN -->
+        <div class="cslide" id="cs3">
+          <div class="s4">
+            <div class="s4-glow"></div>
+            <div class="s4-top">
+              <div class="s4-num">04</div>
+              <img class="s4-logo" src="assets/logo-full.png" alt="Farmateca">
+            </div>
+            <div class="s4-body">
+              <div class="s4-over">LA SOLUCIÓN</div>
+              <div class="s4-title">Farmateca.</div>
+              <div class="s4-sub">La bibliomédica chilena. 100% offline. Hecha para profesionales de la salud.</div>
+              <div class="s4-pills">
+                <div class="s4-pill">100% offline</div>
+                <div class="s4-pill">Mapa farmacias</div>
+                <div class="s4-pill">Favoritos</div>
+                <div class="s4-pill">Asistente IA</div>
+              </div>
+            </div>
+            <div class="s4-bottom">
+              <div class="s4-src">Fuente: ISP Chile + MINSAL · Base de datos v.2026.01</div>
+              <div class="s4-swipe">ver funciones <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S5: FUNCIONES -->
+        <div class="cslide" id="cs4">
+          <div class="s5">
+            <div class="s5-top">
+              <div class="s5-num">05</div>
+              <img class="s5-logomark" src="assets/logo-full.png" alt="">
+            </div>
+            <div class="s5-label">QUÉ INCLUYE</div>
+            <div class="s5-title">Cinco herramientas. Un solo lugar.</div>
+            <div class="s5-features">
+              <div class="s5-feat">
+                <div class="s5-icon">
+                  <svg viewBox="0 0 36 36" fill="none"><rect x="6" y="4" width="18" height="28" rx="3" stroke="#1e9db9" stroke-width="2.5"/><path d="M10 8h10M10 13h10M10 18h6" stroke="#1e9db9" stroke-width="2.5" stroke-linecap="round"/><circle cx="28" cy="28" r="6" fill="#f1f5f9" stroke="#1e9db9" stroke-width="2"/><path d="M26 28h4M28 26v4" stroke="#1e9db9" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </div>
+                <div class="s5-fnum">+2.556</div>
+                <div class="s5-flabel">marcas + compuestos</div>
+                <div class="s5-fsub">Búsqueda por marca o principio activo</div>
+              </div>
+              <div class="s5-feat">
+                <div class="s5-icon">
+                  <svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="12" stroke="#1e9db9" stroke-width="2.5"/><path d="M18 12v6l4 2" stroke="#1e9db9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="28" r="3" fill="#1e9db9" opacity=".3" stroke="#1e9db9" stroke-width="1.5"/><circle cx="18" cy="31" r="3" fill="#1e9db9" opacity=".3" stroke="#1e9db9" stroke-width="1.5"/><circle cx="26" cy="28" r="3" fill="#1e9db9" opacity=".3" stroke="#1e9db9" stroke-width="1.5"/></svg>
+                </div>
+                <div class="s5-fnum">222</div>
+                <div class="s5-flabel">farmacias en mapa</div>
+                <div class="s5-fsub">Lista + mapa OSM · Abrir en Google Maps</div>
+              </div>
+              <div class="s5-feat">
+                <div class="s5-icon">
+                  <svg viewBox="0 0 36 36" fill="none"><path d="M18 6l2.5 7.5H28l-6.5 4.7 2.5 7.5L18 21l-6 4.7 2.5-7.5L8 13.5h7.5z" stroke="#1e9db9" stroke-width="2.2" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="s5-fnum">IA</div>
+                <div class="s5-flabel">Asistente Premium</div>
+                <div class="s5-fsub">Favoritos · Familias · Laboratorios</div>
+              </div>
+            </div>
+            <div class="s5-bottom">
+              <div class="s5-source">Fuente: ISP Chile + MINSAL · v.2026.01</div>
+              <div class="s5-swipe">descargar <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S6: CTA -->
+        <div class="cslide" id="cs5">
+          <div class="s6">
+            <div class="s6-glow"></div>
+            <div class="s6-bar"></div>
+            <div class="s6-top">
+              <div class="s6-num">06</div>
+            </div>
+            <div class="s6-body">
+              <img class="s6-logo" src="assets/logo-full.png" alt="Farmateca">
+              <div class="s6-title" id="s6-title">Descárgala gratis</div>
+              <div class="s6-sub">La información que necesitas cuando más importa.</div>
+              <div class="s6-valuepills">
+                <div class="s6-vpill">100% Offline</div>
+                <div class="s6-vpill">+2.556 medicamentos</div>
+                <div class="s6-vpill">Asistente IA</div>
+              </div>
+              <div class="s6-trial">7 días gratis · Sin tarjeta</div>
+              <div class="s6-badges">
+                <img class="s6-badge" src="assets/badge-appstore.png" alt="App Store">
+                <img class="s6-badge" src="assets/badge-googleplay.png" alt="Google Play">
+              </div>
+            </div>
+            <div class="s6-bottom">
+              <div class="s6-handle">@farmatecachile</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /cwrap-c -->
+    </div><!-- /piece-carousel -->
+
+    <!-- ── HISTORIA T1 ── -->
+    <div id="piece-t1" style="display:none">
+      <div class="cwrap" id="cwrap-t1">
+        <div class="story on" id="ss1">
+          <div class="sz-overlay"><div class="sz-top-bar"><span class="sz-label">▲ zona UI &middot; 250px</span></div><div class="sz-bot-bar"><span class="sz-label">▼ zona UI &middot; 340px</span></div></div>
+          <div class="st1">
+            <div class="st1-glow"></div>
+            <img class="st1-logo" src="assets/logo-full.png" alt="Farmateca">
+            <div class="st1-center">
+              <div class="st1-over" id="t1-over">¿SABÍAS QUE...?</div>
+              <div class="st1-dato" id="t1-dato">El paracetamol tiene <span class="hl">más de 50 marcas</span> comerciales registradas en Chile</div>
+              <div class="st1-sub" id="t1-sub">Y eso es solo un medicamento. Búscalos todos offline.</div>
+            </div>
+            <div class="st1-bottom">
+              <div class="st1-cta" id="t1-cta">Descárgala gratis · 7 días</div>
+              <div class="st1-cite">Fuente: ISP Chile · Base Farmateca v.2026.01</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HISTORIA T2 ── -->
+    <div id="piece-t2" style="display:none">
+      <div class="cwrap" id="cwrap-t2">
+        <div class="story on" id="ss2">
+          <div class="sz-overlay"><div class="sz-top-bar"><span class="sz-label">▲ zona UI &middot; 250px</span></div><div class="sz-bot-bar"><span class="sz-label">▼ zona UI &middot; 340px</span></div></div>
+          <div class="st2">
+            <div class="st2-top">
+              <div class="st2-hdr">
+                <div class="st2-chip">NUEVA APP</div>
+                <img class="st2-logo" src="assets/logo-full.png" alt="Farmateca">
+              </div>
+              <div class="st2-title" id="t2-title">Decide con seguridad <span class="acc">en segundos.</span></div>
+            </div>
+            <div class="st2-body">
+              <div class="st2-feat">
+                <div class="st2-check"><svg viewBox="0 0 26 26" fill="none"><path d="M5 13l6 6L21 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="st2-ft">
+                  <div class="st2-fnum">+2.556</div>
+                  <div class="st2-flabel">marcas · búsqueda por compuesto o nombre comercial</div>
+                </div>
+              </div>
+              <div class="st2-feat">
+                <div class="st2-check"><svg viewBox="0 0 26 26" fill="none"><path d="M5 13l6 6L21 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="st2-ft">
+                  <div class="st2-fnum">222</div>
+                  <div class="st2-flabel">farmacias en mapa · filtro por región y tipo</div>
+                </div>
+              </div>
+              <div class="st2-feat">
+                <div class="st2-check"><svg viewBox="0 0 26 26" fill="none"><path d="M5 13l6 6L21 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="st2-ft">
+                  <div class="st2-fnum">IA</div>
+                  <div class="st2-flabel">Asistente Premium · Favoritos · Modo oscuro</div>
+                </div>
+              </div>
+            </div>
+            <div class="st2-bot">
+              <div class="st2-src">Fuente oficial: ISP Chile + MINSAL · v.2026.01</div>
+              <div class="st2-ctabtn" id="t2-cta">Prueba gratis 7 días · $3.790/mes</div>
+              <div class="st2-footer">
+                <div class="st2-handle" id="t2-handle" style="width: 185px; height: 30px">@farmateca.cl</div>
+                <div class="st2-badges">
+                  <img class="st2-fbadge" src="assets/badge-appstore.png" alt="App Store">
+                  <img class="st2-fbadge" src="assets/badge-googleplay.png" alt="Google Play">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /stage -->
+</div><!-- /main -->
+
+<script>
+  let currentPiece = 'carousel';
+  let currentSlide = 0;
+  const totalSlides = 6;
+
+  /* ── Scale all canvases ── */
+  function applyScale() {
+    const stage = document.getElementById('stage');
+    const sw = stage.clientWidth - 56;
+    const sh = stage.clientHeight - 56;
+
+    // Carousel 1080×1080
+    const sc = Math.min(sw / 1080, sh / 1080, 1);
+    const wc = document.getElementById('cwrap-c');
+    wc.style.width  = (1080 * sc) + 'px';
+    wc.style.height = (1080 * sc) + 'px';
+    document.querySelectorAll('.cslide').forEach(el => {
+      el.style.transform = 'scale(' + sc + ')';
+    });
+
+    // Stories 1080×1920
+    const ss = Math.min(sw / 1080, sh / 1920, 1);
+    ['cwrap-t1','cwrap-t2'].forEach(id => {
+      const w = document.getElementById(id);
+      if (w) {
+        w.style.width  = (1080 * ss) + 'px';
+        w.style.height = (1920 * ss) + 'px';
+      }
+    });
+    document.querySelectorAll('.story').forEach(el => {
+      el.style.transform = 'scale(' + ss + ')';
+    });
+  }
+
+  /* ── Safe zone toggle ── */
+  let szOn = false;
+  function toggleSZ() {
+    szOn = !szOn;
+    document.querySelectorAll('.story').forEach(s => s.classList.toggle('sz-on', szOn));
+    document.getElementById('btn-sz').classList.toggle('on', szOn);
+  }
+
+  /* ── Switch tabs ── */
+  function switchPiece(id, btn) {
+    currentPiece = id;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+    if (btn) btn.classList.add('on');
+
+    // Panels
+    document.getElementById('pc').style.display   = id === 'carousel' ? '' : 'none';
+    document.getElementById('pt1').style.display  = id === 't1'       ? '' : 'none';
+    document.getElementById('pt2').style.display  = id === 't2'       ? '' : 'none';
+
+    // Pieces
+    document.getElementById('piece-carousel').style.display = id === 'carousel' ? '' : 'none';
+    document.getElementById('piece-t1').style.display       = id === 't1'       ? '' : 'none';
+    document.getElementById('piece-t2').style.display       = id === 't2'       ? '' : 'none';
+
+    // Counter + controles por modo
+    const isCarousel = id === 'carousel';
+    document.getElementById('btn-prev').style.visibility  = isCarousel ? 'visible' : 'hidden';
+    document.getElementById('btn-next').style.visibility  = isCarousel ? 'visible' : 'hidden';
+    document.getElementById('counter').style.visibility   = isCarousel ? 'visible' : 'hidden';
+    document.getElementById('btn-sz').classList.toggle('vis', !isCarousel);
+    document.getElementById('tb-dim').textContent = isCarousel ? '1080 × 1080 · 1:1' : '1080 × 1920 · 9:16';
+
+    applyScale();
+  }
+
+  /* ── Navigate carousel ── */
+  function goTo(n) {
+    document.getElementById('cs' + currentSlide).classList.remove('on');
+    document.querySelectorAll('.thumb')[currentSlide].classList.remove('on');
+    currentSlide = n;
+    document.getElementById('cs' + currentSlide).classList.add('on');
+    document.querySelectorAll('.thumb')[currentSlide].classList.add('on');
+    document.getElementById('counter').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+  }
+
+  function nav(dir) {
+    goTo((currentSlide + dir + totalSlides) % totalSlides);
+  }
+
+  /* ── Historia T1: highlight rendering ── */
+  function renderDato() {
+    const datoEl  = document.getElementById('t1-dato');
+    const raw     = document.getElementById('e-t1-dato').value;
+    const hl      = document.getElementById('e-t1-hl').value;
+    if (hl && raw.includes(hl)) {
+      datoEl.innerHTML = raw.replace(hl, '<span class="hl">' + hl + '</span>');
+    } else {
+      datoEl.textContent = raw;
+    }
+  }
+
+  /* ── Historia T2: title rendering ── */
+  function renderT2Title() {
+    document.getElementById('t2-title').textContent = document.getElementById('e-t2-title').value;
+  }
+
+  /* ── Init ── */
+  window.addEventListener('load', () => { applyScale(); });
+  window.addEventListener('resize', applyScale);
+</script>
+</body>
+</html>

@@ -24,7 +24,7 @@ export default async function PrivacidadPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#007B7F] to-[#00A9A5] shadow-sm">
+      <div className="bg-gradient-to-r from-[#147790] to-[#1e9db9] shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold text-white">

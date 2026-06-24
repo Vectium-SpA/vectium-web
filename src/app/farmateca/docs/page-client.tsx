@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { FarmatecaFooter } from '@/components/farmateca/marketing/Footer';
 
 const faqs = [
   {
@@ -84,7 +83,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 export default function DocsPage() {
   return (
     <>
-      <div className="py-20 bg-gray-50 pt-28">
+      <div className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div
@@ -108,7 +107,7 @@ export default function DocsPage() {
             className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12"
           >
             <Link
-              href="/farmateca/features"
+              href="/farmateca#caracteristicas"
               className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow text-center"
             >
               <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -120,7 +119,7 @@ export default function DocsPage() {
               <p className="text-sm text-gray-500 mt-1">Ver todas las funciones</p>
             </Link>
             <Link
-              href="/farmateca/pricing"
+              href="/farmateca#precios"
               className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow text-center"
             >
               <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -181,7 +180,6 @@ export default function DocsPage() {
           </motion.div>
         </div>
       </div>
-      <FarmatecaFooter />
     </>
   );
 }

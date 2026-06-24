@@ -1,0 +1,24 @@
+<!-- @dsCard group="Brand" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; height: 200px; }
+  .cell { display:flex; align-items:center; justify-content:center; position:relative; }
+  .cell img { width: 110px; height: 110px; object-fit: contain; }
+  .soft { background: var(--bg-light); }
+  .dark { background: var(--primary-dark); }
+  .cap { position:absolute; bottom:8px; font-size:10px; color: var(--gray-light); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="cell"><img src="../assets/logo-isotipo.png" alt="isotipo"><span class="cap">Isotipo</span></div>
+    <div class="cell soft"><img src="../assets/logo-isotipo.png" alt="isotipo"><span class="cap">Sobre gris</span></div>
+    <div class="cell dark"><img src="../assets/logo-isotipo-bw.png" alt="isotipo" style="filter:brightness(0) invert(1)"><span class="cap" style="color:rgba(255,255,255,.6)">Mono blanco</span></div>
+  </div>
+</body>
+</html>

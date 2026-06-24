@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { vectiumTheme } from "@/styles/theme";
 
@@ -15,6 +16,11 @@ const footerLinks = [
 ];
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // Farmateca tiene su propio chrome (nav/footer). Ocultar el corporativo en /farmateca/*
+  if (pathname.startsWith("/farmateca")) return null;
+
   return (
     <footer className="bg-vectium-black text-vectium-gray-400">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">

@@ -1,0 +1,28 @@
+<!-- @dsCard group="Spacing" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--bg-light); padding: 28px; }
+  .row { display: flex; gap: 26px; }
+  .item { text-align: center; }
+  .box { width: 130px; height: 78px; background: var(--white); border-radius: 16px; display:flex; align-items:center; justify-content:center; color: var(--primary-dark); font-weight:600; font-size:12px; }
+  .xs { box-shadow: var(--shadow-xs); }
+  .sm { box-shadow: var(--shadow-sm); }
+  .md { box-shadow: var(--shadow-md); }
+  .lg { box-shadow: var(--shadow-lg); }
+  .lbl { font-size: 11px; font-weight: 600; color: var(--fg1); margin-top: 12px; }
+  .val { font-size: 9px; color: var(--gray-light); margin-top: 3px; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="box xs">xs</div><div class="lbl">Subtle</div><div class="val">0 2 8 / .06</div></div>
+    <div class="item"><div class="box sm">sm</div><div class="lbl">Signature</div><div class="val">0 4 16 teal/.15</div></div>
+    <div class="item"><div class="box md">md</div><div class="lbl">Raised</div><div class="val">0 8 24 teal/.18</div></div>
+    <div class="item"><div class="box lg">lg</div><div class="lbl">Float</div><div class="val">0 15 30 /.15</div></div>
+  </div>
+</body>
+</html>

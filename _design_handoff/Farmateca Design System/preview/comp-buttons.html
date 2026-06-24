@@ -1,0 +1,30 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 26px; }
+  .wrap { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .msr { font-family: 'Material Symbols Rounded'; font-size: 20px; line-height: 1; }
+  button { font-family: inherit; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; }
+  .primary { background: var(--grad-button); color: #fff; font-size: 16px; font-weight: 700; padding: 14px 28px; border-radius: 14px; box-shadow: var(--shadow-sm); }
+  .premium { background: var(--gold); color: #fff; font-size: 15px; font-weight: 700; padding: 13px 24px; border-radius: 14px; box-shadow: var(--shadow-premium); }
+  .outline { background: #fff; color: var(--primary-dark); border: 2px solid var(--primary-dark); font-size: 15px; font-weight: 700; padding: 11px 24px; border-radius: 12px; }
+  .text { background: none; color: var(--gray-mid); font-size: 14px; font-weight: 500; padding: 10px 12px; }
+  .fab { width: 56px; height: 56px; border-radius: 50%; background: var(--primary-blue); color: #fff; box-shadow: var(--shadow-md); justify-content:center; }
+  .fab .msr { font-size: 28px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <button class="primary">Suscribirse ahora</button>
+    <button class="premium"><span class="msr">workspace_premium</span>Desbloquear Premium</button>
+    <button class="outline"><span class="msr">login</span>Iniciar Sesión</button>
+    <button class="text">Restaurar compras</button>
+    <button class="fab"><span class="msr">smart_toy</span></button>
+  </div>
+</body>
+</html>

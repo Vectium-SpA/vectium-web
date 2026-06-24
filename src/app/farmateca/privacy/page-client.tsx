@@ -2,12 +2,11 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { FarmatecaFooter } from '@/components/farmateca/marketing/Footer';
 
 export default function PrivacyPage() {
   return (
     <>
-      <div className="py-20 bg-gray-50 pt-28">
+      <div className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div
@@ -685,7 +684,6 @@ export default function PrivacyPage() {
           </motion.div>
         </div>
       </div>
-      <FarmatecaFooter />
     </>
   );
 }

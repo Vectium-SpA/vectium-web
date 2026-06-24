@@ -1,7 +1,5 @@
 export const dynamic = 'force-dynamic';
 
-import { FarmatecaFooter } from '@/components/farmateca/marketing/Footer';
-
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -16,7 +14,7 @@ export const metadata: Metadata = {
 export default function CommunityPage() {
   return (
     <>
-      <div className="py-20 pt-28">
+      <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Comunidad</h1>
@@ -38,7 +36,6 @@ export default function CommunityPage() {
           </div>
         </div>
       </div>
-      <FarmatecaFooter />
     </>
   );
 }

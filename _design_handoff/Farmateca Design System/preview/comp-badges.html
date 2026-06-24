@@ -1,0 +1,39 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 24px; }
+  .group { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+  .group:last-child { margin-bottom: 0; }
+  .msr { font-family: 'Material Symbols Rounded'; font-size: 14px; line-height: 1; }
+  .badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; letter-spacing: .5px; display:inline-flex; align-items:center; gap:5px; }
+  .premium { background: var(--grad-button); color: #fff; border-radius: 20px; padding: 6px 12px; }
+  .pro { background: var(--gold); color: #fff; border-radius: 4px; font-size: 9px; }
+  .soon { background: var(--gray-light); color: #fff; border-radius: 4px; font-size: 10px; }
+  .generic { background: #e3f2fd; color: #1565c0; border-radius: 4px; font-size: 10px; }
+  .popular { background: var(--primary-dark); color: #fff; border-radius: 6px; font-size: 9px; }
+  /* filter chips */
+  .chip { font-size: 14px; font-weight: 500; padding: 8px 16px; border-radius: 20px; border: 1.5px solid var(--gray-ultra); background: #fff; color: var(--primary-dark); }
+  .chip.sel { background: var(--primary-dark); color: #fff; border-color: var(--primary-dark); font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="group">
+    <span class="badge premium"><span class="msr">star</span>PREMIUM</span>
+    <span class="badge pro">PRO</span>
+    <span class="badge popular">MÁS POPULAR</span>
+    <span class="badge soon">PRÓXIMAMENTE</span>
+    <span class="badge generic">GENÉRICO</span>
+  </div>
+  <div class="group">
+    <span class="chip sel">Todos</span>
+    <span class="chip">Compuestos</span>
+    <span class="chip">Marcas</span>
+    <span class="chip">Por Familia</span>
+  </div>
+</body>
+</html>

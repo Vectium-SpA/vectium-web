@@ -1,0 +1,27 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 22px; }
+  .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .sw { border-radius: var(--r-m); overflow: hidden; box-shadow: var(--shadow-xs); }
+  .chip { height: 76px; display: flex; align-items: flex-end; padding: 8px; }
+  .meta { padding: 8px 10px; background: var(--white); }
+  .name { font-size: 12px; font-weight: 600; color: var(--fg1); }
+  .hex { font-size: 11px; color: var(--fg3); font-variant-numeric: tabular-nums; text-transform: uppercase; }
+  .tag { font-size: 9px; color: var(--white); background: rgba(0,0,0,0.18); padding: 2px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#1e9db9"><span class="tag">base</span></div><div class="meta"><div class="name">Primary</div><div class="hex">#1e9db9</div></div></div>
+    <div class="sw"><div class="chip" style="background:#147790"><span class="tag">text</span></div><div class="meta"><div class="name">Dark</div><div class="hex">#147790</div></div></div>
+    <div class="sw"><div class="chip" style="background:#0c88ba"></div><div class="meta"><div class="name">Blue</div><div class="hex">#0c88ba</div></div></div>
+    <div class="sw"><div class="chip" style="background:#27c2d1"></div><div class="meta"><div class="name">Bright</div><div class="hex">#27c2d1</div></div></div>
+    <div class="sw"><div class="chip" style="background:#b4e5f4"></div><div class="meta"><div class="name">Light</div><div class="hex">#b4e5f4</div></div></div>
+  </div>
+</body>
+</html>

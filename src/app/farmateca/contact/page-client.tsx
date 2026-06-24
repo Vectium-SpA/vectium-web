@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { FarmatecaFooter } from '@/components/farmateca/marketing/Footer';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -29,7 +27,7 @@ export default function ContactPage() {
     const body = encodeURIComponent(
       `Nombre: ${formData.nombre}\nEmail: ${formData.email}\n\nMensaje:\n${formData.mensaje}`
     );
-    const mailtoLink = `mailto:farmateca.soporte@gmail.com?subject=${subject}&body=${body}`;
+    const mailtoLink = `mailto:farmatecachile.soporte@gmail.com?subject=${subject}&body=${body}`;
 
     window.location.href = mailtoLink;
 
@@ -41,7 +39,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <div className="py-20 bg-gray-50 pt-28">
+      <div className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div
@@ -166,8 +164,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                    <a href="mailto:farmateca.soporte@gmail.com" className="text-teal-600 hover:underline">
-                      farmateca.soporte@gmail.com
+                    <a href="mailto:farmatecachile.soporte@gmail.com" className="text-teal-600 hover:underline">
+                      farmatecachile.soporte@gmail.com
                     </a>
                     <p className="text-sm text-gray-500 mt-1">Respondemos en 24-48 horas</p>
                   </div>
@@ -211,29 +209,8 @@ export default function ContactPage() {
               </div>
             </motion.div>
           </div>
-
-          {/* Links adicionales */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex justify-center gap-4 mt-12 text-sm"
-          >
-            <Link href="/farmateca/docs" className="text-gray-600 hover:text-teal-600">
-              Documentacion
-            </Link>
-            <span className="text-gray-400">|</span>
-            <Link href="/farmateca/privacy" className="text-gray-600 hover:text-teal-600">
-              Privacidad
-            </Link>
-            <span className="text-gray-400">|</span>
-            <Link href="/farmateca/terms" className="text-gray-600 hover:text-teal-600">
-              Terminos
-            </Link>
-          </motion.div>
         </div>
       </div>
-      <FarmatecaFooter />
     </>
   );
 }

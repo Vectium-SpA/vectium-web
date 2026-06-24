@@ -1,7 +1,6 @@
-export const dynamic = 'force-dynamic';
+import { redirect } from "next/navigation";
 
-import FeaturesPage from './page-client';
-
+// Las características viven en la landing definitiva. Redirige a su sección.
 export default function Page() {
-  return <FeaturesPage />;
+  redirect("/farmateca#caracteristicas");
 }

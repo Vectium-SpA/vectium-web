@@ -91,7 +91,7 @@ function PaymentReturnContent() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className="bg-gradient-to-br from-[#007B7F] to-[#004D4F] rounded-3xl p-10 max-w-md w-full text-center text-white shadow-2xl"
+        className="bg-gradient-to-br from-[#147790] to-[#004D4F] rounded-3xl p-10 max-w-md w-full text-center text-white shadow-2xl"
       >
         {/* Loading */}
         {status === 'loading' && (

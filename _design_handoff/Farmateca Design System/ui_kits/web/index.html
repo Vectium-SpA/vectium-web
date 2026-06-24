@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- @dsCard group="UI Kit — Web" name="Web Kit — Landing de marketing" subtitle="Sitio Farmateca · Hero, Features, Pricing, Footer" viewport="1280x760" -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Farmateca — Web UI Kit</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  html, body { margin: 0; background: #fff; font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  #root { height: 100vh; }
+  a { transition: color .15s, opacity .15s; }
+  .feat { transition: transform .3s ease, box-shadow .3s ease, border-color .3s; }
+  .feat:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.08); border-color: rgba(30,157,185,0.25); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(60px); z-index: 1; }
+  @keyframes drift1 { 0%,100% { transform: translate(0,0);} 50% { transform: translate(80px,-50px);} }
+  @keyframes drift2 { 0%,100% { transform: translate(0,0);} 50% { transform: translate(-70px,70px);} }
+  @keyframes drift3 { 0%,100% { transform: translate(-50%,-50%) scale(1);} 50% { transform: translate(-50%,-50%) scale(1.18);} }
+  .blob { animation: drift1 20s ease-in-out infinite; }
+  .blob2 { animation: drift2 25s ease-in-out infinite; }
+  .blob3 { animation: drift3 16s ease-in-out infinite; }
+  .pulse-dot { animation: pd 2s ease-in-out infinite; }
+  @keyframes pd { 0%,100% { transform: scale(1); opacity: 1;} 50% { transform: scale(1.6); opacity: .6;} }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="webShared.jsx"></script>
+<script type="text/babel" src="webNav.jsx"></script>
+<script type="text/babel" src="webHero.jsx"></script>
+<script type="text/babel" src="webFeatures.jsx"></script>
+<script type="text/babel" src="webPricing.jsx"></script>
+<script type="text/babel" src="webFooter.jsx"></script>
+<script type="text/babel" src="web.jsx"></script>
+</body>
+</html>

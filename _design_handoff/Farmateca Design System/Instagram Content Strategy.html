@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmateca — Sistema de Contenido Instagram 2026</title>
+  <link rel="stylesheet" href="colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-sans); background: var(--bg-light); color: var(--fg1); line-height: 1.5; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+
+    /* HERO */
+    .hero { background: var(--grad-hero); padding: 64px 40px 72px; color: white; }
+    .hero-inner { max-width: 1080px; margin: 0 auto; }
+    .hero-eye { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; opacity: .6; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .hero-eye::before { content: ""; display: block; width: 28px; height: 2px; background: rgba(255,255,255,.45); }
+    .hero-title { font-size: 46px; font-weight: 700; line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 14px; }
+    .hero-sub { font-size: 17px; line-height: 1.6; opacity: .8; max-width: 520px; margin-bottom: 36px; }
+    .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+    .chip { background: rgba(255,255,255,.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.2); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: white; }
+
+    /* SECTIONS */
+    .sec { padding: 56px 0; }
+    .sec + .sec { border-top: 1px solid rgba(159,162,169,.2); }
+    .sec-tag { display: inline-flex; align-items: center; background: rgba(30,157,185,.1); color: var(--primary-dark); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; margin-bottom: 12px; }
+    .sec-tag.gold { background: rgba(255,184,0,.12); color: #8a6000; }
+    .sec-h { font-size: 28px; font-weight: 700; letter-spacing: -.5px; margin-bottom: 8px; }
+    .sec-sub { font-size: 15px; color: var(--fg2); max-width: 620px; margin-bottom: 28px; line-height: 1.65; }
+
+    /* CARDS */
+    .card { background: white; border-radius: var(--r-l); box-shadow: var(--shadow-sm); padding: 24px; }
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+    /* PILLAR CARDS */
+    .pillar { background: white; border-radius: var(--r-l); box-shadow: var(--shadow-sm); padding: 22px; border-top: 3px solid var(--primary); }
+    .p-n { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+    .p-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .p-desc { font-size: 13px; color: var(--fg2); line-height: 1.55; margin-bottom: 14px; }
+    .p-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .ptag { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 100px; background: var(--bg-light); color: var(--fg2); }
+    .p-freq { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 11px; color: var(--fg3); display: flex; justify-content: space-between; }
+    .p-freq strong { color: var(--primary-dark); font-size: 12px; }
+
+    /* TEMPLATE ITEMS */
+    .tmpl { display: flex; gap: 24px; align-items: flex-start; background: white; border-radius: var(--r-l); padding: 22px; box-shadow: var(--shadow-sm); }
+    .tmock { width: 110px; height: 196px; border-radius: 14px; overflow: hidden; flex-shrink: 0; box-shadow: 0 8px 24px rgba(0,0,0,.18); position: relative; font-size: 0; }
+    .tinfo { flex: 1; min-width: 0; }
+    .t-lbl { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 6px; }
+    .t-name { font-size: 17px; font-weight: 700; margin-bottom: 7px; }
+    .t-desc { font-size: 13px; color: var(--fg2); line-height: 1.6; margin-bottom: 12px; }
+    .t-chips { display: flex; gap: 7px; flex-wrap: wrap; }
+    .tc { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px; }
+    .tc-t { background: rgba(30,157,185,.1); color: var(--primary-dark); }
+    .tc-g { background: var(--bg-light); color: var(--fg2); border: 1px solid var(--border); }
+    .tc-gold { background: rgba(255,184,0,.12); color: #8a6000; }
+
+    /* Template mock internals — reusable stubs */
+    .ms { background: rgba(255,255,255,.5); border-radius: 2px; } /* stub */
+
+    /* PIPELINE */
+    .pipe { display: grid; grid-template-columns: repeat(4,1fr); background: white; border-radius: var(--r-l); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .ps { padding: 24px 20px; }
+    .ps + .ps { border-left: 1px solid var(--border); }
+    .ps-n { width: 30px; height: 30px; border-radius: 50%; background: var(--grad-button); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+    .ps-day { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary); margin-bottom: 2px; }
+    .ps-dur { font-size: 11px; color: var(--fg3); margin-bottom: 8px; }
+    .ps-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .ps-items { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .ps-items li { font-size: 12px; color: var(--fg2); padding-left: 14px; position: relative; }
+    .ps-items li::before { content: "→"; position: absolute; left: 0; color: var(--primary); }
+    .ps-out { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--primary-dark); }
+
+    /* SCRIPT CARDS */
+    .sc { background: white; border-radius: var(--r-l); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 20px; }
+    .sc-head { padding: 22px 26px; border-bottom: 1px solid var(--border); background: var(--bg-light); display: flex; gap: 14px; align-items: flex-start; }
+    .sc-num { width: 42px; height: 42px; border-radius: var(--r-m); background: var(--grad-button); color: white; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; flex-shrink: 0; }
+    .sc-type { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 3px; }
+    .sc-title { font-size: 20px; font-weight: 700; }
+    .sc-meta { font-size: 12px; color: var(--fg3); margin-top: 3px; }
+    .sc-body { padding: 26px; }
+
+    /* REEL TIMELINE */
+    .reel-scene { display: grid; grid-template-columns: 76px 1fr; gap: 18px; padding: 14px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .reel-scene:last-child { border-bottom: none; }
+    .rtc { font-size: 10px; font-weight: 700; font-family: monospace; color: white; background: var(--primary); padding: 3px 8px; border-radius: 5px; text-align: center; width: fit-content; }
+    .rtype { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg3); margin-bottom: 3px; }
+    .raction { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .rdesc { font-size: 12px; color: var(--fg2); line-height: 1.5; }
+    .roverlay { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 700; color: var(--primary-dark); background: rgba(30,157,185,.08); padding: 3px 10px; border-radius: 5px; }
+    .rprod { display: inline-block; margin-top: 6px; margin-left: 6px; font-size: 11px; color: var(--fg3); background: var(--bg-light); padding: 3px 10px; border-radius: 5px; }
+
+    /* STORY SPEC */
+    .story-spec { display: flex; gap: 32px; align-items: flex-start; }
+    .story-frame { width: 200px; height: 356px; border-radius: 22px; background: linear-gradient(150deg,#147790,#1e9db9,#27c2d1); flex-shrink: 0; box-shadow: var(--shadow-lg); padding: 22px 18px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+    .sf-top { width: 100%; display: flex; justify-content: center; }
+    .sf-logo { width: 90px; height: 18px; background: rgba(255,255,255,.5); border-radius: 5px; }
+    .sf-center { text-align: center; }
+    .sf-eye { font-size: 7px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 10px; }
+    .sf-big { font-size: 12px; font-weight: 700; color: white; line-height: 1.4; }
+    .sf-hl { color: #b4e5f4; }
+    .sf-sub { font-size: 8px; color: rgba(255,255,255,.75); margin-top: 8px; }
+    .sf-bot { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+    .sf-cta { background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); border-radius: 100px; padding: 4px 16px; font-size: 8px; font-weight: 700; color: white; }
+    .sf-cite { font-size: 6px; color: rgba(255,255,255,.4); text-align: center; }
+    .spec-rows { flex: 1; }
+    .spec-row { padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-k { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--fg3); margin-bottom: 3px; }
+    .spec-v { font-size: 13px; color: var(--fg1); line-height: 1.5; }
+    .spec-v code { font-family: 'SF Mono','Cascadia Code',monospace; font-size: 11px; background: rgba(30,157,185,.07); color: var(--primary-dark); padding: 2px 6px; border-radius: 4px; }
+
+    /* CAROUSEL SLIDES */
+    .car-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; }
+    .cslide { aspect-ratio: 1; border-radius: 10px; overflow: hidden; padding: 9px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+    .cs-n { font-size: 8px; font-weight: 700; opacity: .5; margin-bottom: 3px; }
+    .cs-title { font-size: 9px; font-weight: 700; line-height: 1.3; }
+    .cs-sub { font-size: 7px; opacity: .75; margin-top: 3px; line-height: 1.3; }
+
+    /* CALLOUTS */
+    .callout { border-left: 3px solid var(--primary); background: rgba(30,157,185,.05); border-radius: 0 12px 12px 0; padding: 14px 18px; font-size: 13px; color: var(--fg1); line-height: 1.65; }
+    .callout.gold { border-color: var(--gold); background: rgba(255,184,0,.05); }
+    .callout strong { color: var(--primary-dark); }
+    .callout.gold strong { color: #8a6000; }
+
+    /* COLOR SWATCHES */
+    .swatches { display: flex; gap: 12px; flex-wrap: wrap; }
+    .sw { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .sw-c { width: 50px; height: 50px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+    .sw-n { font-size: 10px; font-weight: 600; color: var(--fg2); }
+    .sw-h { font-size: 9px; font-family: monospace; color: var(--fg3); }
+
+    /* CANVA STEPS */
+    .cvstep { display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .cvstep:last-child { border-bottom: none; }
+    .cv-n { width: 26px; height: 26px; border-radius: 50%; background: var(--grad-button); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+    .cv-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .cv-desc { font-size: 13px; color: var(--fg2); line-height: 1.6; }
+    .cv-code { margin-top: 8px; padding: 9px 14px; border-radius: 8px; background: rgba(30,157,185,.06); border: 1px solid rgba(30,157,185,.14); font-size: 11px; font-family: 'SF Mono','Cascadia Code',monospace; color: var(--primary-dark); line-height: 1.7; }
+
+    /* CAPTION BLOCK */
+    .caption-block { background: var(--bg-light); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; font-size: 13px; color: var(--fg1); line-height: 1.7; }
+    .caption-block .hashtags { margin-top: 8px; color: var(--primary); font-weight: 600; font-size: 12px; }
+
+    /* REELS NOTE */
+    .reels-levels { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 4px; }
+    .rl { background: white; border-radius: 12px; padding: 18px; box-shadow: var(--shadow-xs); }
+    .rl-n { width: 28px; height: 28px; border-radius: 8px; background: var(--grad-button); color: white; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+    .rl-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .rl-desc { font-size: 12px; color: var(--fg2); line-height: 1.5; }
+    .rl-time { margin-top: 8px; font-size: 11px; font-weight: 700; color: var(--primary); }
+
+    footer { background: var(--bg-dark-deep); color: rgba(255,255,255,.35); padding: 36px 40px; text-align: center; font-size: 12px; }
+    footer strong { color: rgba(255,255,255,.6); }
+
+    @media (max-width: 820px) {
+      .g2,.g4 { grid-template-columns: 1fr; }
+      .g3 { grid-template-columns: 1fr 1fr; }
+      .pipe { grid-template-columns: 1fr 1fr; }
+      .ps + .ps { border-left: none; border-top: 1px solid var(--border); }
+      .tmpl { flex-direction: column; }
+      .story-spec { flex-direction: column; }
+      .car-grid { grid-template-columns: repeat(3,1fr); }
+      .reels-levels { grid-template-columns: 1fr; }
+      .hero-title { font-size: 32px; }
+      .wrap { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-inner">
+    <img src="assets/logo-full.png" alt="Farmateca" style="height:34px;margin-bottom:28px;filter:brightness(0) invert(1);opacity:.9;">
+    <div class="hero-eye">Estrategia de Contenido Digital · Instagram · Junio 2026</div>
+    <h1 class="hero-title">Sistema de Contenido<br>Instagram 2026</h1>
+    <p class="hero-sub">Diagnóstico · 4 Pilares · 5 Plantillas · Pipeline 90 min/semana · Guion de las primeras 3 piezas listas para producir</p>
+    <div class="hero-chips">
+      <div class="chip">4 Pilares de contenido</div>
+      <div class="chip">5 Plantillas base</div>
+      <div class="chip">3 Piezas listas</div>
+      <div class="chip">Pipeline semanal</div>
+      <div class="chip">Guía Canva Pro</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ════════════════════════ 01 · DIAGNÓSTICO ════════════════════════ -->
+<section class="sec">
+  <div class="sec-tag">01 · Diagnóstico</div>
+  <h2 class="sec-h">Análisis de marca y oportunidad</h2>
+  <p class="sec-sub">Qué es Farmateca para Instagram, quién la consume, y la palanca de contenido más poderosa que tienes.</p>
+
+  <div class="g2" style="margin-bottom:20px;">
+    <div class="card">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:10px;">Posicionamiento en Instagram</div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Herramienta de confianza, no entretenimiento</div>
+      <div style="font-size:13px;color:var(--fg2);line-height:1.65;">Farmateca no compite por likes de lifestyle. Su lugar en Instagram es el de la <strong style="color:var(--fg1)">referencia clínica más cercana al estudiante de medicina</strong>: contenido que los hace mejores, no que los entretiene.<br><br>Esto significa: datos reales del ISP Chile, demos auténticas, zero fluff. Consistencia y precisión > viralidad fácil.</div>
+    </div>
+    <div class="card">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:10px;">Audiencias en Instagram</div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Dos targets, un mismo valor</div>
+      <div style="font-size:13px;color:var(--fg2);line-height:1.65;"><strong style="color:var(--fg1)">Primaria (18–28):</strong> Estudiantes de Medicina, Farmacia, Enfermería. Consumen estudio-content, medical tips, herramientas de productividad. Alta presencia en IG. <strong style="color:var(--fg1)">Intención: aprender y descargar.</strong><br><br><strong style="color:var(--fg1)">Secundaria (28–45):</strong> Médicos, QF, matrones, kinesiólogos en ejercicio. Menor actividad, mayor conversión. <strong style="color:var(--fg1)">Intención: reemplazar el vademécum impreso.</strong></div>
+    </div>
+  </div>
+
+  <div class="g3" style="margin-bottom:20px;">
+    <div class="card" style="background:var(--grad-soft);">
+      <div style="font-size:28px;font-weight:700;color:#147790;line-height:1;">+2.556</div>
+      <div style="font-size:11px;font-weight:600;color:#147790;margin-top:4px;">marcas comerciales registradas</div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,#f5f7fa,#dcdee2);">
+      <div style="font-size:28px;font-weight:700;color:var(--fg1);line-height:1;">222</div>
+      <div style="font-size:11px;font-weight:600;color:var(--fg2);margin-top:4px;">farmacias de Chile con mapa offline</div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,.1),rgba(255,184,0,.2));">
+      <div style="font-size:28px;font-weight:700;color:#8a6000;line-height:1;">IA</div>
+      <div style="font-size:11px;font-weight:600;color:#8a6000;margin-top:4px;">Asistente farmacéutico Premium exclusivo</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Insight clave para Reels y Stories:</strong> Farmateca es datos, no visual por naturaleza. La palanca más poderosa es la <strong>sorpresa estadística</strong>: "¿Sabías que la amoxicilina tiene más de 60 marcas en Chile?" Este tipo de hook educativo supera en retención a cualquier producción costosa. <strong>Dato real + pantalla de la app = el mejor Reel posible.</strong>
+  </div>
+</section>
+
+<!-- ════════════════════════ 02 · SISTEMA DE CONTENIDO ════════════════════════ -->
+<section class="sec">
+  <div class="sec-tag">02 · Sistema de Contenido</div>
+  <h2 class="sec-h">4 Pilares + Cadencia semanal</h2>
+  <p class="sec-sub">Toda pieza de contenido pertenece a uno de cuatro pilares. La mezcla equilibra educación, demo, comunidad y conversión sin saturar.</p>
+
+  <div class="g4" style="margin-bottom:24px;">
+    <div class="pillar">
+      <div class="p-n">Pilar 01</div>
+      <div class="p-title">EDUCA</div>
+      <div class="p-desc">Farmacología práctica que no enseñan en la U y que el ISP confirma.</div>
+      <div class="p-tags">
+        <span class="ptag">¿Sabías que...?</span>
+        <span class="ptag">Familias farmacol.</span>
+        <span class="ptag">Interacciones</span>
+        <span class="ptag">Genérico vs. Marca</span>
+        <span class="ptag">Mecanismo acción</span>
+      </div>
+      <div class="p-freq"><span>Frecuencia</span><strong>3 historias + 1 carrusel/sem</strong></div>
+    </div>
+    <div class="pillar" style="border-top-color:var(--primary-blue);">
+      <div class="p-n" style="color:var(--primary-blue)">Pilar 02</div>
+      <div class="p-title">DEMUESTRA</div>
+      <div class="p-desc">La app en acción. Mostrar valor en un caso real, sin vender directamente.</div>
+      <div class="p-tags">
+        <span class="ptag">App walkthrough</span>
+        <span class="ptag">Feature highlight</span>
+        <span class="ptag">Caso guardia</span>
+        <span class="ptag">222 farmacias</span>
+        <span class="ptag">Asistente IA</span>
+      </div>
+      <div class="p-freq"><span>Frecuencia</span><strong>1 reel + 2 historias/sem</strong></div>
+    </div>
+    <div class="pillar" style="border-top-color:#4caf50;">
+      <div class="p-n" style="color:#4caf50">Pilar 03</div>
+      <div class="p-title">CONECTA</div>
+      <div class="p-desc">Comunidad clínica chilena. Lo que solo conocen quienes están en guardia o en práctica.</div>
+      <div class="p-tags">
+        <span class="ptag">Polls clínicos</span>
+        <span class="ptag">Q&amp;A farmacología</span>
+        <span class="ptag">Behind the scenes</span>
+        <span class="ptag">Datos ISP Chile</span>
+      </div>
+      <div class="p-freq"><span>Frecuencia</span><strong>2 interactivas/sem</strong></div>
+    </div>
+    <div class="pillar" style="border-top-color:var(--gold);">
+      <div class="p-n" style="color:#8a6000">Pilar 04</div>
+      <div class="p-title">CONVIERTE</div>
+      <div class="p-desc">CTAs suaves y legítimos. La oferta siempre justificada por el valor demostrado antes.</div>
+      <div class="p-tags">
+        <span class="ptag">7 días gratis</span>
+        <span class="ptag">Plan mensual $3.990</span>
+        <span class="ptag">Solo en Premium</span>
+      </div>
+      <div class="p-freq"><span>Frecuencia</span><strong>1 historia + CTA en carruseles</strong></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Cadencia semanal sugerida:</strong> Lunes carrusel educativo → Martes reel de demostración → Miércoles historia interactiva (poll) → Jueves historia tip clínico → Viernes historia CTA suave. Total: ~12 piezas/semana entre historias + feed, producibles en <strong>una sesión de 90 min</strong>.
+  </div>
+</section>
+
+<!-- ════════════════════════ 03 · PLANTILLAS BASE ════════════════════════ -->
+<section class="sec">
+  <div class="sec-tag">03 · Plantillas Base</div>
+  <h2 class="sec-h">5 formatos que se repiten cada semana</h2>
+  <p class="sec-sub">Mismo layout, distinto contenido. Estas plantillas te ahorran decisiones de diseño y crean identidad visual consistente.</p>
+
+  <div style="display:flex;flex-direction:column;gap:14px;">
+
+    <!-- T1 -->
+    <div class="tmpl">
+      <div class="tmock">
+        <div style="width:100%;height:100%;background:linear-gradient(150deg,#147790,#1e9db9,#27c2d1);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 10px;font-size:1px;">
+          <div style="width:56px;height:10px;background:rgba(255,255,255,.5);border-radius:4px;"></div>
+          <div style="text-align:center;width:100%;">
+            <div style="width:70px;height:5px;background:rgba(255,255,255,.3);border-radius:2px;margin:0 auto 8px;"></div>
+            <div style="width:88%;height:10px;background:rgba(255,255,255,.8);border-radius:3px;margin:0 auto 4px;"></div>
+            <div style="width:78%;height:10px;background:rgba(255,255,255,.8);border-radius:3px;margin:0 auto 4px;"></div>
+            <div style="width:60%;height:10px;background:rgba(255,255,255,.8);border-radius:3px;margin:0 auto 8px;"></div>
+            <div style="width:65%;height:7px;background:rgba(255,255,255,.4);border-radius:2px;margin:0 auto;"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+            <div style="width:64px;height:16px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:100px;"></div>
+            <div style="width:80%;height:5px;background:rgba(255,255,255,.2);border-radius:2px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tinfo">
+        <div class="t-lbl">Template 01 · Historia</div>
+        <div class="t-name">"¿Sabías que...?" Educativa</div>
+        <div class="t-desc">El formato estrella del pilar EDUCA. Fondo degradado hero teal, dato farmacológico sorprendente en blanco grande, fuente ISP al pie, sticker de poll Instagram. Producción: <strong>5 min en Canva</strong>. El dato cambia cada semana; el layout no.</div>
+        <div style="font-size:12px;color:var(--fg2);margin-bottom:10px;line-height:1.5;"><strong style="color:var(--fg1)">Elementos fijos:</strong> Logo centrado arriba · Overline "¿SABÍAS QUE...?" · Cita ISP al pie · Sticker poll Instagram<br><strong style="color:var(--fg1)">Elemento variable:</strong> Dato de farmacología (1–2 líneas, máximo)</div>
+        <div class="t-chips"><span class="tc tc-t">Historia 1080×1920</span><span class="tc tc-g">Degradado Teal</span><span class="tc tc-g">3×/semana</span></div>
+      </div>
+    </div>
+
+    <!-- T2 -->
+    <div class="tmpl">
+      <div class="tmock">
+        <div style="width:100%;height:100%;background:white;display:flex;flex-direction:column;font-size:1px;">
+          <div style="height:5px;background:linear-gradient(90deg,#147790,#27c2d1);"></div>
+          <div style="padding:10px;flex:1;display:flex;flex-direction:column;gap:6px;">
+            <div style="width:50%;height:6px;background:rgba(30,157,185,.2);border-radius:2px;"></div>
+            <div style="width:80%;height:9px;background:#e0e0e0;border-radius:2px;"></div>
+            <div style="flex:1;background:#f5f7fa;border-radius:8px;margin:4px 0;"></div>
+            <div style="width:90%;height:7px;background:#e8e8e8;border-radius:2px;"></div>
+            <div style="width:70%;height:7px;background:#e8e8e8;border-radius:2px;"></div>
+            <div style="height:20px;background:linear-gradient(90deg,#147790,#27c2d1);border-radius:100px;margin-top:6px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tinfo">
+        <div class="t-lbl">Template 02 · Historia</div>
+        <div class="t-name">Feature "Esta función cambia todo"</div>
+        <div class="t-desc">Fondo blanco, barra accent teal arriba, screenshot de la app centrado como elemento visual principal, copy corto encima, CTA "Descárgala" con botón degradado. Ideal para <strong>mostrar búsqueda, offline, o el asistente IA</strong>.</div>
+        <div style="font-size:12px;color:var(--fg2);margin-bottom:10px;line-height:1.5;"><strong style="color:var(--fg1)">Elementos fijos:</strong> Barra teal top · Logo esquina · Botón CTA degradado<br><strong style="color:var(--fg1)">Elemento variable:</strong> Screenshot + copy de la feature</div>
+        <div class="t-chips"><span class="tc tc-t">Historia 1080×1920</span><span class="tc tc-g">Fondo Blanco</span><span class="tc tc-g">2×/semana</span></div>
+      </div>
+    </div>
+
+    <!-- T3 -->
+    <div class="tmpl">
+      <div class="tmock">
+        <div style="width:100%;height:100%;background:#f5f7fa;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;gap:8px;font-size:1px;">
+          <div style="width:88%;background:white;border-radius:10px;padding:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);">
+            <div style="width:90%;height:7px;background:#e0e0e0;border-radius:2px;margin-bottom:5px;"></div>
+            <div style="width:65%;height:7px;background:#e0e0e0;border-radius:2px;"></div>
+          </div>
+          <div style="width:88%;height:22px;background:rgba(30,157,185,.15);border:1.5px solid rgba(30,157,185,.3);border-radius:8px;"></div>
+          <div style="width:88%;height:22px;background:rgba(30,157,185,.15);border:1.5px solid rgba(30,157,185,.3);border-radius:8px;"></div>
+          <div style="width:40px;height:8px;background:rgba(30,157,185,.3);border-radius:4px;margin-top:4px;"></div>
+        </div>
+      </div>
+      <div class="tinfo">
+        <div class="t-lbl">Template 03 · Historia Interactiva</div>
+        <div class="t-name">Poll "¿Cuánto sabes de farmacología?"</div>
+        <div class="t-desc">Fondo gris claro, tarjeta blanca con pregunta clínica, dos opciones de respuesta tipo poll (usando el sticker nativo de Instagram). Genera engagement y conversaciones. La respuesta correcta se revela en una historia de seguimiento. <strong>3 min de producción.</strong></div>
+        <div style="font-size:12px;color:var(--fg2);margin-bottom:10px;line-height:1.5;"><strong style="color:var(--fg1)">Ejemplo:</strong> "¿La ibuprofena y el naproxeno se pueden combinar?" → Sí / No<br>Respuesta siguiente historia: "No. Son AINE del mismo grupo. Doble riesgo sin beneficio adicional."</div>
+        <div class="t-chips"><span class="tc tc-t">Historia 1080×1920</span><span class="tc tc-g">Fondo Gris</span><span class="tc tc-g">1×/semana</span></div>
+      </div>
+    </div>
+
+    <!-- T4 -->
+    <div class="tmpl">
+      <div class="tmock">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#0d1b2a,#0a4a5a,#147790);display:flex;flex-direction:column;padding:10px;gap:6px;font-size:1px;">
+          <div style="width:60%;height:7px;background:rgba(255,255,255,.6);border-radius:2px;"></div>
+          <div style="width:85%;height:7px;background:rgba(255,255,255,.4);border-radius:2px;"></div>
+          <div style="flex:1;background:rgba(255,255,255,.08);border-radius:8px;margin:4px 0;"></div>
+          <div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:6px;">
+            <div style="width:70%;height:6px;background:rgba(255,255,255,.7);border-radius:2px;margin-bottom:3px;"></div>
+            <div style="width:85%;height:5px;background:rgba(255,255,255,.4);border-radius:2px;"></div>
+          </div>
+          <div style="height:18px;background:linear-gradient(90deg,#147790,#27c2d1);border-radius:100px;margin-top:2px;"></div>
+        </div>
+      </div>
+      <div class="tinfo">
+        <div class="t-lbl">Template 04 · Reel (20–35 seg)</div>
+        <div class="t-name">Demo "La app en 30 segundos"</div>
+        <div class="t-desc">Formato video vertical 9:16. Fondo dark teal (grad-auth), hook de texto + screen recording de la app, stat overlay glassmorphism, CTA final. Ver sección "Primeras 3 Piezas" para el guion completo.<br><br><strong>Nota sobre producción:</strong> ver sección Reels más abajo.</div>
+        <div style="font-size:12px;color:var(--fg2);margin-bottom:10px;line-height:1.5;"><strong style="color:var(--fg1)">Estructura fija:</strong> Hook (0–3s) → Dato/Tensión (3–8s) → Demo app (8–25s) → Stats teal (25–30s) → CTA (30–35s)</div>
+        <div class="t-chips"><span class="tc tc-t">Reel 1080×1920</span><span class="tc tc-g">Video MP4</span><span class="tc tc-g">1×/semana</span></div>
+      </div>
+    </div>
+
+    <!-- T5 -->
+    <div class="tmpl">
+      <div class="tmock">
+        <div style="width:100%;height:100%;background:white;display:flex;flex-direction:column;padding:8px;gap:3px;font-size:1px;">
+          <div style="height:5px;background:var(--primary);border-radius:2px;width:30%;margin-bottom:4px;"></div>
+          <div style="width:95%;height:9px;background:#222;border-radius:2px;"></div>
+          <div style="width:70%;height:9px;background:#222;border-radius:2px;margin-bottom:6px;"></div>
+          <div style="width:85%;height:6px;background:#e0e0e0;border-radius:2px;"></div>
+          <div style="width:65%;height:6px;background:#e0e0e0;border-radius:2px;"></div>
+          <div style="flex:1;"></div>
+          <div style="display:flex;gap:3px;">
+            <div style="flex:1;height:8px;background:rgba(30,157,185,.15);border-radius:2px;"></div>
+            <div style="flex:1;height:8px;background:rgba(30,157,185,.3);border-radius:2px;"></div>
+            <div style="flex:1;height:8px;background:rgba(30,157,185,.5);border-radius:2px;"></div>
+            <div style="flex:1;height:8px;background:rgba(30,157,185,.7);border-radius:2px;"></div>
+            <div style="flex:1;height:8px;background:rgba(30,157,185,.4);border-radius:2px;"></div>
+            <div style="flex:1;height:8px;background:var(--primary);border-radius:2px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tinfo">
+        <div class="t-lbl">Template 05 · Carrusel Feed</div>
+        <div class="t-name">Problema → Solución (6 slides)</div>
+        <div class="t-desc">El formato de mayor alcance y guardado. 6 slides 1080×1080. Estructura: Hook dolor → Agravante → Giro ("Hasta que...") → Solución con datos → Prueba (stats ISP) → CTA + descarga. Ver guion completo en sección "Primeras 3 Piezas".</div>
+        <div style="font-size:12px;color:var(--fg2);margin-bottom:10px;line-height:1.5;"><strong style="color:var(--fg1)">Tip:</strong> La primera imagen del carrusel funciona como miniatura en el feed. Prioriza el hook textual grande y el contraste visual.</div>
+        <div class="t-chips"><span class="tc tc-t">Carrusel 1080×1080</span><span class="tc tc-g">6 slides</span><span class="tc tc-g">2×/semana</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════ 04 · DISEÑO VISUAL + CANVA ════════════════════════ -->
+<section class="sec">
+  <div class="sec-tag">04 · Diseño Visual &amp; Canva Pro</div>
+  <h2 class="sec-h">Paleta, tipografía y configuración del Brand Kit</h2>
+  <p class="sec-sub">Los valores exactos del design system de Farmateca, listos para copiar en el Brand Kit de Canva Pro.</p>
+
+  <div class="g2" style="margin-bottom:24px;">
+    <div class="card">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:14px;">Colores principales — copiar en Canva</div>
+      <div class="swatches" style="margin-bottom:16px;">
+        <div class="sw"><div class="sw-c" style="background:#1e9db9;"></div><div class="sw-n">Primary</div><div class="sw-h">#1e9db9</div></div>
+        <div class="sw"><div class="sw-c" style="background:#147790;"></div><div class="sw-n">Dark</div><div class="sw-h">#147790</div></div>
+        <div class="sw"><div class="sw-c" style="background:#27c2d1;"></div><div class="sw-n">Bright</div><div class="sw-h">#27c2d1</div></div>
+        <div class="sw"><div class="sw-c" style="background:#0c88ba;"></div><div class="sw-n">Blue</div><div class="sw-h">#0c88ba</div></div>
+        <div class="sw"><div class="sw-c" style="background:#b4e5f4;"></div><div class="sw-n">Light</div><div class="sw-h">#b4e5f4</div></div>
+        <div class="sw"><div class="sw-c" style="background:#ffb800;border:1px solid rgba(0,0,0,.08);"></div><div class="sw-n">Gold</div><div class="sw-h">#ffb800</div></div>
+        <div class="sw"><div class="sw-c" style="background:#43464c;"></div><div class="sw-n">Gray DK</div><div class="sw-h">#43464c</div></div>
+        <div class="sw"><div class="sw-c" style="background:#f5f7fa;border:1px solid rgba(0,0,0,.08);"></div><div class="sw-n">BG</div><div class="sw-h">#f5f7fa</div></div>
+      </div>
+      <div class="callout" style="font-size:12px;padding:10px 14px;">
+        <strong>Degradados clave:</strong><br>
+        Hero: <code style="font-size:11px;background:rgba(30,157,185,.08);padding:1px 5px;border-radius:3px;">150deg · #147790 → #1e9db9 → #27c2d1</code><br>
+        Botón: <code style="font-size:11px;background:rgba(30,157,185,.08);padding:1px 5px;border-radius:3px;">90deg · #147790 → #27c2d1</code><br>
+        Dark BG: <code style="font-size:11px;background:rgba(30,157,185,.08);padding:1px 5px;border-radius:3px;">135deg · #0d1b2a → #0a4a5a → #147790</code>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:14px;">Tipografía recomendada para Canva</div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Fuente principal: <span style="color:var(--primary)">DM Sans</span></div>
+        <div style="font-size:12px;color:var(--fg2);line-height:1.6;">La más cercana a SF Pro Display en Canva. Geométrica-humanista, limpia, neutral. Disponible en Canva Pro. Usar Bold (700) para títulos, Medium (500) para énfasis, Regular (400) para cuerpo.</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Alternativa: <span style="color:var(--primary)">Plus Jakarta Sans</span></div>
+        <div style="font-size:12px;color:var(--fg2);">Ligeramente más distintiva. Muy buena opción si DM Sans parece demasiado genérica.</div>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:12px;">
+        <div style="font-size:12px;color:var(--fg3);line-height:1.6;"><strong style="color:var(--fg1)">Escala para Historias (1080×1920):</strong><br>
+        Overline: 28–32px · Bold · tracking 3px · uppercase<br>
+        Título/Dato: 72–96px · Bold · letter-spacing -1px<br>
+        Subtexto: 36–42px · Regular<br>
+        Cita/Fuente: 22–26px · Italic · opacity 60%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:14px;">Configuración Brand Kit en Canva Pro — paso a paso</div>
+    <div class="cvstep">
+      <div class="cv-n">1</div>
+      <div><div class="cv-title">Subir logos</div><div class="cv-desc">Brand Kit → Logos → Subir los 4 archivos: <code>logo-full.png</code> (color) · <code>logo-full-bw.png</code> (B&amp;N) · <code>logo-isotipo.png</code> (solo cruz) · <code>logo-isotipo-bw.png</code>. Marcar <code>logo-full.png</code> como logo principal.</div></div>
+    </div>
+    <div class="cvstep">
+      <div class="cv-n">2</div>
+      <div><div class="cv-title">Configurar colores de marca</div><div class="cv-desc">Brand Kit → Colors → Add color. Agregar en este orden y con estos nombres:</div>
+      <div class="cv-code">Farmateca Primary · #1e9db9<br>Farmateca Dark · #147790<br>Farmateca Bright · #27c2d1<br>Farmateca Blue · #0c88ba<br>Farmateca Light · #b4e5f4<br>Farmateca Gold · #ffb800<br>Farmateca Gray · #43464c<br>Farmateca BG · #f5f7fa</div></div>
+    </div>
+    <div class="cvstep">
+      <div class="cv-n">3</div>
+      <div><div class="cv-title">Configurar fuentes</div><div class="cv-desc">Brand Kit → Fonts → Add font → buscar "DM Sans". Asignar: Heading = DM Sans Bold · Subheading = DM Sans SemiBold · Body = DM Sans Regular.</div></div>
+    </div>
+    <div class="cvstep">
+      <div class="cv-n">4</div>
+      <div><div class="cv-title">Crear y guardar las 5 plantillas base</div><div class="cv-desc">Diseñar una vez cada template (T1–T5) usando el Brand Kit. Guardar como "Plantilla Farmateca — [nombre]" en una carpeta de equipo. Desde ahí, cada semana solo duplicas y cambias el texto.</div></div>
+    </div>
+    <div class="cvstep">
+      <div class="cv-n">5</div>
+      <div><div class="cv-title">Exportación</div><div class="cv-desc">Historias: PNG 1080×1920 · Carrusel: PDF estándar (1 página por slide) o PNG individual · Reel: MP4 desde Canva video o importar en CapCut.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 05 · PIPELINE SEMANAL ════════════════════════ -->
+<section class="sec">
+  <div class="sec-tag">05 · Pipeline de Producción</div>
+  <h2 class="sec-h">Una sesión de 90 minutos = semana completa</h2>
+  <p class="sec-sub">El sistema funciona en batch: una vez por semana generas todo el contenido y lo dejas programado.</p>
+
+  <div class="pipe">
+    <div class="ps">
+      <div class="ps-n">1</div>
+      <div class="ps-day">Lunes</div>
+      <div class="ps-dur">15 min · Planificación</div>
+      <div class="ps-title">Sesión con Claude</div>
+      <ul class="ps-items">
+        <li>Define el tema de la semana (ej: "Antibióticos")</li>
+        <li>Claude genera 3 datos ISP para historias</li>
+        <li>Claude entrega guion de reel listo</li>
+        <li>Claude escribe 6 slides del carrusel</li>
+      </ul>
+      <div class="ps-out">Output: Doc con todo el copy</div>
+    </div>
+    <div class="ps">
+      <div class="ps-n">2</div>
+      <div class="ps-day">Martes</div>
+      <div class="ps-dur">60 min · Producción</div>
+      <div class="ps-title">Producción en Canva</div>
+      <ul class="ps-items">
+        <li>Abrir templates guardadas</li>
+        <li>Duplicar y pegar copy de Claude</li>
+        <li>Screen recording app (si es reel demo)</li>
+        <li>Montar reel en Canva Video o CapCut</li>
+        <li>Exportar PNG, PDF y MP4</li>
+      </ul>
+      <div class="ps-out">Output: Archivos listos</div>
+    </div>
+    <div class="ps">
+      <div class="ps-n">3</div>
+      <div class="ps-day">Miércoles</div>
+      <div class="ps-dur">15 min · Programación</div>
+      <div class="ps-title">Schedule en Meta Suite</div>
+      <ul class="ps-items">
+        <li>Subir a Meta Business Suite o Buffer</li>
+        <li>Programar carrusel (lunes feed)</li>
+        <li>Programar reel (martes o jueves)</li>
+        <li>Programar 3–5 historias (Lu–Vi)</li>
+        <li>Copiar hashtags del doc Claude</li>
+      </ul>
+      <div class="ps-out">Output: Semana programada</div>
+    </div>
+    <div class="ps">
+      <div class="ps-n">4</div>
+      <div class="ps-day">Viernes</div>
+      <div class="ps-dur">5 min · Análisis</div>
+      <div class="ps-title">Review rápido</div>
+      <ul class="ps-items">
+        <li>Ver métricas de la semana anterior</li>
+        <li>Notar qué dato tuvo más engagement</li>
+        <li>Responder DMs y comentarios relevantes</li>
+        <li>Anotar tema para semana siguiente</li>
+      </ul>
+      <div class="ps-out">Output: Input para L próximo</div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;" class="callout">
+    <strong>Sobre los Reels — 3 niveles de producción:</strong> No todos los reels requieren el mismo esfuerzo. Rotar entre niveles según disponibilidad.
+  </div>
+  <div class="reels-levels" style="margin-top:12px;">
+    <div class="rl">
+      <div class="rl-n">N1</div>
+      <div class="rl-title">Rápido · Template texto</div>
+      <div class="rl-desc">Template de video Canva Pro (buscar "Medical Educational Reels") + cambiar textos con copy de Claude + música de biblioteca Canva. Sin grabación.</div>
+      <div class="rl-time">Tiempo: 15 min · Frecuencia: 2×/mes</div>
+    </div>
+    <div class="rl">
+      <div class="rl-n">N2</div>
+      <div class="rl-title">Estándar · Screen recording</div>
+      <div class="rl-desc">Screen recording de la app en teléfono + overlay de texto en Canva + música. El más auténtico. Muestra la app funcionando de verdad.</div>
+      <div class="rl-time">Tiempo: 30 min · Frecuencia: 2×/mes</div>
+    </div>
+    <div class="rl">
+      <div class="rl-n">N3</div>
+      <div class="rl-title">Premium · Gemini Pro</div>
+      <div class="rl-desc">Para reels especiales, generar planos de contexto clínico (guardia, laboratorio) con Gemini Pro. Prompt: "médico chileno revisando medicamentos, guardia hospitalaria, luz clínica, documental". Montar en CapCut.</div>
+      <div class="rl-time">Tiempo: 60–90 min · Frecuencia: 1×/mes</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 06 · PRIMERAS 3 PIEZAS ════════════════════════ -->
+<section class="sec">
+  <div class="sec-tag gold">06 · Primeras 3 Piezas — Listas para producir</div>
+  <h2 class="sec-h">Guiones y estructura completos</h2>
+  <p class="sec-sub">Copia estos textos directamente a Canva. El contenido está escrito en el tono de voz de Farmateca.</p>
+
+  <!-- PIEZA 1: REEL -->
+  <div class="sc" style="margin-bottom:20px;">
+    <div class="sc-head">
+      <div class="sc-num">1</div>
+      <div>
+        <div class="sc-type">Reel de presentación · 30–35 segundos · Nivel 2</div>
+        <div class="sc-title">La farmacia chilena en tu bolsillo</div>
+        <div class="sc-meta">Template N2 (screen recording) · Música instrumental clínica · Texto en blanco sobre dark teal</div>
+      </div>
+    </div>
+    <div class="sc-body">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--fg3);margin-bottom:12px;">Guion escena por escena</div>
+      <div class="reel-scene">
+        <div><div class="rtc">0:00–0:03</div></div>
+        <div>
+          <div class="rtype">Hook</div>
+          <div class="raction">Texto en negro sobre blanco (o blanco sobre dark)</div>
+          <div class="rdesc">Texto aparece letra por letra (efecto typewriter Canva).</div>
+          <span class="roverlay">"¿Cuántas marcas tiene el paracetamol en Chile?"</span>
+          <span class="rprod">Template texto Canva</span>
+        </div>
+      </div>
+      <div class="reel-scene">
+        <div><div class="rtc">0:03–0:08</div></div>
+        <div>
+          <div class="rtype">Tensión / Dato sorpresa</div>
+          <div class="raction">Número grande con animación de conteo</div>
+          <div class="rdesc">Fondo degradado teal oscuro, número aumenta hasta 50+.</div>
+          <span class="roverlay">"Más de 50. En 4 concentraciones distintas."</span>
+          <span class="rprod">Template Canva "number counter"</span>
+        </div>
+      </div>
+      <div class="reel-scene">
+        <div><div class="rtc">0:08–0:22</div></div>
+        <div>
+          <div class="rtype">Demo · Pantalla app</div>
+          <div class="raction">Screen recording: búsqueda "paracetamol" → lista de marcas → detalle compuesto</div>
+          <div class="rdesc">Grabar el teléfono buscando "paracetamol", abriendo una marca comercial, deslizando por el detalle (posología, mecanismo). Sin audio de la grabación — la música del reel la reemplaza.</div>
+          <span class="roverlay">Overlay fade-in: "Todas registradas en el ISP Chile"</span>
+          <span class="rprod">Screen recording iPhone/Android</span>
+        </div>
+      </div>
+      <div class="reel-scene">
+        <div><div class="rtc">0:22–0:30</div></div>
+        <div>
+          <div class="rtype">Stats · Prueba</div>
+          <div class="raction">Fondo degradado hero teal, stats en blanco aparecen uno a uno</div>
+          <div class="rdesc">Texto grande, sin imágenes adicionales. Aparición secuencial con micro-animación.</div>
+          <span class="roverlay">"+200 compuestos · +2.556 marcas · 100% offline"</span>
+          <span class="rprod">Template Canva gradiente teal</span>
+        </div>
+      </div>
+      <div class="reel-scene">
+        <div><div class="rtc">0:30–0:35</div></div>
+        <div>
+          <div class="rtype">CTA</div>
+          <div class="raction">Logo Farmateca + badges App Store + Google Play</div>
+          <div class="rdesc">Fondo blanco o degradado suave. Badge de descarga aparecen con slide-up.</div>
+          <span class="roverlay">"Descárgala gratis. 7 días Premium incluidos."</span>
+          <span class="rprod">Assets: badge-appstore.png · badge-googleplay.png</span>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;">Caption Instagram (copiar tal cual)</div>
+        <div class="caption-block">¿Sabías que el paracetamol tiene más de 50 marcas distintas registradas en Chile?<br><br>En guardia, en práctica clínica, en el policlínico: saber cuál es cuál importa. Farmateca tiene todas, con posología, mecanismo de acción y contraindicaciones según fuente oficial ISP Chile.<br><br>Y funciona 100% sin conexión.<br><br>Descárgala gratis — link en bio.
+          <div class="hashtags">#MedicinaChile #EstudianteDeMedicina #Farmacología #Vademécum #FarmaciaChile #Farmateca #ISPChile #MedStudents #Internado #GuardiaClinica</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIEZA 2: HISTORIA -->
+  <div class="sc" style="margin-bottom:20px;">
+    <div class="sc-head">
+      <div class="sc-num">2</div>
+      <div>
+        <div class="sc-type">Historia Educativa · Template T1 · 1080×1920</div>
+        <div class="sc-title">"¿Sabías que...?" — Amoxicilina en Chile</div>
+        <div class="sc-meta">Degradado hero teal · Texto blanco · Sticker poll Instagram al final</div>
+      </div>
+    </div>
+    <div class="sc-body">
+      <div class="story-spec">
+        <div class="story-frame">
+          <div class="sf-top"><div class="sf-logo"></div></div>
+          <div class="sf-center">
+            <div class="sf-eye">¿Sabías que...?</div>
+            <div class="sf-big">En Chile, la amoxicilina tiene <span class="sf-hl">más de 60 marcas</span> comerciales registradas en el ISP.</div>
+            <div class="sf-sub">Todas disponibles offline en Farmateca.</div>
+          </div>
+          <div class="sf-bot">
+            <div class="sf-cta">Búscalas en Farmateca →</div>
+            <div class="sf-cite">Fuente: Registro Oficial ISP Chile · v.2026.01</div>
+          </div>
+        </div>
+        <div class="spec-rows">
+          <div class="spec-row"><div class="spec-k">Fondo</div><div class="spec-v">Degradado hero: <code>150deg · #147790 → #1e9db9 → #27c2d1</code></div></div>
+          <div class="spec-row"><div class="spec-k">Overline (arriba del dato)</div><div class="spec-v">"¿SABÍAS QUE...?" · DM Sans Bold · 28–32px · tracking 3px · uppercase · rgba(255,255,255,0.65)</div></div>
+          <div class="spec-row"><div class="spec-k">Dato principal</div><div class="spec-v">"En Chile, la amoxicilina tiene más de 60 marcas comerciales registradas en el ISP." · DM Sans Bold · 72–80px · blanco · "60 marcas" subrayado en <code>#b4e5f4</code></div></div>
+          <div class="spec-row"><div class="spec-k">Subtexto</div><div class="spec-v">"Todas disponibles offline en Farmateca." · DM Sans Regular · 38px · rgba(255,255,255,0.80)</div></div>
+          <div class="spec-row"><div class="spec-k">CTA chip (abajo)</div><div class="spec-v">Pill blanco con borde semitransparente: "Búscalas en Farmateca →" · 32px</div></div>
+          <div class="spec-row"><div class="spec-k">Cita (pie)</div><div class="spec-v">"Fuente: Registro Oficial ISP Chile · v.2026.01" · 22px · italic · rgba(255,255,255,0.40)</div></div>
+          <div class="spec-row"><div class="spec-k">Logo</div><div class="spec-v">logo-full-bw.png · filtro: brightness(0) invert(1) · altura 40–48px · centrado, parte superior</div></div>
+          <div class="spec-row"><div class="spec-k">Sticker Instagram</div><div class="spec-v">Poll nativo IG al final: "¿La conocías?" · Sí / No. Revelar resultado en historia siguiente.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIEZA 3: CARRUSEL -->
+  <div class="sc">
+    <div class="sc-head">
+      <div class="sc-num">3</div>
+      <div>
+        <div class="sc-type">Carrusel · Problema → Solución · 6 slides 1080×1080</div>
+        <div class="sc-title">"El médico sin señal"</div>
+        <div class="sc-meta">Mezcla de fondo blanco, gris y degradado teal · DM Sans · Copy listo para pegar en Canva</div>
+      </div>
+    </div>
+    <div class="sc-body">
+
+      <!-- Mini previews -->
+      <div class="car-grid" style="margin-bottom:24px;">
+        <div class="cslide" style="background:white;border:1.5px solid #e0e0e0;">
+          <div class="cs-n">01</div>
+          <div class="cs-title" style="font-size:10px;color:#147790;">Estás en la guardia.</div>
+          <div class="cs-sub">Hook · Blanco</div>
+        </div>
+        <div class="cslide" style="background:#f5f7fa;border:1px solid #e0e0e0;">
+          <div class="cs-n" style="color:#666;">02</div>
+          <div class="cs-title">Los buscadores fallan.</div>
+          <div class="cs-sub" style="color:#888;">Problema · Gris</div>
+        </div>
+        <div class="cslide" style="background:linear-gradient(135deg,#b4e5f4,white);">
+          <div class="cs-n" style="color:#147790;">03</div>
+          <div class="cs-title" style="color:#147790;">Los vademécums impresos...</div>
+          <div class="cs-sub" style="color:#1e9db9;">Agravante · Teal claro</div>
+        </div>
+        <div class="cslide" style="background:linear-gradient(150deg,#147790,#1e9db9,#27c2d1);">
+          <div class="cs-n" style="color:rgba(255,255,255,.5);">04</div>
+          <div class="cs-title" style="color:white;">Farmateca funciona offline.</div>
+          <div class="cs-sub" style="color:rgba(255,255,255,.7);">Solución · Teal</div>
+        </div>
+        <div class="cslide" style="background:white;border:1.5px solid #e0e0e0;">
+          <div class="cs-n" style="color:#1e9db9;">05</div>
+          <div class="cs-title" style="color:#1e9db9;">+2.556 marcas · ISP Chile</div>
+          <div class="cs-sub">Stats · Blanco</div>
+        </div>
+        <div class="cslide" style="background:linear-gradient(150deg,#147790,#1e9db9,#27c2d1);">
+          <div class="cs-n" style="color:rgba(255,255,255,.5);">06</div>
+          <div class="cs-title" style="color:white;">Descárgala. 7 días gratis.</div>
+          <div class="cs-sub" style="color:rgba(255,255,255,.7);">CTA · Teal</div>
+        </div>
+      </div>
+
+      <!-- Slide copy -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:var(--bg-light);border-radius:10px;padding:14px 16px;border-left:3px solid var(--primary);">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--primary);margin-bottom:6px;">Slide 01 · Hook · Fondo blanco</div>
+          <div style="font-size:14px;font-weight:700;color:var(--fg1);margin-bottom:4px;">Título grande: "Estás en la guardia."</div>
+          <div style="font-size:13px;color:var(--fg2);line-height:1.6;">Subtítulo: "El paciente necesita un medicamento urgente. No tienes señal. ¿Ahora qué?"<br>Visual: Tipografía grande, oscura, sin adornos. Logo pequeño esquina superior derecha.</div>
+        </div>
+        <div style="background:var(--bg-light);border-radius:10px;padding:14px 16px;border-left:3px solid #9fa2a9;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg3);margin-bottom:6px;">Slide 02 · Problema · Fondo gris #f5f7fa</div>
+          <div style="font-size:14px;font-weight:700;color:var(--fg1);margin-bottom:4px;">Título: "Los buscadores en línea no sirven aquí."</div>
+          <div style="font-size:13px;color:var(--fg2);line-height:1.6;">Cuerpo: "Google da información genérica. PubMed no tiene datos locales. Y el tiempo en guardia no espera." Visual: Ícono X roja, fondo gris claro, texto centrado.</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(180,229,244,.3),rgba(255,255,255,.8));border-radius:10px;padding:14px 16px;border-left:3px solid #b4e5f4;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--primary);margin-bottom:6px;">Slide 03 · Agravante · Degradado teal claro</div>
+          <div style="font-size:14px;font-weight:700;color:var(--fg1);margin-bottom:4px;">Título: "Y los vademécums impresos ya no son confiables."</div>
+          <div style="font-size:13px;color:var(--fg2);line-height:1.6;">Cuerpo: "La base de datos farmacéutica en Chile cambia constantemente. Una marca puede retirarse o cambiar concentración en meses." Cierre: "¿Con cuál versión estás trabajando tú?"</div>
+        </div>
+        <div style="background:linear-gradient(150deg,#147790,#1e9db9,#27c2d1);border-radius:10px;padding:14px 16px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px;">Slide 04 · Solución · Degradado hero teal</div>
+          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:4px;">Título: "Farmateca funciona 100% sin conexión."</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;">Cuerpo: "Toda la información descargada en tu teléfono. Disponible en la guardia, en el campo, en cualquier lugar." Visual: Check icon blanco, fondo degradado teal completo.</div>
+        </div>
+        <div style="background:var(--bg-light);border-radius:10px;padding:14px 16px;border-left:3px solid var(--primary);">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--primary);margin-bottom:6px;">Slide 05 · Prueba · Fondo blanco, datos teal grandes</div>
+          <div style="font-size:14px;font-weight:700;color:var(--fg1);margin-bottom:4px;">Stats grandes en teal #1e9db9:</div>
+          <div style="font-size:13px;color:var(--fg2);line-height:1.8;">"+200 compuestos · +2.556 marcas comerciales · 34 familias farmacológicas · 222 farmacias de Chile"<br>Pie: <em>"Fuente: Registro Oficial ISP Chile · Base de datos v.2026.01"</em> — letra pequeña, cursiva, gris.</div>
+        </div>
+        <div style="background:linear-gradient(150deg,#147790,#1e9db9,#27c2d1);border-radius:10px;padding:14px 16px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px;">Slide 06 · CTA · Degradado hero teal</div>
+          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:4px;">Título: "Descárgala hoy. Primeros 7 días Premium gratis."</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;">Logo Farmateca centrado en blanco. Badges App Store + Google Play. Pie de página: "Se renueva automáticamente. Cancela cuando quieras desde App Store / Google Play."</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;">Caption Instagram (copiar tal cual)</div>
+        <div class="caption-block">Ese momento en la guardia donde necesitas saber si dos medicamentos interactúan — y no tienes señal.<br><br>Por eso creamos Farmateca: el vademécum farmacológico chileno que funciona 100% offline. +2.556 medicamentos, fuente oficial ISP Chile, en tu bolsillo.<br><br>Desliza para ver por qué importa →
+          <div class="hashtags">#MedicinaChile #Internado #GuardiaClinica #Farmacología #Farmateca #EstudianteDeMedicina #ISPChile #QFChile #EnfermeríaChile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 07 · WORKFLOW CON CLAUDE ════════════════════════ -->
+<section class="sec">
+  <div class="sec-tag">07 · Workflow con Claude</div>
+  <h2 class="sec-h">Cómo trabajamos juntos en lote</h2>
+  <p class="sec-sub">Para cada sesión semanal, dime el tema y el pilar, y yo entrego todo el copy + estructura lista para pegar en Canva.</p>
+
+  <div class="g2">
+    <div class="card">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:12px;">Lo que tú me dices</div>
+      <div style="font-size:13px;color:var(--fg2);line-height:1.8;">
+        "Esta semana el tema es <strong style="color:var(--fg1)">Antibióticos</strong>."<br>
+        → Yo genero: 3 datos ISP para stories T1 + 1 carrusel P→S completo + 1 guion de reel + captions con hashtags + descripción visual por slide.<br><br>
+        "Necesito una historia interactiva de Poll."<br>
+        → Yo genero: pregunta clínica + 2 opciones + respuesta revelación para la siguiente historia.<br><br>
+        "Quiero un reel de la feature Asistente IA."<br>
+        → Yo genero: guion escena por escena, overlays de texto, sugerencia de template Canva y prompt Gemini Pro si se necesita plano de contexto.
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:12px;">Lo que yo entrego</div>
+      <div style="font-size:13px;color:var(--fg2);line-height:1.8;">
+        <strong style="color:var(--fg1)">Historias:</strong> Texto exacto para cada capa de Canva, con tamaños, opacidades y colores especificados.<br><br>
+        <strong style="color:var(--fg1)">Reels:</strong> Guion por timecode, texto de cada overlay, instrucción de producción (Canva template / screen recording / Gemini prompt).<br><br>
+        <strong style="color:var(--fg1)">Carruseles:</strong> Copy completo slide por slide + descripción visual + caption final + hashtags.<br><br>
+        <strong style="color:var(--fg1)">Templates HTML reales:</strong> Puedo entregarte las piezas como archivos HTML exportables a PNG/PDF desde el navegador (como los templates que acompañan este documento).
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;" class="callout gold">
+    <strong>Templates HTML entregables:</strong> Junto a este documento encontrarás <code style="font-size:11px;background:rgba(255,184,0,.1);padding:1px 5px;border-radius:3px;">Historia Sabia Que Template.html</code> y <code style="font-size:11px;background:rgba(255,184,0,.1);padding:1px 5px;border-radius:3px;">Carrusel Problema Solucion.html</code> — piezas renderizadas en el tamaño exacto de Instagram, listas para captura de pantalla directa o como referencia visual para Canva. Editables semana a semana cambiando solo el texto.
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<footer>
+  <img src="assets/logo-isotipo-bw.png" alt="" style="height:28px;opacity:.3;margin-bottom:12px;filter:brightness(0) invert(1);">
+  <div><strong>Farmateca</strong> · Estrategia de Contenido Instagram 2026</div>
+  <div style="margin-top:6px;">Vectium SpA · Bibliomédica Chilena · Fuentes: ISP Chile, MINSAL · Base de datos v.2026.01</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+/* ============================================================
+   FARMATECA — Design Tokens
+   Bibliomédica Chilena · Teal/Azul clínico-profesional
+   Source of truth: official palette (Mayo 2026) + Flutter app
+   (lib/utils/app_colors.dart, app_gradients.dart) + web theme.
+   NOTE: legacy colors #007B7F / #00A9A5 / #92DCE5 are DEPRECATED.
+   ============================================================ */
+
+:root {
+  /* ---- PRIMARY (Teal / Azul) ---- */
+  --primary:        #1e9db9;  /* base brand color                 */
+  --primary-light:  #b4e5f4;  /* soft accent, tinted backgrounds  */
+  --primary-blue:   #0c88ba;  /* bluer variant                    */
+  --primary-dark:   #147790;  /* main text, dark elements         */
+  --primary-bright: #27c2d1;  /* highlights, vibrant accents      */
+  --compound-blue:  #1565c0;  /* "compuesto" navy differentiator  */
+  --gold:           #ffb800;  /* premium icons / badges           */
+  --error:          #ef4444;  /* errors & alerts                  */
+  --success:        #4caf50;  /* confirmations                    */
+  --warning:        #ff9800;  /* cautions                         */
+  --favorites:      #f44336;  /* favorites red                    */
+
+  /* ---- NEUTRALS (Grises UI) ---- */
+  --gray-dark:    #43464c;  /* main dark text / titles          */
+  --gray-medium:  #5d6067;  /* secondary text                   */
+  --gray-mid:     #7f828a;  /* tertiary text, placeholders      */
+  --gray-light:   #9fa2a9;  /* borders, dividers, inactive      */
+  --gray-ultra:   #dcdee2;  /* card bg, soft backgrounds        */
+  --bg-light:     #f5f7fa;  /* app scaffold background          */
+  --white:        #ffffff;  /* base screen background           */
+
+  /* ---- Dark mode surfaces ---- */
+  --bg-dark:       #121212;
+  --surface-dark:  #1e1e1e;
+  --bg-dark-deep:  #0d1b2a;
+
+  /* ---- SEMANTIC text aliases ---- */
+  --fg1: var(--gray-dark);    /* primary text                    */
+  --fg2: var(--gray-medium);  /* secondary text                  */
+  --fg3: var(--gray-mid);     /* tertiary / hints                */
+  --fg-brand: var(--primary-dark);
+  --border: rgba(159,162,169,0.40);   /* inactive card border    */
+  --border-active: var(--primary);     /* selected card border    */
+  --tint-active: rgba(30,157,185,0.08);/* selected card fill 6-10% */
+
+  /* ---- GRADIENTS ---- */
+  --grad-hero:    linear-gradient(150deg, #147790 0%, #1e9db9 50%, #27c2d1 100%);
+  --grad-button:  linear-gradient(90deg,  #147790 0%, #27c2d1 100%);
+  --grad-soft:    linear-gradient(135deg, #1e9db9 0%, #b4e5f4 100%);
+  --grad-deep:    linear-gradient(135deg, #0c88ba 0%, #147790 100%);
+  --grad-vibrant: linear-gradient(135deg, #27c2d1 0%, #b4e5f4 100%);
+  --grad-full:    linear-gradient(135deg, #147790, #0c88ba, #1e9db9, #27c2d1, #b4e5f4);
+  --grad-card:    linear-gradient(180deg, #f5f6f8 0%, #dcdee2 100%);
+  --grad-dark-bg: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #252b3a 100%);
+  --grad-premium: linear-gradient(135deg, #ffb800 0%, #f59e0b 100%);
+  /* Login/auth screens use a professional dark teal wash */
+  --grad-auth:    linear-gradient(135deg, #2c3e50 0%, #0a4a5a 50%, #147790 100%);
+  /* Screen-specific gradients (from AppGradients) */
+  --grad-favorites:  linear-gradient(135deg, #27C2D1 0%, #1E9DB9 50%, #0C88BA 100%);
+  --grad-profile:    linear-gradient(180deg, #0C88BA 0%, #1E9DB9 50%, #B4E5F4 100%);
+  --grad-onboarding: linear-gradient(135deg, #0C88BA 0%, #27C2D1 100%);
+
+  /* ---- EXTENDED TEAL SCALE (from AppGradients constants) ---- */
+  --teal-deepest: #003D52;  /* tealDarkest — deepest dark bg            */
+  --teal-deep:    #006080;  /* tealDeep — profile / onboarding accent   */
+  --light-blue:   #E8F4F8;  /* lightBlue — near-white tinted surface    */
+
+  /* ---- DETAIL SECTION SEMANTIC COLORS (from AppColors) ---- */
+  --ea-bg:      #E8F5E9;  /* efectosAdversosBackground                */
+  --ea-border:  #4CAF50;  /* efectosAdversosBorder / icon             */
+  --ci-bg:      #FFEBEE;  /* contraindicacionesBackground             */
+  --ci-border:  #F44336;  /* contraindicacionesBorder / icon          */
+
+  /* ---- RADII (from AppDimens) ---- */
+  --r-s:   8px;
+  --r-m:  12px;   /* cards (min)            */
+  --r-l:  16px;   /* cards (max)           */
+  --r-xl: 20px;   /* buttons (min)         */
+  --r-2xl:24px;   /* buttons (max), modals */
+  --r-sheet: 28px;/* bottom sheets         */
+  --r-pill: 9999px;
+
+  /* ---- SHADOWS (soft, teal-tinted) ---- */
+  --shadow-xs: 0 2px 8px rgba(20,119,144,0.06);
+  --shadow-sm: 0 4px 16px rgba(20,119,144,0.15);   /* signature card shadow */
+  --shadow-md: 0 8px 24px rgba(20,119,144,0.18);
+  --shadow-lg: 0 15px 30px rgba(0,0,0,0.15);        /* primary card on gradient */
+  --shadow-premium: 0 8px 24px rgba(255,184,0,0.30);
+
+  /* ---- SPACING (8pt scale, from AppDimens) ---- */
+  --space-xs:  4px;
+  --space-s:   8px;
+  --space-m:  16px;
+  --space-l:  24px;
+  --space-xl: 32px;
+
+  /* ---- TYPE ---- */
+  /* App: SF Pro Display (iOS) / Roboto (Android). Web: system stack + Inter.
+     We mirror the native feel with a system-ui stack; Inter is the web fallback. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+               Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  /* Type scale (mirrors AppTextStyles / AppDimens fontXXX) */
+  --fs-hero:    32px;  --lh-hero:    1.15;  --fw-hero:    700;
+  --fs-title:   28px;  --lh-title:   1.2;   --fw-title:   700;  /* pageTitle */
+  --fs-section: 20px;  --lh-section: 1.3;   --fw-section: 600;  /* sectionTitle */
+  --fs-card:    18px;  --lh-card:    1.3;   --fw-card:    600;  /* cardTitle */
+  --fs-body:    16px;  --lh-body:    1.5;   --fw-body:    400;
+  --fs-sm:      14px;  --lh-sm:      1.5;   --fw-sm:      400;
+  --fs-xs:      12px;  --lh-xs:      1.4;
+  --fs-2xs:     10px;  --lh-2xs:     1.4;   --ls-over:    1.5px; /* overline */
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES — apply on a .ds scope or globally
+   ============================================================ */
+.ds-h1, h1.ds {
+  font: var(--fw-title) var(--fs-title)/var(--lh-title) var(--font-sans);
+  color: var(--fg-brand);
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+.ds-h2, h2.ds {
+  font: var(--fw-section) var(--fs-section)/var(--lh-section) var(--font-sans);
+  color: var(--fg1);
+  margin: 0;
+}
+.ds-h3, h3.ds {
+  font: var(--fw-card) var(--fs-card)/var(--lh-card) var(--font-sans);
+  color: var(--fg1);
+  margin: 0;
+}
+.ds-body, p.ds {
+  font: var(--fw-body) var(--fs-body)/var(--lh-body) var(--font-sans);
+  color: var(--fg1);
+  margin: 0;
+}
+.ds-secondary {
+  font: var(--fw-sm) var(--fs-sm)/var(--lh-sm) var(--font-sans);
+  color: var(--fg2);
+}
+.ds-hint {
+  font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans);
+  color: var(--fg3);
+}
+.ds-overline {
+  font: 500 var(--fs-2xs)/var(--lh-2xs) var(--font-sans);
+  color: var(--fg3);
+  letter-spacing: var(--ls-over);
+  text-transform: uppercase;
+}
+.ds-sources {
+  font: italic 400 var(--fs-2xs)/1.5 var(--font-sans);
+  color: var(--fg2);
+}

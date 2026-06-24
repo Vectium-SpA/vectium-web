@@ -1,0 +1,211 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--bg-light); padding: 20px; display: flex; flex-direction: column; gap: 24px; }
+  .msr { font-family: 'Material Symbols Rounded'; line-height: 1; display: inline-block; }
+  .lbl { font-size: 10px; font-weight: 700; color: var(--gray-mid); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 10px; }
+
+  .chat-box { background: var(--bg-light); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); }
+
+  /* AppBar */
+  .cbar { background: #fff; display: flex; align-items: center; gap: 8px; padding: 12px; border-bottom: 1px solid rgba(159,162,169,0.15); }
+  .bav { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--primary-blue), var(--primary-bright)); display: flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 2px 8px rgba(12,136,186,0.28); }
+  .bav-sm { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--primary-blue), var(--primary-bright)); display: flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 2px 6px rgba(12,136,186,0.25); }
+
+  /* Messages */
+  .msgs { padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .row { display: flex; align-items: flex-end; gap: 8px; }
+  .row.u { justify-content: flex-end; }
+  .bb { max-width: 76%; padding: 10px 14px; }
+  .bb.bot { background: #fff; border-radius: 4px 18px 18px 18px; border: 1px solid rgba(159,162,169,0.22); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+  .bb.usr { background: var(--primary-blue); border-radius: 18px 18px 4px 18px; }
+  .bb.sys { background: rgba(30,157,185,0.07); border-radius: 12px; border: 1px solid rgba(30,157,185,0.18); display: flex; gap: 8px; align-items: flex-start; }
+  .bb.err { background: var(--ci-bg); border-radius: 4px 18px 18px 18px; border: 1px solid rgba(244,67,54,0.18); }
+  .bt  { font-size: 13.5px; line-height: 1.45; }
+  .bt.bot { color: var(--gray-dark); }
+  .bt.usr { color: #fff; }
+  .bt-title { font-size: 13.5px; font-weight: 700; color: var(--gray-dark); line-height: 1.5; }
+  .bt-body  { font-size: 13px; color: var(--gray-dark); line-height: 1.4; white-space: pre-line; }
+  .ts { font-size: 9px; margin-top: 4px; text-align: right; }
+  .ts.bot { color: var(--gray-light); }
+  .ts.usr { color: rgba(255,255,255,0.6); }
+  .sp28 { width: 28px; flex: none; }
+
+  /* Follow-up & med chips */
+  .fc-wrap { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .fc { padding: 4px 9px; border-radius: 10px; font-size: 11px; font-weight: 500; background: rgba(12,136,186,0.08); border: 1px solid rgba(12,136,186,0.24); color: var(--primary-blue); cursor: pointer; }
+  .mc { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 14px; font-size: 12px; font-weight: 500; background: rgba(12,136,186,0.08); border: 1px solid rgba(12,136,186,0.22); color: var(--primary-blue); cursor: pointer; }
+  .mc .msr { font-size: 12px; }
+
+  /* Typing indicator */
+  .typing { display: flex; gap: 4px; align-items: center; padding: 12px 14px; border-radius: 4px 18px 18px 18px; background: #fff; border: 1px solid rgba(159,162,169,0.22); }
+  .td { width: 7px; height: 7px; border-radius: 50%; background: var(--primary-blue); }
+  .td:nth-child(1) { animation: tb 1.2s 0s   ease-in-out infinite; }
+  .td:nth-child(2) { animation: tb 1.2s .2s  ease-in-out infinite; }
+  .td:nth-child(3) { animation: tb 1.2s .4s  ease-in-out infinite; }
+  @keyframes tb { 0%,60%,100%{transform:translateY(0);opacity:.45} 30%{transform:translateY(-5px);opacity:1} }
+
+  /* Quick suggestion chips */
+  .sc { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 20px; background: #fff; border: 1px solid rgba(12,136,186,0.2); box-shadow: 0 2px 4px rgba(0,0,0,0.04); font-size: 13px; font-weight: 500; color: var(--gray-dark); cursor: pointer; }
+  .sc .msr { font-size: 16px; color: var(--primary-blue); }
+
+  /* Input */
+  .inp-row { display: flex; align-items: center; gap: 8px; background: #fff; border-top: 1px solid rgba(159,162,169,0.12); padding: 10px 12px 14px; }
+  .inp-field { flex: 1; background: var(--bg-light); border-radius: 22px; padding: 10px 14px; font-size: 14px; }
+  .snd { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: none; }
+  .snd.on  { background: var(--primary-blue); }
+  .snd.off { background: var(--gray-ultra); }
+</style>
+</head>
+<body>
+
+<!-- APPBAR STATES -->
+<div>
+  <div class="lbl">AppBar — estados del asistente</div>
+  <div style="border-radius:14px;overflow:hidden;box-shadow:var(--shadow-xs)">
+    <div class="cbar">
+      <span class="msr" style="color:var(--gray-dark);font-size:22px">arrow_back_ios</span>
+      <div class="bav"><span class="msr" style="font-size:20px;color:#fff">smart_toy</span></div>
+      <div style="flex:1;margin-left:4px">
+        <div style="font-size:15px;font-weight:600;color:var(--gray-dark)">Asistente Farmateca</div>
+        <div style="font-size:11px;color:#4CAF50">En línea</div>
+      </div>
+      <span class="msr" style="font-size:22px;color:var(--gray-dark)">more_vert</span>
+    </div>
+    <div class="cbar" style="border-top:1px solid rgba(159,162,169,0.1)">
+      <span class="msr" style="color:var(--gray-dark);font-size:22px">arrow_back_ios</span>
+      <div class="bav" style="background:linear-gradient(135deg,var(--primary-bright),var(--primary-blue));box-shadow:0 2px 14px rgba(12,136,186,0.5)">
+        <span class="msr" style="font-size:20px;color:#fff">smart_toy</span>
+      </div>
+      <div style="flex:1;margin-left:4px">
+        <div style="font-size:15px;font-weight:600;color:var(--gray-dark)">Asistente Farmateca</div>
+        <div style="font-size:11px;color:var(--primary-blue)">Escribiendo...</div>
+      </div>
+      <span class="msr" style="font-size:22px;color:var(--gray-dark)">more_vert</span>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT BUBBLES -->
+<div>
+  <div class="lbl">Burbujas de chat — todos los tipos</div>
+  <div class="chat-box">
+    <div class="msgs">
+
+      <!-- Sistema / bienvenida -->
+      <div class="row">
+        <div class="bav-sm"><span class="msr" style="font-size:14px;color:#fff">medication</span></div>
+        <div class="bb sys">
+          <span class="msr" style="font-size:18px;color:var(--primary-blue)">medical_information</span>
+          <div>
+            <div class="bt bot">¡Hola! Soy el Asistente Farmateca. Puedo ayudarte a buscar información sobre medicamentos, dosis y más.</div>
+            <div class="ts bot">10:30</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usuario -->
+      <div class="row u">
+        <div class="bb usr">
+          <div class="bt usr">¿Para qué sirve el paracetamol?</div>
+          <div class="ts usr">10:31 ✓✓</div>
+        </div>
+        <div class="sp28"></div>
+      </div>
+
+      <!-- Bot con título en negrita + follow-up chips -->
+      <div class="row">
+        <div class="bav-sm"><span class="msr" style="font-size:14px;color:#fff">medication</span></div>
+        <div class="bb bot">
+          <div class="bt-title">Paracetamol (Acetaminofén)</div>
+          <div class="bt-body">Analgésico y antipirético. Inhibe prostaglandinas en el SNC.
+
+• Dosis adulto: 500–1000 mg c/6–8h (máx. 4 g/día)
+• Dosis niños: 10–15 mg/kg c/4–6h
+• Vías: oral, rectal, IV</div>
+          <div class="fc-wrap">
+            <span class="fc">Para qué sirve</span>
+            <span class="fc">Dosis</span>
+            <span class="fc">Efectos adversos</span>
+            <span class="fc">Contraindicaciones</span>
+          </div>
+          <div class="ts bot">10:31</div>
+        </div>
+      </div>
+
+      <!-- Sugerencias de medicamentos (chips clicables) -->
+      <div class="row">
+        <div class="bav-sm"><span class="msr" style="font-size:14px;color:#fff">medication</span></div>
+        <div class="bb bot">
+          <div class="bt bot">Encontré estos antibióticos en la base de datos:</div>
+          <div class="fc-wrap" style="margin-top:8px">
+            <span class="mc"><span class="msr">medication</span>Amoxicilina</span>
+            <span class="mc"><span class="msr">medication</span>Claritromicina</span>
+            <span class="mc"><span class="msr">medication</span>Azitromicina</span>
+          </div>
+          <div class="ts bot">10:32</div>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="row">
+        <div class="bav-sm"><span class="msr" style="font-size:14px;color:#fff">medication</span></div>
+        <div class="bb err">
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="msr" style="font-size:18px;color:var(--ci-border)">dangerous</span>
+            <div class="bt" style="color:var(--ci-border)">No encontré información para esa consulta. Intenta con otro término.</div>
+          </div>
+          <div class="ts" style="color:rgba(244,67,54,0.5)">10:33</div>
+        </div>
+      </div>
+
+      <!-- Typing indicator animado -->
+      <div class="row">
+        <div class="bav-sm"><span class="msr" style="font-size:14px;color:#fff">medication</span></div>
+        <div class="typing">
+          <div class="td"></div><div class="td"></div><div class="td"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggestion chips -->
+    <div style="padding:6px 12px 2px;border-top:1px solid rgba(159,162,169,0.1)">
+      <div style="font-size:11px;font-weight:500;color:var(--gray-mid);margin-bottom:7px">Sugerencias rápidas</div>
+      <div style="display:flex;gap:8px;padding-bottom:10px;overflow-x:auto">
+        <span class="sc"><span class="msr">medication</span>Paracetamol</span>
+        <span class="sc"><span class="msr">science</span>Ibuprofeno</span>
+        <span class="sc"><span class="msr">search</span>Antibióticos</span>
+        <span class="sc"><span class="msr">medical_information</span>Ayuda</span>
+      </div>
+    </div>
+
+    <!-- Input activo -->
+    <div class="inp-row">
+      <div class="inp-field" style="color:#222">¿Cuál es la dosis del ibuprofeno para niños?</div>
+      <div class="snd on"><span class="msr" style="font-size:18px;color:#fff">send</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- INPUT — ESTADOS -->
+<div>
+  <div class="lbl">Campo de entrada — estados</div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="inp-row" style="border-radius:12px;border:none;box-shadow:var(--shadow-xs)">
+      <div class="inp-field" style="color:#aaa">Escribe una consulta...</div>
+      <div class="snd off"><span class="msr" style="font-size:18px;color:var(--gray-light)">send</span></div>
+    </div>
+    <div class="inp-row" style="border-radius:12px;border:none;box-shadow:var(--shadow-xs)">
+      <div class="inp-field" style="color:#222">¿Qué es el paracetamol?</div>
+      <div class="snd on"><span class="msr" style="font-size:18px;color:#fff">send</span></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

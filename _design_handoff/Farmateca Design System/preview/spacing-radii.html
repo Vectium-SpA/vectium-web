@@ -1,0 +1,32 @@
+<!-- @dsCard group="Spacing" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 24px; }
+  .row { display: flex; gap: 18px; align-items: flex-end; }
+  .item { text-align: center; }
+  .box { background: var(--grad-soft); border: 1.5px solid var(--primary); }
+  .r8 { width: 64px; height: 64px; border-radius: 8px; }
+  .r12 { width: 64px; height: 64px; border-radius: 12px; }
+  .r16 { width: 64px; height: 64px; border-radius: 16px; }
+  .r20 { width: 64px; height: 64px; border-radius: 20px; }
+  .r24 { width: 64px; height: 64px; border-radius: 24px; }
+  .r28 { width: 64px; height: 64px; border-radius: 28px; }
+  .lbl { font-size: 11px; font-weight: 600; color: var(--fg1); margin-top: 8px; }
+  .use { font-size: 9px; color: var(--gray-light); margin-top: 2px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="box r8"></div><div class="lbl">8</div><div class="use">chips</div></div>
+    <div class="item"><div class="box r12"></div><div class="lbl">12</div><div class="use">cards</div></div>
+    <div class="item"><div class="box r16"></div><div class="lbl">16</div><div class="use">cards lg</div></div>
+    <div class="item"><div class="box r20"></div><div class="lbl">20</div><div class="use">buttons</div></div>
+    <div class="item"><div class="box r24"></div><div class="lbl">24</div><div class="use">CTA / modal</div></div>
+    <div class="item"><div class="box r28"></div><div class="lbl">28</div><div class="use">bottom sheet</div></div>
+  </div>
+</body>
+</html>

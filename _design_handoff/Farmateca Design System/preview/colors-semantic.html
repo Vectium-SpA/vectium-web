@@ -1,0 +1,28 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 22px; }
+  .row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .sw { border-radius: var(--r-m); overflow: hidden; box-shadow: var(--shadow-xs); }
+  .chip { height: 56px; display:flex; align-items:center; justify-content:center; }
+  .chip span { font-size: 22px; }
+  .meta { padding: 7px 9px; background: var(--white); }
+  .name { font-size: 11px; font-weight: 600; color: var(--fg1); }
+  .hex { font-size: 10px; color: var(--fg3); font-variant-numeric: tabular-nums; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#ffb800"><span style="color:#fff">★</span></div><div class="meta"><div class="name">Gold / Premium</div><div class="hex">#ffb800</div></div></div>
+    <div class="sw"><div class="chip" style="background:#1565c0"></div><div class="meta"><div class="name">Compuesto</div><div class="hex">#1565c0</div></div></div>
+    <div class="sw"><div class="chip" style="background:#f44336"><span style="color:#fff">♥</span></div><div class="meta"><div class="name">Favorites</div><div class="hex">#f44336</div></div></div>
+    <div class="sw"><div class="chip" style="background:#4caf50"></div><div class="meta"><div class="name">Success</div><div class="hex">#4caf50</div></div></div>
+    <div class="sw"><div class="chip" style="background:#ff9800"></div><div class="meta"><div class="name">Warning</div><div class="hex">#ff9800</div></div></div>
+    <div class="sw"><div class="chip" style="background:#ef4444"></div><div class="meta"><div class="name">Error</div><div class="hex">#ef4444</div></div></div>
+  </div>
+</body>
+</html>

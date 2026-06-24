@@ -4,7 +4,7 @@ import "./globals-farmateca.css";
 export const metadata: Metadata = {
   title: {
     template: "%s | Farmateca",
-    default: "Farmateca - Vademécum Farmacológico Chileno",
+    default: "Farmateca - Bibliomédica Chilena Offline",
   },
   description:
     "Plataforma web de consulta farmacológica con información actualizada de medicamentos, compuestos y laboratorios disponibles en Chile.",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "farmateca",
     "medicamentos",
     "farmacología",
-    "vademécum",
+    "bibliomédica",
     "chile",
     "compuestos",
     "fármacos",

@@ -23,6 +23,9 @@ export function Navbar() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
+  // Farmateca tiene su propio chrome (nav/footer). Ocultar el corporativo en /farmateca/*
+  if (pathname.startsWith("/farmateca")) return null;
+
   return (
     <motion.header
       initial={{ y: -100 }}

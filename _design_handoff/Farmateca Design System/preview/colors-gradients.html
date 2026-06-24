@@ -1,0 +1,26 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 22px; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .g { border-radius: var(--r-l); height: 92px; box-shadow: var(--shadow-sm); position: relative; overflow:hidden; }
+  .lbl { position:absolute; left:12px; bottom:10px; color:#fff; }
+  .lbl .n { font-size: 13px; font-weight: 700; }
+  .lbl .h { font-size: 10px; opacity:.85; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="g" style="background:var(--grad-hero)"><div class="lbl"><div class="n">Hero</div><div class="h">147790 · 1e9db9 · 27c2d1</div></div></div>
+    <div class="g" style="background:var(--grad-button)"><div class="lbl"><div class="n">Button</div><div class="h">147790 → 27c2d1</div></div></div>
+    <div class="g" style="background:var(--grad-deep)"><div class="lbl"><div class="n">Deep</div><div class="h">0c88ba → 147790</div></div></div>
+    <div class="g" style="background:var(--grad-soft)"><div class="lbl" style="color:#147790"><div class="n">Soft</div><div class="h">1e9db9 → b4e5f4</div></div></div>
+    <div class="g" style="background:var(--grad-vibrant)"><div class="lbl" style="color:#147790"><div class="n">Vibrant</div><div class="h">27c2d1 → b4e5f4</div></div></div>
+    <div class="g" style="background:var(--grad-premium)"><div class="lbl"><div class="n">Premium</div><div class="h">ffb800 → f59e0b</div></div></div>
+  </div>
+</body>
+</html>

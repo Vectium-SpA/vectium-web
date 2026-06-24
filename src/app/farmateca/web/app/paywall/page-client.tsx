@@ -138,7 +138,7 @@ export default function PaywallPage() {
   // Si ya es premium
   if (isPremium && !successMessage) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0a2a2b] via-[#007B7F] to-[#0d1117] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-gradient-to-br from-[#0a2a2b] via-[#147790] to-[#0d1117] flex items-center justify-center p-6">
         <div className="text-center text-white">
           <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,7 +163,7 @@ export default function PaywallPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a2a2b] via-[#007B7F] to-[#0d1117]">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a2a2b] via-[#147790] to-[#0d1117]">
       {/* Close button */}
       <div className="sticky top-0 z-20 flex justify-end p-4">
         <button
@@ -198,7 +198,7 @@ export default function PaywallPage() {
             Decide con seguridad<br className="hidden sm:block" /> en segundos
           </h1>
           <p className="text-lg text-white/70 max-w-xl mx-auto">
-            Información clínica completa del vademécum farmacológico chileno
+            Información clínica completa de la bibliomédica chilena offline
           </p>
         </motion.div>
 
@@ -291,7 +291,7 @@ export default function PaywallPage() {
               onClick={() => setSelectedPlan('monthly')}
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${
                 selectedPlan === 'monthly'
-                  ? 'bg-white text-[#007B7F]'
+                  ? 'bg-white text-[#147790]'
                   : 'text-white/60 hover:text-white'
               }`}
             >
@@ -301,13 +301,13 @@ export default function PaywallPage() {
               onClick={() => setSelectedPlan('yearly')}
               className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all relative ${
                 selectedPlan === 'yearly'
-                  ? 'bg-white text-[#007B7F]'
+                  ? 'bg-white text-[#147790]'
                   : 'text-white/60 hover:text-white'
               }`}
             >
               Anual
               <span className="absolute -top-2.5 -right-2 bg-emerald-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-                -23%
+                -27%
               </span>
             </motion.button>
           </div>
@@ -338,7 +338,7 @@ export default function PaywallPage() {
               ) : (
                 <>
                   <div className="text-6xl font-bold text-white mb-1">
-                    $3.790
+                    $3.990
                   </div>
                   <div className="text-white/60 text-sm">CLP/mes</div>
                 </>

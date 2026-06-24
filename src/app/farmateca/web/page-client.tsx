@@ -63,14 +63,14 @@ function FarmatecaLanding() {
   // Show spinner while checking auth or while redirecting
   if (loading || user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#007B7F] via-[#00A9A5] to-[#0d5f62] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#147790] via-[#1e9db9] to-[#0d5f62] flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#007B7F] via-[#00A9A5] to-[#0d5f62] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-[#147790] via-[#1e9db9] to-[#0d5f62] flex flex-col">
       {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center text-white">
 
@@ -98,7 +98,7 @@ function FarmatecaLanding() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-4xl sm:text-5xl font-bold mb-4 leading-tight max-w-2xl"
         >
-          Vademécum Farmacológico Chileno
+          Bibliomédica Chilena Offline
         </motion.h1>
 
         {/* Subtitle */}
@@ -108,7 +108,7 @@ function FarmatecaLanding() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg sm:text-xl text-white/85 max-w-xl mb-12"
         >
-          Consulta información clínica completa de más de 2.500 medicamentos
+          Consulta información clínica completa de más de 2.556 medicamentos
         </motion.p>
 
         {/* Feature cards */}
@@ -141,7 +141,7 @@ function FarmatecaLanding() {
         >
           <Link
             href="/farmateca/web/login"
-            className="px-8 py-4 bg-white text-[#007B7F] font-bold rounded-xl text-lg hover:bg-white/95 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-100"
+            className="px-8 py-4 bg-white text-[#147790] font-bold rounded-xl text-lg hover:bg-white/95 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-100"
           >
             Iniciar sesión
           </Link>

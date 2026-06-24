@@ -1,0 +1,184 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--bg-light); padding: 20px; display: flex; flex-direction: column; gap: 26px; }
+  .msr { font-family: 'Material Symbols Rounded'; line-height: 1; display: inline-block; }
+  .lbl { font-size: 10px; font-weight: 700; color: var(--gray-mid); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 10px; }
+  .screen { max-width: 390px; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); }
+</style>
+</head>
+<body>
+
+<!-- PANTALLA COMPLETA -->
+<div>
+  <div class="lbl">Pantalla — Farmacias de Chile</div>
+  <div class="screen">
+
+    <!-- Gradient header -->
+    <div style="background:linear-gradient(100deg,var(--primary-dark) 0%,var(--primary) 55%,var(--primary-bright) 100%);padding:20px 20px 16px;display:flex;align-items:center;gap:10px">
+      <span class="msr" style="color:#fff;font-size:22px">arrow_back_ios</span>
+      <span class="msr" style="color:#fff;font-size:26px">local_pharmacy</span>
+      <div style="flex:1">
+        <div style="font-size:17.5px;font-weight:800;color:#fff;letter-spacing:-0.3px">Farmacias de Chile</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.72)">222 establecimientos — datos 2026</div>
+      </div>
+    </div>
+
+    <!-- Search bar on dark teal -->
+    <div style="background:var(--primary-dark);padding:0 16px 12px">
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.14);border-radius:12px;padding:9px 12px">
+        <span class="msr" style="color:rgba(255,255,255,0.65);font-size:20px">search</span>
+        <span style="color:rgba(255,255,255,0.45);font-size:14px">Nombre, comuna o dirección...</span>
+      </div>
+    </div>
+
+    <!-- Filter chips -->
+    <div style="background:#fff;padding:10px 14px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--gray-ultra)">
+      <div style="display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:20px;border:1px solid var(--gray-ultra);color:var(--gray-mid);font-size:12px;white-space:nowrap;flex-shrink:0">
+        <span class="msr" style="font-size:14px">place</span>Región<span class="msr" style="font-size:16px">expand_more</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:20px;border:1px solid var(--primary);background:rgba(30,157,185,0.1);color:var(--primary);font-weight:700;font-size:12px;white-space:nowrap;flex-shrink:0">
+        <span class="msr" style="font-size:14px;color:var(--primary)">check</span>Cadena Grande
+      </div>
+      <div style="display:inline-flex;padding:6px 11px;border-radius:20px;border:1px solid var(--gray-ultra);color:var(--gray-mid);font-size:12px;white-space:nowrap;flex-shrink:0">Regional</div>
+      <div style="display:inline-flex;padding:6px 11px;border-radius:20px;border:1px solid var(--gray-ultra);color:var(--gray-mid);font-size:12px;white-space:nowrap;flex-shrink:0">Popular/Comunal</div>
+      <div style="display:inline-flex;padding:6px 11px;border-radius:20px;border:1px solid var(--gray-ultra);color:var(--gray-mid);font-size:12px;white-space:nowrap;flex-shrink:0">Independiente</div>
+    </div>
+
+    <!-- TabBar -->
+    <div style="background:#fff;display:flex;border-bottom:1px solid var(--gray-ultra)">
+      <div style="flex:1;padding:10px;text-align:center;font-size:13px;font-weight:700;color:var(--primary-dark);border-bottom:2.5px solid var(--primary-dark)">Lista (8)</div>
+      <div style="flex:1;padding:10px;text-align:center;font-size:13px;color:var(--gray-mid);border-bottom:2.5px solid transparent">Mapa</div>
+    </div>
+
+    <!-- List cards -->
+    <div style="padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--bg-light)">
+
+      <!-- Cadena Grande (teal) -->
+      <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);display:flex;align-items:center;gap:12px">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(30,157,185,0.12);display:flex;align-items:center;justify-content:center;flex:none">
+          <span class="msr" style="color:var(--primary);font-size:22px">local_pharmacy</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13.5px;font-weight:700;color:var(--gray-dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Cruz Verde Las Condes</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+            <span style="padding:2px 6px;border-radius:5px;font-size:10px;font-weight:700;background:rgba(30,157,185,0.12);color:var(--primary)">Cadena Grande</span>
+            <span style="font-size:11px;color:var(--gray-mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Las Condes, Metropolitana</span>
+          </div>
+          <div style="font-size:11px;color:var(--gray-light);margin-top:2px">Av. Apoquindo 4501</div>
+        </div>
+        <div style="width:34px;height:34px;border-radius:9px;background:rgba(30,157,185,0.1);display:flex;align-items:center;justify-content:center;flex:none">
+          <span class="msr" style="color:var(--primary-dark);font-size:17px">map</span>
+        </div>
+      </div>
+
+      <!-- Regional (blue) -->
+      <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);display:flex;align-items:center;gap:12px">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(12,136,186,0.12);display:flex;align-items:center;justify-content:center;flex:none">
+          <span class="msr" style="color:var(--primary-blue);font-size:22px">local_pharmacy</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13.5px;font-weight:700;color:var(--gray-dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Farmacia Ahumada Valparaíso</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+            <span style="padding:2px 6px;border-radius:5px;font-size:10px;font-weight:700;background:rgba(12,136,186,0.12);color:var(--primary-blue)">Regional</span>
+            <span style="font-size:11px;color:var(--gray-mid)">Valparaíso, Valparaíso</span>
+          </div>
+          <div style="font-size:11px;color:var(--gray-light);margin-top:2px">Condell 1234</div>
+        </div>
+        <div style="width:34px;height:34px;border-radius:9px;background:rgba(30,157,185,0.1);display:flex;align-items:center;justify-content:center;flex:none">
+          <span class="msr" style="color:var(--primary-dark);font-size:17px">map</span>
+        </div>
+      </div>
+
+      <!-- Popular/Comunal (gold) -->
+      <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);display:flex;align-items:center;gap:12px">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(255,184,0,0.12);display:flex;align-items:center;justify-content:center;flex:none">
+          <span class="msr" style="color:var(--gold);font-size:22px">local_pharmacy</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13.5px;font-weight:700;color:var(--gray-dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Farmacia Popular Quilicura</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+            <span style="padding:2px 6px;border-radius:5px;font-size:10px;font-weight:700;background:rgba(255,184,0,0.12);color:var(--gold)">Popular/Comunal</span>
+            <span style="font-size:11px;color:var(--gray-mid)">Quilicura, Metropolitana</span>
+          </div>
+          <div style="font-size:11px;color:var(--gray-light);margin-top:2px">Los Naranjos 890</div>
+        </div>
+        <div style="width:34px;height:34px;border-radius:9px;background:rgba(30,157,185,0.1);display:flex;align-items:center;justify-content:center;flex:none">
+          <span class="msr" style="color:var(--primary-dark);font-size:17px">map</span>
+        </div>
+      </div>
+
+      <!-- Independiente (gray) — sin mapa -->
+      <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);display:flex;align-items:center;gap:12px">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(93,96,103,0.1);display:flex;align-items:center;justify-content:center;flex:none">
+          <span class="msr" style="color:var(--gray-medium);font-size:22px">local_pharmacy</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13.5px;font-weight:700;color:var(--gray-dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Farmacia San Pedro</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+            <span style="padding:2px 6px;border-radius:5px;font-size:10px;font-weight:700;background:rgba(93,96,103,0.1);color:var(--gray-medium)">Independiente</span>
+            <span style="font-size:11px;color:var(--gray-mid)">Curicó, Maule</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM SHEET DETALLE -->
+<div>
+  <div class="lbl">Bottom Sheet — Detalle farmacia</div>
+  <div style="max-width:390px;background:#fff;border-radius:20px;padding:16px 20px 20px;box-shadow:var(--shadow-lg)">
+    <div style="width:36px;height:4px;background:var(--gray-ultra);border-radius:2px;margin:0 auto 16px"></div>
+    <span style="padding:3px 8px;border-radius:7px;font-size:11px;font-weight:700;background:rgba(255,184,0,0.12);color:var(--gold)">Popular/Comunal</span>
+    <div style="font-size:18px;font-weight:800;color:var(--gray-dark);margin:8px 0 14px">Farmacia Popular Quilicura</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span class="msr" style="font-size:15px;color:var(--gray-mid)">place</span>
+      <span style="font-size:13px;color:var(--gray-dark)">Quilicura — Región Metropolitana</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span class="msr" style="font-size:15px;color:var(--gray-mid)">home</span>
+      <span style="font-size:13px;color:var(--gray-dark)">Los Naranjos 890</span>
+    </div>
+    <div style="padding:10px;border-radius:10px;background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.25);display:flex;align-items:flex-start;gap:8px;margin-bottom:20px">
+      <span class="msr" style="font-size:14px;color:var(--gold)">info</span>
+      <span style="font-size:11px;color:var(--gray-dark);line-height:1.5">Farmacia popular o municipal — precios reducidos para la comunidad.</span>
+    </div>
+    <button style="width:100%;border:none;border-radius:14px;padding:14px;background:var(--primary-dark);color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+      <span class="msr" style="color:#fff;font-size:18px">map</span>Abrir en Maps
+    </button>
+    <div style="text-align:center;font-size:10.5px;color:var(--gray-light);margin-top:8px;line-height:1.5">Abre Google Maps, Waze o el mapa de tu dispositivo.</div>
+  </div>
+</div>
+
+<!-- SISTEMA DE COLORES POR TIPO + LEYENDA MAPA -->
+<div>
+  <div class="lbl">Sistema de color por tipo de farmacia</div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+    <div style="background:rgba(255,255,255,0.9);border-radius:12px;padding:12px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:11px;font-weight:700;color:var(--gray-dark);margin-bottom:2px">Leyenda del mapa</div>
+      <div style="display:flex;align-items:center;gap:8px"><div style="width:10px;height:10px;border-radius:50%;background:var(--primary)"></div><span style="font-size:11px;color:var(--gray-dark)">Cadena Grande</span></div>
+      <div style="display:flex;align-items:center;gap:8px"><div style="width:10px;height:10px;border-radius:50%;background:var(--primary-blue)"></div><span style="font-size:11px;color:var(--gray-dark)">Cadena Regional</span></div>
+      <div style="display:flex;align-items:center;gap:8px"><div style="width:10px;height:10px;border-radius:50%;background:var(--gold)"></div><span style="font-size:11px;color:var(--gray-dark)">Popular/Comunal</span></div>
+      <div style="display:flex;align-items:center;gap:8px"><div style="width:10px;height:10px;border-radius:50%;background:var(--gray-medium)"></div><span style="font-size:11px;color:var(--gray-dark)">Independiente</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:10px;font-weight:700;color:var(--gray-mid);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:2px">Marcadores</div>
+      <div style="display:flex;gap:10px">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--primary);border:2px solid #fff;box-shadow:0 2px 6px rgba(30,157,185,0.4);display:flex;align-items:center;justify-content:center"><span class="msr" style="font-size:16px;color:#fff">local_pharmacy</span></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-blue);border:2px solid #fff;box-shadow:0 2px 6px rgba(12,136,186,0.4);display:flex;align-items:center;justify-content:center"><span class="msr" style="font-size:16px;color:#fff">local_pharmacy</span></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--gold);border:2px solid #fff;box-shadow:0 2px 6px rgba(255,184,0,0.4);display:flex;align-items:center;justify-content:center"><span class="msr" style="font-size:16px;color:#fff">local_pharmacy</span></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--gray-medium);border:2px solid #fff;box-shadow:0 2px 6px rgba(93,96,103,0.3);display:flex;align-items:center;justify-content:center"><span class="msr" style="font-size:16px;color:#fff">local_pharmacy</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

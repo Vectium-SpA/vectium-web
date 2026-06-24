@@ -1,0 +1,40 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--bg-light); padding: 22px; display:flex; flex-direction:column; gap:12px; }
+  .msr { font-family: 'Material Symbols Rounded'; line-height: 1; }
+  /* info card */
+  .card { background:#fff; border-radius:12px; padding:16px; box-shadow: var(--shadow-xs); }
+  .head { display:flex; align-items:center; gap:12px; }
+  .ic { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; }
+  .ic .msr { font-size:20px; }
+  .ttl { font-size:14px; font-weight:700; }
+  .body { font-size:15px; line-height:1.5; color:#222; margin-top:12px; }
+  /* premium-locked row */
+  .lock { background:#fff; border-radius:12px; padding:16px; box-shadow: var(--shadow-xs); display:flex; align-items:center; gap:12px; }
+  .lock .ic { background: rgba(255,184,0,.15); }
+  .lock .ic .msr { color: var(--gold); }
+  .lock .ttl { color: var(--gray-light); font-weight:600; display:flex; align-items:center; gap:8px; flex:1; }
+  .lock .star { color: var(--gold); font-size:16px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="head">
+      <div class="ic" style="background:rgba(20,119,144,.1)"><span class="msr" style="color:var(--primary-dark)">category</span></div>
+      <div class="ttl" style="color:var(--primary-dark)">Familia Farmacológica</div>
+    </div>
+    <div class="body">Analgésicos y antipiréticos — derivados del para-aminofenol.</div>
+  </div>
+  <div class="lock">
+    <div class="ic"><span class="msr">lock</span></div>
+    <div class="ttl"><span class="msr" style="font-size:18px">medication_liquid</span>Posología</div>
+    <span class="msr star">star</span>
+  </div>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historia ¿Sabías que...? · Farmateca</title>
+  <link rel="stylesheet" href="colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-sans); background: #0a0f14; color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* ── TOOLBAR ── */
+    .toolbar { height: 50px; background: rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.09); display: flex; align-items: center; padding: 0 18px; gap: 12px; flex-shrink: 0; }
+    .tb-logo { height: 22px; opacity: .8; filter: brightness(0) invert(1); }
+    .tb-sep { width: 1px; height: 18px; background: rgba(255,255,255,.14); }
+    .tb-title { font-size: 13px; font-weight: 600; opacity: .65; }
+    .tb-badge { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; background: rgba(30,157,185,.3); color: #b4e5f4; margin-left: auto; }
+
+    /* ── LAYOUT ── */
+    .main { flex: 1; display: flex; overflow: hidden; }
+
+    /* ── PANEL ── */
+    .panel { width: 296px; flex-shrink: 0; background: rgba(255,255,255,.035); border-right: 1px solid rgba(255,255,255,.08); overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+    .p-section { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.35); padding-bottom: 4px; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .f-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.50); }
+    .f-hint { font-size: 10px; color: rgba(255,255,255,.28); line-height: 1.4; }
+    .field input, .field textarea { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.11); border-radius: 7px; color: white; font-family: var(--font-sans); font-size: 12px; padding: 7px 10px; outline: none; transition: border-color .2s; resize: none; }
+    .field input:focus, .field textarea:focus { border-color: var(--primary); background: rgba(30,157,185,.1); }
+    .field textarea { min-height: 68px; }
+    hr { border: none; border-top: 1px solid rgba(255,255,255,.07); }
+    .preset { display: flex; flex-direction: column; gap: 5px; }
+    .pbtn { width: 100%; background: rgba(30,157,185,.12); border: 1px solid rgba(30,157,185,.22); border-radius: 7px; color: #b4e5f4; font-size: 11px; font-weight: 600; padding: 7px 11px; cursor: pointer; text-align: left; font-family: var(--font-sans); transition: background .18s; }
+    .pbtn:hover { background: rgba(30,157,185,.24); }
+    .export-note { background: rgba(255,184,0,.07); border: 1px solid rgba(255,184,0,.18); border-radius: 8px; padding: 11px 12px; font-size: 11px; color: rgba(255,184,0,.8); line-height: 1.55; }
+    .export-note strong { color: rgba(255,184,0,1); }
+
+    /* ── STAGE ── */
+    .stage { flex: 1; display: flex; align-items: flex-start; justify-content: center; overflow: auto; padding: 20px; background: #080d11; }
+    .canvas-wrap { position: relative; flex-shrink: 0; }
+
+    /* ── STORY CANVAS 1080 × 1920 ── */
+    .canvas {
+      width: 1080px; height: 1920px;
+      background: linear-gradient(150deg, #147790 0%, #1e9db9 50%, #27c2d1 100%);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: space-between; padding: 88px 80px;
+      position: absolute; top: 0; left: 0;
+      transform-origin: top left;
+    }
+    .c-logo { height: 54px; filter: brightness(0) invert(1); opacity: .9; }
+    .c-center { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 36px; width: 100%; flex: 1; justify-content: center; }
+    .c-overline { font-size: 28px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: rgba(255,255,255,.62); }
+    .c-dato { font-size: 84px; font-weight: 700; line-height: 1.18; color: white; letter-spacing: -1.5px; text-wrap: pretty; }
+    .c-dato .hl { color: #b4e5f4; text-decoration: underline; text-underline-offset: 10px; text-decoration-thickness: 4px; }
+    .c-subtexto { font-size: 44px; color: rgba(255,255,255,.82); line-height: 1.4; }
+    .c-bottom { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; }
+    .c-cta { background: rgba(255,255,255,.17); border: 2.5px solid rgba(255,255,255,.34); border-radius: 100px; padding: 18px 60px; font-size: 34px; font-weight: 700; color: white; white-space: nowrap; }
+    .c-cite { font-size: 22px; font-style: italic; color: rgba(255,255,255,.38); text-align: center; line-height: 1.45; }
+
+    /* ── SCROLL ── */
+    .panel::-webkit-scrollbar { width: 4px; } .panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+<div class="toolbar">
+  <img class="tb-logo" src="assets/logo-full.png" alt="Farmateca">
+  <div class="tb-sep"></div>
+  <div class="tb-title">Template Historia — ¿Sabías que...?</div>
+  <div class="tb-badge">1080 × 1920 · Instagram Stories</div>
+</div>
+
+<div class="main">
+
+  <!-- ── PANEL ── -->
+  <aside class="panel">
+    <div class="p-section">Contenido de la historia</div>
+
+    <div class="field">
+      <div class="f-label">Overline</div>
+      <input id="i-overline" type="text" value="¿SABÍAS QUE...?">
+    </div>
+
+    <div class="field">
+      <div class="f-label">Dato principal</div>
+      <textarea id="i-dato">En Chile, la amoxicilina tiene más de 60 marcas comerciales registradas en el ISP.</textarea>
+      <div class="f-hint">Máx. 2 líneas. Texto grande central.</div>
+    </div>
+
+    <div class="field">
+      <div class="f-label">Texto a destacar (azul claro)</div>
+      <input id="i-highlight" type="text" value="más de 60 marcas">
+      <div class="f-hint">Debe estar escrito igual que en el dato.</div>
+    </div>
+
+    <div class="field">
+      <div class="f-label">Subtexto</div>
+      <input id="i-subtexto" type="text" value="Todas disponibles offline en Farmateca.">
+    </div>
+
+    <div class="field">
+      <div class="f-label">CTA (chip inferior)</div>
+      <input id="i-cta" type="text" value="Búscalas en Farmateca →">
+    </div>
+
+    <div class="field">
+      <div class="f-label">Fuente / Cita</div>
+      <input id="i-cite" type="text" value="Fuente: Registro Oficial ISP Chile · v.2026.01">
+    </div>
+
+    <hr>
+    <div class="p-section">Datos rápidos — copiar y usar</div>
+
+    <div class="preset">
+      <button class="pbtn" onclick="setPreset(0)">Amoxicilina · +60 marcas</button>
+      <button class="pbtn" onclick="setPreset(1)">Paracetamol · +50 marcas</button>
+      <button class="pbtn" onclick="setPreset(2)">Ibuprofeno · 43 nombres</button>
+      <button class="pbtn" onclick="setPreset(3)">222 farmacias offline</button>
+      <button class="pbtn" onclick="setPreset(4)">Genérico vs. Marca comercial</button>
+      <button class="pbtn" onclick="setPreset(5)">Asistente IA Premium</button>
+    </div>
+
+    <hr>
+    <div class="export-note">
+      <strong>Para exportar:</strong> Zoom al 100% → captura de pantalla del canvas, o pasa el texto a tu template de Canva Pro.<br><br>
+      Pide a Claude nuevos datos farmacológicos con: <em>"Dame 5 datos ISP para historias de Farmateca sobre [tema]."</em>
+    </div>
+  </aside>
+
+  <!-- ── STAGE ── -->
+  <main class="stage" id="stage">
+    <div class="canvas-wrap" id="canvas-wrap">
+      <div class="canvas" id="canvas">
+        <img class="c-logo" src="assets/logo-full.png" alt="Farmateca" style="width: 800px; height: 200px; object-fit: cover">
+        <div class="c-center">
+          <div class="c-overline" id="c-overline">¿SABÍAS QUE...?</div>
+          <div class="c-dato" id="c-dato">En Chile, la amoxicilina tiene <span class="hl">más de 60 marcas</span> comerciales registradas en el ISP.</div>
+          <div class="c-subtexto" id="c-subtexto">Todas disponibles offline en Farmateca.</div>
+        </div>
+        <div class="c-bottom">
+          <div class="c-cta" id="c-cta">Búscalas en Farmateca →</div>
+          <div class="c-cite" id="c-cite">Fuente: Registro Oficial ISP Chile · v.2026.01</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const PRESETS = [
+    { dato: 'En Chile, la amoxicilina tiene más de 60 marcas comerciales registradas en el ISP.', hl: 'más de 60 marcas', sub: 'Todas disponibles offline en Farmateca.', cta: 'Búscalas en Farmateca →' },
+    { dato: 'El paracetamol —el analgésico más usado en Chile— tiene más de 50 nombres comerciales distintos.', hl: 'más de 50 nombres comerciales', sub: 'Todos en Farmateca, 100% offline.', cta: 'Encuéntralos en Farmateca →' },
+    { dato: 'El ibuprofeno tiene 43 marcas comerciales registradas en el ISP Chile, en 6 concentraciones distintas.', hl: '43 marcas comerciales', sub: 'Cada una disponible sin conexión en Farmateca.', cta: 'Compruébalo en Farmateca →' },
+    { dato: 'Farmateca incluye 222 farmacias de Chile con ubicación y mapa, funcionando 100% sin internet.', hl: '222 farmacias', sub: 'Localiza la más cercana sin señal.', cta: 'Úsalo en Farmateca →' },
+    { dato: 'Un genérico y su marca de referencia contienen el mismo principio activo, pero pueden diferir en excipientes y biodisponibilidad.', hl: 'excipientes y biodisponibilidad', sub: 'Farmateca muestra ambos para cada compuesto.', cta: 'Vélo en Farmateca →' },
+    { dato: 'Farmateca tiene un Asistente Farmacéutico con IA que responde tus dudas clínicas en tiempo real, incluso sin conexión.', hl: 'Asistente Farmacéutico con IA', sub: 'Disponible con suscripción Premium.', cta: 'Actívalo en Farmateca →' },
+  ];
+
+  function setPreset(i) {
+    const p = PRESETS[i];
+    document.getElementById('i-dato').value      = p.dato;
+    document.getElementById('i-highlight').value = p.hl;
+    document.getElementById('i-subtexto').value  = p.sub;
+    document.getElementById('i-cta').value       = p.cta;
+    updateCanvas();
+  }
+
+  function updateCanvas() {
+    const dato = document.getElementById('i-dato').value;
+    const hl   = document.getElementById('i-highlight').value.trim();
+    document.getElementById('c-overline').textContent  = document.getElementById('i-overline').value;
+    document.getElementById('c-subtexto').textContent  = document.getElementById('i-subtexto').value;
+    document.getElementById('c-cta').textContent       = document.getElementById('i-cta').value;
+    document.getElementById('c-cite').textContent      = document.getElementById('i-cite').value;
+
+    const el = document.getElementById('c-dato');
+    if (hl && dato.includes(hl)) {
+      const idx = dato.indexOf(hl);
+      el.innerHTML = '';
+      el.appendChild(document.createTextNode(dato.slice(0, idx)));
+      const span = document.createElement('span');
+      span.className = 'hl';
+      span.textContent = hl;
+      el.appendChild(span);
+      el.appendChild(document.createTextNode(dato.slice(idx + hl.length)));
+    } else {
+      el.textContent = dato;
+    }
+  }
+
+  document.querySelectorAll('.field input, .field textarea').forEach(el => el.addEventListener('input', updateCanvas));
+
+  function scaleCanvas() {
+    const stage  = document.getElementById('stage');
+    const wrap   = document.getElementById('canvas-wrap');
+    const canvas = document.getElementById('canvas');
+    const sw = stage.offsetWidth  - 44;
+    const sh = stage.offsetHeight - 44;
+    const scale = Math.min(sw / 1080, sh / 1920);
+    canvas.style.transform = `scale(${scale})`;
+    wrap.style.width  = (1080 * scale) + 'px';
+    wrap.style.height = (1920 * scale) + 'px';
+  }
+
+  window.addEventListener('resize', scaleCanvas);
+  scaleCanvas();
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!-- @dsCard group="Brand" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; height: 220px; }
+  .cell { display:flex; align-items:center; justify-content:center; }
+  .cell img { max-width: 78%; max-height: 130px; object-fit: contain; }
+  .dark { background: var(--grad-hero); }
+  .cap { position:absolute; bottom:8px; left:10px; font-size:10px; color: var(--gray-light); }
+  .wrap { position: relative; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="cell wrap"><img src="../assets/logo-full.png" alt="Farmateca"><span class="cap">Logo + Nombre · sobre blanco</span></div>
+    <div class="cell dark wrap"><img src="../assets/logo-full-bw.png" alt="Farmateca" style="filter:brightness(0) invert(1)"><span class="cap" style="color:rgba(255,255,255,.7)">Versión blanca · sobre teal</span></div>
+  </div>
+</body>
+</html>

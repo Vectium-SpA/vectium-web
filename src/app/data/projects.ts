@@ -4,7 +4,7 @@ export const projects: Project[] = [
   {
     id: "farmateca",
     title: "Farmateca",
-    subtitle: "Vademécum Farmacológico Digital",
+    subtitle: "Bibliomédica Chilena Offline",
     description:
       "Aplicación móvil y web para consulta de información farmacológica. Base de datos con +450 compuestos, marcas comerciales y genéricos. Acceso offline, sincronización cloud y sistema freemium con suscripciones premium.",
     category: "fullstack",
