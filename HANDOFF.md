@@ -6,6 +6,11 @@
 
 > Este archivo es la guía de traspaso. Léelo completo antes de tocar nada.
 > Todo lo del repo ya está pusheado a `main` y Vercel lo deployó. No hay trabajo a medias en el código.
+>
+> **TAREA NUEVA PENDIENTE (25-jun):** la app móvil eliminó el trial de 7 días (build 42). La
+> web todavía lo tiene → hay que quitarlo para mantener paridad. Análisis completo, mapa de
+> archivos y plan en **`PARIDAD_TRIAL.md`** (raíz del repo). Leerlo antes de tocar la lógica
+> de suscripciones.
 
 ---
 
