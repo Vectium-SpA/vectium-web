@@ -7,10 +7,34 @@
 > Este archivo es la guía de traspaso. Léelo completo antes de tocar nada.
 > Todo lo del repo ya está pusheado a `main` y Vercel lo deployó. No hay trabajo a medias en el código.
 >
-> **TAREA NUEVA PENDIENTE (25-jun):** la app móvil eliminó el trial de 7 días (build 42). La
-> web todavía lo tiene → hay que quitarlo para mantener paridad. Análisis completo, mapa de
-> archivos y plan en **`PARIDAD_TRIAL.md`** (raíz del repo). Leerlo antes de tocar la lógica
-> de suscripciones.
+> **👉 Lo más reciente está en la sección "ESTADO AL 30-jun-2026" (abajo). Léela primero.**
+
+---
+
+## 🟢 ESTADO AL 30-jun-2026 (última sesión — la hizo Andrés)
+
+Andrés cerró dos cosas grandes, **ambas en producción y verificadas**. Joaquín: esto ya está hecho, NO rehacerlo.
+
+### 1. Trial de 7 días ELIMINADO (paridad con app móvil build 42) — ✅ commit `6061e20`
+La tarea que antes estaba pendiente en `PARIDAD_TRIAL.md` **ya se ejecutó**. La web ya NO tiene trial: `isPremiumUser()` (`src/lib/farmateca/firebase/auth.ts`) ahora depende **solo** de `suscripcion.isActive` (cubre pagos Flow + admin override + RevenueCat), idéntico al móvil. Se limpiaron lógica, UI (paywall/settings/guards/home/chat) y marketing (landing/nav/register/FAQ/chatbot). `PARIDAD_TRIAL.md` queda como referencia histórica (marcado ✅ EJECUTADO).
+
+### 2. Vulnerabilidad de "premium gratis" CERRADA — ✅ commit `52562c9` + regla publicada
+**El hueco:** cualquier usuario logueado podía escribir `suscripcion.is_active=true` en su propio doc `users/{uid}` y auto-regalarse premium. (Era el PENDIENTE #1 de `PENDIENTES_WEB.md` de Joaquín — **ya resuelto**.)
+**Ojo — el fix de 1 línea que proponía `PENDIENTES_WEB.md` solo, ROMPÍA el pago web:** `payment-return` activaba premium client-side, y la regla que bloquea cambios de `suscripcion` desde el cliente también bloqueaba esa activación legítima. Por eso primero hubo cambio de código:
+- **`flow/verify/route.ts`** (server): al confirmar Flow activo, resuelve el `uid` desde el mapping `flow_subscriptions/{subscriptionId}` (creado en `/subscribe`, **nunca del cliente**) y escribe `suscripcion` vía Admin SDK. Misma forma que el webhook.
+- **`payment-return/page-client.tsx`**: ya NO escribe Firestore; solo estado local (Zustand).
+- **`auth.ts` / `index.ts`**: borrados `upgradeToPremiumMock`/`cancelPremiumMock` (mocks muertos que escribían `suscripcion` client-side).
+- Resultado: **cero escrituras client-side tipo update sobre `suscripcion`** → la regla es segura.
+**Regla publicada por Andrés** en Firebase Console (proyecto `farmateca` = "Farmateca Prod", su cuenta de navegador `/u/1/`): agregó al `allow update` de `users/{userId}` la línea:
+`&& !request.resource.data.diff(resource.data).affectedKeys().hasAny(['suscripcion'])`.
+Copia de respaldo de las reglas publicadas: **`firestore.rules`** (raíz del repo, referencia — no se auto-deploya).
+**Verificado en vivo (sin gastar plata, vía navegador):** intento de cambiar el propio `suscripcion` → **403 PERMISSION_DENIED** ✅; escritura legítima (`ultima_sesion`) → 200 ✅; premium se sigue mostrando ✅. (Matiz: reescribir `suscripcion` con el MISMO valor pasa, porque `diff()` no lo ve como cambio — NO es hueco: el ataque real Free→premium siempre es un cambio real → siempre bloqueado.)
+
+### ⏳ Lo único que queda de esto (bajo riesgo)
+**Probar la activación del pago server-side con un pago real de Flow** (o sandbox). El `verify` server-side no se probó end-to-end porque requiere un pago (Claude no ejecuta pagos reales). Replica exactamente el webhook, que ya funcionaba. `FLOW_ENV=sandbox` está soportado (`flow-client.ts` apunta a `sandbox.flow.cl`) si se quiere probar con tarjetas de prueba (requiere keys + planes sandbox en Flow).
+
+### ⚠️ Realidad de accesos (para Joaquín y su Claude)
+El proyecto Firebase **`farmateca` NO es accesible** ni desde la CLI de firebase logueada como `cariolaflex@gmail.com` ni desde el Firebase MCP (ambos ven otros proyectos, no `farmateca`). Vive bajo **otra cuenta Google** (la `/u/1/` en el navegador de Andrés). Por eso las **reglas de Firestore se editan a mano en la Console con esa cuenta** — no se pueden deployar por CLI/MCP desde estas sesiones. Vercel MCP también da 403 (scope `vectiums-projects`).
 
 ---
 
@@ -99,23 +123,21 @@ Entrar a https://vercel.com/ (team **vectiums-projects**, proyecto **vectium-web
 - [ ] **Domains:** confirmar que `vectium.cl` / `www.vectium.cl` apuntan bien y el SSL está activo.
 
 ### 🟥 Firebase (Auth + Firestore + Admin) — SEGURIDAD CRÍTICA
-- [ ] **🔒 Firestore Security Rules (lo más importante para "que nadie nos robe datos").** Las reglas NO están en este repo — viven en Firebase Console (o el repo de la app móvil). **Verificar en Console → Firestore → Rules** que:
-  - `users/{uid}` y subcolecciones (`users/{uid}/favoritos/...`) solo se leen/escriben si `request.auth.uid == uid`. Nunca `allow read, write: if true`.
-  - Las colecciones de datos públicos (compuestos/marcas) son **read-only** y no escribibles por clientes.
-  - El campo `suscripcion.is_active` solo se escribe server-side (Admin SDK), no desde el cliente.
+- [x] **🔒 Firestore Security Rules — HECHO 30-jun** (ver "ESTADO AL 30-jun-2026" arriba). Se cerró el auto-otorgamiento de premium: el `allow update` de `users/{uid}` ahora bloquea que el cliente cambie `suscripcion` (`suscripcion.is_active` solo se escribe server-side vía Admin SDK). Verificado en vivo (403 al intentar). Backup de las reglas publicadas en `firestore.rules` (raíz del repo). Las reglas viven en Firebase Console (cuenta `/u/1/`), no en el repo — el `firestore.rules` es solo respaldo/referencia.
+  - Pendiente menor (no crítico): confirmar que las colecciones de datos públicos (compuestos/marcas) sean read-only si algún día se sirven desde Firestore (hoy se sirven como JSON estático, no desde Firestore).
 - [ ] **Authentication → Sign-in providers:** deben estar **Google + Email/Password**. (Apple en la web está descartado a propósito — no habilitar para web.)
 - [ ] **Authentication → Settings → Authorized domains:** confirmar `vectium.cl`, `www.vectium.cl` y `localhost`.
 - [ ] **Service account / Admin key:** si la `FIREBASE_ADMIN_SERVICE_ACCOUNT` se rota, regenerar en Console → Project Settings → Service accounts y actualizar en Vercel + `.env.local`.
 - [ ] (Higiene) Borrar la cuenta de prueba `test.darkmode.diag@vectium.cl` del proyecto Firebase `farmateca` (se creó solo para diagnosticar dark mode).
 
 ### 🟩 Flow.cl (pagos) — VERIFICAR EN VIVO
-- [ ] **Pago real de prueba** (es el código más sensible; se tocó con el bump de `firebase-admin` 13→14). Hacer una suscripción real mensual y confirmar el flujo completo:
-  1. Web crea suscripción → redirige a Flow (`/api/farmateca/flow/subscribe`).
+- [ ] **Pago real de prueba** (código sensible; se tocó con el bump `firebase-admin` 13→14 Y con el fix de seguridad del 30-jun). **AÚN NO PROBADO en vivo.** Hacer una suscripción real mensual (o sandbox) y confirmar el flujo completo:
+  1. Web crea suscripción → redirige a Flow (`/api/farmateca/flow/subscribe`), que guarda mapping `flow_subscriptions/{subscriptionId} = {uid, plan}`.
   2. Pagar.
-  3. Flow llama al webhook (`/api/farmateca/flow/webhook`) server-to-server.
-  4. El webhook verifica firma HMAC → consulta `getStatusByToken` → si status=2 (pagado) escribe `users/{uid}.suscripcion` vía Admin SDK.
+  3. Al volver, `payment-return` llama a `/api/farmateca/flow/verify` → **este endpoint ahora activa premium server-side** (Admin SDK, resuelve el uid desde el mapping). *(Cambio del 30-jun: antes lo activaba el cliente; ahora es server-side para que las Firestore Rules bloqueen escrituras client-side de `suscripcion`.)*
+  4. En paralelo, Flow llama al webhook (`/api/farmateca/flow/webhook`) server-to-server (firma HMAC → `getStatusByToken` → status=2 → escribe `suscripcion` vía Admin SDK). Es el respaldo autoritativo.
   5. Confirmar en Firestore que `users/{uid}.suscripcion.is_active = true` y que la web muestra premium.
-  - Revisar logs en Vercel (Functions) por si el bump de firebase-admin rompió algo en el webhook.
+  - Revisar logs en Vercel (Functions): buscar `[Flow Verify]` y `[Flow Webhook]`.
 - [ ] **Precio plan Mensual = $3.990** en el dashboard de Flow (ya se actualizó el 24-jun; confirmar que sigue así). El sitio muestra $3.990 / -27% en landing y paywall — deben coincidir con lo que cobra Flow.
 - [ ] Confirmar que las credenciales de Flow en Vercel Production son de **producción** (no sandbox).
 
@@ -138,7 +160,8 @@ Entrar a https://vercel.com/ (team **vectiums-projects**, proyecto **vectium-web
 | Headers de seguridad (HSTS, X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy) | ✅ En `next.config.js` |
 | Dependabot | ✅ 31 → 2 medium (vendorizadas, aceptadas) |
 | Secretos en git | ✅ Ninguno (solo `.env.example` plantilla) |
-| Firestore Security Rules | ⚠️ **Verificar en Firebase Console** (sección 3) |
+| Auto-otorgamiento de premium (Firestore Rules) | ✅ **Cerrado 30-jun** (código `52562c9` + regla publicada + verificado 403 en vivo). Ver "ESTADO AL 30-jun-2026" |
+| Firestore Security Rules (resto) | ✅ Reglas revisadas y respaldadas en `firestore.rules` |
 | Env vars Sensitive en Vercel | ⚠️ **Verificar manual** (sección 3) |
 | Deployment Protection previews | ⚠️ **Verificar manual** (sección 3) |
 | **CSP (Content-Security-Policy)** | ⛔ **NO implementada a propósito.** Requiere whitelist cuidadosa (Google Sign-In/OAuth popup, Firebase Auth/Firestore, dominios Flow, tiles OSM/Leaflet) + pruebas extensas. Riesgo de romper login/pagos si se hace mal. Hacer aparte, **primero en modo `report-only`**, luego enforce. Ver sección 5. |

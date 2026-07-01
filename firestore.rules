@@ -1,0 +1,80 @@
+// ============================================================================
+// Firestore Security Rules — Farmateca (proyecto Firebase "farmateca" / Prod)
+// ----------------------------------------------------------------------------
+// ⚠️ ESTO ES UN RESPALDO / REFERENCIA VERSIONADA. NO se auto-deploya.
+// Las reglas EN VIVO viven en Firebase Console (Firestore → Reglas), bajo la
+// cuenta Google dueña del proyecto `farmateca` (la `/u/1/` en el navegador de
+// Andrés). Ni la CLI de firebase (cariolaflex@gmail.com) ni el Firebase MCP
+// tienen acceso a ese proyecto, así que las reglas se editan a mano en Console.
+//
+// Si algún día se quiere deployar por CLI desde la cuenta correcta:
+//   firebase login   (con la cuenta dueña de `farmateca`)
+//   firebase deploy --only firestore:rules --project farmateca
+// (haría falta también un firebase.json apuntando a este archivo).
+//
+// Última versión publicada: 30-jun-2026. Cambio de esa fecha: se añadió el
+// guard 🔒 en `allow update` de users/{userId} para cerrar el
+// auto-otorgamiento de premium (el cliente ya no puede modificar `suscripcion`;
+// solo se escribe server-side vía Admin SDK: /api/farmateca/flow/verify y
+// /api/farmateca/flow/webhook). Verificado en vivo (403 PERMISSION_DENIED al
+// intentar cambiar el propio `suscripcion`).
+// ============================================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ========================================
+    // USUARIOS - Crear/leer/actualizar/ELIMINAR propios
+    // ========================================
+    match /users/{userId} {
+      // Leer: solo el propietario
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // CREAR: permitir creación inicial con validaciones básicas
+      allow create: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAll(['uid', 'email'])
+        && request.resource.data.uid == userId
+        && request.resource.size() < 1000000;
+
+      // ACTUALIZAR: validar que no cambie UID ni email, y que el cliente NO toque 'suscripcion'
+      allow update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.email == resource.data.email
+        && request.resource.size() < 1000000
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['suscripcion']);  // 🔒 30-jun-2026
+
+      // ELIMINAR: solo el propietario puede borrar su documento
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ========================================
+    // FAVORITOS - Solo propietario (incluye delete)
+    // ========================================
+    match /users/{userId}/favoritos/{favoriteId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null && request.auth.uid == userId;
+      // write incluye create, update, delete
+    }
+
+    // ========================================
+    // FEEDBACK - Anti-spam con rate limit
+    // ========================================
+    match /feedback/{feedbackId} {
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll(['userId', 'message', 'createdAt'])
+        && request.resource.data.message.size() <= 1000;
+
+      allow read: if request.auth != null;
+    }
+
+    // ========================================
+    // DEFAULT - Denegar todo lo demás
+    // ========================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

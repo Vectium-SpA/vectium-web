@@ -1,7 +1,11 @@
 # PARIDAD — Eliminación del Trial (web debe alinearse con la app móvil)
 
 **Fecha:** 25-jun-2026 · **Preparado por:** Claude de Andrés · **Para:** Joaquín (trabajará desde su Mac)
-**Estado:** ANÁLISIS LISTO — **código web NO modificado todavía** (lo hace Joaquín).
+**Estado:** ✅ **EJECUTADO el 30-jun-2026 por Andrés (commit `6061e20` en `main`).** Este doc queda
+como **referencia histórica** del plan. El trial ya NO existe en la web. `isPremiumUser()`
+(`src/lib/farmateca/firebase/auth.ts`) ahora es solo `suscripcion.isActive`. Todas las superficies
+(lógica, UI app, marketing, chatbot) fueron limpiadas. Ver "ESTADO AL 30-jun-2026" en `HANDOFF.md`.
+No hay nada pendiente de este tema. (Decisión aplicada §3.1: trials activos pasaron a Free de inmediato.)
 
 > Complemento de `HANDOFF.md`. Este doc cubre UN tema puntual: la app móvil eliminó el
 > trial de 7 días (build `1.0.1+42`, commit `0620c54` en repo `Vectium-SpA/farmateca`) y la
