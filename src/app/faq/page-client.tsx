@@ -106,7 +106,7 @@ export default function FAQPage() {
         {
           question: "¿Farmateca es gratis?",
           answer:
-            "Farmateca tiene un modelo freemium: el acceso básico es gratuito con funcionalidades esenciales. El Plan Premium ($3,990/mes o $34,990/año) desbloquea búsqueda por familia farmacológica, filtros por laboratorio, comparaciones avanzadas y otras funcionalidades premium. Incluye 7 días de prueba gratis.",
+            "Farmateca tiene un modelo freemium: el acceso básico es gratuito con funcionalidades esenciales. El Plan Premium ($3,990/mes o $34,990/año) desbloquea búsqueda por familia farmacológica, filtros por laboratorio, comparaciones avanzadas y otras funcionalidades premium.",
         },
         {
           question: "¿La información de Farmateca es oficial?",

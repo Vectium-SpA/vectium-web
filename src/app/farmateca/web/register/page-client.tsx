@@ -148,7 +148,7 @@ export default function RegisterPage() {
               Crea tu cuenta
             </h1>
             <p className="text-gray-600">
-              Trial de 7 días gratis. Sin tarjeta de crédito.
+              Crea tu cuenta gratis. Sin tarjeta de crédito.
             </p>
           </div>
 

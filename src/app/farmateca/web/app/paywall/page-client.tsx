@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useAuthStore, useSubscriptionStatus } from '@/lib/farmateca/store/auth-store';
-import { startTrial } from '@/lib/farmateca/firebase/auth';
 import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
 import toast from 'react-hot-toast';
 
@@ -59,41 +58,16 @@ const featureCards = [
 export default function PaywallPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, updateLocalTrialData, updateLocalSubscription } = useAuthStore();
-  const { isPremium, isTrialActive, hasUsedTrial, trialDaysRemaining } = useSubscriptionStatus();
+  const { user } = useAuthStore();
+  const { isPremium } = useSubscriptionStatus();
 
   const planParam = searchParams.get('plan');
   const defaultPlan: 'monthly' | 'yearly' = planParam === 'monthly' ? 'monthly' : 'yearly';
 
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>(defaultPlan);
-  const [isActivatingTrial, setIsActivatingTrial] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-  const handleActivateTrial = async () => {
-    if (!user) return;
-    setIsActivatingTrial(true);
-    setError(null);
-
-    const result = await startTrial(user.uid);
-
-    if (result.success) {
-      const now = new Date();
-      const trialEnd = new Date(now);
-      trialEnd.setDate(trialEnd.getDate() + 7);
-      updateLocalTrialData(now, trialEnd);
-      const successMsg = '¡Prueba activada! Tienes 7 días de acceso Premium completo.';
-      toast.success(successMsg);
-      setSuccessMessage(successMsg);
-      setTimeout(() => router.push('/farmateca/web/app'), 2000);
-    } else {
-      const errorMsg = result.error || 'Error al activar la prueba';
-      toast.error(errorMsg);
-      setError(errorMsg);
-    }
-    setIsActivatingTrial(false);
-  };
 
   const handleSubscribe = async () => {
     if (!user) return;
@@ -147,9 +121,7 @@ export default function PaywallPage() {
           </div>
           <h2 className="text-3xl font-bold mb-3">Ya tienes acceso Premium</h2>
           <p className="text-white/70 mb-8">
-            {isTrialActive
-              ? `Tu prueba gratuita está activa (${trialDaysRemaining} días restantes)`
-              : 'Tu suscripción está activa'}
+            Tu suscripción está activa
           </p>
           <button
             onClick={() => router.push('/farmateca/web/app')}
@@ -228,27 +200,6 @@ export default function PaywallPage() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Trial Activo Banner */}
-        {isTrialActive && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-emerald-500/20 border border-emerald-500/30 rounded-2xl p-4 mb-8 flex items-center gap-4 backdrop-blur-sm"
-          >
-            <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div>
-              <p className="font-semibold text-emerald-300">Prueba gratuita activa</p>
-              <p className="text-sm text-emerald-400/80">
-                Te quedan {trialDaysRemaining} día{trialDaysRemaining !== 1 ? 's' : ''} de acceso Premium
-              </p>
-            </div>
-          </motion.div>
-        )}
 
         {/* FEATURE CARDS — 3 column grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
@@ -363,21 +314,6 @@ export default function PaywallPage() {
               'Comenzar ahora'
             )}
           </motion.button>
-
-          {/* Trial link (solo si no ha usado trial) */}
-          {!hasUsedTrial && !isTrialActive && (
-            <button
-              onClick={handleActivateTrial}
-              disabled={isActivatingTrial}
-              className="w-full text-white/70 hover:text-white text-sm py-2 transition-colors flex items-center justify-center gap-2 mb-3"
-            >
-              {isActivatingTrial ? (
-                <LoadingSpinner size="sm" />
-              ) : (
-                '✨ Probar gratis 7 días'
-              )}
-            </button>
-          )}
 
           {/* Restaurar compra */}
           <button

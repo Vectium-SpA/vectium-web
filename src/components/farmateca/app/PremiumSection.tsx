@@ -3,7 +3,7 @@
 import { useState, ReactNode } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useIsPremium, useHasUsedTrial } from '@/lib/farmateca/store/auth-store';
+import { useIsPremium } from '@/lib/farmateca/store/auth-store';
 
 interface PremiumSectionProps {
   /** Título de la sección */
@@ -116,8 +116,6 @@ export function PremiumSection({
 
 // ─── Contenido de bloqueo premium ───────────────────────────
 function PremiumLockedContent({ featureName }: { featureName: string }) {
-  const hasUsedTrial = useHasUsedTrial();
-
   return (
     <div className="my-2 p-5 rounded-xl border border-farmateca-primary/30 dark:border-farmateca-primary/20 bg-farmateca-primary/5 dark:bg-farmateca-primary/10">
       <div className="flex flex-col items-center text-center gap-4">
@@ -150,7 +148,7 @@ function PremiumLockedContent({ featureName }: { featureName: string }) {
           <svg className="w-4 h-4 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
           </svg>
-          {hasUsedTrial ? 'Ver Planes Premium' : 'Prueba GRATIS 7 días'}
+          Ver Planes Premium
         </Link>
       </div>
     </div>

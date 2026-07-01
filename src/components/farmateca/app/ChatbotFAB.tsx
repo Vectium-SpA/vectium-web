@@ -4,11 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useIsPremium, useHasUsedTrial } from '@/lib/farmateca/store/auth-store';
+import { useIsPremium } from '@/lib/farmateca/store/auth-store';
 
 export function ChatbotFAB() {
   const isPremium = useIsPremium();
-  const hasUsedTrial = useHasUsedTrial();
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
@@ -92,7 +91,7 @@ export function ChatbotFAB() {
                   <svg className="w-4 h-4 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
                   </svg>
-                  {hasUsedTrial ? 'Ver Planes Premium' : 'Prueba GRATIS 7 días'}
+                  Ver Planes Premium
                 </Link>
                 <button
                   onClick={() => setShowModal(false)}

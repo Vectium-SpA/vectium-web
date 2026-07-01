@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore, useSubscriptionStatus } from '@/lib/farmateca/store/auth-store';
 import { useThemeStore } from '@/lib/farmateca/store/theme-store';
 import { useTypography, FONT_OPTIONS, FontFamily } from '@/lib/farmateca/hooks/useTypography';
-import { signOut, startTrial, UserData } from '@/lib/farmateca/firebase/auth';
+import { signOut, UserData } from '@/lib/farmateca/firebase/auth';
 import { deleteUser } from 'firebase/auth';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/farmateca/firebase';
@@ -130,41 +130,6 @@ export default function SettingsPage() {
       console.error('Error saving profile:', error);
       toast.error('Error al guardar el perfil');
       setMessage({ type: 'error', text: 'Error al guardar el perfil' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Activar trial de 7 días
-  const handleActivateTrial = async () => {
-    if (!user) return;
-
-    setIsLoading(true);
-    try {
-      const result = await startTrial(user.uid);
-      if (result.success) {
-        toast.success('Prueba gratuita de 7 días activada');
-        setMessage({ type: 'success', text: 'Prueba gratuita de 7 días activada' });
-        // Actualizar estado local
-        const now = new Date();
-        const trialEnd = new Date(now);
-        trialEnd.setDate(trialEnd.getDate() + 7);
-        if (userData) {
-          setUserData({
-            ...userData,
-            trialStartDate: now,
-            trialEndDate: trialEnd,
-            hasUsedTrial: true,
-          } as UserData);
-        }
-      } else {
-        const errorMsg = result.error || 'Error al activar prueba';
-        toast.error(errorMsg);
-        setMessage({ type: 'error', text: errorMsg });
-      }
-    } catch (error) {
-      toast.error('Error al activar la prueba gratuita');
-      setMessage({ type: 'error', text: 'Error al activar la prueba gratuita' });
     } finally {
       setIsLoading(false);
     }
@@ -486,120 +451,6 @@ export default function SettingsPage() {
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Plan Actual</h2>
         </div>
 
-        {/* Trial activo */}
-        {subscription.isTrialActive && (
-          <div className="mb-4 p-4 bg-green-50 rounded-xl border border-green-200">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-4 h-4 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p className="font-semibold text-green-800">
-                  Prueba Gratuita Activa
-                </p>
-                <p className="text-sm text-green-600">
-                  Te quedan {subscription.trialDaysRemaining} día
-                  {subscription.trialDaysRemaining !== 1 ? 's' : ''} de acceso
-                  Premium
-                </p>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="h-2 bg-green-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-green-500 rounded-full"
-                  style={{
-                    width: `${(subscription.trialDaysRemaining / 7) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Trial expirado */}
-        {subscription.isTrialExpired && !subscription.isSubscriptionActive && (
-          <div className="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-4 h-4 text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <p className="font-semibold text-gray-700">
-                  Tu prueba ha finalizado
-                </p>
-                <p className="text-sm text-gray-500">
-                  Suscríbete para seguir disfrutando
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Ofrecer trial si nunca lo ha usado */}
-        {!subscription.hasUsedTrial && !subscription.isSubscriptionActive && (
-          <div className="mb-4 p-4 bg-gradient-to-r from-farmateca-premium/10 to-orange-50 dark:from-orange-900/20 dark:to-orange-800/10 rounded-xl border border-farmateca-premium/30 dark:border-orange-700/40">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-farmateca-premium/20 dark:bg-orange-700/30 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 text-farmateca-premium"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-bold text-gray-900 dark:text-white">
-                    Prueba GRATIS 7 días
-                  </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Acceso completo sin compromiso
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={handleActivateTrial}
-                disabled={isLoading}
-                className="px-4 py-2 bg-farmateca-premium text-white font-semibold rounded-xl hover:bg-orange-600 transition-colors disabled:opacity-50"
-              >
-                Activar
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Card del plan */}
         <button
           onClick={() => router.push('/farmateca/web/app/paywall')}
@@ -634,22 +485,18 @@ export default function SettingsPage() {
                 <p className="font-semibold text-gray-900 dark:text-white">
                   {subscription.isSubscriptionActive
                     ? 'Plan Premium'
-                    : subscription.isTrialActive
-                    ? 'Prueba Gratuita'
                     : 'Plan Gratuito'}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {subscription.isSubscriptionActive
                     ? 'Acceso completo a todo el contenido'
-                    : subscription.isTrialActive
-                    ? 'Acceso Premium temporal'
                     : 'Acceso limitado a contenido'}
                 </p>
               </div>
             </div>
             {!subscription.isSubscriptionActive && (
               <span className="px-3 py-1 bg-farmateca-primary text-white text-xs font-bold rounded-full">
-                {subscription.isTrialActive ? 'Suscribirse' : 'Mejorar'}
+                Mejorar
               </span>
             )}
           </div>

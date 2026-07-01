@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useIsPremium, useHasUsedTrial } from '@/lib/farmateca/store/auth-store';
+import { useIsPremium } from '@/lib/farmateca/store/auth-store';
 import { getNLPEngine, type ChatMessage } from '@/lib/farmateca/chatbot/nlp-engine';
 
 // ─── Default quick suggestions ────────────────────────────────────
@@ -208,7 +208,7 @@ function MessageBubble({ msg, onSend }: { msg: ChatMessage; onSend: (q: string) 
 
 // ─── Paywall screen ────────────────────────────────────────────────
 
-function PaywallScreen({ hasUsedTrial }: { hasUsedTrial: boolean }) {
+function PaywallScreen() {
   return (
     <div className="flex flex-col items-center justify-center flex-1 gap-6 px-6 py-12 text-center">
       <div
@@ -250,7 +250,7 @@ function PaywallScreen({ hasUsedTrial }: { hasUsedTrial: boolean }) {
           <svg className="w-4 h-4 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
           </svg>
-          {hasUsedTrial ? 'Ver Planes Premium' : 'Prueba GRATIS 7 días'}
+          Ver Planes Premium
         </Link>
       </div>
     </div>
@@ -261,7 +261,6 @@ function PaywallScreen({ hasUsedTrial }: { hasUsedTrial: boolean }) {
 
 export default function ChatPage() {
   const isPremium = useIsPremium();
-  const hasUsedTrial = useHasUsedTrial();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -373,7 +372,7 @@ export default function ChatPage() {
 
       {/* Body */}
       {!isPremium ? (
-        <PaywallScreen hasUsedTrial={hasUsedTrial} />
+        <PaywallScreen />
       ) : (
         <>
           {/* Messages */}

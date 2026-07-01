@@ -17,7 +17,7 @@ const containerVariants = {
 
 export default function AppHomePage() {
   const { userData } = useAuthStore();
-  const { isPremium, isTrialActive, trialDaysRemaining } = useSubscriptionStatus();
+  const { isPremium } = useSubscriptionStatus();
   const { favorites } = useFavorites();
   const { stats, loading: statsLoading } = useFarmatecaStats();
 
@@ -117,7 +117,7 @@ export default function AppHomePage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Banner promocional (solo para usuarios Free o Trial por expirar) */}
+        {/* Banner promocional (solo para usuarios Free) */}
         <PremiumPromoBanner />
 
         {/* Header de bienvenida */}
@@ -139,26 +139,12 @@ export default function AppHomePage() {
 
             {/* Badge de estado */}
             {isPremium ? (
-              isTrialActive ? (
-                <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/30">
-                  <div className="flex items-center gap-2 mb-1">
-                    <svg className="w-5 h-5 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                    </svg>
-                    <span className="font-semibold">Prueba Premium</span>
-                  </div>
-                  <p className="text-sm text-white/80">
-                    {trialDaysRemaining} día{trialDaysRemaining !== 1 ? 's' : ''} restante{trialDaysRemaining !== 1 ? 's' : ''}
-                  </p>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 bg-farmateca-premium text-gray-900 px-4 py-2 rounded-full font-bold">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                  Premium
-                </div>
-              )
+              <div className="flex items-center gap-2 bg-farmateca-premium text-gray-900 px-4 py-2 rounded-full font-bold">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+                Premium
+              </div>
             ) : (
               <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/30">
                 <p className="text-sm text-white/80">Plan actual</p>

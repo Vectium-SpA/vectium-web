@@ -371,7 +371,7 @@ const STATIC_RESPONSES: Partial<Record<ChatIntent, string>> = {
     '✅ Efectos adversos y contraindicaciones\n' +
     '✅ Mecanismos de acción\n' +
     '✅ Búsqueda avanzada por familia y laboratorio\n\n' +
-    '🎁 ¡Ofrecemos 7 días de prueba gratis!',
+    '💡 Puedes ver los planes en Configuración > Ver Planes Premium',
 
   suscripcion:
     '📱 Suscripción a Farmateca Premium\n\n' +
@@ -380,7 +380,6 @@ const STATIC_RESPONSES: Partial<Record<ChatIntent, string>> = {
     '2. Toca "Ver Planes Premium"\n' +
     '3. Elige tu plan (mensual o anual)\n' +
     '4. Completa el pago\n\n' +
-    'Prueba gratis: 7 días sin costo\n\n' +
     '💡 La suscripción se renueva automáticamente',
 
   funcionesApp:

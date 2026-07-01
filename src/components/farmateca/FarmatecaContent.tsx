@@ -103,7 +103,7 @@ const plans: Plan[] = [
       "100% offline · sin publicidad",
       "Favoritos ilimitados",
     ],
-    cta: "Prueba Premium 7 días gratis",
+    cta: "Obtener Premium",
     ctaIcon: ArrowRight,
     featured: false,
   },
@@ -116,9 +116,9 @@ const plans: Plan[] = [
       "Todo lo del plan Mensual",
       "Ahorra 27% vs plan mensual",
       "Equivale a $2.916 CLP/mes",
-      "7 días de prueba gratis",
+      "Sin publicidad · soporte preferencial",
     ],
-    cta: "Prueba Premium 7 días gratis",
+    cta: "Obtener Premium",
     ctaIcon: ArrowRight,
     featured: true,
     badge: "MEJOR VALOR",
@@ -179,7 +179,7 @@ const faqs = [
   { q: "¿Puedo usar Farmateca gratis?", a: "Sí. Crea una cuenta gratis y accede a la búsqueda y a fichas con información esencial. La versión Premium suma el contenido clínico completo, Farmacias de Chile, el asistente integrado y el modo 100% offline." },
   { q: "¿Funciona sin conexión a internet?", a: "Sí. Con Premium toda la información clínica queda disponible offline — ideal para uso en terreno o lugares sin señal." },
   { q: "¿En qué dispositivos está disponible?", a: "En Android, iOS y Web. Tu cuenta y tus favoritos se sincronizan automáticamente en todos tus dispositivos." },
-  { q: "¿Cómo funciona la prueba de 7 días?", a: "Activas la prueba y accedes a todas las funciones Premium por 7 días, sin costo. Al terminar puedes seguir con el plan gratuito o suscribirte." },
+  { q: "¿Cuánto cuesta Premium?", a: "El plan Mensual cuesta $3.990 CLP y el Anual $34.990 CLP (equivale a $2.916/mes, ahorras 27%). Puedes empezar con la cuenta gratis y pasar a Premium cuando lo necesites." },
   { q: "¿Puedo cancelar cuando quiera?", a: "Sí. Puedes cancelar en cualquier momento desde tu cuenta o la tienda donde contrataste; conservas el acceso hasta el fin del período pagado." },
   { q: "¿De dónde proviene la información?", a: "De fuentes oficiales y reconocidas, como el Instituto de Salud Pública (ISP) de Chile y el MINSAL, en constante actualización." },
 ];
@@ -253,7 +253,7 @@ function Hero() {
 
         <motion.div variants={fadeUp} className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.18] px-[18px] py-2 text-sm font-medium text-white backdrop-blur-sm">
           <span className="h-2 w-2 animate-pulse rounded-full" style={{ background: C.gold }} />
-          Prueba Premium 7 días gratis
+          Bibliomédica chilena · 100% offline
         </motion.div>
 
         <motion.h1 variants={fadeUp} className="mb-6 text-5xl font-bold leading-[1.05] tracking-[-1.5px] text-white sm:text-6xl md:text-[72px]">
@@ -271,11 +271,11 @@ function Hero() {
           <Link href={REGISTER_URL}
             className="inline-flex items-center gap-2 rounded-full px-9 py-[18px] text-lg font-bold text-[#1a1a1a] shadow-[0_8px_24px_rgba(255,184,0,0.3)] transition-transform hover:scale-[1.04]"
             style={{ background: C.gold }}>
-            Prueba Premium 7 días gratis <ArrowRight size={20} />
+            Crear cuenta gratis <ArrowRight size={20} />
           </Link>
-          <Link href={REGISTER_URL}
+          <Link href="/farmateca#precios"
             className="inline-flex items-center gap-2 rounded-full border-2 border-white/40 bg-white/10 px-8 py-4 text-lg font-bold text-white backdrop-blur-sm transition-transform hover:scale-[1.04]">
-            <UserPlus size={20} /> Crear cuenta gratis
+            <Sparkles size={20} /> Ver planes Premium
           </Link>
         </motion.div>
 
@@ -385,13 +385,13 @@ function Pricing() {
                 <p.ctaIcon size={18} /> {p.cta}
               </Link>
               <p className="mt-4 text-center text-[13px]" style={{ color: p.featured ? "rgba(255,255,255,0.7)" : C.grayMid }}>
-                {p.featured || p.name.includes("Mensual") ? "Sin tarjeta de crédito requerida" : "Gratis para siempre"}
+                {p.featured || p.name.includes("Mensual") ? "Pago seguro · cancela cuando quieras" : "Gratis para siempre"}
               </p>
             </motion.div>
           ))}
         </motion.div>
         <p className="mt-10 text-center text-sm" style={{ color: C.grayMid }}>
-          Todos los precios en pesos chilenos (CLP). Prueba gratuita de 7 días de la versión Premium.
+          Todos los precios en pesos chilenos (CLP). Cancela cuando quieras.
         </p>
       </div>
     </section>
@@ -406,7 +406,7 @@ function DownloadCTA() {
           Lleva la bibliomédica chilena en tu bolsillo
         </h2>
         <p className="mb-9 text-lg text-white/85 sm:text-[19px]">
-          Descarga Farmateca gratis y comienza tu prueba de 7 días.
+          Descarga Farmateca gratis y crea tu cuenta en segundos.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="transition-transform hover:scale-[1.04]">

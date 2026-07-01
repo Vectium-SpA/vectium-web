@@ -144,7 +144,7 @@ function FarmatecaNav({ isLanding }: { isLanding: boolean }) {
                 className="rounded-full px-5 py-2.5 text-[15px] font-bold text-white transition-transform hover:scale-[1.04]"
                 style={{ background: "linear-gradient(90deg,#147790 0%,#27c2d1 100%)" }}
               >
-                Prueba Gratis
+                Crear cuenta
               </Link>
             </>
           )}

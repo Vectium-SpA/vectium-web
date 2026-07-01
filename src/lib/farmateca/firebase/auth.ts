@@ -28,7 +28,6 @@ export interface SubscriptionStatus {
 
 /**
  * Interfaz de usuario compatible con la app Flutter.
- * Los campos de trial usan snake_case en Firestore para compatibilidad.
  */
 export interface UserData {
   uid: string;
@@ -43,10 +42,6 @@ export interface UserData {
   ultimaSesion: Date;
   // Campos de suscripción (compatibles con app Flutter)
   suscripcion: SubscriptionStatus;
-  // Campos de Trial de 7 días (compatibles con app Flutter)
-  trialStartDate?: Date;
-  trialEndDate?: Date;
-  hasUsedTrial: boolean;
   // Preferencias
   preferences: {
     theme: 'light' | 'dark';
@@ -56,7 +51,6 @@ export interface UserData {
   subscription?: {
     isPremium: boolean;
     plan: 'free' | 'premium';
-    trialEndsAt?: Date;
   };
 }
 
@@ -122,10 +116,6 @@ export async function signUpWithEmailAndPassword(
         plan: 'free',
         isActive: false,
       },
-      // Trial: el usuario nuevo NO ha usado trial aún
-      hasUsedTrial: false,
-      trialStartDate: undefined,
-      trialEndDate: undefined,
       preferences: {
         theme: 'light',
         fontSize: 'medium',
@@ -147,10 +137,6 @@ export async function signUpWithEmailAndPassword(
         plan: 'free',
         is_active: false,
       },
-      // Trial fields (snake_case para Flutter)
-      has_used_trial: false,
-      trial_start_date: null,
-      trial_end_date: null,
       // Preferencias
       preferencias: {
         tema: userData.preferences.theme,
@@ -238,10 +224,6 @@ export function parseFirestoreUserData(data: any, uid: string): UserData {
       fechaInicio: data.suscripcion?.fecha_inicio?.toDate?.(),
       fechaTermino: data.suscripcion?.fecha_termino?.toDate?.(),
     },
-    // Trial fields (compatible con Flutter - snake_case)
-    trialStartDate: data.trial_start_date?.toDate?.(),
-    trialEndDate: data.trial_end_date?.toDate?.(),
-    hasUsedTrial: data.has_used_trial || false,
     // Preferencias
     preferences: {
       theme: data.preferencias?.tema || data.preferences?.theme || 'light',
@@ -251,7 +233,6 @@ export function parseFirestoreUserData(data: any, uid: string): UserData {
     subscription: {
       isPremium: data.suscripcion?.is_active || false,
       plan: data.suscripcion?.plan === 'free' ? 'free' : 'premium',
-      trialEndsAt: data.trial_end_date?.toDate?.(),
     },
   };
 }
@@ -321,10 +302,6 @@ export async function signInWithGoogle(): Promise<AuthResult> {
           plan: 'free',
           isActive: false,
         },
-        // Trial: el usuario nuevo NO ha usado trial aún
-        hasUsedTrial: false,
-        trialStartDate: undefined,
-        trialEndDate: undefined,
         preferences: {
           theme: 'light',
           fontSize: 'medium',
@@ -345,10 +322,6 @@ export async function signInWithGoogle(): Promise<AuthResult> {
           plan: 'free',
           is_active: false,
         },
-        // Trial fields (snake_case para Flutter)
-        has_used_trial: false,
-        trial_start_date: null,
-        trial_end_date: null,
         // Preferencias
         preferencias: {
           tema: userData.preferences.theme,
@@ -424,48 +397,8 @@ function getAuthErrorMessage(errorCode: string): string {
 }
 
 // ==========================================
-// TRIAL DE 7 DÍAS Y FUNCIONES PREMIUM
+// FUNCIONES PREMIUM
 // ==========================================
-
-/**
- * Activa el trial de 7 días para el usuario actual.
- * Solo se puede activar UNA VEZ por usuario.
- * Compatible con la app Flutter (usa snake_case en Firestore).
- */
-export async function startTrial(uid: string): Promise<{ success: boolean; error?: string }> {
-  if (!ensureAuth()) {
-    return { success: false, error: 'Firebase no configurado' };
-  }
-
-  try {
-    // Verificar si ya usó el trial
-    const userDoc = await getDoc(doc(db!, 'users', uid));
-    if (!userDoc.exists()) {
-      return { success: false, error: 'Usuario no encontrado' };
-    }
-
-    const data = userDoc.data();
-    if (data.has_used_trial) {
-      return { success: false, error: 'Ya has usado tu período de prueba gratuito' };
-    }
-
-    const now = new Date();
-    const trialEnd = new Date(now);
-    trialEnd.setDate(trialEnd.getDate() + 7);
-
-    // Actualizar Firestore (snake_case para Flutter)
-    await updateDoc(doc(db!, 'users', uid), {
-      trial_start_date: Timestamp.fromDate(now),
-      trial_end_date: Timestamp.fromDate(trialEnd),
-      has_used_trial: true,
-    });
-
-    return { success: true };
-  } catch (error: any) {
-    console.error('Error activando trial:', error);
-    return { success: false, error: 'Error al activar el período de prueba' };
-  }
-}
 
 /**
  * Simula la compra de un plan premium (mock para desarrollo).
@@ -537,56 +470,11 @@ export async function cancelPremiumMock(uid: string): Promise<{ success: boolean
 // ==========================================
 
 /**
- * Verifica si el trial está activo (dentro del período de 7 días).
- */
-export function isTrialActive(userData: UserData | null): boolean {
-  if (!userData) return false;
-  if (!userData.trialStartDate || !userData.trialEndDate) return false;
-  if (!userData.hasUsedTrial) return false;
-  return new Date() < userData.trialEndDate;
-}
-
-/**
  * Verifica si el usuario tiene acceso Premium.
- * Considera: 1) Suscripción activa, 2) Trial activo
+ * Fuente de verdad: suscripción activa (cubre pagos Flow, admin override
+ * y RevenueCat sincronizado). Idéntico al modelo de la app móvil (build 42).
  */
 export function isPremiumUser(userData: UserData | null): boolean {
   if (!userData) return false;
-  // 1. Verificar suscripción activa
-  if (userData.suscripcion.isActive) return true;
-  // 2. Verificar Trial activo
-  if (isTrialActive(userData)) return true;
-  return false;
-}
-
-/**
- * Calcula los días restantes del trial.
- */
-export function getTrialDaysRemaining(userData: UserData | null): number {
-  if (!userData) return 0;
-  if (!isTrialActive(userData)) return 0;
-  if (!userData.trialEndDate) return 0;
-
-  const now = new Date();
-  const diffTime = userData.trialEndDate.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays > 0 ? diffDays : 0;
-}
-
-/**
- * Verifica si el trial está por expirar (≤2 días restantes).
- */
-export function isTrialExpiring(userData: UserData | null): boolean {
-  if (!isTrialActive(userData)) return false;
-  return getTrialDaysRemaining(userData) <= 2;
-}
-
-/**
- * Verifica si el trial ya expiró (usó trial pero ya pasó la fecha).
- */
-export function isTrialExpired(userData: UserData | null): boolean {
-  if (!userData) return false;
-  if (!userData.hasUsedTrial) return false;
-  if (!userData.trialEndDate) return false;
-  return new Date() > userData.trialEndDate;
+  return userData.suscripcion.isActive;
 }

@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useIsPremium, useHasUsedTrial, useIsTrialActive, useTrialDaysRemaining } from '@/lib/farmateca/store/auth-store';
+import { useIsPremium } from '@/lib/farmateca/store/auth-store';
 
 interface PremiumGuardProps {
   children: ReactNode;
@@ -35,7 +35,7 @@ interface PremiumGuardProps {
 
 /**
  * Componente que protege contenido premium.
- * Envuelve el contenido que solo deben ver usuarios Premium o con Trial activo.
+ * Envuelve el contenido que solo deben ver usuarios Premium.
  */
 export function PremiumGuard({
   children,
@@ -110,15 +110,12 @@ export function PremiumUpgradeCard({
   featureName,
   compact = false,
 }: PremiumUpgradeCardProps) {
-  const hasUsedTrial = useHasUsedTrial();
-
   const defaultTitle = featureName
     ? `${featureName} es una función Premium`
     : 'Contenido Premium';
 
-  const defaultDescription = hasUsedTrial
-    ? 'Suscríbete para acceder a todas las funcionalidades de Farmateca.'
-    : 'Prueba gratis por 7 días o suscríbete para acceder a todas las funcionalidades.';
+  const defaultDescription =
+    'Suscríbete para acceder a todas las funcionalidades de Farmateca.';
 
   if (compact) {
     return (
@@ -157,25 +154,13 @@ export function PremiumUpgradeCard({
         {description || defaultDescription}
       </p>
 
-      {/* CTAs */}
+      {/* CTA */}
       <div className="space-y-2">
-        {!hasUsedTrial && (
-          <Link
-            href="/farmateca/web/app/paywall"
-            className="block w-full bg-farmateca-premium hover:bg-farmateca-premium-dark text-white font-semibold py-3 px-4 rounded-xl text-center transition-all duration-300 shadow-md hover:shadow-lg"
-          >
-            Prueba GRATIS 7 días
-          </Link>
-        )}
         <Link
           href="/farmateca/web/app/paywall"
-          className={`block w-full font-semibold py-3 px-4 rounded-xl text-center transition-all duration-300 ${
-            hasUsedTrial
-              ? 'bg-gradient-to-r from-farmateca-primary-dark to-farmateca-primary text-white shadow-md hover:shadow-lg'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
-          }`}
+          className="block w-full font-semibold py-3 px-4 rounded-xl text-center transition-all duration-300 bg-gradient-to-r from-farmateca-primary-dark to-farmateca-primary text-white shadow-md hover:shadow-lg"
         >
-          {hasUsedTrial ? 'Ver planes Premium' : 'Ver planes de suscripción'}
+          Ver planes Premium
         </Link>
       </div>
     </motion.div>
@@ -187,12 +172,9 @@ export function PremiumUpgradeCard({
  */
 export function SubscriptionStatusBanner() {
   const isPremium = useIsPremium();
-  const isTrialActive = useIsTrialActive();
-  const trialDaysRemaining = useTrialDaysRemaining();
-  const hasUsedTrial = useHasUsedTrial();
 
   // Usuario Premium con suscripción
-  if (isPremium && !isTrialActive) {
+  if (isPremium) {
     return (
       <div className="flex items-center gap-2 bg-gradient-to-r from-farmateca-premium to-farmateca-premium-dark text-gray-900 px-3 py-1.5 rounded-full text-sm font-semibold">
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -203,47 +185,16 @@ export function SubscriptionStatusBanner() {
     );
   }
 
-  // Usuario con Trial activo
-  if (isTrialActive) {
-    const isExpiring = trialDaysRemaining <= 2;
-    return (
-      <Link
-        href="/farmateca/web/app/paywall"
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all hover:shadow-md ${
-          isExpiring
-            ? 'bg-orange-100 text-orange-700 border border-orange-200'
-            : 'bg-green-100 text-green-700 border border-green-200'
-        }`}
-      >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Trial: {trialDaysRemaining} día{trialDaysRemaining !== 1 ? 's' : ''}
-      </Link>
-    );
-  }
-
   // Usuario Free
   return (
     <Link
       href="/farmateca/web/app/paywall"
       className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-full text-sm font-medium transition-all"
     >
-      {hasUsedTrial ? (
-        <>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
-          Plan Free
-        </>
-      ) : (
-        <>
-          <svg className="w-4 h-4 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-          </svg>
-          Probar Premium
-        </>
-      )}
+      <svg className="w-4 h-4 text-farmateca-premium" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+      </svg>
+      Obtener Premium
     </Link>
   );
 }
@@ -253,64 +204,10 @@ export function SubscriptionStatusBanner() {
  */
 export function PremiumPromoBanner() {
   const isPremium = useIsPremium();
-  const isTrialActive = useIsTrialActive();
-  const trialDaysRemaining = useTrialDaysRemaining();
-  const hasUsedTrial = useHasUsedTrial();
 
-  // No mostrar si ya es premium con suscripción
-  if (isPremium && !isTrialActive) {
+  // No mostrar si ya es premium
+  if (isPremium) {
     return null;
-  }
-
-  // Banner de Trial activo
-  if (isTrialActive) {
-    const isExpiring = trialDaysRemaining <= 2;
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className={`rounded-2xl p-4 mb-6 flex items-center justify-between flex-wrap gap-4 ${
-          isExpiring
-            ? 'bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200'
-            : 'bg-gradient-to-r from-green-50 to-green-100 border border-green-200'
-        }`}
-      >
-        <div className="flex items-center gap-3">
-          <div
-            className={`w-10 h-10 rounded-full flex items-center justify-center ${
-              isExpiring ? 'bg-orange-200' : 'bg-green-200'
-            }`}
-          >
-            <svg
-              className={`w-5 h-5 ${isExpiring ? 'text-orange-600' : 'text-green-600'}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <div>
-            <p className={`font-semibold ${isExpiring ? 'text-orange-800' : 'text-green-800'}`}>
-              {isExpiring ? '¡Tu prueba está por terminar!' : 'Prueba Gratuita Activa'}
-            </p>
-            <p className={`text-sm ${isExpiring ? 'text-orange-600' : 'text-green-600'}`}>
-              Te quedan {trialDaysRemaining} día{trialDaysRemaining !== 1 ? 's' : ''} de acceso Premium
-            </p>
-          </div>
-        </div>
-        <Link
-          href="/farmateca/web/app/paywall"
-          className={`font-semibold py-2 px-4 rounded-xl transition-all ${
-            isExpiring
-              ? 'bg-orange-500 hover:bg-orange-600 text-white'
-              : 'bg-green-600 hover:bg-green-700 text-white'
-          }`}
-        >
-          {isExpiring ? 'Suscribirme ahora' : 'Ver planes'}
-        </Link>
-      </motion.div>
-    );
   }
 
   // Banner de promoción para usuarios Free
@@ -327,13 +224,9 @@ export function PremiumPromoBanner() {
           </svg>
         </div>
         <div>
-          <p className="font-semibold text-white">
-            {hasUsedTrial ? 'Acceso limitado' : 'Desbloquea todo el contenido'}
-          </p>
+          <p className="font-semibold text-white">Desbloquea todo el contenido</p>
           <p className="text-sm text-white/80">
-            {hasUsedTrial
-              ? 'Suscríbete para acceder a todas las funcionalidades'
-              : 'Prueba gratis por 7 días todas las funcionalidades Premium'}
+            Suscríbete para acceder a todas las funcionalidades Premium
           </p>
         </div>
       </div>
@@ -341,7 +234,7 @@ export function PremiumPromoBanner() {
         href="/farmateca/web/app/paywall"
         className="bg-white hover:bg-gray-100 text-farmateca-primary-dark font-semibold py-2 px-4 rounded-xl transition-all"
       >
-        {hasUsedTrial ? 'Ver planes' : 'Probar GRATIS'}
+        Ver planes
       </Link>
     </motion.div>
   );

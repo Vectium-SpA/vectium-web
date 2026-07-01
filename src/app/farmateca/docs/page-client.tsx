@@ -18,12 +18,12 @@ const faqs = [
     answer: 'Los favoritos se sincronizan automaticamente entre tus dispositivos cuando inicias sesion con tu cuenta. Solo agrega medicamentos a favoritos tocando el corazon y estaran disponibles en cualquier dispositivo.',
   },
   {
-    question: '¿Que incluye el trial de 7 dias?',
-    answer: 'Acceso completo a todas las funciones Premium sin ingresar datos de pago. Puedes explorar toda la base de datos, usar busqueda avanzada, guardar favoritos y acceder offline.',
+    question: '¿Que incluye Premium?',
+    answer: 'Acceso completo a los 2,556 medicamentos, busqueda avanzada por laboratorio y familia farmacologica, Farmacias de Chile, asistente farmacologico, modo offline 100%, favoritos ilimitados y sin publicidad.',
   },
   {
-    question: '¿Como funciona el trial de 7 dias?',
-    answer: 'Al registrarte, obtienes acceso completo a todas las funcionalidades de Farmateca durante 7 dias sin necesidad de ingresar datos de pago. Despues de los 7 dias, tu cuenta cambia al plan gratuito automaticamente.',
+    question: '¿Cuanto cuesta Premium?',
+    answer: 'El plan Mensual cuesta $3.990 CLP y el Anual $34.990 CLP (equivale a $2.916/mes, ahorras 27%). Puedes empezar con la cuenta gratis y pasar a Premium cuando lo necesites; cancelas cuando quieras.',
   },
   {
     question: '¿La informacion esta actualizada?',
