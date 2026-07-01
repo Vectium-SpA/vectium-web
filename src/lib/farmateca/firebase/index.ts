@@ -20,8 +20,6 @@ export {
   onAuthStateChange,
   parseFirestoreUserData,
   resetPassword,
-  upgradeToPremiumMock,
-  cancelPremiumMock,
   getCurrentUser,
   isPremiumUser,
   type UserData,

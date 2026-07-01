@@ -3,9 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuthStore } from '@/lib/farmateca/store/auth-store';
-import { db } from '@/lib/farmateca/firebase/config';
 import { LoadingSpinner } from '@/components/farmateca/shared/LoadingSpinner';
 import toast from 'react-hot-toast';
 
@@ -52,15 +50,9 @@ function PaymentReturnContent() {
         const data = await res.json() as { isActive: boolean; planId?: string };
 
         if (data.isActive) {
-          // ── Actualizar Firestore ──────────────────────────────
-          await updateDoc(doc(db!, 'users', user!.uid), {
-            'suscripcion.plan': plan,
-            'suscripcion.is_active': true,
-            'suscripcion.fecha_inicio': serverTimestamp(),
-            'suscripcion.flow_subscription_id': subscriptionId,
-          });
-
-          // Actualizar estado local (Zustand)
+          // La activación en Firestore la realiza el endpoint /verify server-side
+          // (Admin SDK). Aquí solo reflejamos el estado localmente para UX inmediato;
+          // el cliente ya NO escribe 'suscripcion' (lo bloquean las Firestore Rules).
           updateLocalSubscription(plan, true);
 
           setStatus('success');
