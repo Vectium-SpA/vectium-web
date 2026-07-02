@@ -4,7 +4,7 @@ import { getAdminDb } from '@/lib/farmateca/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 
 interface FlowRegisterStatus {
-  status: number; // 1 = tarjeta registrada con éxito
+  status: number | string; // 1 = tarjeta registrada con éxito (Flow lo devuelve como string)
   customerId: string;
   creditCardType?: string;
   last4CardDigits?: string;
@@ -36,8 +36,9 @@ export async function GET(req: NextRequest) {
     }
 
     // 1. Resultado del registro de tarjeta.
+    // Flow devuelve `status` como string ("1") → coercionar antes de comparar.
     const reg = await flowGet<FlowRegisterStatus>('/customer/getRegisterStatus', { token });
-    if (reg.status !== 1) {
+    if (Number(reg.status) !== 1) {
       return NextResponse.json({ isActive: false, reason: 'card_not_registered', status: reg.status });
     }
 

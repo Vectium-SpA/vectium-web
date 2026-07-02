@@ -4,7 +4,7 @@ import { getAdminDb } from '@/lib/farmateca/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 
 interface FlowPaymentStatus {
-  status: number; // 1=pendiente, 2=pagado, 3=rechazado, 4=cancelado
+  status: number | string; // 1=pendiente, 2=pagado, 3=rechazado, 4=cancelado (Flow lo devuelve como string)
   amount: number;
   currency: string;
   commerceOrder: string;
@@ -14,7 +14,7 @@ interface FlowPaymentStatus {
   subscription?: {
     subscriptionId: string;
     planId: string;
-    status: number;
+    status: number | string;
     currentPeriodStart?: string;
     currentPeriodEnd?: string;
   };
@@ -45,8 +45,8 @@ export async function POST(req: NextRequest) {
     // Obtener detalles del PAGO por token (no subscription/get)
     const payment = await flowGet<FlowPaymentStatus>('/payment/getStatusByToken', { token });
 
-    // Solo procesar pagos confirmados
-    if (payment.status !== 2) {
+    // Solo procesar pagos confirmados (Flow devuelve `status` como string → coercionar)
+    if (Number(payment.status) !== 2) {
       console.log('[Flow Webhook] Pago no confirmado, status:', payment.status);
       return NextResponse.json({ received: true, status: payment.status });
     }
