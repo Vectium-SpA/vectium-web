@@ -74,15 +74,15 @@ export async function POST(req: NextRequest) {
 
     const db = getAdminDb();
 
-    // Buscar uid: primero por customerId (= uid pasado en /subscribe)
-    // Si no, por el mapping en flow_subscriptions
-    let uid: string | null = payment.customerId ?? null;
-
-    if (!uid) {
-      const mappingDoc = await db.collection('flow_subscriptions').doc(subscriptionId).get();
-      if (mappingDoc.exists) {
-        uid = (mappingDoc.data() as { uid: string }).uid;
-      }
+    // Resolver uid SIEMPRE desde el mapping server-side flow_subscriptions/{subscriptionId}
+    // (creado en /subscribe vía Admin SDK, nunca del cliente).
+    // NO usar payment.customerId: Flow devuelve ahí su propio hash de cliente (cus_xxx),
+    // NO el uid que mandamos → apuntaría a un doc users/{hash} inexistente y el update()
+    // lanzaría NOT_FOUND (tragado por el catch), dejando el premium sin activar.
+    let uid: string | null = null;
+    const mappingDoc = await db.collection('flow_subscriptions').doc(subscriptionId).get();
+    if (mappingDoc.exists) {
+      uid = (mappingDoc.data() as { uid?: string }).uid ?? null;
     }
 
     if (!uid) {
