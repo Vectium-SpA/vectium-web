@@ -88,18 +88,18 @@ export default function PaywallPage() {
         }),
       });
 
-      const data = await response.json() as { url?: string; subscriptionId?: string; error?: string };
+      const data = await response.json() as { url?: string; token?: string; error?: string };
 
       if (!response.ok || !data.url) {
         throw new Error(data.error ?? 'Error al iniciar el proceso de pago');
       }
 
-      // Guardar subscriptionId en sessionStorage para verificar al volver
-      if (data.subscriptionId) {
-        sessionStorage.setItem('flow_subscription_id', data.subscriptionId);
+      // Guardar el token de registro en sessionStorage para confirmar al volver
+      if (data.token) {
+        sessionStorage.setItem('flow_register_token', data.token);
       }
 
-      // Redirigir a Flow para que el usuario complete el pago
+      // Redirigir a Flow para que el usuario registre su tarjeta
       window.location.href = data.url;
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : 'Error al procesar el pago';

@@ -1,16 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { flowPost, FLOW_PLAN_IDS } from '@/lib/farmateca/flow/flow-client';
+import { flowPost } from '@/lib/farmateca/flow/flow-client';
 import { getAdminDb } from '@/lib/farmateca/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 
-interface FlowSubscribeResult {
-  subscriptionId: string;
-  planId: string;
-  status: number;
+interface FlowCustomer {
+  customerId: string;
+  name?: string;
+  email?: string;
+  externalId?: string;
+  status?: number;
+}
+
+interface FlowRegisterResult {
   url: string;
   token: string;
 }
 
+/**
+ * Inicia la suscripción web (Flow):
+ *   1. customer/create  → crea (o reusa) el cliente Flow para este uid.
+ *   2. customer/register → devuelve la URL donde el usuario registra su tarjeta.
+ *   3. guarda flow_register_tokens/{token} = {uid, plan, customerId} (server-side, seguro)
+ *      para que /confirm resuelva el uid SIN confiar en el cliente.
+ * La suscripción como tal se crea en /confirm, recién cuando la tarjeta quedó registrada.
+ */
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as {
@@ -29,41 +42,50 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const planId = FLOW_PLAN_IDS[plan];
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://vectium.cl';
+    const db = getAdminDb();
 
-    const result = await flowPost<FlowSubscribeResult>('/subscription/create', {
-      planId,
-      email,
-      name: name ?? email.split('@')[0],
-      // uid como customerId para que el webhook pueda identificar al usuario
-      customerId: uid,
-      urlReturn: `${appUrl}/farmateca/web/app/payment-return?plan=${plan}`,
-      urlConfirmation: `${appUrl}/api/farmateca/flow/webhook`,
+    // 1. Reusar o crear el cliente Flow (Flow identifica al cliente con su propio customerId).
+    let customerId: string | null = null;
+    const customerRef = db.collection('flow_customers').doc(uid);
+    const customerSnap = await customerRef.get();
+    if (customerSnap.exists) {
+      customerId = (customerSnap.data() as { customerId?: string }).customerId ?? null;
+    }
+    if (!customerId) {
+      const customer = await flowPost<FlowCustomer>('/customer/create', {
+        name: name ?? email.split('@')[0],
+        email,
+        externalId: uid,
+      });
+      customerId = customer.customerId;
+      await customerRef.set(
+        { customerId, email, createdAt: FieldValue.serverTimestamp() },
+        { merge: true }
+      );
+    }
+
+    // 2. Registrar tarjeta: Flow devuelve la URL donde el usuario ingresa su medio de pago.
+    const register = await flowPost<FlowRegisterResult>('/customer/register', {
+      customerId,
+      url_return: `${appUrl}/farmateca/web/app/payment-return?plan=${plan}`,
     });
 
-    if (!result.url || !result.token) {
-      throw new Error('Flow no devolvió URL de pago válida');
+    if (!register.url || !register.token) {
+      throw new Error('Flow no devolvió URL de registro de tarjeta válida');
     }
 
-    // Guardar mapping subscriptionId → {uid, plan} para el webhook
-    try {
-      const db = getAdminDb();
-      await db.collection('flow_subscriptions').doc(result.subscriptionId).set({
-        uid,
-        plan,
-        email,
-        planId,
-        createdAt: FieldValue.serverTimestamp(),
-      });
-    } catch (dbErr) {
-      // No bloquear el flujo de pago si falla el guardado del mapping
-      console.error('[Flow Subscribe] Error guardando mapping en Firestore:', dbErr);
-    }
+    // 3. Mapping token → {uid, plan, customerId} para /confirm (nunca se toma del cliente).
+    await db.collection('flow_register_tokens').doc(register.token).set({
+      uid,
+      plan,
+      customerId,
+      createdAt: FieldValue.serverTimestamp(),
+    });
 
     return NextResponse.json({
-      url: `${result.url}?token=${result.token}`,
-      subscriptionId: result.subscriptionId,
+      url: `${register.url}?token=${register.token}`,
+      token: register.token,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Error desconocido';

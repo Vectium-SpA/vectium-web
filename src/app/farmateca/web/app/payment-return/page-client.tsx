@@ -20,9 +20,9 @@ function PaymentReturnContent() {
 
     const plan = searchParams.get('plan') as 'monthly' | 'yearly' | null;
 
-    // Recuperar subscriptionId almacenado antes del redirect a Flow
-    const subscriptionId = sessionStorage.getItem('flow_subscription_id');
-    if (subscriptionId) sessionStorage.removeItem('flow_subscription_id');
+    // Recuperar el token de registro de tarjeta guardado antes del redirect a Flow
+    const token = sessionStorage.getItem('flow_register_token');
+    if (token) sessionStorage.removeItem('flow_register_token');
 
     async function verifyAndActivate() {
       // Sin plan → error de parámetros
@@ -32,8 +32,8 @@ function PaymentReturnContent() {
         return;
       }
 
-      // Sin subscriptionId → pago puede estar siendo procesado
-      if (!subscriptionId) {
+      // Sin token → el pago puede estar siendo procesado
+      if (!token) {
         setStatus('success');
         setMessage(
           'Tu suscripción está siendo procesada. Accederás a Premium en breve.'
@@ -43,14 +43,14 @@ function PaymentReturnContent() {
       }
 
       try {
-        // ── Verificar estado con Flow ─────────────────────────
+        // ── Confirmar registro de tarjeta + crear suscripción (server-side) ──
         const res = await fetch(
-          `/api/farmateca/flow/verify?subscriptionId=${subscriptionId}`
+          `/api/farmateca/flow/confirm?token=${token}`
         );
         const data = await res.json() as { isActive: boolean; planId?: string };
 
         if (data.isActive) {
-          // La activación en Firestore la realiza el endpoint /verify server-side
+          // La activación en Firestore la realiza el endpoint /confirm server-side
           // (Admin SDK). Aquí solo reflejamos el estado localmente para UX inmediato;
           // el cliente ya NO escribe 'suscripcion' (lo bloquean las Firestore Rules).
           updateLocalSubscription(plan, true);
