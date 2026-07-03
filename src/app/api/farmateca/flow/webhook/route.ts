@@ -90,14 +90,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true, error: 'Usuario no encontrado' });
     }
 
-    // Actualizar suscripción del usuario en Firestore
-    await db.collection('users').doc(uid).update({
-      'suscripcion.plan': plan,
-      'suscripcion.is_active': true,
-      'suscripcion.fecha_inicio': FieldValue.serverTimestamp(),
-      'suscripcion.fecha_termino': endDate,
-      'suscripcion.flow_subscription_id': subscriptionId,
-    });
+    // Actualizar suscripción del usuario en Firestore.
+    // set(..., {merge:true}) en vez de update(): no falla si el doc users/{uid}
+    // aún no existe (update() lanza NOT_FOUND). merge preserva otros campos.
+    await db.collection('users').doc(uid).set(
+      {
+        suscripcion: {
+          plan,
+          is_active: true,
+          fecha_inicio: FieldValue.serverTimestamp(),
+          fecha_termino: endDate,
+          flow_subscription_id: subscriptionId,
+        },
+      },
+      { merge: true }
+    );
 
     // Actualizar mapping con última renovación
     await db.collection('flow_subscriptions').doc(subscriptionId).set(

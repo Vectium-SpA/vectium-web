@@ -14,7 +14,41 @@ interface FlowSubscriptionResult {
   subscriptionId: string;
   planId: string;
   customerId: string;
-  status: number; // 1 = activa
+  status: number | string; // 1 = activa (Flow lo devuelve como string)
+}
+
+/**
+ * Activa premium en users/{uid} vía Admin SDK.
+ * set(..., {merge:true}) en vez de update(): activa premium aunque el doc
+ * users/{uid} aún no exista (update() lanza NOT_FOUND si falta el doc).
+ * Idempotente: se puede llamar varias veces sin efecto secundario.
+ */
+async function activatePremium(
+  db: FirebaseFirestore.Firestore,
+  uid: string,
+  plan: 'monthly' | 'yearly',
+  subscriptionId: string,
+) {
+  const now = new Date();
+  const endDate = new Date(now);
+  if (plan === 'monthly') {
+    endDate.setMonth(endDate.getMonth() + 1);
+  } else {
+    endDate.setFullYear(endDate.getFullYear() + 1);
+  }
+
+  await db.collection('users').doc(uid).set(
+    {
+      suscripcion: {
+        plan,
+        is_active: true,
+        fecha_inicio: FieldValue.serverTimestamp(),
+        fecha_termino: endDate,
+        flow_subscription_id: subscriptionId,
+      },
+    },
+    { merge: true }
+  );
 }
 
 /**
@@ -59,7 +93,10 @@ export async function GET(req: NextRequest) {
     const { uid, plan, customerId } = tokenData;
 
     // Idempotencia: si /confirm ya creó la suscripción para este token, no crear otra.
+    // Re-asegura premium (self-healing): por si una corrida previa creó la suscripción
+    // en Flow pero falló al escribir Firestore (ej. doc users/{uid} inexistente).
     if (tokenData.subscriptionId) {
+      await activatePremium(db, uid, plan, tokenData.subscriptionId);
       return NextResponse.json({
         isActive: true,
         subscriptionId: tokenData.subscriptionId,
@@ -83,22 +120,8 @@ export async function GET(req: NextRequest) {
     });
     await tokenRef.set({ subscriptionId: sub.subscriptionId }, { merge: true });
 
-    // 5. Activar premium server-side (Admin SDK).
-    const now = new Date();
-    const endDate = new Date(now);
-    if (plan === 'monthly') {
-      endDate.setMonth(endDate.getMonth() + 1);
-    } else {
-      endDate.setFullYear(endDate.getFullYear() + 1);
-    }
-
-    await db.collection('users').doc(uid).update({
-      'suscripcion.plan': plan,
-      'suscripcion.is_active': true,
-      'suscripcion.fecha_inicio': FieldValue.serverTimestamp(),
-      'suscripcion.fecha_termino': endDate,
-      'suscripcion.flow_subscription_id': sub.subscriptionId,
-    });
+    // 5. Activar premium server-side (Admin SDK, set+merge → resiliente a doc inexistente).
+    await activatePremium(db, uid, plan, sub.subscriptionId);
 
     console.log('[Flow Confirm] Suscripción creada y premium activado:', {
       uid,
