@@ -4,7 +4,7 @@ import { getAdminDb } from '@/lib/farmateca/firebase/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 
 interface FlowPaymentStatus {
-  status: number; // 1=pendiente, 2=pagado, 3=rechazado, 4=cancelado
+  status: number | string; // 1=pendiente, 2=pagado, 3=rechazado, 4=cancelado (Flow lo devuelve como string)
   amount: number;
   currency: string;
   commerceOrder: string;
@@ -14,7 +14,7 @@ interface FlowPaymentStatus {
   subscription?: {
     subscriptionId: string;
     planId: string;
-    status: number;
+    status: number | string;
     currentPeriodStart?: string;
     currentPeriodEnd?: string;
   };
@@ -45,8 +45,8 @@ export async function POST(req: NextRequest) {
     // Obtener detalles del PAGO por token (no subscription/get)
     const payment = await flowGet<FlowPaymentStatus>('/payment/getStatusByToken', { token });
 
-    // Solo procesar pagos confirmados
-    if (payment.status !== 2) {
+    // Solo procesar pagos confirmados (Flow devuelve `status` como string → coercionar)
+    if (Number(payment.status) !== 2) {
       console.log('[Flow Webhook] Pago no confirmado, status:', payment.status);
       return NextResponse.json({ received: true, status: payment.status });
     }
@@ -74,15 +74,15 @@ export async function POST(req: NextRequest) {
 
     const db = getAdminDb();
 
-    // Buscar uid: primero por customerId (= uid pasado en /subscribe)
-    // Si no, por el mapping en flow_subscriptions
-    let uid: string | null = payment.customerId ?? null;
-
-    if (!uid) {
-      const mappingDoc = await db.collection('flow_subscriptions').doc(subscriptionId).get();
-      if (mappingDoc.exists) {
-        uid = (mappingDoc.data() as { uid: string }).uid;
-      }
+    // Resolver uid SIEMPRE desde el mapping server-side flow_subscriptions/{subscriptionId}
+    // (creado en /subscribe vía Admin SDK, nunca del cliente).
+    // NO usar payment.customerId: Flow devuelve ahí su propio hash de cliente (cus_xxx),
+    // NO el uid que mandamos → apuntaría a un doc users/{hash} inexistente y el update()
+    // lanzaría NOT_FOUND (tragado por el catch), dejando el premium sin activar.
+    let uid: string | null = null;
+    const mappingDoc = await db.collection('flow_subscriptions').doc(subscriptionId).get();
+    if (mappingDoc.exists) {
+      uid = (mappingDoc.data() as { uid?: string }).uid ?? null;
     }
 
     if (!uid) {
@@ -90,14 +90,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true, error: 'Usuario no encontrado' });
     }
 
-    // Actualizar suscripción del usuario en Firestore
-    await db.collection('users').doc(uid).update({
-      'suscripcion.plan': plan,
-      'suscripcion.is_active': true,
-      'suscripcion.fecha_inicio': FieldValue.serverTimestamp(),
-      'suscripcion.fecha_termino': endDate,
-      'suscripcion.flow_subscription_id': subscriptionId,
-    });
+    // Actualizar suscripción del usuario en Firestore.
+    // set(..., {merge:true}) en vez de update(): no falla si el doc users/{uid}
+    // aún no existe (update() lanza NOT_FOUND). merge preserva otros campos.
+    await db.collection('users').doc(uid).set(
+      {
+        suscripcion: {
+          plan,
+          is_active: true,
+          fecha_inicio: FieldValue.serverTimestamp(),
+          fecha_termino: endDate,
+          flow_subscription_id: subscriptionId,
+        },
+      },
+      { merge: true }
+    );
 
     // Actualizar mapping con última renovación
     await db.collection('flow_subscriptions').doc(subscriptionId).set(
