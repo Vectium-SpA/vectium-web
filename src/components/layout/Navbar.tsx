@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { vectiumTheme } from "@/styles/theme";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,54 +35,60 @@ export function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-vectium-black/95 backdrop-blur-md shadow-lg shadow-black/10"
+          ? "bg-site-bg/95 backdrop-blur-md border-b border-site-border"
           : "bg-transparent"
       )}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+      <nav className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <span className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-tight text-vectium-white">
+          <span className="font-[family-name:var(--font-site-serif)] text-2xl font-normal tracking-tight text-site-ink-strong">
             Vectium
           </span>
-          <span className="text-xs font-light tracking-widest text-vectium-gray-400 uppercase">
+          <span className="font-[family-name:var(--font-site-mono)] text-[10.5px] tracking-[0.18em] text-site-muted-dim uppercase">
             SpA
           </span>
         </Link>
 
         {/* Desktop Nav */}
-        <ul className="hidden items-center gap-8 md:flex">
-          {vectiumTheme.navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={cn(
-                  "relative text-sm font-medium tracking-wide transition-colors duration-200",
-                  pathname === link.href
-                    ? "text-vectium-white"
-                    : "text-vectium-gray-400 hover:text-vectium-white"
-                )}
-              >
-                {link.label}
-                {pathname === link.href && (
-                  <motion.span
-                    layoutId="navbar-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-vectium-accent"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                  />
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="hidden items-center gap-8 md:flex">
+          <ul className="flex items-center gap-8">
+            {vectiumTheme.navLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={cn(
+                    "relative font-[family-name:var(--font-site-sans)] text-[14.5px] transition-colors duration-200",
+                    pathname === link.href
+                      ? "text-site-ink-strong"
+                      : "text-site-muted hover:text-site-ink-strong"
+                  )}
+                >
+                  {link.label}
+                  {pathname === link.href && (
+                    <motion.span
+                      layoutId="navbar-indicator"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-site-accent"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <ThemeToggle />
+        </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="text-vectium-white md:hidden"
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile: selector de tema + boton de menu */}
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="text-site-ink-strong"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu */}
@@ -92,7 +99,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden bg-vectium-black/98 backdrop-blur-lg md:hidden"
+            className="overflow-hidden border-b border-site-border bg-site-bg/98 backdrop-blur-lg md:hidden"
           >
             <ul className="flex flex-col gap-1 px-6 pb-6">
               {vectiumTheme.navLinks.map((link) => (
@@ -100,10 +107,10 @@ export function Navbar() {
                   <Link
                     href={link.href}
                     className={cn(
-                      "block rounded-lg px-4 py-3 text-sm font-medium transition-colors",
+                      "block rounded-lg px-4 py-3 font-[family-name:var(--font-site-sans)] text-[15px] transition-colors",
                       pathname === link.href
-                        ? "bg-vectium-gray-900 text-vectium-white"
-                        : "text-vectium-gray-400 hover:bg-vectium-gray-900 hover:text-vectium-white"
+                        ? "bg-site-surface text-site-ink-strong"
+                        : "text-site-muted hover:bg-site-surface hover:text-site-ink-strong"
                     )}
                   >
                     {link.label}
