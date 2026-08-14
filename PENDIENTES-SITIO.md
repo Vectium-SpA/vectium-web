@@ -56,20 +56,32 @@ Andrés revisó el preview, aprobó, y se mergeó. Verificado **contra `vectium.
 
 ---
 
-## 3. Marca: dos referencias que siguen apuntando al isologo VIEJO
+## ✅ 3. Marca: el favicon plano ES correcto — no hay nada que redibujar
 
-El isologo 3D cromado es la marca nueva. Estas dos piezas no se cambiaron porque tocan
-identidad para SEO y buscadores, y Andrés no lo ha decidido:
+> 🔴 **Corrección (2026-08-14).** Una versión anterior de este documento decía que el isologo
+> cromado y el plano eran **marcas distintas**, y que el favicon había que redibujarlo. **Era
+> falso.** Se compararon los dos isotipos lado a lado: ambos son el **mismo Sierpinski** —
+> triángulo grande, tres subtriángulos con el centro hueco y el hueco invertido central. Lo
+> que el cromado agrega son **biseles, sombreado 3D y un filo** que remarca el triángulo
+> central; eso se leyó como "un lazo entrelazado" y no lo es.
 
-- [ ] 🔲 **`StructuredData.tsx`** declara `logo: "https://vectium.cl/logo.png"` — es el logo
-      que Google puede mostrar en resultados. Sigue siendo el viejo.
-- [ ] 🔲 **El favicon** (`favicon.ico`, `icon-256.png`, `apple-touch-icon.png`) es el isotipo
-      viejo. ⚠️ **No sirve el render 3D tal cual**: a 16-32px, con degradados y el wordmark
-      incrustado, queda ilegible. Habría que redibujar el isotipo nuevo plano y de alto
-      contraste, sin texto.
+Consecuencia: **el favicon plano que ya está instalado es la marca correcta**, solo que en su
+versión plana. No hay que redibujar nada.
 
-> ⚠️ **El logo nuevo y el viejo son marcas DISTINTAS**, no dos versiones de la misma: el
-> nuevo tiene un lazo interior entrelazado. Por eso no se puede "convertir" una en otra.
+- [x] **Favicon verificado (2026-08-14).** `favicon.ico`, `icon-256.png` y
+      `apple-touch-icon.png` son **byte por byte idénticos** a los del paquete original
+      (`_entrada.local.design/vectium-icons/paquete-iconos/marca/favicon/`), y **lo que sirve
+      `vectium.cl` es idéntico al repo** (comparado por md5 contra producción). Ya está puesto.
+- [x] El paquete trae además `favicon-16/32/48/64/128/256.png` por si alguna vez se necesita
+      declarar tamaños explícitos.
+
+- [ ] 🔲 **`StructuredData.tsx`** declara `logo: "https://vectium.cl/logo.png"` (el plano). Como
+      es la misma marca, **no es un error** — solo es la versión plana. Cambiarlo al cromado es
+      opcional y estético; para buscadores un logo plano sobre fondo neutro suele rendir mejor.
+
+> ⚠️ **El render 3D sigue sin servir como favicon**, y eso no cambia: a 16-32px los degradados
+> metálicos se convierten en una mancha gris y el wordmark incrustado es ilegible. El plano es
+> lo correcto ahí, por diseño y no por falta de asset.
 
 ---
 
