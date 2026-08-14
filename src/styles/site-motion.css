@@ -87,6 +87,19 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
+   ANCLAS
+   El navbar es `fixed`, asi que al saltar a #soluciones el encabezado quedaba
+   escondido detras de el.
+   Lo natural seria `scroll-padding-top` en <html>, pero <html> es compartido
+   con Farmateca y no se toca: `scroll-margin-top` en las secciones consigue lo
+   mismo y SI se puede scopear bajo .site-motion.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.site-motion section[id] {
+  scroll-margin-top: 6rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
    AURORA — el fondo vivo de las secciones
    ══════════════════════════════════════════════════════════════════════════ */
 
@@ -104,7 +117,10 @@
 .site-motion .site-aurora__blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(90px);
+  /* El blur escala con el viewport igual que el tamano de la mancha. Si fuera
+     un valor fijo, la PROPORCION blur/tamano cambiaria con la pantalla: en
+     celular se comeria la mancha y en ultrawide le dibujaria el borde. */
+  filter: blur(clamp(45px, 6vw, 130px));
   opacity: var(--site-blob-o, 0.4);
   will-change: transform, opacity;
   animation:
@@ -122,7 +138,7 @@
 [data-theme="light"] .site-motion .site-aurora__blob,
 :root:not([data-theme="dark"]) .site-motion .site-aurora__blob {
   --site-blob-o: 0.22;
-  filter: blur(100px);
+  filter: blur(clamp(55px, 7vw, 150px));
 }
 
 [data-theme="dark"] .site-motion .site-aurora__blob {

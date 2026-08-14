@@ -50,7 +50,10 @@ export function HeroSection() {
           Software a medida · Chile
         </span>
 
-        <h1 className="mt-5 max-w-[16ch] font-[family-name:var(--font-site-serif)] text-[clamp(2.5rem,7vw,4rem)] font-normal leading-[1.04] tracking-[-0.025em] text-site-ink-strong">
+        {/* El minimo del clamp era 2.5rem (40px). A 320px de ancho la palabra
+            "Infraestructura" medía 277px contra 272px disponibles y desbordaba
+            el documento. Baja a 2rem, que la deja entrar con holgura. */}
+        <h1 className="mt-5 max-w-[16ch] text-balance font-[family-name:var(--font-site-serif)] text-[clamp(2rem,7vw,4rem)] font-normal leading-[1.06] tracking-[-0.025em] text-site-ink-strong">
           Infraestructura{" "}
           <span className="bg-gradient-to-r from-site-accent to-site-accent-light bg-clip-text text-transparent">
             digital

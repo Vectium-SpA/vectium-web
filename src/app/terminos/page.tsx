@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/PageHero";
+import { SiteAurora } from "@/components/site/SiteAurora";
 
 export const metadata: Metadata = {
   title: "Términos de Uso | Vectium SpA",
@@ -17,7 +18,12 @@ export default function TerminosPage() {
         description="Condiciones que rigen el uso de nuestros servicios digitales, sitio web y aplicaciones."
       />
 
-      <div className="mx-auto max-w-4xl px-6 py-16 lg:px-8">
+      {/* Aurora tenue y nada mas: es un documento legal, no una landing. Mismo
+          criterio que /privacidad — el texto no se anima. */}
+      <div className="relative isolate overflow-hidden">
+        <SiteAurora variant="right" />
+
+        <div className="relative z-[2] mx-auto max-w-4xl px-6 py-16 lg:px-8">
         <article className="prose prose-lg prose-gray mx-auto">
           {/* Aceptación */}
           <section className="mb-12">
@@ -267,6 +273,7 @@ export default function TerminosPage() {
             </p>
           </section>
         </article>
+        </div>
       </div>
     </div>
   );

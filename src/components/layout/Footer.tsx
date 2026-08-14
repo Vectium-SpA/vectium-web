@@ -134,7 +134,16 @@ export function Footer() {
               <p className="mt-2 text-xs">
                 Suscríbete para recibir novedades sobre nuestros productos.
               </p>
-              <form onSubmit={onSubscribe} className="mt-3 flex gap-2">
+              {/*
+                `min-w-0` en el input NO es decorativo: un <input> tiene un
+                ancho intrinseco (el atributo `size`, ~20 caracteres) y en un
+                item flex `min-width` vale `auto`, asi que `flex-1` NO lo deja
+                encogerse por debajo de eso. A 320px el formulario medía 317px
+                dentro de 272 disponibles y ensanchaba el DOCUMENTO ENTERO: se
+                veia scroll horizontal en todo el sitio, porque el footer es
+                compartido. `min-w-0` le devuelve la capacidad de encoger.
+              */}
+              <form onSubmit={onSubscribe} className="mt-3 flex flex-wrap gap-2">
                 <input
                   type="email"
                   required
@@ -143,12 +152,12 @@ export function Footer() {
                   disabled={sending}
                   placeholder="tu@email.com"
                   aria-label="Tu correo electrónico"
-                  className="flex-1 rounded-lg border border-site-border bg-site-surface px-4 py-2 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:outline-none disabled:opacity-60"
+                  className="w-full min-w-0 flex-1 rounded-lg border border-site-border bg-site-surface px-4 py-2 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:outline-none disabled:opacity-60 min-[380px]:w-auto"
                 />
                 <button
                   type="submit"
                   disabled={sending}
-                  className="rounded-lg bg-site-accent px-4 py-2 text-sm font-medium text-site-bg transition-colors hover:bg-site-accent-light disabled:opacity-60"
+                  className="shrink-0 rounded-lg bg-site-accent px-4 py-2 text-sm font-medium text-site-bg transition-colors hover:bg-site-accent-light disabled:opacity-60"
                 >
                   {sending ? "Enviando…" : "Suscribir"}
                 </button>

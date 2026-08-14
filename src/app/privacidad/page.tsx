@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/PageHero";
+import { SiteAurora } from "@/components/site/SiteAurora";
 
 export const metadata: Metadata = {
   title: "Política de Privacidad | Vectium SpA",
@@ -17,7 +18,13 @@ export default function PrivacidadPage() {
         description="En Vectium SpA nos comprometemos a proteger tu privacidad y manejar tus datos personales de manera responsable."
       />
 
-      <div className="mx-auto max-w-4xl px-6 py-16 lg:px-8">
+      {/* Aurora tenue y nada mas: es un documento legal, no una landing. El
+          texto no se anima a proposito — un parrafo con obligaciones que
+          aparece de a poco se lee peor y da desconfianza. */}
+      <div className="relative isolate overflow-hidden">
+        <SiteAurora variant="left" />
+
+        <div className="relative z-[2] mx-auto max-w-4xl px-6 py-16 lg:px-8">
         <article className="prose prose-lg prose-gray mx-auto">
           {/* Introducción */}
           <section className="mb-12">
@@ -240,6 +247,7 @@ export default function PrivacidadPage() {
             </div>
           </section>
         </article>
+        </div>
       </div>
     </div>
   );

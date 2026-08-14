@@ -5,6 +5,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { SiteAurora } from "@/components/site/SiteAurora";
 
 interface FAQItemProps {
   question: string;
@@ -170,38 +171,56 @@ export default function FAQPage() {
         description="Encuentra respuestas a las preguntas más comunes sobre nuestros servicios, tecnologías y productos."
       />
 
-      <div className="mx-auto max-w-4xl px-6 py-16 lg:px-8">
-        {faqSections.map((section, sectionIndex) => (
-          <section key={sectionIndex} className="mb-12 last:mb-0">
-            <h2 className="text-2xl font-bold text-site-ink mb-6 pb-3 border-b-2 border-site-accent">
-              {section.title}
-            </h2>
-            <div className="bg-site-bg rounded-lg border border-site-border overflow-hidden">
-              {section.questions.map((faq, index) => (
-                <FAQItem
-                  key={index}
-                  question={faq.question}
-                  answer={faq.answer}
-                />
-              ))}
-            </div>
-          </section>
-        ))}
+      <div className="relative isolate overflow-hidden">
+        <SiteAurora variant="split" />
 
-        {/* Call to Action */}
-        <div className="mt-16 bg-gradient-to-br from-site-accent/5 to-site-accent/10 rounded-2xl p-8 text-center border border-site-accent/20">
-          <h3 className="text-2xl font-bold text-site-ink mb-3">
-            ¿No encuentras lo que buscas?
-          </h3>
-          <p className="text-lg text-site-ink mb-6">
-            Nuestro equipo está disponible para responder cualquier pregunta adicional.
-          </p>
-          <a
-            href="/contacto"
-            className="inline-flex items-center justify-center rounded-lg bg-site-accent px-8 py-3 text-base font-semibold text-site-bg shadow-lg transition-all hover:bg-site-accent-light hover:shadow-xl"
+        <div className="relative z-[2] mx-auto max-w-4xl px-6 py-16 lg:px-8">
+          {faqSections.map((section, sectionIndex) => (
+            <motion.section
+              key={sectionIndex}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-12 last:mb-0"
+            >
+              <h2 className="mb-6 border-b-2 border-site-accent pb-3 text-[clamp(1.25rem,3.5vw,1.5rem)] font-bold text-site-ink">
+                {section.title}
+              </h2>
+              <div className="site-card site-tint overflow-hidden rounded-xl border border-site-border bg-site-bg/70 backdrop-blur-xl">
+                {section.questions.map((faq, index) => (
+                  <FAQItem
+                    key={index}
+                    question={faq.question}
+                    answer={faq.answer}
+                  />
+                ))}
+              </div>
+            </motion.section>
+          ))}
+
+          {/* Call to Action */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="site-card site-tint-strong mt-16 rounded-2xl border border-site-accent/20 bg-gradient-to-br from-site-accent/5 to-site-accent/10 p-8 text-center"
           >
-            Contáctanos
-          </a>
+            <div className="site-edge-sweep absolute inset-x-0 top-0 h-1" />
+            <h3 className="mb-3 text-balance text-[clamp(1.25rem,3.5vw,1.5rem)] font-bold text-site-ink">
+              ¿No encuentras lo que buscas?
+            </h3>
+            <p className="mb-6 text-pretty text-site-ink">
+              Nuestro equipo está disponible para responder cualquier pregunta adicional.
+            </p>
+            <a
+              href="/contacto"
+              className="inline-flex items-center justify-center rounded-lg bg-site-accent px-8 py-3 text-base font-semibold text-site-bg shadow-lg transition-all hover:bg-site-accent-light hover:shadow-xl"
+            >
+              Contáctanos
+            </a>
+          </motion.div>
         </div>
       </div>
     </div>

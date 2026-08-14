@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import { motion, useInView, animate } from "framer-motion";
 import { Target, Eye, Heart } from "lucide-react";
 import { SiteAurora } from "@/components/site/SiteAurora";
+import { SectionHeading } from "@/components/site/SectionHeading";
 import { useSpotlight } from "@/components/site/useSpotlight";
 
 // Cifras verificables contra nuestros propios productos. NO poner metricas que no
@@ -93,26 +94,12 @@ export function AboutSection() {
 
       <div className="relative z-[2] mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center"
-        >
-          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
-            <span className="site-eyebrow__dot" />
-            Sobre Nosotros
-          </span>
-          <span className="site-eyebrow__rule mt-4" />
-          <h2 className="mt-4 text-3xl font-bold text-site-ink-strong sm:text-4xl">
-            Tecnología que{" "}
-            <span className="site-text-gradient">impulsa tu negocio</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-site-muted">
-            Vectium SpA es una empresa tecnológica chilena especializada en el
-            desarrollo de software, páginas web y aplicaciones móviles de alto impacto.
-          </p>
-        </motion.div>
+        <SectionHeading
+          eyebrow="Sobre Nosotros"
+          title="Tecnología que"
+          titleAccent="impulsa tu negocio"
+          subtitle="Vectium SpA es una empresa tecnológica chilena especializada en el desarrollo de software, páginas web y aplicaciones móviles de alto impacto."
+        />
 
         <div className="mt-16 grid gap-16 lg:grid-cols-2">
           {/* Values */}
@@ -153,7 +140,11 @@ export function AboutSection() {
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="grid grid-cols-2 content-start gap-6"
+            /* Una sola columna bajo 400px. A 320px las dos columnas dejaban
+               tarjetas de 123px, y etiquetas como "Medicamentos en Farmateca"
+               no tienen donde quebrar: se salian de la tarjeta y ensanchaban
+               el documento. */
+            className="grid grid-cols-1 content-start gap-4 min-[400px]:grid-cols-2 sm:gap-6"
           >
             {stats.map((stat, index) => (
               <motion.div
@@ -165,7 +156,9 @@ export function AboutSection() {
                 className="site-card site-tint-strong rounded-2xl border border-site-border/60 bg-site-bg/80 p-6 text-center shadow-sm backdrop-blur-xl"
               >
                 <AnimatedCounter value={stat.value} run={isInView} />
-                <p className="mt-2 text-sm text-site-muted">
+                {/* text-pretty + hyphens: en columnas angostas hay etiquetas de
+                    una sola palabra larga que si no, desbordan la tarjeta. */}
+                <p className="mt-2 hyphens-auto text-pretty text-sm text-site-muted" lang="es">
                   {stat.label}
                 </p>
               </motion.div>

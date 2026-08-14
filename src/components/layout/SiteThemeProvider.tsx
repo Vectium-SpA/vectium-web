@@ -14,12 +14,18 @@ import { ThemeProvider } from "next-themes";
  *
  * Con `data-theme`, lo corporativo usa la variante `site-dark:` de
  * globals.css y Farmateca queda intacta.
+ *
+ * `defaultTheme="dark"` es decision de Andres: el sitio se ve mejor en oscuro,
+ * asi que cualquiera que entre por primera vez lo ve asi. `enableSystem` sigue
+ * en false a proposito — si estuviera en true, un visitante con el SO en claro
+ * veria el sitio claro y el default no serviria de nada. El toggle del nav
+ * sigue mandando y next-themes recuerda la eleccion en localStorage.
  */
 export function SiteThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="data-theme"
-      defaultTheme="light"
+      defaultTheme="dark"
       enableSystem={false}
       disableTransitionOnChange
     >

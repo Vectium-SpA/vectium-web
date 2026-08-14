@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTheme } from "next-themes";
 import { SiteAurora } from "@/components/site/SiteAurora";
+import { SectionHeading } from "@/components/site/SectionHeading";
 import { useSpotlight } from "@/components/site/useSpotlight";
 
 /**
@@ -109,26 +110,12 @@ export function TechStackSection() {
       <div className="absolute inset-0 z-[1] bg-grid-pattern" />
 
       <div className="relative z-[2] mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center"
-        >
-          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
-            <span className="site-eyebrow__dot" />
-            Tecnología
-          </span>
-          <span className="site-eyebrow__rule mt-4" />
-          <h2 className="mt-4 text-3xl font-bold text-site-ink-strong sm:text-4xl">
-            Stack tecnológico{" "}
-            <span className="site-text-gradient">de vanguardia</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-site-muted">
-            Utilizamos las tecnologías más avanzadas para crear soluciones
-            robustas, escalables y de alto rendimiento.
-          </p>
-        </motion.div>
+        <SectionHeading
+          eyebrow="Tecnología"
+          title="Stack tecnológico"
+          titleAccent="de vanguardia"
+          subtitle="Utilizamos las tecnologías más avanzadas para crear soluciones robustas, escalables y de alto rendimiento."
+        />
 
         <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-6">
           {technologies.map((tech, index) => (

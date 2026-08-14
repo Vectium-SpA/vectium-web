@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { ScrollProgress } from "@/components/site/ScrollProgress";
 import "@/styles/site-motion.css";
 
 /**
@@ -25,6 +26,9 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="site-motion min-h-screen bg-site-bg text-site-ink transition-colors">
+      {/* Dentro del envoltorio a proposito: asi la barra tampoco existe en
+          Farmateca, que sale por el return de arriba. */}
+      <ScrollProgress />
       {children}
     </div>
   );

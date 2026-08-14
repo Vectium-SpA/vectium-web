@@ -13,6 +13,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { SiteAurora } from "@/components/site/SiteAurora";
+import { SectionHeading } from "@/components/site/SectionHeading";
 import { useSpotlight } from "@/components/site/useSpotlight";
 
 // Cada pilar tiene que corresponder a trabajo que realmente hacemos. El bloque
@@ -87,26 +88,12 @@ export function SolutionsSection() {
 
       <div className="relative z-[2] mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center"
-        >
-          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
-            <span className="site-eyebrow__dot" />
-            Servicios
-          </span>
-          <span className="site-eyebrow__rule mt-4" />
-          <h2 className="mt-4 text-3xl font-bold text-site-ink-strong sm:text-4xl">
-            Soluciones digitales{" "}
-            <span className="site-text-gradient">a tu medida</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-site-muted">
-            Desarrollamos software, páginas web y aplicaciones móviles que
-            impulsan el crecimiento de tu negocio.
-          </p>
-        </motion.div>
+        <SectionHeading
+          eyebrow="Servicios"
+          title="Soluciones digitales"
+          titleAccent="a tu medida"
+          subtitle="Desarrollamos software, páginas web y aplicaciones móviles que impulsan el crecimiento de tu negocio."
+        />
 
         {/* Services Grid */}
         <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -148,21 +135,12 @@ export function SolutionsSection() {
         </div>
 
         {/* Featured Projects Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-24 flex flex-col items-center text-center"
-        >
-          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
-            <span className="site-eyebrow__dot" />
-            Proyectos Destacados
-          </span>
-          <span className="site-eyebrow__rule mt-4" />
-          <h2 className="mt-4 text-2xl font-bold text-site-ink-strong sm:text-3xl">
-            Algunos de <span className="site-text-gradient">nuestros trabajos</span>
-          </h2>
-        </motion.div>
+        <SectionHeading
+          eyebrow="Proyectos Destacados"
+          title="Algunos de"
+          titleAccent="nuestros trabajos"
+          className="mt-20 sm:mt-24"
+        />
 
         {/* Featured Projects Grid */}
         <div className="mt-12 grid gap-8 lg:grid-cols-2">

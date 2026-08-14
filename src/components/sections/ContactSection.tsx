@@ -10,6 +10,7 @@ import { vectiumTheme } from "@/styles/theme";
 import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
 import { sendContactEmail } from "@/lib/emailjs";
 import { SiteAurora } from "@/components/site/SiteAurora";
+import { SectionHeading } from "@/components/site/SectionHeading";
 
 export function ContactSection() {
   const ref = useRef(null);
@@ -77,25 +78,12 @@ export function ContactSection() {
 
       <div className="relative z-[2] mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center"
-        >
-          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
-            <span className="site-eyebrow__dot" />
-            Contacto
-          </span>
-          <span className="site-eyebrow__rule mt-4" />
-          <h2 className="mt-4 text-3xl font-bold text-site-ink-strong sm:text-4xl">
-            Hablemos de <span className="site-text-gradient">tu proyecto</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-site-muted">
-            Cuéntanos qué necesitas y te respondemos con una propuesta
-            concreta, sin compromiso.
-          </p>
-        </motion.div>
+        <SectionHeading
+          eyebrow="Contacto"
+          title="Hablemos de"
+          titleAccent="tu proyecto"
+          subtitle="Cuéntanos qué necesitas y te respondemos con una propuesta concreta, sin compromiso."
+        />
 
         <div className="mt-16 grid gap-12 lg:grid-cols-5">
           {/* Contact Info */}

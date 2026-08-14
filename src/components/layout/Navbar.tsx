@@ -39,12 +39,22 @@ export function Navbar() {
           : "bg-transparent"
       )}
     >
-      <nav className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4 lg:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-[family-name:var(--font-site-serif)] text-2xl font-normal tracking-tight text-site-ink-strong">
+      {/*
+        `px-4` en el escalon mas chico y no `px-6` fijo: a 320px de ancho
+        (Galaxy A/iPhone SE en zoom) los 48px de padding + el logo + los dos
+        botones no caben, la barra medía 341px y ensanchaba el DOCUMENTO
+        ENTERO. Se veia como scroll horizontal en todas las paginas, no solo en
+        el nav, y era el unico desborde real del sitio.
+      */}
+      <nav className="mx-auto flex max-w-[1200px] items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
+        {/* min-w-0 deja que el logo se encoja en vez de empujar la fila. */}
+        <Link href="/" className="flex min-w-0 items-center gap-2">
+          <span className="font-[family-name:var(--font-site-serif)] text-[clamp(1.25rem,5vw,1.5rem)] font-normal tracking-tight text-site-ink-strong">
             Vectium
           </span>
-          <span className="font-[family-name:var(--font-site-mono)] text-[10.5px] tracking-[0.18em] text-site-muted-dim uppercase">
+          {/* El "SpA" se oculta bajo 360px: es lo primero que sobra cuando no
+              hay ancho, y perderlo no rompe la marca. */}
+          <span className="hidden font-[family-name:var(--font-site-mono)] text-[10.5px] uppercase tracking-[0.18em] text-site-muted-dim min-[360px]:inline">
             SpA
           </span>
         </Link>
