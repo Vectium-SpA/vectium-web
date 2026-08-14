@@ -7,18 +7,26 @@ import { SiteAurora } from "@/components/site/SiteAurora";
 /**
  * Bloque de marca a pantalla ancha: el isologo grande sobre la aurora.
  *
- * ┌─ POR QUE HAY DOS IMAGENES, UNA POR TEMA ────────────────────────────────┐
- * │ El isologo 3D cromado es PLATEADO, casi blanco. Sobre el fondo oscuro   │
- * │ se ve premium; sobre el fondo blanco del tema claro se lava y queda     │
- * │ ilegible, porque lo unico que lo dibujaria son los biseles oscuros.     │
- * │ Medido: solo el ~6% de sus pixeles visibles tiene luminancia < 90.      │
+ * ┌─ POR QUE LA BANDA ES OSCURA EN LOS DOS TEMAS ───────────────────────────┐
+ * │ El isologo 3D es CROMADO, casi blanco: necesita fondo oscuro para       │
+ * │ leerse. Medido: solo el ~6% de sus pixeles visibles tiene luminancia    │
+ * │ < 90, asi que sobre el blanco del tema claro se lava por completo.      │
  * │                                                                         │
- * │ Por eso:  tema OSCURO -> cromado 3D   ·   tema CLARO -> isologo plano.  │
+ * │ Se probaron y descartaron dos alternativas:                             │
+ * │  1. Filtro de color sobre el cromado -> le mata los degradados          │
+ * │     metalicos, que son exactamente su valor.                            │
+ * │  2. Aplanarlo a silueta usando su canal alfa como mascara -> FALLA, y   │
+ * │     se vio al renderizarlo: el wordmark "VECTIUM" se SUPERPONE al       │
+ * │     triangulo, asi que al aplanarlo las letras de adentro desaparecen y │
+ * │     queda "V E _ T _ M". El logo viejo no tenia ese cruce; este si.     │
+ * │  3. El render claro que mando Andres (logo-vectium-redes-4) tiene el    │
+ * │     fondo gris #D8D6D4 pintado y sin alfa: seria otro recuadro.         │
  * │                                                                         │
- * │ ⚠️ Al cromado NO se le puede aplicar un filtro de color (el truco de    │
- * │ `brightness(0) invert(1)` que usa el plano): le mataria los degradados  │
- * │ metalicos, que son exactamente su valor. Por eso van dos archivos y no  │
- * │ uno filtrado.                                                           │
+ * │ Conclusion: la banda se declara OSCURA siempre. No es una limitacion,   │
+ * │ es lo correcto — un cromado se presenta sobre fondo oscuro, y de paso   │
+ * │ la banda corta visualmente una pagina clara. Antes el tema claro        │
+ * │ mostraba el isologo VIEJO (Andres lo noto): ahora los dos temas         │
+ * │ muestran la marca nueva.                                                │
  * └─────────────────────────────────────────────────────────────────────────┘
  *
  * ┌─ DE DONDE SALEN LOS ARCHIVOS ───────────────────────────────────────────┐
@@ -34,11 +42,30 @@ import { SiteAurora } from "@/components/site/SiteAurora";
  * └─────────────────────────────────────────────────────────────────────────┘
  */
 
-/** Isologo 3D cromado, recortado. Solo tema OSCURO: es plateado. */
+/** Isologo 3D cromado, recortado. Unica fuente: la banda es oscura siempre. */
 const LOGO_3D_WEBP = "/marca/isologo-3d.webp";
 const LOGO_3D_PNG = "/marca/isologo-3d.png";
-/** Isologo plano de vectium-icons, tinta oscura. Solo tema CLARO. */
-const LOGO_PLANO = "/logo.png";
+
+/**
+ * Paleta OSCURA fijada en el propio bloque, copiada de la rama
+ * `[data-theme="dark"]` de globals.css.
+ *
+ * Al declararla como variables CSS sobre la <section>, TODO lo de adentro
+ * hereda el tema oscuro sin saberlo: la aurora (que hace color-mix sobre
+ * --site-accent), el texto (`text-site-muted`) y la regla del final. Sin esto
+ * habria que pasar colores a mano a cada hijo, o duplicar `SiteAurora`.
+ */
+const PALETA_OSCURA: React.CSSProperties = {
+  ["--site-bg" as string]: "#0B0E11",
+  ["--site-bg-deep" as string]: "#070A0C",
+  ["--site-surface" as string]: "#101519",
+  ["--site-border" as string]: "#1F272E",
+  ["--site-ink" as string]: "#EAEEF2",
+  ["--site-ink-strong" as string]: "#FFFFFF",
+  ["--site-muted" as string]: "#9AA6B2",
+  ["--site-accent" as string]: "#7FB6D6",
+  ["--site-accent-light" as string]: "#BFE3F5",
+};
 
 export function BrandMoment() {
   const ref = useRef(null);
@@ -47,6 +74,7 @@ export function BrandMoment() {
   return (
     <section
       ref={ref}
+      style={PALETA_OSCURA}
       className="relative isolate overflow-hidden bg-site-bg-deep py-20 sm:py-24 lg:py-28"
     >
       <SiteAurora variant="center" />
@@ -58,28 +86,15 @@ export function BrandMoment() {
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="w-full"
         >
-          {/* El intercambio se hace por CSS y no con `useTheme`: con JS habria
-              que esperar a que monte y el logo pegaria un salto al hidratar. */}
-
-          {/* Tema CLARO — isologo plano, tinta oscura */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={LOGO_PLANO}
-            alt="Vectium"
-            className="mx-auto block h-auto w-full max-w-[min(520px,78vw)] object-contain site-dark:hidden"
-          />
-
-          {/* Tema OSCURO — isologo 3D cromado. aria-hidden porque es la MISMA
-              marca que la de arriba: sin esto un lector de pantalla la
-              anunciaria dos veces. */}
+          {/* Una sola imagen: la banda es oscura en los dos temas, asi que el
+              cromado siempre tiene el fondo que necesita. */}
           <picture>
             <source srcSet={LOGO_3D_WEBP} type="image/webp" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={LOGO_3D_PNG}
               alt="Vectium"
-              aria-hidden="true"
-              className="mx-auto hidden h-auto w-full max-w-[min(560px,80vw)] object-contain site-dark:block"
+              className="mx-auto block h-auto w-full max-w-[min(560px,80vw)] object-contain"
             />
           </picture>
         </motion.div>
