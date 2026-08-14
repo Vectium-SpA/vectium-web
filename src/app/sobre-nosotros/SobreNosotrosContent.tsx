@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SiteAurora } from "@/components/site/SiteAurora";
 import { SectionHeading } from "@/components/site/SectionHeading";
+import { BrandMoment } from "@/components/site/BrandMoment";
 
 // Solo hitos verificables. Vectium SpA se constituyo el 09-12-2025 (Carpeta
 // Tributaria del SII): no inventar anos anteriores, clientes ni tamano de equipo.
@@ -74,6 +75,10 @@ export function SobreNosotrosContent() {
           </div>
         </div>
       </section>
+
+      {/* Momento de marca. Va ENTRE el timeline y el CTA a proposito: cierra el
+          relato de trayectoria y da un respiro antes de pedir el contacto. */}
+      <BrandMoment />
 
       {/* CTA */}
       <section className="relative isolate overflow-hidden bg-site-surface py-20">
