@@ -4,10 +4,14 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Target, Eye, Heart } from "lucide-react";
 
+// Cifras verificables contra nuestros propios productos. NO poner metricas que no
+// se puedan respaldar (anos de trayectoria, proyectos entregados, % de clientes
+// satisfechos): Vectium SpA se constituyo el 09-12-2025 y afirmar una trayectoria
+// que no existe es publicidad enganosa, Ley 19.496 art. 28.
 const stats = [
-  { value: "5+", label: "Años de Experiencia" },
-  { value: "25+", label: "Proyectos Entregados" },
-  { value: "100%", label: "Clientes Satisfechos" },
+  { value: "2.556", label: "Medicamentos en Farmateca" },
+  { value: "222", label: "Farmacias Mapeadas" },
+  { value: "1.257", label: "Descargas de Farmateca" },
   { value: "3", label: "Áreas de Especialización" },
 ];
 

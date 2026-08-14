@@ -5,12 +5,13 @@ import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+// Solo hitos verificables. Vectium SpA se constituyo el 09-12-2025 (Carpeta
+// Tributaria del SII): no inventar anos anteriores, clientes ni tamano de equipo.
+// La experiencia previa es del fundador como desarrollador, no de la empresa.
 const timeline = [
-  { year: "2021", title: "Fundación", description: "Nace Vectium SpA en Chile con la visión de democratizar el acceso a soluciones tecnológicas de clase mundial." },
-  { year: "2022", title: "Primeros Proyectos", description: "Desarrollo de plataformas web y sistemas empresariales para clientes del sector salud y retail." },
-  { year: "2023", title: "Expansión Mobile", description: "Incorporamos desarrollo de apps móviles con Flutter, ampliando nuestra oferta de servicios." },
-  { year: "2024", title: "Farmateca", description: "Lanzamiento de Farmateca, nuestra bibliomédica chilena con más de 2,500 medicamentos." },
-  { year: "2025", title: "Crecimiento", description: "Consolidación del equipo y expansión de servicios cloud con Google Cloud Platform." },
+  { year: "Dic 2025", title: "Constitución", description: "Nace Vectium SpA, sobre varios años de experiencia previa de su fundador desarrollando software." },
+  { year: "2026", title: "Farmateca", description: "Nuestra bibliomédica chilena en producción: 2.556 medicamentos y 222 farmacias mapeadas, disponible en web, App Store y Google Play." },
+  { year: "2026", title: "Reservas para restaurantes", description: "Desarrollamos nuestra propia plataforma de reservas y gestión de salón para restaurantes, hoy en demostración pública." },
 ];
 
 export function SobreNosotrosContent() {
