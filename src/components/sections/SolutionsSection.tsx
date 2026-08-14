@@ -73,7 +73,7 @@ export function SolutionsSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="soluciones" ref={ref} className="bg-white py-24 lg:py-32">
+    <section id="soluciones" ref={ref} className="bg-site-bg py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
         <motion.div
@@ -82,13 +82,13 @@ export function SolutionsSection() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <span className="text-sm font-semibold tracking-widest text-vectium-accent uppercase">
+          <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
             Servicios
           </span>
-          <h2 className="mt-3 text-3xl font-bold text-vectium-black sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold text-site-ink-strong sm:text-4xl">
             Soluciones digitales a tu medida
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-vectium-gray-600">
+          <p className="mx-auto mt-4 max-w-2xl text-site-muted">
             Desarrollamos software, páginas web y aplicaciones móviles que
             impulsan el crecimiento de tu negocio.
           </p>
@@ -102,16 +102,16 @@ export function SolutionsSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-              className="group rounded-2xl border border-vectium-gray-200/60 bg-white/80 backdrop-blur-xl p-8 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1.5 hover:border-vectium-accent/20"
+              className="group rounded-2xl border border-site-border/60 bg-site-bg/80 backdrop-blur-xl p-8 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1.5 hover:border-site-accent/20"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-vectium-accent/10 text-vectium-accent transition-colors group-hover:bg-vectium-accent group-hover:text-white">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-accent/10 text-site-accent transition-colors group-hover:bg-site-accent group-hover:text-white">
                 <service.icon size={28} />
               </div>
 
-              <h3 className="mt-6 text-xl font-semibold text-vectium-black">
+              <h3 className="mt-6 text-xl font-semibold text-site-ink-strong">
                 {service.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-vectium-gray-600">
+              <p className="mt-3 text-sm leading-relaxed text-site-muted">
                 {service.description}
               </p>
 
@@ -119,7 +119,7 @@ export function SolutionsSection() {
                 {service.features.map((feature) => (
                   <li
                     key={feature}
-                    className="inline-flex rounded-full bg-vectium-gray-100 px-3 py-1 text-xs font-medium text-vectium-gray-600"
+                    className="inline-flex rounded-full bg-site-surface px-3 py-1 text-xs font-medium text-site-muted"
                   >
                     {feature}
                   </li>
@@ -136,10 +136,10 @@ export function SolutionsSection() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mt-24 text-center"
         >
-          <span className="text-sm font-semibold tracking-widest text-vectium-accent uppercase">
+          <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
             Proyectos Destacados
           </span>
-          <h2 className="mt-3 text-2xl font-bold text-vectium-black sm:text-3xl">
+          <h2 className="mt-3 text-2xl font-bold text-site-ink-strong sm:text-3xl">
             Algunos de nuestros trabajos
           </h2>
         </motion.div>
@@ -152,22 +152,22 @@ export function SolutionsSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-              className="group relative overflow-hidden rounded-3xl border border-vectium-gray-200 bg-gradient-to-br from-vectium-gray-50 to-white p-8 shadow-sm transition-all hover:shadow-lg"
+              className="group relative overflow-hidden rounded-3xl border border-site-border bg-gradient-to-br from-site-surface to-site-bg p-8 shadow-sm transition-all hover:shadow-lg"
             >
               {/* Accent border top */}
-              <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-vectium-accent to-vectium-accent-dark" />
+              <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-site-accent to-site-accent-light" />
 
-              <div className="inline-flex items-center gap-2 rounded-full bg-vectium-accent/10 px-4 py-1.5 text-xs font-semibold text-vectium-accent">
+              <div className="inline-flex items-center gap-2 rounded-full bg-site-accent/10 px-4 py-1.5 text-xs font-semibold text-site-accent">
                 <Sparkles size={14} />
                 Proyecto Destacado
               </div>
 
-              <h3 className="mt-4 text-2xl font-bold text-vectium-black">
+              <h3 className="mt-4 text-2xl font-bold text-site-ink-strong">
                 {project.title}
               </h3>
-              <p className="text-sm text-vectium-gray-500">{project.subtitle}</p>
+              <p className="text-sm text-site-muted">{project.subtitle}</p>
 
-              <p className="mt-4 leading-relaxed text-vectium-gray-600">
+              <p className="mt-4 leading-relaxed text-site-muted">
                 {project.description}
               </p>
 
@@ -175,7 +175,7 @@ export function SolutionsSection() {
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex rounded-full bg-vectium-gray-100 px-3 py-1 text-xs font-medium text-vectium-gray-600"
+                    className="inline-flex rounded-full bg-site-surface px-3 py-1 text-xs font-medium text-site-muted"
                   >
                     {tag}
                   </span>
@@ -185,13 +185,13 @@ export function SolutionsSection() {
               {project.isInternal ? (
                 <Link
                   href={project.link}
-                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-vectium-accent transition-all hover:gap-3"
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-site-accent transition-all hover:gap-3"
                 >
                   Ver más detalles
                   <ArrowRight size={16} />
                 </Link>
               ) : (
-                <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-vectium-gray-400">
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-site-muted">
                   <ExternalLink size={14} />
                   Proyecto privado
                 </span>

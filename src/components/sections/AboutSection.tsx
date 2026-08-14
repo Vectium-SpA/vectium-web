@@ -38,7 +38,7 @@ const values = [
 
 function AnimatedCounter({ value }: { value: string }) {
   return (
-    <span className="text-4xl font-bold text-vectium-black sm:text-5xl">
+    <span className="text-4xl font-bold text-site-ink-strong sm:text-5xl">
       {value}
     </span>
   );
@@ -52,7 +52,7 @@ export function AboutSection() {
     <section
       id="sobre-nosotros"
       ref={ref}
-      className="relative bg-vectium-gray-50 py-24 lg:py-32"
+      className="relative bg-site-surface py-24 lg:py-32"
     >
       <div className="absolute inset-0 bg-dot-pattern opacity-50" />
 
@@ -64,13 +64,13 @@ export function AboutSection() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <span className="text-sm font-semibold tracking-widest text-vectium-accent uppercase">
+          <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
             Sobre Nosotros
           </span>
-          <h2 className="mt-3 text-3xl font-bold text-vectium-black sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold text-site-ink-strong sm:text-4xl">
             Tecnología que impulsa tu negocio
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-vectium-gray-600">
+          <p className="mx-auto mt-4 max-w-2xl text-site-muted">
             Vectium SpA es una empresa tecnológica chilena especializada en el
             desarrollo de software, páginas web y aplicaciones móviles de alto impacto.
           </p>
@@ -90,17 +90,17 @@ export function AboutSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                className="group rounded-2xl border border-vectium-gray-200/60 bg-white/80 backdrop-blur-xl p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-vectium-accent/20"
+                className="group rounded-2xl border border-site-border/60 bg-site-bg/80 backdrop-blur-xl p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-site-accent/20"
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-vectium-gray-100 text-vectium-gray-700 transition-colors group-hover:bg-vectium-accent group-hover:text-white">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-site-surface text-site-ink transition-colors group-hover:bg-site-accent group-hover:text-white">
                     <item.icon size={24} />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-vectium-black">
+                    <h3 className="text-lg font-semibold text-site-ink-strong">
                       {item.title}
                     </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-vectium-gray-600">
+                    <p className="mt-1 text-sm leading-relaxed text-site-muted">
                       {item.description}
                     </p>
                   </div>
@@ -122,10 +122,10 @@ export function AboutSection() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="rounded-2xl border border-vectium-gray-200/60 bg-white/80 backdrop-blur-xl p-6 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-vectium-accent/20"
+                className="rounded-2xl border border-site-border/60 bg-site-bg/80 backdrop-blur-xl p-6 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-site-accent/20"
               >
                 <AnimatedCounter value={stat.value} />
-                <p className="mt-2 text-sm text-vectium-gray-600">
+                <p className="mt-2 text-sm text-site-muted">
                   {stat.label}
                 </p>
               </motion.div>

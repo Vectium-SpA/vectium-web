@@ -83,7 +83,7 @@ export function HeroSection() {
           </Link>
         </div>
 
-        <p className="mt-8 font-[family-name:var(--font-site-mono)] text-[12.5px] tracking-[0.04em] text-site-muted-dim">
+        <p className="mt-8 font-[family-name:var(--font-site-mono)] text-[12.5px] tracking-[0.04em] text-site-muted">
           contacto@vectium.cl
         </p>
       </div>

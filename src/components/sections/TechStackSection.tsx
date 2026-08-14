@@ -62,7 +62,7 @@ export function TechStackSection() {
     <section
       id="tecnologia"
       ref={ref}
-      className="relative bg-vectium-black py-24 lg:py-32"
+      className="relative bg-site-bg-deep py-24 lg:py-32"
     >
       <div className="absolute inset-0 bg-grid-pattern" />
 
@@ -73,13 +73,13 @@ export function TechStackSection() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <span className="text-sm font-semibold tracking-widest text-vectium-accent uppercase">
+          <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
             Tecnología
           </span>
-          <h2 className="mt-3 text-3xl font-bold text-vectium-white sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold text-site-ink-strong sm:text-4xl">
             Stack tecnológico de vanguardia
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-vectium-gray-400">
+          <p className="mx-auto mt-4 max-w-2xl text-site-muted">
             Utilizamos las tecnologías más avanzadas para crear soluciones
             robustas, escalables y de alto rendimiento.
           </p>
@@ -92,17 +92,17 @@ export function TechStackSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.1 + index * 0.08 }}
-              className="group flex flex-col items-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 text-center transition-all hover:border-white/20 hover:bg-white/10 hover:-translate-y-1"
+              className="group flex flex-col items-center rounded-2xl border border-site-ink/10 bg-site-ink/5 backdrop-blur-md p-6 text-center transition-all hover:border-site-ink/20 hover:bg-site-ink/10 hover:-translate-y-1"
             >
               <div
-                className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/5 transition-colors group-hover:bg-white/10"
+                className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-ink/5 transition-colors group-hover:bg-site-ink/10"
                 style={{ color: tech.color }}
                 dangerouslySetInnerHTML={{ __html: tech.svg }}
               />
-              <h3 className="mt-4 text-sm font-semibold text-vectium-white">
+              <h3 className="mt-4 text-sm font-semibold text-site-ink-strong">
                 {tech.name}
               </h3>
-              <p className="mt-1 text-xs text-vectium-gray-500">
+              <p className="mt-1 text-xs text-site-muted">
                 {tech.description}
               </p>
             </motion.div>
