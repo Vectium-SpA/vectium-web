@@ -61,7 +61,7 @@ export function HeroSection() {
         <p className="mt-7 max-w-[50ch] font-[family-name:var(--font-site-sans)] text-[19.5px] font-light leading-[1.62] text-site-muted">
           Plataformas web, aplicaciones móviles e integraciones a medida.
           Farmateca, nuestra app de referencia farmacológica, opera sin conexión
-          con 2.556 medicamentos.
+          con 2.994 medicamentos.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">

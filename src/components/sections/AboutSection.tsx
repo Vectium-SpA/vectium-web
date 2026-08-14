@@ -9,7 +9,7 @@ import { Target, Eye, Heart } from "lucide-react";
 // satisfechos): Vectium SpA se constituyo el 09-12-2025 y afirmar una trayectoria
 // que no existe es publicidad enganosa, Ley 19.496 art. 28.
 const stats = [
-  { value: "2.556", label: "Medicamentos en Farmateca" },
+  { value: "2.994", label: "Medicamentos en Farmateca" },
   { value: "222", label: "Farmacias Mapeadas" },
   { value: "1.257", label: "Descargas de Farmateca" },
   { value: "3", label: "Áreas de Especialización" },

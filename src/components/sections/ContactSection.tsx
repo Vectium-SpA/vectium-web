@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Mail, MapPin, Linkedin, Github, Send } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Github, Send } from "lucide-react";
 import { vectiumTheme } from "@/styles/theme";
 import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
 import { sendContactEmail } from "@/lib/emailjs";
@@ -87,8 +87,8 @@ export function ContactSection() {
             Hablemos de tu proyecto
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-site-muted">
-            ¿Tienes una idea o necesitas una solución digital para el sector
-            salud? Estamos aquí para ayudarte.
+            Cuéntanos qué necesitas y te respondemos con una propuesta
+            concreta, sin compromiso.
           </p>
         </motion.div>
 
@@ -130,17 +130,23 @@ export function ContactSection() {
                 </div>
               </div>
 
+              {/* LinkedIn e Instagram salieron: no existe pagina de empresa y
+                  un icono con href="#" es un link muerto. Vuelven cuando
+                  existan las cuentas de verdad. */}
+
               <div className="flex items-start gap-4">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-site-accent/10 text-site-accent">
-                  <Linkedin size={20} />
+                  <MessageCircle size={20} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-site-ink-strong">LinkedIn</h3>
+                  <h3 className="font-semibold text-site-ink-strong">WhatsApp</h3>
                   <a
-                    href="#"
+                    href="https://wa.me/56949337486"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-sm text-site-muted transition-colors hover:text-site-accent"
                   >
-                    Vectium SpA
+                    +56 9 4933 7486
                   </a>
                 </div>
               </div>
@@ -152,10 +158,12 @@ export function ContactSection() {
                 <div>
                   <h3 className="font-semibold text-site-ink-strong">GitHub</h3>
                   <a
-                    href="#"
+                    href="https://github.com/Vectium-SpA"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-sm text-site-muted transition-colors hover:text-site-accent"
                   >
-                    github.com/vectium
+                    github.com/Vectium-SpA
                   </a>
                 </div>
               </div>

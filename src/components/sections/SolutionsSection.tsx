@@ -52,7 +52,7 @@ const featuredProjects = [
     title: "Farmateca",
     subtitle: "Bibliomédica Chilena",
     description:
-      "Aplicación de referencia farmacológica con 2.556 medicamentos y 222 farmacias mapeadas. Funciona sin conexión, para profesionales de la salud.",
+      "Aplicación de referencia farmacológica con 2.994 medicamentos y 222 farmacias mapeadas. Funciona sin conexión, para profesionales de la salud.",
     tags: ["Salud", "Mobile", "Web"],
     link: "/farmateca",
     isInternal: true,

@@ -108,6 +108,36 @@ export function TechStackSection() {
             </motion.div>
           ))}
         </div>
+
+        {/* Certificaciones. Se enuncian y nada mas: son respaldo, no argumento
+            de venta. Ambas estan a nombre de Andres, no de la SpA, y por eso el
+            encabezado dice "de nuestro equipo" y no "de Vectium". */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.7 }}
+          className="mt-16 border-t border-site-ink/10 pt-10"
+        >
+          <p className="text-center font-[family-name:var(--font-site-mono)] text-[11px] uppercase tracking-[0.18em] text-site-muted">
+            Certificaciones de nuestro equipo
+          </p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+            {[
+              { emisor: "MercadoPago Developers", nombre: "Checkout Pro" },
+              { emisor: "Anthropic", nombre: "Claude 101" },
+            ].map((c) => (
+              <div
+                key={c.nombre}
+                className="rounded-xl border border-site-ink/10 bg-site-ink/5 px-5 py-3 text-center"
+              >
+                <p className="text-sm font-semibold text-site-ink-strong">
+                  {c.nombre}
+                </p>
+                <p className="mt-0.5 text-xs text-site-muted">{c.emisor}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

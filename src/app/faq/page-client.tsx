@@ -81,17 +81,12 @@ export default function FAQPage() {
         {
           question: "¿Cuánto demora un proyecto típico?",
           answer:
-            "El tiempo varía según el alcance del proyecto. Apps móviles simples toman entre 2-3 meses. Sitios web corporativos requieren 3-6 semanas. Sistemas complejos pueden tomar 4-6 meses o más. Trabajamos con metodología ágil por sprints, entregando valor de forma incremental.",
+            "Depende del alcance, y por eso no publicamos plazos genéricos: comprometer un tiempo antes de conocer el proyecto es la forma más rápida de incumplirlo. Después de la reunión inicial entregamos una estimación por escrito, con las etapas y qué entra en cada una.",
         },
         {
           question: "¿Hacen mantenimiento después del lanzamiento?",
           answer:
-            "Sí, ofrecemos planes de mantenimiento continuo que incluyen actualizaciones, corrección de bugs, mejoras de seguridad, soporte técnico y evolución de funcionalidades. El mantenimiento es clave para mantener tus sistemas seguros y actualizados.",
-        },
-        {
-          question: "¿Puedo ver el progreso de mi proyecto?",
-          answer:
-            "Absolutamente. Usamos metodología ágil con demos cada 1-2 semanas donde puedes ver el avance real del proyecto. Además, proporcionamos acceso a entornos de staging (pruebas) para que puedas probar las funcionalidades antes del lanzamiento oficial.",
+            "Sí, es un servicio que podemos tomar: actualizaciones, corrección de errores, mejoras de seguridad y evolución de funcionalidades. No lo vendemos como un plan cerrado con precio fijo, sino que se evalúa según lo que el sistema realmente necesita y se acuerda por escrito.",
         },
       ],
     },
@@ -101,7 +96,7 @@ export default function FAQPage() {
         {
           question: "¿Qué es Farmateca?",
           answer:
-            "Farmateca es una aplicación bibliomédica chilena con información detallada de más de 2,556 medicamentos y 200+ compuestos farmacológicos. Funciona 100% offline y está disponible en Android, iOS y versión Web. Es una herramienta educativa para profesionales y estudiantes de la salud.",
+            "Farmateca es una aplicación bibliomédica chilena con información detallada de más de 2.994 medicamentos y 450 compuestos farmacológicos. Funciona 100% offline y está disponible en Android, iOS y versión Web. Es una herramienta educativa para profesionales y estudiantes de la salud.",
         },
         {
           question: "¿Farmateca es gratis?",
@@ -126,22 +121,17 @@ export default function FAQPage() {
         {
           question: "¿Cómo empezamos un proyecto con Vectium?",
           answer:
-            "El proceso típico incluye: (1) Contacto inicial vía email o formulario web, (2) Reunión de descubrimiento para entender tus necesidades, (3) Propuesta técnica y presupuesto, (4) Fase de diseño y prototipado, (5) Desarrollo por sprints con demos regulares, (6) Testing y QA, (7) Lanzamiento y entrenamiento. Mantenemos comunicación constante en cada etapa.",
-        },
-        {
-          question: "¿Trabajan con empresas internacionales?",
-          answer:
-            "Sí, aunque estamos basados en Chile, trabajamos con clientes internacionales. Tenemos experiencia colaborando de forma remota y adaptándonos a diferentes zonas horarias. La mayoría de nuestras herramientas y procesos están diseñados para trabajo distribuido.",
+            "El proceso típico incluye: (1) Contacto inicial vía email o formulario web, (2) Reunión de descubrimiento para entender tus necesidades, (3) Propuesta técnica y presupuesto, (4) Fase de diseño y prototipado, (5) Desarrollo, (6) Pruebas, (7) Lanzamiento y capacitación. Mantenemos comunicación constante en cada etapa.",
         },
         {
           question: "¿Qué pasa si necesito cambios después del lanzamiento?",
           answer:
-            "Después del lanzamiento, puedes solicitar cambios y nuevas funcionalidades. Los cambios menores suelen estar cubiertos en planes de mantenimiento. Para nuevas funcionalidades significativas, evaluamos el alcance y proporcionamos una cotización. Nos comprometemos a mantener una relación de largo plazo con nuestros clientes.",
+            "Después del lanzamiento, puedes solicitar cambios y nuevas funcionalidades. Evaluamos el alcance de lo que necesitas y entregamos una cotización antes de trabajar. Nos interesa mantener una relación de largo plazo, no cerrar y desaparecer.",
         },
         {
           question: "¿Qué incluye el soporte técnico?",
           answer:
-            "El soporte técnico incluye monitoreo de sistemas, resolución de bugs, actualizaciones de seguridad, respaldo de datos, optimización de rendimiento y asistencia para resolver incidencias. Ofrecemos diferentes niveles de soporte según las necesidades de cada cliente, desde básico hasta 24/7.",
+            "Resolución de errores, actualizaciones de seguridad, respaldo de datos y optimización de rendimiento. El alcance y la disponibilidad se acuerdan por escrito con cada cliente: preferimos comprometer lo que podemos cumplir antes que ofrecer una cobertura que no sostendríamos.",
         },
       ],
     },

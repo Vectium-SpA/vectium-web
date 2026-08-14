@@ -10,7 +10,7 @@ import { ArrowRight } from "lucide-react";
 // La experiencia previa es del fundador como desarrollador, no de la empresa.
 const timeline = [
   { year: "Dic 2025", title: "Constitución", description: "Nace Vectium SpA, sobre varios años de experiencia previa de su fundador desarrollando software." },
-  { year: "2026", title: "Farmateca", description: "Nuestra bibliomédica chilena en producción: 2.556 medicamentos y 222 farmacias mapeadas, disponible en web, App Store y Google Play." },
+  { year: "2026", title: "Farmateca", description: "Nuestra bibliomédica chilena en producción: 2.994 medicamentos y 222 farmacias mapeadas, disponible en web, App Store y Google Play." },
   { year: "2026", title: "Reservas para restaurantes", description: "Desarrollamos nuestra propia plataforma de reservas y gestión de salón para restaurantes, hoy en demostración pública." },
 ];
 

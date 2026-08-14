@@ -14,7 +14,7 @@ export const projects: Project[] = [
     title: "Farmateca",
     subtitle: "Bibliomédica Chilena Offline",
     description:
-      "Aplicación móvil y web para consulta de información farmacológica: 2.556 medicamentos, marcas comerciales, genéricos y 222 farmacias mapeadas. Funciona sin conexión, sincroniza en la nube y monetiza con suscripciones. Publicada en App Store y Google Play.",
+      "Aplicación móvil y web para consulta de información farmacológica: 2.994 medicamentos, marcas comerciales, genéricos y 222 farmacias mapeadas. Funciona sin conexión, sincroniza en la nube y monetiza con suscripciones. Publicada en App Store y Google Play.",
     category: "fullstack",
     stack: [
       "Flutter",
