@@ -82,8 +82,15 @@ export const metadata: Metadata = {
   verification: {
     google: 'HjGdOrb1f9lqG0HncOhvMwpN-gQNgpT3pQ67oqjWb40',
   },
+  // Assets de marca del paquete vectium-icons v1.0.0. Antes el favicon era
+  // generico y /logo.png y /og-image.png daban 404 en produccion, asi que al
+  // compartir vectium.cl no aparecia ninguna miniatura.
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-256.png", type: "image/png", sizes: "256x256" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
 };
 
