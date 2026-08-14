@@ -1,6 +1,6 @@
 # Pendientes del sitio Vectium
 
-**Generado:** 2026-08-14 · **Estado del trabajo:** PR [#3](https://github.com/Vectium-SpA/vectium-web/pull/3), rama `fix/identidad-legal-sii`, **sin mergear**. Actualizado 2026-08-14 tras aplicar el feedback de diseño de Andrés (capa visual, tema oscuro por defecto, responsive 320→3440px y énfasis en Gestionala).
+**Generado:** 2026-08-14 · **Estado:** ✅ **PR [#3](https://github.com/Vectium-SpA/vectium-web/pull/3) MERGEADO a `main` el 2026-08-14** (commit `b58f5d5`, 23 commits). **Desplegado y verificado en `vectium.cl`.**
 
 Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de abajo.
 
@@ -41,7 +41,39 @@ Andrés revisó el sitio en local, pidió tres cosas y las tres están hechas y 
 
 ---
 
-## 2. Revisar y mergear el PR #3
+## ✅ 2. PR #3 — MERGEADO Y VERIFICADO EN PRODUCCIÓN (2026-08-14)
+
+Andrés revisó el preview, aprobó, y se mergeó. Verificado **contra `vectium.cl`**, no contra local:
+
+- Las **10 rutas** responden 200, incluidas `/farmateca` y `/farmateca/web`.
+- Copy nuevo del hero arriba · Farmateca fuera de la bajada · Gestionala destacada ·
+  isologo cromado · capa de movimiento · **tema oscuro por defecto sin `localStorage`**.
+- Assets nuevos sirviéndose: `isologo-3d.webp` (104KB), `isologo-3d.png`, `og-image.png`,
+  `projects/gestionala/isotipo.png`.
+- **0px de desborde** en el home de producción.
+- 🔴 **Farmateca intacta en producción:** 0 nodos `.site-motion` / `.site-aurora` /
+  `.site-card` / barra de progreso en `/farmateca`, y su contenido propio renderiza.
+
+---
+
+## 3. Marca: dos referencias que siguen apuntando al isologo VIEJO
+
+El isologo 3D cromado es la marca nueva. Estas dos piezas no se cambiaron porque tocan
+identidad para SEO y buscadores, y Andrés no lo ha decidido:
+
+- [ ] 🔲 **`StructuredData.tsx`** declara `logo: "https://vectium.cl/logo.png"` — es el logo
+      que Google puede mostrar en resultados. Sigue siendo el viejo.
+- [ ] 🔲 **El favicon** (`favicon.ico`, `icon-256.png`, `apple-touch-icon.png`) es el isotipo
+      viejo. ⚠️ **No sirve el render 3D tal cual**: a 16-32px, con degradados y el wordmark
+      incrustado, queda ilegible. Habría que redibujar el isotipo nuevo plano y de alto
+      contraste, sin texto.
+
+> ⚠️ **El logo nuevo y el viejo son marcas DISTINTAS**, no dos versiones de la misma: el
+> nuevo tiene un lazo interior entrelazado. Por eso no se puede "convertir" una en otra.
+
+---
+
+## 4. (histórico) Revisar y mergear el PR #3
 
 - [ ] Abrir el **preview de Vercel** del PR (lo genera solo al abrir el PR).
 - [ ] Home: hero con retícula 3D, 4 servicios, cifras, stack, contacto.
