@@ -195,7 +195,7 @@ export function ContactSection() {
                     id="name"
                     type="text"
                     {...register("name")}
-                    className="mt-1.5 w-full rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-vectium-accent"
+                    className="mt-1.5 w-full rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-site-accent"
                     placeholder="Tu nombre"
                   />
                   {errors.name && (
@@ -217,7 +217,7 @@ export function ContactSection() {
                     id="email"
                     type="email"
                     {...register("email")}
-                    className="mt-1.5 w-full rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-vectium-accent"
+                    className="mt-1.5 w-full rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-site-accent"
                     placeholder="tu@email.com"
                   />
                   {errors.email && (
@@ -240,7 +240,7 @@ export function ContactSection() {
                     id="company"
                     type="text"
                     {...register("company")}
-                    className="mt-1.5 w-full rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-vectium-accent"
+                    className="mt-1.5 w-full rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-site-accent"
                     placeholder="Tu empresa o institución"
                   />
                   {errors.company && (
@@ -263,7 +263,7 @@ export function ContactSection() {
                     id="phone"
                     type="tel"
                     {...register("phone")}
-                    className="mt-1.5 w-full rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-vectium-accent"
+                    className="mt-1.5 w-full rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-site-accent"
                     placeholder="+56 9 1234 5678"
                   />
                   {errors.phone && (
@@ -285,7 +285,7 @@ export function ContactSection() {
                     id="message"
                     rows={5}
                     {...register("message")}
-                    className="mt-1.5 w-full resize-none rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-vectium-accent"
+                    className="mt-1.5 w-full resize-none rounded-xl border border-site-border bg-site-surface px-4 py-3 text-sm text-site-ink-strong placeholder:text-site-muted focus:border-site-accent focus:bg-site-bg focus:outline-none focus:ring-1 focus:ring-site-accent"
                     placeholder="Cuéntanos sobre tu proyecto o consulta..."
                   />
                   {errors.message && (
@@ -300,7 +300,7 @@ export function ContactSection() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-2 rounded-xl bg-site-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-vectium-accent/20 transition-all hover:bg-site-accent-light disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-xl bg-site-accent px-8 py-3 text-sm font-semibold text-site-bg shadow-lg shadow-site-accent/20 transition-all hover:bg-site-accent-light disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>

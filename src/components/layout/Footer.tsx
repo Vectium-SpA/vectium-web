@@ -116,7 +116,7 @@ export function Footer() {
                 />
                 <button
                   type="submit"
-                  className="rounded-lg bg-site-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-site-accent-light"
+                  className="rounded-lg bg-site-accent px-4 py-2 text-sm font-medium text-site-bg transition-colors hover:bg-site-accent-light"
                 >
                   Suscribir
                 </button>

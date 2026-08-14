@@ -15,16 +15,16 @@ function FAQItem({ question, answer }: FAQItemProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-vectium-gray-200 last:border-0">
+    <div className="border-b border-site-border last:border-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between py-5 text-left transition-colors hover:bg-vectium-gray-50"
+        className="flex w-full items-center justify-between py-5 text-left transition-colors hover:bg-site-surface"
       >
-        <span className="text-lg font-semibold text-vectium-gray-900 pr-4">
+        <span className="text-lg font-semibold text-site-ink pr-4">
           {question}
         </span>
         <ChevronDown
-          className={`ml-4 h-5 w-5 shrink-0 text-vectium-gray-500 transition-transform duration-300 ${
+          className={`ml-4 h-5 w-5 shrink-0 text-site-muted transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -38,7 +38,7 @@ function FAQItem({ question, answer }: FAQItemProps) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="pb-5 pr-12 text-vectium-gray-700 leading-relaxed">
+            <div className="pb-5 pr-12 text-site-ink leading-relaxed">
               {answer}
             </div>
           </motion.div>
@@ -173,7 +173,7 @@ export default function FAQPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-site-bg">
       <PageHero
         badge="CENTRO DE AYUDA"
         title="Preguntas Frecuentes"
@@ -183,10 +183,10 @@ export default function FAQPage() {
       <div className="mx-auto max-w-4xl px-6 py-16 lg:px-8">
         {faqSections.map((section, sectionIndex) => (
           <section key={sectionIndex} className="mb-12 last:mb-0">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-6 pb-3 border-b-2 border-vectium-accent">
+            <h2 className="text-2xl font-bold text-site-ink mb-6 pb-3 border-b-2 border-site-accent">
               {section.title}
             </h2>
-            <div className="bg-white rounded-lg border border-vectium-gray-200 overflow-hidden">
+            <div className="bg-site-bg rounded-lg border border-site-border overflow-hidden">
               {section.questions.map((faq, index) => (
                 <FAQItem
                   key={index}
@@ -199,16 +199,16 @@ export default function FAQPage() {
         ))}
 
         {/* Call to Action */}
-        <div className="mt-16 bg-gradient-to-br from-vectium-accent/5 to-vectium-accent/10 rounded-2xl p-8 text-center border border-vectium-accent/20">
-          <h3 className="text-2xl font-bold text-vectium-gray-900 mb-3">
+        <div className="mt-16 bg-gradient-to-br from-site-accent/5 to-site-accent/10 rounded-2xl p-8 text-center border border-site-accent/20">
+          <h3 className="text-2xl font-bold text-site-ink mb-3">
             ¿No encuentras lo que buscas?
           </h3>
-          <p className="text-lg text-vectium-gray-700 mb-6">
+          <p className="text-lg text-site-ink mb-6">
             Nuestro equipo está disponible para responder cualquier pregunta adicional.
           </p>
           <a
             href="/contacto"
-            className="inline-flex items-center justify-center rounded-lg bg-vectium-accent px-8 py-3 text-base font-semibold text-white shadow-lg transition-all hover:bg-vectium-accent-dark hover:shadow-xl"
+            className="inline-flex items-center justify-center rounded-lg bg-site-accent px-8 py-3 text-base font-semibold text-site-bg shadow-lg transition-all hover:bg-site-accent-light hover:shadow-xl"
           >
             Contáctanos
           </a>

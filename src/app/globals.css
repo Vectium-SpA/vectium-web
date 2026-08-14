@@ -15,7 +15,11 @@
    Regla: NUNCA redefinir aca los tokens --color-vectium-* ni --color-farmateca-*.
    Estos son tokens NUEVOS.
    --------------------------------------------------------------------------- */
-@custom-variant site-dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+/* `:is` y no `:where`: :where() aporta especificidad CERO, asi que
+   site-dark:bg-x empataba con la utilidad base bg-y y ganaba la que Tailwind
+   emitiera al final. Con :is() el selector toma la especificidad del atributo
+   y el override es determinista. */
+@custom-variant site-dark (&:is([data-theme="dark"], [data-theme="dark"] *));
 
 :root {
   /* Paleta clara — tomada del prototipo Home-Propuesta-v1-clara */
@@ -160,28 +164,28 @@
     height: 100px;
     margin-top: -1px;
     margin-bottom: -1px;
-    background: linear-gradient(to bottom, var(--color-vectium-black), var(--color-vectium-gray-50));
+    background: linear-gradient(to bottom, var(--site-bg-deep), var(--site-surface));
   }
 
   .section-divider-light-to-white {
     height: 80px;
     margin-top: -1px;
     margin-bottom: -1px;
-    background: linear-gradient(to bottom, var(--color-vectium-gray-50), var(--color-vectium-white));
+    background: linear-gradient(to bottom, var(--site-surface), var(--site-bg));
   }
 
   .section-divider-white-to-dark {
     height: 100px;
     margin-top: -1px;
     margin-bottom: -1px;
-    background: linear-gradient(to bottom, var(--color-vectium-white), var(--color-vectium-black));
+    background: linear-gradient(to bottom, var(--site-bg), var(--site-bg-deep));
   }
 
   .section-divider-light-to-dark {
     height: 100px;
     margin-top: -1px;
     margin-bottom: -1px;
-    background: linear-gradient(to bottom, var(--color-vectium-gray-50), var(--color-vectium-black));
+    background: linear-gradient(to bottom, var(--site-surface), var(--site-bg-deep));
   }
 
   /* Animations */

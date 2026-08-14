@@ -24,7 +24,7 @@ const categoryColors: Record<Project["category"], string> = {
 const statusColors: Record<Project["status"], string> = {
   "En producción": "bg-green-100 text-green-800",
   "En desarrollo": "bg-yellow-100 text-yellow-800",
-  Completado: "bg-vectium-gray-100 text-vectium-gray-800",
+  Completado: "bg-site-surface text-site-ink",
 };
 
 export default function ProjectCard({ project }: ProjectCardProps) {
@@ -32,10 +32,10 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     <motion.div
       whileHover={{ scale: 1.02, y: -5 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="group bg-white rounded-xl shadow-lg overflow-hidden"
+      className="group bg-site-bg rounded-xl shadow-lg overflow-hidden"
     >
       {/* Project image */}
-      <div className="relative h-48 bg-gradient-to-br from-vectium-accent to-vectium-accent-dark overflow-hidden">
+      <div className="relative h-48 bg-gradient-to-br from-site-accent to-site-accent-light overflow-hidden">
         {project.image ? (
           <img
             src={project.image}
@@ -61,15 +61,15 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       {/* Content */}
       <div className="p-6">
         <div className="mb-4">
-          <h3 className="text-2xl font-bold text-vectium-black mb-1 group-hover:text-vectium-accent transition-colors">
+          <h3 className="text-2xl font-bold text-site-ink-strong mb-1 group-hover:text-site-accent transition-colors">
             {project.title}
           </h3>
-          <p className="text-sm text-vectium-accent font-medium">
+          <p className="text-sm text-site-accent font-medium">
             {project.subtitle}
           </p>
         </div>
 
-        <p className="text-vectium-gray-600 mb-4 line-clamp-3">
+        <p className="text-site-muted mb-4 line-clamp-3">
           {project.description}
         </p>
 
@@ -82,14 +82,14 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         <div className="mb-4">
-          <h4 className="text-xs font-semibold text-vectium-gray-500 uppercase mb-2">
+          <h4 className="text-xs font-semibold text-site-muted uppercase mb-2">
             Stack Tecnológico
           </h4>
           <div className="flex flex-wrap gap-2">
             {project.stack.map((tech) => (
               <span
                 key={tech}
-                className="px-2 py-1 bg-vectium-gray-50 text-vectium-gray-700 text-xs rounded border border-vectium-gray-200"
+                className="px-2 py-1 bg-site-surface text-site-ink text-xs rounded border border-site-border"
               >
                 {tech}
               </span>
@@ -103,7 +103,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 bg-vectium-accent hover:bg-vectium-accent-dark text-white text-center py-2 px-4 rounded-lg font-medium transition-all"
+              className="flex-1 bg-site-accent hover:bg-site-accent-light text-site-bg text-center py-2 px-4 rounded-lg font-medium transition-all"
             >
               Ver proyecto
             </a>
@@ -113,7 +113,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.githubLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-vectium-gray-900 hover:bg-vectium-black text-white py-2 px-4 rounded-lg font-medium transition-all"
+              className="bg-site-surface hover:bg-site-bg-deep text-white py-2 px-4 rounded-lg font-medium transition-all"
               aria-label="Ver en GitHub"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

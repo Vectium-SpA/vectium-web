@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function PrivacidadPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-site-bg">
       <PageHero
         badge="ÚLTIMA ACTUALIZACIÓN: FEBRERO 2026"
         title="Política de Privacidad"
@@ -21,10 +21,10 @@ export default function PrivacidadPage() {
         <article className="prose prose-lg prose-gray mx-auto">
           {/* Introducción */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-site-ink mb-4">
               1. Introducción
             </h2>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed">
+            <p className="text-lg text-site-ink leading-relaxed">
               Vectium SpA (en adelante, "Vectium", "nosotros" o "la empresa"), RUT 78.312.836-5, con
               domicilio en El Trovador 4280, Oficina 307, comuna de Las Condes, Región Metropolitana,
               Chile, es el responsable del tratamiento de tus datos personales, respeta tu privacidad
@@ -37,43 +37,43 @@ export default function PrivacidadPage() {
 
           {/* Datos que recopilamos */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-site-ink mb-4">
               2. Datos que Recopilamos
             </h2>
 
-            <h3 className="text-xl font-semibold text-vectium-gray-800 mb-3 mt-6">
+            <h3 className="text-xl font-semibold text-site-ink mb-3 mt-6">
               2.1. Información de Contacto
             </h3>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mb-4">
+            <p className="text-lg text-site-ink leading-relaxed mb-4">
               A través de nuestro formulario de contacto y servicios web, recopilamos:
             </p>
-            <ul className="list-disc pl-6 text-lg text-vectium-gray-700 space-y-2">
+            <ul className="list-disc pl-6 text-lg text-site-ink space-y-2">
               <li>Nombre completo</li>
               <li>Correo electrónico</li>
               <li>Número de teléfono (opcional)</li>
               <li>Mensaje o consulta</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-vectium-gray-800 mb-3 mt-6">
+            <h3 className="text-xl font-semibold text-site-ink mb-3 mt-6">
               2.2. Datos de Navegación
             </h3>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mb-4">
+            <p className="text-lg text-site-ink leading-relaxed mb-4">
               Utilizamos cookies técnicas esenciales y Google Analytics para:
             </p>
-            <ul className="list-disc pl-6 text-lg text-vectium-gray-700 space-y-2">
+            <ul className="list-disc pl-6 text-lg text-site-ink space-y-2">
               <li>Dirección IP (anonimizada)</li>
               <li>Tipo de navegador y sistema operativo</li>
               <li>Páginas visitadas y tiempo de permanencia</li>
               <li>Origen de la visita (referrer)</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-vectium-gray-800 mb-3 mt-6">
+            <h3 className="text-xl font-semibold text-site-ink mb-3 mt-6">
               2.3. Datos en Farmateca App
             </h3>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mb-4">
+            <p className="text-lg text-site-ink leading-relaxed mb-4">
               Si utilizas nuestra aplicación Farmateca, recopilamos:
             </p>
-            <ul className="list-disc pl-6 text-lg text-vectium-gray-700 space-y-2">
+            <ul className="list-disc pl-6 text-lg text-site-ink space-y-2">
               <li>Correo electrónico (para autenticación)</li>
               <li>Foto de perfil (almacenada en Firebase Storage)</li>
               <li>Medicamentos favoritos (almacenados en Firestore)</li>
@@ -83,13 +83,13 @@ export default function PrivacidadPage() {
 
           {/* Uso de Datos */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-site-ink mb-4">
               3. Uso de los Datos
             </h2>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mb-4">
+            <p className="text-lg text-site-ink leading-relaxed mb-4">
               Utilizamos tus datos personales para:
             </p>
-            <ul className="list-disc pl-6 text-lg text-vectium-gray-700 space-y-2">
+            <ul className="list-disc pl-6 text-lg text-site-ink space-y-2">
               <li>Responder a tus consultas y solicitudes de contacto</li>
               <li>Mejorar nuestros servicios y experiencia de usuario</li>
               <li>Analizar el uso de nuestro sitio web mediante estadísticas agregadas</li>
@@ -97,7 +97,7 @@ export default function PrivacidadPage() {
               <li>Proporcionar funcionalidades personalizadas en Farmateca (favoritos, sincronización)</li>
               <li>Cumplir con obligaciones legales y regulatorias</li>
             </ul>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mt-4">
+            <p className="text-lg text-site-ink leading-relaxed mt-4">
               <strong>No vendemos ni compartimos tus datos personales con terceros</strong> con fines
               comerciales. Solo compartimos información con proveedores de servicios (como Firebase/Google Cloud)
               necesarios para el funcionamiento de nuestros servicios.
@@ -106,13 +106,13 @@ export default function PrivacidadPage() {
 
           {/* Almacenamiento */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-site-ink mb-4">
               4. Almacenamiento y Seguridad
             </h2>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mb-4">
+            <p className="text-lg text-site-ink leading-relaxed mb-4">
               Tus datos se almacenan de manera segura en:
             </p>
-            <ul className="list-disc pl-6 text-lg text-vectium-gray-700 space-y-2">
+            <ul className="list-disc pl-6 text-lg text-site-ink space-y-2">
               <li>
                 <strong>Firebase (Google Cloud Platform)</strong>: Región São Paulo, Brasil
               </li>
@@ -125,7 +125,7 @@ export default function PrivacidadPage() {
                 o según lo exija la legislación chilena
               </li>
             </ul>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mt-4">
+            <p className="text-lg text-site-ink leading-relaxed mt-4">
               Implementamos medidas técnicas y organizativas para proteger tus datos contra acceso no
               autorizado, pérdida o alteración. Sin embargo, ningún sistema es 100% seguro, por lo que
               te recomendamos usar contraseñas robustas.
@@ -134,13 +134,13 @@ export default function PrivacidadPage() {
 
           {/* Derechos del Usuario */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-site-ink mb-4">
               5. Tus Derechos (Ley N° 19.628 de Chile)
             </h2>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mb-4">
+            <p className="text-lg text-site-ink leading-relaxed mb-4">
               De acuerdo con la legislación chilena, tienes derecho a:
             </p>
-            <ul className="list-disc pl-6 text-lg text-vectium-gray-700 space-y-2">
+            <ul className="list-disc pl-6 text-lg text-site-ink space-y-2">
               <li>
                 <strong>Acceso</strong>: Solicitar una copia de los datos personales que tenemos sobre ti
               </li>
@@ -157,9 +157,9 @@ export default function PrivacidadPage() {
                 <strong>Portabilidad</strong>: Recibir tus datos en formato estructurado y transferible
               </li>
             </ul>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mt-4">
+            <p className="text-lg text-site-ink leading-relaxed mt-4">
               Para ejercer cualquiera de estos derechos, contáctanos en{" "}
-              <a href="mailto:contacto@vectium.cl" className="text-vectium-accent hover:underline">
+              <a href="mailto:contacto@vectium.cl" className="text-site-accent hover:underline">
                 contacto@vectium.cl
               </a>
               . Responderemos tu solicitud en un plazo máximo de 10 días hábiles.
@@ -168,13 +168,13 @@ export default function PrivacidadPage() {
 
           {/* Cookies */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-site-ink mb-4">
               6. Uso de Cookies
             </h2>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mb-4">
+            <p className="text-lg text-site-ink leading-relaxed mb-4">
               Utilizamos cookies para mejorar tu experiencia en nuestro sitio web:
             </p>
-            <ul className="list-disc pl-6 text-lg text-vectium-gray-700 space-y-2">
+            <ul className="list-disc pl-6 text-lg text-site-ink space-y-2">
               <li>
                 <strong>Cookies esenciales</strong>: Necesarias para el funcionamiento del sitio
                 (autenticación, preferencias)
@@ -184,7 +184,7 @@ export default function PrivacidadPage() {
                 interactúan con nuestro sitio
               </li>
             </ul>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mt-4">
+            <p className="text-lg text-site-ink leading-relaxed mt-4">
               Puedes configurar tu navegador para rechazar cookies, aunque esto puede afectar la
               funcionalidad del sitio. Las cookies analíticas son opcionales y puedes desactivarlas
               desde el banner de cookies.
@@ -193,10 +193,10 @@ export default function PrivacidadPage() {
 
           {/* Menores de Edad */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-site-ink mb-4">
               7. Menores de Edad
             </h2>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed">
+            <p className="text-lg text-site-ink leading-relaxed">
               Nuestros servicios están dirigidos a mayores de 18 años. Si eres menor de edad, debes
               contar con el consentimiento de tus padres o tutores legales para usar nuestros servicios.
               Farmateca es una herramienta educativa que debe usarse bajo supervisión profesional.
@@ -205,10 +205,10 @@ export default function PrivacidadPage() {
 
           {/* Cambios */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-site-ink mb-4">
               8. Cambios a esta Política
             </h2>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed">
+            <p className="text-lg text-site-ink leading-relaxed">
               Podemos actualizar esta Política de Privacidad ocasionalmente. Los cambios se publicarán
               en esta página con la fecha de "Última actualización" al inicio del documento. Te
               recomendamos revisarla periódicamente. El uso continuado de nuestros servicios después de
@@ -218,23 +218,23 @@ export default function PrivacidadPage() {
 
           {/* Contacto */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-vectium-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-site-ink mb-4">
               9. Contacto
             </h2>
-            <p className="text-lg text-vectium-gray-700 leading-relaxed mb-4">
+            <p className="text-lg text-site-ink leading-relaxed mb-4">
               Si tienes preguntas sobre esta Política de Privacidad o deseas ejercer tus derechos,
               contáctanos:
             </p>
-            <div className="bg-vectium-gray-50 p-6 rounded-lg border border-vectium-gray-200">
-              <p className="text-lg text-vectium-gray-900 font-semibold">Vectium SpA</p>
-              <p className="text-lg text-vectium-gray-700 mt-2">RUT: 78.312.836-5</p>
-              <p className="text-lg text-vectium-gray-700 mt-2">
+            <div className="bg-site-surface p-6 rounded-lg border border-site-border">
+              <p className="text-lg text-site-ink font-semibold">Vectium SpA</p>
+              <p className="text-lg text-site-ink mt-2">RUT: 78.312.836-5</p>
+              <p className="text-lg text-site-ink mt-2">
                 Email:{" "}
-                <a href="mailto:contacto@vectium.cl" className="text-vectium-accent hover:underline">
+                <a href="mailto:contacto@vectium.cl" className="text-site-accent hover:underline">
                   contacto@vectium.cl
                 </a>
               </p>
-              <p className="text-lg text-vectium-gray-700">
+              <p className="text-lg text-site-ink">
                 Domicilio: El Trovador 4280, Oficina 307, Las Condes, Región Metropolitana, Chile
               </p>
             </div>

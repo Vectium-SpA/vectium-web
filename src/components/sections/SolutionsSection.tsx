@@ -104,7 +104,7 @@ export function SolutionsSection() {
               transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
               className="group rounded-2xl border border-site-border/60 bg-site-bg/80 backdrop-blur-xl p-8 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1.5 hover:border-site-accent/20"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-accent/10 text-site-accent transition-colors group-hover:bg-site-accent group-hover:text-white">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-accent/10 text-site-accent transition-colors group-hover:bg-site-accent group-hover:text-site-bg">
                 <service.icon size={28} />
               </div>
 

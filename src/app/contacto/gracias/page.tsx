@@ -13,16 +13,16 @@ export const metadata: Metadata = {
 
 export default function GraciasPage() {
   return (
-    <div className="min-h-screen bg-vectium-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-site-surface flex items-center justify-center px-4">
       <div className="max-w-2xl mx-auto text-center">
         <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce">
           <CheckCircle className="w-10 h-10 text-green-600" />
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-bold text-vectium-black mb-4">
+        <h1 className="text-4xl sm:text-5xl font-bold text-site-ink-strong mb-4">
           ¡Mensaje recibido!
         </h1>
-        <p className="text-xl text-vectium-gray-600 mb-8">
+        <p className="text-xl text-site-muted mb-8">
           Gracias por contactarnos. Revisaremos tu mensaje y te responderemos a
           la brevedad.
         </p>
@@ -30,13 +30,13 @@ export default function GraciasPage() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/"
-            className="inline-flex items-center justify-center px-8 py-3 bg-vectium-accent hover:bg-vectium-accent-dark text-white font-semibold rounded-lg transition-all"
+            className="inline-flex items-center justify-center px-8 py-3 bg-site-accent hover:bg-site-accent-light text-site-bg font-semibold rounded-lg transition-all"
           >
             Volver al inicio
           </Link>
           <Link
             href="/proyectos"
-            className="inline-flex items-center justify-center px-8 py-3 bg-white hover:bg-vectium-gray-50 text-vectium-accent font-semibold rounded-lg border-2 border-vectium-accent transition-all"
+            className="inline-flex items-center justify-center px-8 py-3 bg-white hover:bg-site-surface text-site-accent font-semibold rounded-lg border-2 border-site-accent transition-all"
           >
             Ver proyectos
           </Link>

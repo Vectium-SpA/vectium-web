@@ -21,7 +21,7 @@ export function SobreNosotrosContent() {
   return (
     <>
       {/* Timeline */}
-      <section ref={ref} className="bg-white py-24 lg:py-32">
+      <section ref={ref} className="bg-site-bg py-24 lg:py-32">
         <div className="mx-auto max-w-4xl px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -29,17 +29,17 @@ export function SobreNosotrosContent() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <span className="text-sm font-semibold tracking-widest text-vectium-accent uppercase">
+            <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
               Trayectoria
             </span>
-            <h2 className="mt-3 text-3xl font-bold text-vectium-black sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-bold text-site-ink-strong sm:text-4xl">
               Nuestro camino
             </h2>
           </motion.div>
 
           <div className="relative">
             {/* Vertical line */}
-            <div className="absolute left-8 top-0 bottom-0 w-px bg-vectium-gray-200 md:left-1/2" />
+            <div className="absolute left-8 top-0 bottom-0 w-px bg-site-border md:left-1/2" />
 
             {timeline.map((item, index) => (
               <motion.div
@@ -52,15 +52,15 @@ export function SobreNosotrosContent() {
                 }`}
               >
                 {/* Year bubble */}
-                <div className="absolute left-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-vectium-accent text-xs font-bold text-white md:left-1/2 md:-translate-x-1/2">
+                <div className="absolute left-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-site-accent text-xs font-bold text-site-bg md:left-1/2 md:-translate-x-1/2">
                   <span className="sr-only">{item.year}</span>
                 </div>
 
                 {/* Content */}
                 <div className={`ml-16 md:ml-0 md:w-[calc(50%-2rem)] ${index % 2 === 0 ? "md:text-right md:pr-12" : "md:text-left md:pl-12"}`}>
-                  <span className="text-sm font-bold text-vectium-accent">{item.year}</span>
-                  <h3 className="mt-1 text-lg font-semibold text-vectium-black">{item.title}</h3>
-                  <p className="mt-2 text-sm text-vectium-gray-600 leading-relaxed">{item.description}</p>
+                  <span className="text-sm font-bold text-site-accent">{item.year}</span>
+                  <h3 className="mt-1 text-lg font-semibold text-site-ink-strong">{item.title}</h3>
+                  <p className="mt-2 text-sm text-site-muted leading-relaxed">{item.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -69,17 +69,17 @@ export function SobreNosotrosContent() {
       </section>
 
       {/* CTA */}
-      <section className="bg-vectium-gray-50 py-20">
+      <section className="bg-site-surface py-20">
         <div className="mx-auto max-w-3xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold text-vectium-black">
+          <h2 className="text-3xl font-bold text-site-ink-strong">
             ¿Listo para trabajar juntos?
           </h2>
-          <p className="mt-4 text-vectium-gray-600">
+          <p className="mt-4 text-site-muted">
             Conversemos sobre cómo podemos impulsar tu próximo proyecto digital.
           </p>
           <Link
             href="/contacto"
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-vectium-accent px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-vectium-accent/20 transition-all hover:bg-vectium-accent-dark"
+            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-site-accent px-8 py-3.5 text-sm font-semibold text-site-bg shadow-lg shadow-site-accent/20 transition-all hover:bg-site-accent-light"
           >
             Contáctanos
             <ArrowRight size={16} />

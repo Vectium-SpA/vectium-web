@@ -93,7 +93,7 @@ export function AboutSection() {
                 className="group rounded-2xl border border-site-border/60 bg-site-bg/80 backdrop-blur-xl p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-site-accent/20"
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-site-surface text-site-ink transition-colors group-hover:bg-site-accent group-hover:text-white">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-site-surface text-site-ink transition-colors group-hover:bg-site-accent group-hover:text-site-bg">
                     <item.icon size={24} />
                   </div>
                   <div>
