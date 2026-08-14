@@ -1,19 +1,17 @@
 # Pendientes del sitio Vectium
 
-**Generado:** 2026-08-14 · **Estado del trabajo:** PR [#3](https://github.com/Vectium-SpA/vectium-web/pull/3), rama `fix/identidad-legal-sii`, 9 commits, sin mergear.
+**Generado:** 2026-08-14 · **Estado del trabajo:** PR [#3](https://github.com/Vectium-SpA/vectium-web/pull/3), rama `fix/identidad-legal-sii`, 11 commits, sin mergear. Actualizado 2026-08-14 tras las respuestas de Andrés.
 
 Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de abajo.
 
 ---
 
-## 🔴 BLOQUE 0 — Lo único urgente de verdad
+## ✅ BLOQUE 0 — Resuelto (2026-08-14)
 
-- [ ] **Verificar en el SII si la factura electrónica está autorizada.**
-      La Carpeta Tributaria solo lista **Boleta Electrónica** y **Boleta Exenta** (05-02-2026).
-      El campo dice "últimos documentos autorizados", así que la factura *podría* estar habilitada
-      de antes — **no está comprobado**. Un restaurante te va a pedir factura, y una SpA no accede
-      a la exención de sociedades de profesionales (`~/.claude/CLAUDE-LEGAL-CHILE.md` §9).
-      **Si no está habilitada, se traba el primer cobro.**
+- [x] **Factura electrónica.** Andrés confirmó que **sí se puede emitir**: las opciones están
+      habilitadas en el SII. Queda un tema de **centralización del certificado digital por
+      computador**, que verá con Joaquín. **No bloquea vender**: si el primer cliente pide factura,
+      se resuelve antes de emitir.
 
 ---
 
@@ -30,21 +28,20 @@ Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de a
 
 ---
 
-## 2. Datos que solo tienes tú
+## ✅ 2. Datos de Andrés — RESPONDIDOS y aplicados (2026-08-14)
 
-Cada uno es un bloque del sitio que hoy **no existe** porque no se inventa.
-
-- [ ] **Certificados** — nombre exacto y fecha del de **MercadoPago** y del **curso de Anthropic**.
-      Se escriben tal cual o no se escriben: una credencial publicada mal redactada es peor que
-      no tenerla.
-- [ ] **Número de WhatsApp real** si quieres el bloque de contacto directo.
-      *(El handoff traía `+56 9 0000 0000` de relleno; no entró.)*
-- [ ] **Rangos de precio en UF** si decides publicarlos.
-      *(El handoff proponía "Desde UF 120" y "Soporte desde UF 8/mes"; no entraron.)*
-- [ ] **Testimonio real** con nombre y cargo, si quieres esa sección.
-      *(El handoff traía uno de relleno.)*
-- [ ] **Año de lanzamiento de Farmateca** si quieres el hito con fecha exacta.
-      Hoy el timeline dice "2026 · en producción", que es cierto pero no dice cuándo salió.
+- [x] **Cifras de Farmateca corregidas**: **2.994 medicamentos** (yo había publicado 2.556) y
+      **450 compuestos** (el FAQ decía "200+"). 222 farmacias se confirma.
+- [x] **Certificaciones** publicadas discretas al pie del stack: *Checkout Pro* (MercadoPago
+      Developers) y *Claude 101* (Anthropic). Sin fechas ni códigos: son respaldo, no argumento de
+      venta. Encabezado "de nuestro equipo" porque están a nombre de Andrés, no de la SpA.
+- [x] **WhatsApp** `+56 9 4933 7486` en contacto y footer, con enlace `wa.me`.
+- [x] **Afirmaciones falsas eliminadas**: clientes internacionales (nunca cerró uno), plazos
+      publicados, "planes de mantenimiento", soporte "24/7", demos cada 1-2 semanas.
+- [x] **Sin precios publicados**, sin testimonio, sin sección de fundador — decisión de Andrés.
+      El plural corporativo se mantiene y las certificaciones dicen "nuestro equipo" (con Joaquín
+      eso es cierto y no expone a nadie).
+- [x] **Farmateca lanzada en 2026** — el timeline ya lo reflejaba.
 
 ---
 
@@ -64,25 +61,28 @@ Cada uno es un bloque del sitio que hoy **no existe** porque no se inventa.
 
 ---
 
-## 4. Links y presencia
+## ✅ 4. Links y presencia — RESUELTO (2026-08-14)
 
-- [ ] `ContactSection.tsx` — LinkedIn con `href="#"` (link muerto).
-      Decidir: ¿se crea LinkedIn de empresa, o se saca el ícono?
-- [ ] `ContactSection.tsx` — dice `github.com/vectium`, que **no existe**.
-      La org real es `Vectium-SpA`. Decidir si se apunta ahí (¿es pública?) o se saca.
+- [x] **GitHub** apunta a `github.com/Vectium-SpA` (antes `github.com/vectium`, inexistente).
+- [x] **LinkedIn eliminado** de contacto y footer: no existe la página y el `href="#"` era un link
+      muerto. Vuelve cuando exista la cuenta. Instagram tampoco entra por ahora.
+- [x] **Newsletter conectado**: era `onSubmit={(e) => e.preventDefault()}` y no hacía nada con el
+      correo. Ahora usa EmailJS (la misma config del formulario de contacto, sin variables nuevas),
+      con estado de envío, aviso de éxito/error y línea de consentimiento con la baja (art. 28 B).
+- [ ] 🔲 **Crear LinkedIn e Instagram de empresa** cuando Andrés los tenga, y devolver los íconos.
 
 ---
 
-## 5. Íconos propios — pase opcional
+## 5. Íconos propios — parcialmente hecho
 
-El paquete `vectium-icons` (130 íconos) está instalado en la carpeta de entrada pero **el sitio
-sigue usando Lucide**. No es deuda, es una decisión pendiente.
-
-- [ ] Decidir si se reemplaza Lucide por los íconos propios en todo el sitio.
-- [ ] **Sumar Supabase y MercadoPago** a la sección de stack. Hoy no aparecen y son centrales.
-      Faltan sus SVG: esa sección usa logos embebidos y no se dibujan de memoria.
-- [ ] Usar los contenedores de `marca/enlaces/` para los links a plataformas externas, pegando
-      dentro el SVG **oficial** de cada una (son marcas registradas, no se redibujan).
+- [x] **Supabase y MercadoPago sumados al stack** con sus kits de marca oficiales, servidos desde
+      `public/logos/`. No se inlinean ni se monocromatizan: son marcas registradas. MercadoPago
+      alterna a su versión "pluma" (blanca) en tema oscuro, porque su wordmark azul sería ilegible.
+- [ ] 🔲 **Decidir si se reemplaza Lucide** por los 130 íconos propios del paquete `vectium-icons`.
+      Criterio de Andrés: solo donde corresponda y donde haga ver más profesional la plataforma —
+      no un reemplazo mecánico.
+- [ ] 🔲 Usar los contenedores de `marca/enlaces/` para links a plataformas externas, pegando
+      dentro el SVG **oficial** de cada una.
 
 ---
 
