@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import {
+  Inter,
+  Playfair_Display,
+  Source_Serif_4,
+  Source_Sans_3,
+  JetBrains_Mono,
+} from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { SiteThemeProvider } from "@/components/layout/SiteThemeProvider";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import { Toaster } from "sonner";
 import StructuredData from "@/components/StructuredData";
 
@@ -15,6 +23,26 @@ const inter = Inter({
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
+  display: "swap",
+});
+
+// Tipografia del rediseno v2 del sitio corporativo. Se SUMAN a Inter y
+// Playfair, que sigue usando Farmateca; no las reemplazan.
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  variable: "--font-source-serif",
+  display: "swap",
+});
+
+const sourceSans = Source_Sans_3({
+  subsets: ["latin"],
+  variable: "--font-source-sans",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -100,11 +128,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${inter.variable} ${playfair.variable}`}>
+    // suppressHydrationWarning lo pide next-themes: escribe data-theme en el
+    // <html> antes de que React hidrate, asi que servidor y cliente difieren
+    // en ese atributo a proposito.
+    <html
+      lang="es"
+      suppressHydrationWarning
+      className={`${inter.variable} ${playfair.variable} ${sourceSerif.variable} ${sourceSans.variable} ${jetbrainsMono.variable}`}
+    >
       <body className="min-h-screen bg-vectium-white text-vectium-gray-700 antialiased">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <SiteThemeProvider>
+          <SiteChrome>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </SiteChrome>
+        </SiteThemeProvider>
         <Toaster position="top-right" richColors />
         <StructuredData />
       </body>
