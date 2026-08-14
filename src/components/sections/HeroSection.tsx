@@ -61,10 +61,19 @@ export function HeroSection() {
           para empresas chilenas
         </h1>
 
-        <p className="mt-7 max-w-[50ch] font-[family-name:var(--font-site-sans)] text-[19.5px] font-light leading-[1.62] text-site-muted">
-          Plataformas web, aplicaciones móviles e integraciones a medida.
-          Farmateca, nuestra app de referencia farmacológica, opera sin conexión
-          con 2.994 medicamentos.
+        {/*
+          Antes esta bajada cerraba con Farmateca y sus 2.994 medicamentos.
+          Decision de Andres (2026-08-14): la descripcion principal va GENERAL.
+          Un dato de producto en el primer parrafo hace leer a Vectium como "la
+          empresa de Farmateca" en vez de como una desarrolladora; Farmateca ya
+          tiene su tarjeta en los destacados y su propia seccion.
+
+          Nada de trayectoria ni cartera: habla de CAPACIDAD, que es cierto hoy
+          y no depende de los ~8 meses que tiene la SpA (Ley 19.496 art. 28).
+        */}
+        <p className="mt-7 max-w-[50ch] text-pretty font-[family-name:var(--font-site-sans)] text-[19.5px] font-light leading-[1.62] text-site-muted">
+          Transformamos ideas en soluciones digitales. Arquitectura de software,
+          plataformas web y aplicaciones móviles de alto impacto.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
