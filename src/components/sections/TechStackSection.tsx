@@ -1,7 +1,22 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTheme } from "next-themes";
+
+/**
+ * Supabase y MercadoPago van como ARCHIVO y no como path inline, a diferencia
+ * del resto del grid. Tres razones:
+ *  - Son marcas registradas: se usan tal cual las publica su dueno, no se
+ *    redibujan ni se fuerzan a currentColor como los iconos genericos.
+ *  - El SVG de Supabase trae gradientes con id (`url(#paint0_linear)`), que
+ *    colisionan si se inlinean varios en la misma pagina.
+ *  - El de MercadoPago trae un bloque <style> con clases `.cls-1`, que
+ *    inlineado se filtraria al CSS global de todo el sitio.
+ * MercadoPago ademas tiene su wordmark en azul #0a0080, ilegible sobre el
+ * fondo oscuro: para eso su kit trae la version "pluma" toda blanca, que es la
+ * que se usa en tema oscuro.
+ */
 
 const technologies = [
   {
@@ -47,14 +62,37 @@ const technologies = [
     svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"/></svg>',
   },
   {
+    name: "Supabase",
+    description: "Backend, auth y datos",
+    color: "#3ECF8E",
+    img: "/logos/supabase.svg",
+    imgDark: "/logos/supabase.svg",
+    svg: "",
+  },
+  {
+    name: "MercadoPago",
+    description: "Pagos en línea",
+    color: "#00BCFF",
+    img: "/logos/mercadopago.svg",
+    imgDark: "/logos/mercadopago-blanco.svg",
+    svg: "",
+  },
+  {
     name: "PostgreSQL",
-    description: "Base de datos con Supabase",
+    description: "Base de datos relacional",
     color: "#4169E1",
     svg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.56 14.24c-.14-.22-.42-.4-.84-.42-1.22-.06-2.1.38-2.58.82-.02-.6-.16-1.2-.42-1.82-.54-1.22-1.54-1.9-2.38-2.46-.12-.08-.22-.16-.32-.22.06-.48.08-.96.08-1.48 0-1.7-.38-3.24-1.14-4.56C14.88 2.38 13 .86 10.44.28c-1.06-.24-2.2-.32-3.36-.24-2.12.14-3.86.84-5.18 2.08C.56 3.4-.12 5.14.02 7.2c.04.64.3 2.12.74 3.72.46 1.62 1.08 3.4 2.02 4.66.44.6.96 1.08 1.56 1.34.46.2.94.28 1.42.24.26-.02.52-.08.76-.16.1.22.24.44.44.62.38.36.94.56 1.56.56.5 0 1.04-.14 1.58-.42.04.56.12 1.06.22 1.46.16.58.4 1.02.72 1.34.04.04.08.06.12.1.26.24.56.42.88.52h.02c.38.12.78.18 1.18.18.54 0 1.1-.1 1.62-.32.54-.22 1.04-.56 1.46-1.02.42-.44.78-1 1.02-1.64.1-.24.18-.5.24-.78.2.02.38.02.56 0 .34-.04.64-.16.86-.32.58-.42.84-1.14.96-1.7.14-.62.16-1.24.14-1.54 1.08.1 2.28-.08 3.14-1.04.3-.34.54-.72.68-1.14.16-.4.22-.82.16-1.22z"/></svg>',
   },
 ];
 
 export function TechStackSection() {
+  const { resolvedTheme } = useTheme();
+  // next-themes devuelve undefined hasta que monta, y sin este flag el
+  // componente no se vuelve a pintar: el logo de MercadoPago se quedaba en la
+  // version de color aun en tema oscuro.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const esOscuro = mounted && resolvedTheme === "dark";
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -94,11 +132,22 @@ export function TechStackSection() {
               transition={{ duration: 0.4, delay: 0.1 + index * 0.08 }}
               className="group flex flex-col items-center rounded-2xl border border-site-ink/10 bg-site-ink/5 backdrop-blur-md p-6 text-center transition-all hover:border-site-ink/20 hover:bg-site-ink/10 hover:-translate-y-1"
             >
-              <div
-                className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-ink/5 transition-colors group-hover:bg-site-ink/10"
-                style={{ color: tech.color }}
-                dangerouslySetInnerHTML={{ __html: tech.svg }}
-              />
+              {"img" in tech && tech.img ? (
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-ink/5 p-2.5 transition-colors group-hover:bg-site-ink/10">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={esOscuro ? tech.imgDark : tech.img}
+                    alt={tech.name}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div
+                  className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-ink/5 transition-colors group-hover:bg-site-ink/10"
+                  style={{ color: tech.color }}
+                  dangerouslySetInnerHTML={{ __html: tech.svg }}
+                />
+              )}
               <h3 className="mt-4 text-sm font-semibold text-site-ink-strong">
                 {tech.name}
               </h3>

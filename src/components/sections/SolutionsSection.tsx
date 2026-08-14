@@ -63,8 +63,10 @@ const featuredProjects = [
     description:
       "Reservas en línea, panel de salón en tiempo real, correos automáticos, señas y sincronización con Google Calendar. Demostración pública disponible.",
     tags: ["SaaS", "Pagos", "Tiempo real"],
-    link: "/proyectos",
-    isInternal: true,
+    // Va DIRECTO a la demo publica, no a /proyectos: el que llega buscando
+    // reservas convierte mucho mejor tocando el producto que leyendo sobre el.
+    link: "https://resto-web-sage.vercel.app",
+    isInternal: false,
   },
 ];
 
@@ -191,10 +193,18 @@ export function SolutionsSection() {
                   <ArrowRight size={16} />
                 </Link>
               ) : (
-                <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-site-muted">
-                  <ExternalLink size={14} />
-                  Proyecto privado
-                </span>
+                /* Antes esta rama pintaba un texto muerto ("Proyecto privado"),
+                   heredado del proyecto fantasma que se elimino. Ahora es un
+                   enlace externo real. */
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-site-accent transition-all hover:gap-3"
+                >
+                  Ver la demo en vivo
+                  <ExternalLink size={15} />
+                </a>
               )}
             </motion.div>
           ))}
