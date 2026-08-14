@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { motion, useInView, animate } from "framer-motion";
 import { Target, Eye, Heart } from "lucide-react";
+import { SiteAurora } from "@/components/site/SiteAurora";
+import { useSpotlight } from "@/components/site/useSpotlight";
 
 // Cifras verificables contra nuestros propios productos. NO poner metricas que no
 // se puedan respaldar (anos de trayectoria, proyectos entregados, % de clientes
@@ -36,10 +38,41 @@ const values = [
   },
 ];
 
-function AnimatedCounter({ value }: { value: string }) {
+/**
+ * Cuenta desde 0 hasta la cifra real cuando la tarjeta entra en pantalla.
+ *
+ * Dos cuidados:
+ *  - Arranca pintando el valor FINAL, no un cero. Si el JS no corre o el
+ *    contador no dispara, la cifra igual queda correcta en pantalla; nunca se
+ *    publica un "0" que parezca el dato real.
+ *  - Reformatea con Intl es-CL en cada frame, asi el separador de miles es el
+ *    punto chileno ("2.994") y no la coma. Por eso mismo el parseo empieza
+ *    quitando todo lo que no sea digito.
+ */
+function AnimatedCounter({ value, run }: { value: string; run: boolean }) {
+  const objetivo = Number(value.replace(/\D/g, ""));
+  const [texto, setTexto] = useState(value);
+
+  useEffect(() => {
+    if (!run || !Number.isFinite(objetivo) || objetivo === 0) return;
+
+    // Las cifras chicas (3) no necesitan 1,6s de conteo: se ve lento y tonto.
+    const duracion = objetivo > 500 ? 1.6 : 0.9;
+
+    const control = animate(0, objetivo, {
+      duration: duracion,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate: (v) =>
+        setTexto(new Intl.NumberFormat("es-CL").format(Math.round(v))),
+      onComplete: () => setTexto(value),
+    });
+
+    return () => control.stop();
+  }, [run, objetivo, value]);
+
   return (
-    <span className="text-4xl font-bold text-site-ink-strong sm:text-5xl">
-      {value}
+    <span className="site-stat-gradient text-4xl font-bold tabular-nums sm:text-5xl">
+      {texto}
     </span>
   );
 }
@@ -47,28 +80,33 @@ function AnimatedCounter({ value }: { value: string }) {
 export function AboutSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const spotlight = useSpotlight();
 
   return (
     <section
       id="sobre-nosotros"
       ref={ref}
-      className="relative bg-site-surface py-24 lg:py-32"
+      className="relative isolate overflow-hidden bg-site-surface py-24 lg:py-32"
     >
-      <div className="absolute inset-0 bg-dot-pattern opacity-50" />
+      <SiteAurora variant="left" />
+      <div className="absolute inset-0 z-[1] bg-dot-pattern opacity-50" />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative z-[2] mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center"
+          className="flex flex-col items-center text-center"
         >
-          <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
+          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
+            <span className="site-eyebrow__dot" />
             Sobre Nosotros
           </span>
-          <h2 className="mt-3 text-3xl font-bold text-site-ink-strong sm:text-4xl">
-            Tecnología que impulsa tu negocio
+          <span className="site-eyebrow__rule mt-4" />
+          <h2 className="mt-4 text-3xl font-bold text-site-ink-strong sm:text-4xl">
+            Tecnología que{" "}
+            <span className="site-text-gradient">impulsa tu negocio</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-site-muted">
             Vectium SpA es una empresa tecnológica chilena especializada en el
@@ -87,13 +125,14 @@ export function AboutSection() {
             {values.map((item, index) => (
               <motion.div
                 key={item.title}
+                onMouseMove={spotlight}
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                className="group rounded-2xl border border-site-border/60 bg-site-bg/80 backdrop-blur-xl p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-site-accent/20"
+                className="site-card site-tint group rounded-2xl border border-site-border/60 bg-site-bg/80 p-6 shadow-sm backdrop-blur-xl"
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-site-surface text-site-ink transition-colors group-hover:bg-site-accent group-hover:text-site-bg">
+                  <div className="site-icon-well flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-site-accent transition-colors group-hover:text-site-ink-strong">
                     <item.icon size={24} />
                   </div>
                   <div>
@@ -114,17 +153,18 @@ export function AboutSection() {
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="grid grid-cols-2 gap-6 content-start"
+            className="grid grid-cols-2 content-start gap-6"
           >
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
+                onMouseMove={spotlight}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="rounded-2xl border border-site-border/60 bg-site-bg/80 backdrop-blur-xl p-6 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-site-accent/20"
+                className="site-card site-tint-strong rounded-2xl border border-site-border/60 bg-site-bg/80 p-6 text-center shadow-sm backdrop-blur-xl"
               >
-                <AnimatedCounter value={stat.value} />
+                <AnimatedCounter value={stat.value} run={isInView} />
                 <p className="mt-2 text-sm text-site-muted">
                   {stat.label}
                 </p>

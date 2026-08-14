@@ -12,6 +12,8 @@ import {
   Sparkles,
   ExternalLink,
 } from "lucide-react";
+import { SiteAurora } from "@/components/site/SiteAurora";
+import { useSpotlight } from "@/components/site/useSpotlight";
 
 // Cada pilar tiene que corresponder a trabajo que realmente hacemos. El bloque
 // movil llego a anunciar "React Native", que no usamos en ningun proyecto: el
@@ -73,22 +75,32 @@ const featuredProjects = [
 export function SolutionsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const spotlight = useSpotlight();
 
   return (
-    <section id="soluciones" ref={ref} className="bg-site-bg py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section
+      id="soluciones"
+      ref={ref}
+      className="relative isolate overflow-hidden bg-site-bg py-24 lg:py-32"
+    >
+      <SiteAurora variant="split" />
+
+      <div className="relative z-[2] mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center"
+          className="flex flex-col items-center text-center"
         >
-          <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
+          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
+            <span className="site-eyebrow__dot" />
             Servicios
           </span>
-          <h2 className="mt-3 text-3xl font-bold text-site-ink-strong sm:text-4xl">
-            Soluciones digitales a tu medida
+          <span className="site-eyebrow__rule mt-4" />
+          <h2 className="mt-4 text-3xl font-bold text-site-ink-strong sm:text-4xl">
+            Soluciones digitales{" "}
+            <span className="site-text-gradient">a tu medida</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-site-muted">
             Desarrollamos software, páginas web y aplicaciones móviles que
@@ -101,12 +113,16 @@ export function SolutionsSection() {
           {services.map((service, index) => (
             <motion.div
               key={service.title}
+              onMouseMove={spotlight}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-              className="group rounded-2xl border border-site-border/60 bg-site-bg/80 backdrop-blur-xl p-8 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1.5 hover:border-site-accent/20"
+              className="site-card site-tint group rounded-2xl border border-site-border/60 bg-site-bg/80 p-8 shadow-sm backdrop-blur-xl"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-accent/10 text-site-accent transition-colors group-hover:bg-site-accent group-hover:text-site-bg">
+              <div
+                className="site-icon-well site-float flex h-14 w-14 items-center justify-center rounded-xl text-site-accent transition-colors group-hover:text-site-ink-strong"
+                style={{ ["--site-float-delay" as string]: `${index * 0.7}s` }}
+              >
                 <service.icon size={28} />
               </div>
 
@@ -121,7 +137,7 @@ export function SolutionsSection() {
                 {service.features.map((feature) => (
                   <li
                     key={feature}
-                    className="inline-flex rounded-full bg-site-surface px-3 py-1 text-xs font-medium text-site-muted"
+                    className="inline-flex rounded-full border border-site-border/50 bg-site-surface px-3 py-1 text-xs font-medium text-site-muted transition-colors group-hover:border-site-accent/40 group-hover:bg-site-accent/10 group-hover:text-site-accent"
                   >
                     {feature}
                   </li>
@@ -136,13 +152,15 @@ export function SolutionsSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-24 text-center"
+          className="mt-24 flex flex-col items-center text-center"
         >
-          <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
+          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
+            <span className="site-eyebrow__dot" />
             Proyectos Destacados
           </span>
-          <h2 className="mt-3 text-2xl font-bold text-site-ink-strong sm:text-3xl">
-            Algunos de nuestros trabajos
+          <span className="site-eyebrow__rule mt-4" />
+          <h2 className="mt-4 text-2xl font-bold text-site-ink-strong sm:text-3xl">
+            Algunos de <span className="site-text-gradient">nuestros trabajos</span>
           </h2>
         </motion.div>
 
@@ -151,16 +169,18 @@ export function SolutionsSection() {
           {featuredProjects.map((project, index) => (
             <motion.div
               key={project.title}
+              onMouseMove={spotlight}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-              className="group relative overflow-hidden rounded-3xl border border-site-border bg-gradient-to-br from-site-surface to-site-bg p-8 shadow-sm transition-all hover:shadow-lg"
+              className="site-card site-tint-strong group rounded-3xl border border-site-border bg-gradient-to-br from-site-surface to-site-bg p-8 shadow-sm"
             >
-              {/* Accent border top */}
-              <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-site-accent to-site-accent-light" />
+              {/* Filo superior: mismo degradado de siempre, ahora con el brillo
+                  que barre en loop para que la tarjeta destacada se note. */}
+              <div className="site-edge-sweep absolute left-0 right-0 top-0 h-1" />
 
-              <div className="inline-flex items-center gap-2 rounded-full bg-site-accent/10 px-4 py-1.5 text-xs font-semibold text-site-accent">
-                <Sparkles size={14} />
+              <div className="inline-flex items-center gap-2 rounded-full border border-site-accent/25 bg-site-accent/10 px-4 py-1.5 text-xs font-semibold text-site-accent">
+                <Sparkles size={14} className="site-float" />
                 Proyecto Destacado
               </div>
 
@@ -177,7 +197,7 @@ export function SolutionsSection() {
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex rounded-full bg-site-surface px-3 py-1 text-xs font-medium text-site-muted"
+                    className="inline-flex rounded-full border border-site-border/50 bg-site-surface px-3 py-1 text-xs font-medium text-site-muted transition-colors group-hover:border-site-accent/40 group-hover:text-site-accent"
                   >
                     {tag}
                   </span>

@@ -3,6 +3,8 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTheme } from "next-themes";
+import { SiteAurora } from "@/components/site/SiteAurora";
+import { useSpotlight } from "@/components/site/useSpotlight";
 
 /**
  * Supabase y MercadoPago van como ARCHIVO y no como path inline, a diferencia
@@ -95,27 +97,32 @@ export function TechStackSection() {
   const esOscuro = mounted && resolvedTheme === "dark";
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const spotlight = useSpotlight();
 
   return (
     <section
       id="tecnologia"
       ref={ref}
-      className="relative bg-site-bg-deep py-24 lg:py-32"
+      className="relative isolate overflow-hidden bg-site-bg-deep py-24 lg:py-32"
     >
-      <div className="absolute inset-0 bg-grid-pattern" />
+      <SiteAurora variant="right" />
+      <div className="absolute inset-0 z-[1] bg-grid-pattern" />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative z-[2] mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center"
+          className="flex flex-col items-center text-center"
         >
-          <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
+          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
+            <span className="site-eyebrow__dot" />
             Tecnología
           </span>
-          <h2 className="mt-3 text-3xl font-bold text-site-ink-strong sm:text-4xl">
-            Stack tecnológico de vanguardia
+          <span className="site-eyebrow__rule mt-4" />
+          <h2 className="mt-4 text-3xl font-bold text-site-ink-strong sm:text-4xl">
+            Stack tecnológico{" "}
+            <span className="site-text-gradient">de vanguardia</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-site-muted">
             Utilizamos las tecnologías más avanzadas para crear soluciones
@@ -127,13 +134,20 @@ export function TechStackSection() {
           {technologies.map((tech, index) => (
             <motion.div
               key={tech.name}
+              onMouseMove={spotlight}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.1 + index * 0.08 }}
-              className="group flex flex-col items-center rounded-2xl border border-site-ink/10 bg-site-ink/5 backdrop-blur-md p-6 text-center transition-all hover:border-site-ink/20 hover:bg-site-ink/10 hover:-translate-y-1"
+              /* Cada tarjeta se pisa --site-accent con el color de marca REAL de
+                 su tecnologia. Como el halo, el borde y la sombra de .site-card
+                 salen de esa variable, cada chip se ilumina con su propio color
+                 (React celeste, Flutter azul, Firebase ambar...) sin que haya
+                 que escribir ni una regla nueva ni inventar colores de paleta. */
+              style={{ ["--site-accent" as string]: tech.color }}
+              className="site-card group flex flex-col items-center rounded-2xl border border-site-ink/10 bg-site-ink/5 p-6 text-center backdrop-blur-md"
             >
               {"img" in tech && tech.img ? (
-                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-ink/5 p-2.5 transition-colors group-hover:bg-site-ink/10">
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-ink/5 p-2.5 transition-all duration-500 group-hover:scale-110 group-hover:bg-site-ink/10">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={esOscuro ? tech.imgDark : tech.img}
@@ -143,7 +157,7 @@ export function TechStackSection() {
                 </div>
               ) : (
                 <div
-                  className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-ink/5 transition-colors group-hover:bg-site-ink/10"
+                  className="flex h-14 w-14 items-center justify-center rounded-xl bg-site-ink/5 transition-all duration-500 group-hover:scale-110 group-hover:bg-site-ink/10"
                   style={{ color: tech.color }}
                   dangerouslySetInnerHTML={{ __html: tech.svg }}
                 />
@@ -177,7 +191,7 @@ export function TechStackSection() {
             ].map((c) => (
               <div
                 key={c.nombre}
-                className="rounded-xl border border-site-ink/10 bg-site-ink/5 px-5 py-3 text-center"
+                className="site-card site-tint rounded-xl border border-site-ink/10 bg-site-ink/5 px-5 py-3 text-center"
               >
                 <p className="text-sm font-semibold text-site-ink-strong">
                   {c.nombre}

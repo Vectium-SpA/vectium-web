@@ -9,6 +9,7 @@ import { Mail, MapPin, MessageCircle, Github, Send } from "lucide-react";
 import { vectiumTheme } from "@/styles/theme";
 import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
 import { sendContactEmail } from "@/lib/emailjs";
+import { SiteAurora } from "@/components/site/SiteAurora";
 
 export function ContactSection() {
   const ref = useRef(null);
@@ -70,21 +71,25 @@ export function ContactSection() {
     <section
       id="contacto"
       ref={ref}
-      className="bg-site-surface py-24 lg:py-32"
+      className="relative isolate overflow-hidden bg-site-surface py-24 lg:py-32"
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <SiteAurora variant="center" />
+
+      <div className="relative z-[2] mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center"
+          className="flex flex-col items-center text-center"
         >
-          <span className="text-sm font-semibold tracking-widest text-site-accent uppercase">
+          <span className="site-eyebrow text-sm font-semibold tracking-widest text-site-accent uppercase">
+            <span className="site-eyebrow__dot" />
             Contacto
           </span>
-          <h2 className="mt-3 text-3xl font-bold text-site-ink-strong sm:text-4xl">
-            Hablemos de tu proyecto
+          <span className="site-eyebrow__rule mt-4" />
+          <h2 className="mt-4 text-3xl font-bold text-site-ink-strong sm:text-4xl">
+            Hablemos de <span className="site-text-gradient">tu proyecto</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-site-muted">
             Cuéntanos qué necesitas y te respondemos con una propuesta
