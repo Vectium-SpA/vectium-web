@@ -25,10 +25,13 @@ export default function PrivacidadPage() {
               1. Introducción
             </h2>
             <p className="text-lg text-vectium-gray-700 leading-relaxed">
-              Vectium SpA (en adelante, "Vectium", "nosotros" o "la empresa"), con domicilio en Chile,
-              respeta tu privacidad y se compromete a proteger tus datos personales. Esta Política de
-              Privacidad explica cómo recopilamos, usamos, almacenamos y protegemos tu información de
-              acuerdo con la Ley N° 19.628 sobre Protección de la Vida Privada de Chile.
+              Vectium SpA (en adelante, "Vectium", "nosotros" o "la empresa"), RUT 78.312.836-5, con
+              domicilio en El Trovador 4280, Oficina 307, comuna de Las Condes, Región Metropolitana,
+              Chile, es el responsable del tratamiento de tus datos personales, respeta tu privacidad
+              y se compromete a protegerlos. Esta Política de Privacidad explica cómo recopilamos,
+              usamos, almacenamos y protegemos tu información de acuerdo con la Ley N° 19.628 sobre
+              Protección de la Vida Privada y, a partir del 1 de diciembre de 2026, con la Ley N°
+              21.719 que la reemplaza.
             </p>
           </section>
 
@@ -224,13 +227,16 @@ export default function PrivacidadPage() {
             </p>
             <div className="bg-vectium-gray-50 p-6 rounded-lg border border-vectium-gray-200">
               <p className="text-lg text-vectium-gray-900 font-semibold">Vectium SpA</p>
+              <p className="text-lg text-vectium-gray-700 mt-2">RUT: 78.312.836-5</p>
               <p className="text-lg text-vectium-gray-700 mt-2">
                 Email:{" "}
                 <a href="mailto:contacto@vectium.cl" className="text-vectium-accent hover:underline">
                   contacto@vectium.cl
                 </a>
               </p>
-              <p className="text-lg text-vectium-gray-700">Domicilio: Chile</p>
+              <p className="text-lg text-vectium-gray-700">
+                Domicilio: El Trovador 4280, Oficina 307, Las Condes, Región Metropolitana, Chile
+              </p>
             </div>
           </section>
         </article>

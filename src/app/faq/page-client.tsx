@@ -56,12 +56,12 @@ export default function FAQPage() {
         {
           question: "¿Qué es Vectium SpA?",
           answer:
-            "Vectium SpA es una empresa chilena de desarrollo de software especializada en aplicaciones móviles (Flutter), páginas web (Next.js) y sistemas a medida. Fundada en 2021, nos enfocamos en transformar ideas en soluciones digitales de alto impacto para empresas y organizaciones.",
+            "Vectium SpA (RUT 78.312.836-5) es una empresa chilena de desarrollo de software especializada en aplicaciones móviles (Flutter), páginas web (Next.js) y sistemas a medida. Nos constituimos en diciembre de 2025 sobre la base de varios años de experiencia previa de nuestro fundador, y nos enfocamos en transformar ideas en soluciones digitales de alto impacto para empresas y organizaciones.",
         },
         {
           question: "¿Dónde están ubicados?",
           answer:
-            "Operamos desde Chile con alcance nacional e internacional. Puedes contactarnos en contacto@vectium.cl para consultas sobre proyectos o servicios.",
+            "Nuestro domicilio legal está en El Trovador 4280, Oficina 307, Las Condes, Región Metropolitana, y trabajamos en remoto desde la Región de Coquimbo, con alcance nacional. Puedes contactarnos en contacto@vectium.cl para consultas sobre proyectos o servicios.",
         },
         {
           question: "¿Qué tecnologías utilizan?",
