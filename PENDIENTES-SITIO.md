@@ -15,7 +15,19 @@ Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de a
 
 ---
 
-## 1. Revisar y mergear el PR #3
+## 🎨 1. FEEDBACK DE DISEÑO — lo primero del próximo chat
+
+Andrés revisó el sitio en local el **2026-08-14** y tiene **varias mejoras de diseño** que quiere
+aplicar. Todavía no las detalló: se abre un chat nuevo para eso, con contexto fresco.
+
+- [ ] **Que Andrés liste qué quiere cambiar del diseño.** Todo lo demás de este documento espera:
+      no tiene sentido mergear y después rehacer.
+- [ ] Ojo: el contenido y los datos **ya están correctos y verificados**. Lo que viene es
+      **presentación**, no información. No reabrir cifras, claims ni identidad legal.
+
+---
+
+## 2. Revisar y mergear el PR #3
 
 - [ ] Abrir el **preview de Vercel** del PR (lo genera solo al abrir el PR).
 - [ ] Home: hero con retícula 3D, 4 servicios, cifras, stack, contacto.
