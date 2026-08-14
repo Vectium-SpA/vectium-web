@@ -7,32 +7,43 @@ import {
   Code,
   Globe,
   Smartphone,
+  Plug,
   ArrowRight,
   Sparkles,
   ExternalLink,
 } from "lucide-react";
 
+// Cada pilar tiene que corresponder a trabajo que realmente hacemos. El bloque
+// movil llego a anunciar "React Native", que no usamos en ningun proyecto: el
+// stack movil es Flutter. No listar tecnologias solo por sonar completos.
 const services = [
   {
     icon: Code,
-    title: "Desarrollo de Software",
+    title: "Plataformas a Medida",
     description:
-      "Sistemas a medida, plataformas SaaS y soluciones empresariales robustas y escalables.",
-    features: ["APIs RESTful", "Arquitectura cloud", "Integraciones"],
-  },
-  {
-    icon: Globe,
-    title: "Páginas Web",
-    description:
-      "Sitios web modernos, landing pages de alto impacto y plataformas e-commerce.",
-    features: ["SEO optimizado", "Diseño responsive", "Performance"],
+      "Sistemas donde varias empresas o sucursales operan sobre la misma plataforma, cada una con sus datos aislados, sus roles y sus cobros.",
+    features: ["Multi-empresa", "Pagos en línea", "Datos aislados"],
   },
   {
     icon: Smartphone,
     title: "Aplicaciones Móviles",
     description:
-      "Apps nativas e híbridas para iOS y Android con experiencias de usuario excepcionales.",
-    features: ["React Native", "iOS & Android", "Offline-first"],
+      "Apps para iOS y Android construidas con Flutter, publicadas en ambas tiendas, con funcionamiento sin conexión y suscripciones.",
+    features: ["Flutter", "App Store y Google Play", "Offline-first"],
+  },
+  {
+    icon: Globe,
+    title: "Sitios Web y Landings",
+    description:
+      "Sitios rápidos y optimizados para buscadores, construidos con Next.js y pensados para convertir visitas en contactos.",
+    features: ["SEO optimizado", "Diseño responsive", "Alto rendimiento"],
+  },
+  {
+    icon: Plug,
+    title: "Integraciones y Automatización",
+    description:
+      "Conectamos lo que ya usas en vez de reemplazarlo: medios de pago chilenos, Google Workspace, bases de datos corporativas y flujos automáticos.",
+    features: ["MercadoPago y Flow", "Google Calendar y Drive", "Bases de datos existentes"],
   },
 ];
 
@@ -41,19 +52,19 @@ const featuredProjects = [
     title: "Farmateca",
     subtitle: "Bibliomédica Chilena",
     description:
-      "Aplicación de referencia farmacológica con más de 2,500 medicamentos. Disponible offline para profesionales de la salud.",
+      "Aplicación de referencia farmacológica con 2.556 medicamentos y 222 farmacias mapeadas. Funciona sin conexión, para profesionales de la salud.",
     tags: ["Salud", "Mobile", "Web"],
     link: "/farmateca",
     isInternal: true,
   },
   {
-    title: "Portal Corporativo",
-    subtitle: "Plataforma Empresarial",
+    title: "Reservas para Restaurantes",
+    subtitle: "Plataforma multi-restaurante",
     description:
-      "Sistema de gestión interna con dashboards, reportes y automatización de procesos.",
-    tags: ["Enterprise", "Dashboard", "SaaS"],
-    link: "#",
-    isInternal: false,
+      "Reservas en línea, panel de salón en tiempo real, correos automáticos, señas y sincronización con Google Calendar. Demostración pública disponible.",
+    tags: ["SaaS", "Pagos", "Tiempo real"],
+    link: "/proyectos",
+    isInternal: true,
   },
 ];
 
@@ -84,7 +95,7 @@ export function SolutionsSection() {
         </motion.div>
 
         {/* Services Grid */}
-        <div className="mt-16 grid gap-8 md:grid-cols-3">
+        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service, index) => (
             <motion.div
               key={service.title}

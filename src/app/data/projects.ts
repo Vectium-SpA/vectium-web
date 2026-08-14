@@ -1,12 +1,20 @@
 import { Project } from "@/app/types/project";
 
+// Reglas de este archivo:
+// 1. Solo proyectos que existen y se pueden verificar contra su repo.
+// 2. NUNCA nombrar empresas clientes. El trabajo hecho para terceros se
+//    describe por el problema que resuelve y por su stack, no por quien lo
+//    encargo. Decision de Andres, 2026-08-14.
+// 3. Nada de tecnologias que no usamos (el sitio llego a anunciar React
+//    Native, que no esta en ningun proyecto: el stack movil es Flutter).
+
 export const projects: Project[] = [
   {
     id: "farmateca",
     title: "Farmateca",
     subtitle: "Bibliomédica Chilena Offline",
     description:
-      "Aplicación móvil y web para consulta de información farmacológica. Base de datos con +450 compuestos, marcas comerciales y genéricos. Acceso offline, sincronización cloud y sistema freemium con suscripciones premium.",
+      "Aplicación móvil y web para consulta de información farmacológica: 2.556 medicamentos, marcas comerciales, genéricos y 222 farmacias mapeadas. Funciona sin conexión, sincroniza en la nube y monetiza con suscripciones. Publicada en App Store y Google Play.",
     category: "fullstack",
     stack: [
       "Flutter",
@@ -21,6 +29,106 @@ export const projects: Project[] = [
     featured: true,
     image: "/farmateca/logos/isotipo_farmateca.png",
     link: "https://www.vectium.cl/farmateca",
+  },
+  {
+    id: "reservas-restaurantes",
+    title: "Reservas para Restaurantes",
+    subtitle: "Plataforma multi-restaurante",
+    description:
+      "Sistema completo de reservas y gestión de salón: la web pública donde el comensal reserva, el panel del restaurante en tiempo real, correos automáticos con invitación de calendario, señas en línea y sincronización con Google Calendar. Cada restaurante opera con sus datos aislados. Demostración pública disponible.",
+    category: "web",
+    stack: [
+      "Next.js",
+      "Supabase",
+      "PostgreSQL",
+      "MercadoPago",
+      "Resend",
+      "Google Calendar API",
+      "TypeScript",
+    ],
+    status: "En producción",
+    featured: true,
+    link: "https://resto-web-sage.vercel.app",
+  },
+  {
+    id: "gestion-pyme",
+    title: "Gestión para Pymes",
+    subtitle: "Ventas, inventario y cobros",
+    description:
+      "Plataforma de gestión para pequeños comercios: control de inventario, ventas y cobros en línea. Funciona como aplicación instalable y sigue operando sin conexión, con lectura de códigos de barras desde la cámara y digitalización de documentos por reconocimiento óptico.",
+    category: "web",
+    stack: [
+      "Next.js",
+      "Supabase",
+      "MercadoPago",
+      "PWA / Serwist",
+      "IndexedDB",
+      "Tesseract OCR",
+      "TypeScript",
+    ],
+    status: "En desarrollo",
+    featured: true,
+  },
+  {
+    id: "control-operacional",
+    title: "Control Operacional",
+    subtitle: "Seguimiento de procesos y avance",
+    description:
+      "Sistema interno de control y seguimiento para una empresa de infraestructura: estados de avance, cartas Gantt, diagramas de flujo de procesos, tableros de indicadores y exportación de reportes a PDF y Excel.",
+    category: "software",
+    stack: [
+      "Next.js",
+      "Firebase",
+      "React Flow",
+      "Gantt",
+      "Recharts",
+      "TanStack Query",
+      "TypeScript",
+    ],
+    status: "Completado",
+    featured: false,
+  },
+  {
+    id: "gestion-proyectos-erp",
+    title: "Gestión de Proyectos sobre ERP",
+    subtitle: "Integración a sistemas existentes",
+    description:
+      "Plataforma de administración de proyectos conectada directamente a la base de datos corporativa de la empresa, sin obligarla a migrar sus sistemas. Incluye control de acceso por roles, tableros arrastrables, diagramas de dependencias y generación de informes.",
+    category: "software",
+    stack: [
+      "Next.js",
+      "SQL Server",
+      "NextAuth",
+      "React Flow",
+      "TanStack Table",
+      "jsPDF",
+      "TypeScript",
+    ],
+    status: "Completado",
+    featured: false,
+  },
+  {
+    id: "hormigoncalc",
+    title: "HormigonCalc",
+    subtitle: "Cálculo de hormigón armado",
+    description:
+      "Herramienta de cálculo para diseño de hormigón armado, con visualización de zonas de falla, gráficas científicas interactivas y memorias de cálculo exportables. En uso por estudiantes y profesionales de ingeniería civil.",
+    category: "web",
+    stack: ["Next.js", "TypeScript", "Plotly", "Tailwind CSS"],
+    status: "En producción",
+    featured: false,
+    link: "https://hormigon-armado.vercel.app",
+  },
+  {
+    id: "disenador-cv",
+    title: "Diseñador de CV",
+    subtitle: "Currículums con exportación a PDF",
+    description:
+      "Editor visual de currículums con plantillas, edición de contenido enriquecido, reordenamiento por arrastre y exportación lista para imprimir.",
+    category: "web",
+    stack: ["Next.js", "Prisma", "MDXEditor", "PDF", "TypeScript"],
+    status: "En desarrollo",
+    featured: false,
   },
 ];
 
