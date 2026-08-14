@@ -1,0 +1,376 @@
+/**
+ * Capa de movimiento y color del sitio CORPORATIVO.
+ *
+ * ┌─ POR QUE ESTE ARCHIVO EXISTE Y NO VIVE EN globals.css ──────────────────┐
+ * │ globals.css es zona compartida con Farmateca, que esta en produccion.   │
+ * │ Andres pidio explicitamente que no se tocara. Asi que todo lo de aca    │
+ * │ esta ADEMAS de eso, no encima.                                          │
+ * │                                                                         │
+ * │ La garantia real NO es "el archivo se importa aparte" — Next mete el    │
+ * │ CSS de un componente client en el bundle de toda la ruta, asi que la    │
+ * │ hoja igual se descarga en /farmateca/*. La garantia es el SCOPE: TODA   │
+ * │ regla de aca cuelga de `.site-motion`, y esa clase la pone unicamente   │
+ * │ `SiteChrome`, que hace `return children` sin envoltorio cuando el       │
+ * │ pathname empieza con /farmateca. Sin ese ancestro, ningun selector de   │
+ * │ este archivo puede llegar a Farmateca aunque la hoja este cargada.      │
+ * │                                                                         │
+ * │ => Si algun dia agregas una regla aca, arrancala con `.site-motion`.    │
+ * │    Una sola regla suelta rompe el aislamiento de un producto con        │
+ * │    usuarios reales.                                                     │
+ * └─────────────────────────────────────────────────────────────────────────┘
+ *
+ * Paleta: no se inventa ningun color. Todo sale de los tokens --site-accent,
+ * --site-accent-light y --site-bg que ya define globals.css, combinados con
+ * color-mix(). Por eso el tema claro y el oscuro funcionan solos.
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   KEYFRAMES
+   Van sin prefijo de scope porque un @keyframes es inerte hasta que alguien
+   lo referencia con animation-name, y solo lo referencian reglas .site-motion.
+   Igual van con prefijo `site-` en el nombre para no colisionar con Farmateca.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Deriva lenta de las manchas de color del fondo. Dos trayectorias distintas
+   para que las manchas nunca queden sincronizadas y el fondo no "lata". */
+@keyframes site-drift-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  33%  { transform: translate3d(6%, -8%, 0) scale(1.12); }
+  66%  { transform: translate3d(-5%, 6%, 0) scale(0.94); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes site-drift-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1.05); }
+  40%  { transform: translate3d(-8%, 5%, 0) scale(0.92); }
+  70%  { transform: translate3d(4%, 9%, 0) scale(1.1); }
+  100% { transform: translate3d(0, 0, 0) scale(1.05); }
+}
+
+/* Respiracion de opacidad, para que el color no quede estatico. */
+@keyframes site-breathe {
+  0%, 100% { opacity: var(--site-blob-o, 0.4); }
+  50%      { opacity: calc(var(--site-blob-o, 0.4) * 1.55); }
+}
+
+/* Barrido diagonal de brillo. Se usa en el borde superior de las tarjetas
+   destacadas y en los chips de tecnologia. */
+@keyframes site-sweep {
+  0%   { background-position: -160% 0; }
+  100% { background-position: 260% 0; }
+}
+
+/* Paneo de un degradado sobre texto. */
+@keyframes site-pan {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Flotacion sutil: iconos y badges. */
+@keyframes site-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* Latido del punto indicador del eyebrow de cada seccion. */
+@keyframes site-ping {
+  0%   { transform: scale(1);   opacity: 0.9; }
+  70%  { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* Linea que se dibuja de izquierda a derecha al entrar en viewport. */
+@keyframes site-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ANCLAS
+   El navbar es `fixed`, asi que al saltar a #soluciones el encabezado quedaba
+   escondido detras de el.
+   Lo natural seria `scroll-padding-top` en <html>, pero <html> es compartido
+   con Farmateca y no se toca: `scroll-margin-top` en las secciones consigue lo
+   mismo y SI se puede scopear bajo .site-motion.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.site-motion section[id] {
+  scroll-margin-top: 6rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   AURORA — el fondo vivo de las secciones
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.site-motion .site-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* contain:paint evita que el blur de 90px obligue a repintar la pagina
+     entera en cada frame de la deriva. */
+  contain: paint;
+}
+
+.site-motion .site-aurora__blob {
+  position: absolute;
+  border-radius: 9999px;
+  /* El blur escala con el viewport igual que el tamano de la mancha. Si fuera
+     un valor fijo, la PROPORCION blur/tamano cambiaria con la pantalla: en
+     celular se comeria la mancha y en ultrawide le dibujaria el borde. */
+  filter: blur(clamp(45px, 6vw, 130px));
+  opacity: var(--site-blob-o, 0.4);
+  will-change: transform, opacity;
+  animation:
+    site-drift-a var(--site-blob-dur, 26s) ease-in-out infinite,
+    site-breathe calc(var(--site-blob-dur, 26s) * 0.75) ease-in-out infinite;
+  animation-delay: var(--site-blob-delay, 0s);
+}
+
+.site-motion .site-aurora__blob--alt {
+  animation-name: site-drift-b, site-breathe;
+}
+
+/* El tema claro necesita MENOS opacidad: sobre blanco, el mismo valor que en
+   oscuro ensucia el fondo y le baja el contraste al texto. */
+[data-theme="light"] .site-motion .site-aurora__blob,
+:root:not([data-theme="dark"]) .site-motion .site-aurora__blob {
+  --site-blob-o: 0.22;
+  filter: blur(clamp(55px, 7vw, 150px));
+}
+
+[data-theme="dark"] .site-motion .site-aurora__blob {
+  --site-blob-o: 0.30;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TARJETAS — borde degradado + brillo que sigue al cursor
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.site-motion .site-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s ease;
+}
+
+/* Halo radial que sigue al mouse. Las variables --mx/--my las escribe
+   `useSpotlight` en JS; sin JS el halo simplemente queda centrado y quieto. */
+.site-motion .site-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--site-accent) 20%, transparent) 0%,
+    transparent 62%
+  );
+}
+
+.site-motion .site-card:hover::before {
+  opacity: 1;
+}
+
+.site-motion .site-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--site-accent) 42%, transparent);
+  box-shadow:
+    0 18px 40px -18px color-mix(in srgb, var(--site-accent) 45%, transparent),
+    0 2px 10px -4px color-mix(in srgb, var(--site-accent) 25%, transparent);
+}
+
+/* Filo superior degradado que se ilumina al pasar el mouse. */
+.site-motion .site-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--site-accent-light) 85%, transparent),
+    transparent
+  );
+}
+
+.site-motion .site-card:hover::after {
+  opacity: 1;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SUPERFICIES CON DEGRADADO
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Relleno tenue con tinte de acento: reemplaza los fondos planos que dejaban
+   las tarjetas como cajas negras. */
+.site-motion .site-tint {
+  background-image: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--site-accent) 8%, transparent) 0%,
+    transparent 45%
+  );
+}
+
+.site-motion .site-tint-strong {
+  background-image:
+    linear-gradient(
+      150deg,
+      color-mix(in srgb, var(--site-accent) 16%, transparent) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      120% 90% at 100% 0%,
+      color-mix(in srgb, var(--site-accent-light) 14%, transparent) 0%,
+      transparent 60%
+    );
+}
+
+/* Barra superior de 2px con brillo que barre en loop. */
+.site-motion .site-edge-sweep {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--site-accent) 55%, transparent) 0%,
+    var(--site-accent-light) 45%,
+    color-mix(in srgb, var(--site-accent) 55%, transparent) 100%
+  );
+  background-size: 220% 100%;
+  animation: site-sweep 5.5s linear infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TEXTO
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Titular con degradado que panea despacio. */
+.site-motion .site-text-gradient {
+  background-image: linear-gradient(
+    100deg,
+    var(--site-accent) 0%,
+    var(--site-accent-light) 35%,
+    var(--site-ink-strong) 65%,
+    var(--site-accent) 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: site-pan 9s ease-in-out infinite;
+}
+
+/* Cifras grandes: degradado fijo, sin animacion (un numero que cambia de color
+   se lee como error de render, no como decoracion). */
+.site-motion .site-stat-gradient {
+  background-image: linear-gradient(
+    145deg,
+    var(--site-ink-strong) 0%,
+    var(--site-accent-light) 130%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EYEBROW — el rotulito de cada seccion, con punto que late y linea que crece
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.site-motion .site-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.site-motion .site-eyebrow__dot {
+  position: relative;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--site-accent);
+  flex: none;
+}
+
+.site-motion .site-eyebrow__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--site-accent);
+  animation: site-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.site-motion .site-eyebrow__rule {
+  display: block;
+  height: 1px;
+  width: 3.5rem;
+  transform-origin: left;
+  animation: site-draw 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--site-accent) 70%, transparent),
+    transparent
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ICONOS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.site-motion .site-icon-well {
+  position: relative;
+  background-image: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--site-accent) 22%, transparent),
+    color-mix(in srgb, var(--site-accent-light) 8%, transparent)
+  );
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s ease;
+}
+
+.site-motion .group:hover .site-icon-well {
+  transform: translateY(-3px) rotate(-4deg) scale(1.06);
+  box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--site-accent) 70%, transparent);
+}
+
+.site-motion .site-float {
+  animation: site-float 6s ease-in-out infinite;
+  animation-delay: var(--site-float-delay, 0s);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ACCESIBILIDAD
+   Nada de esto es informacion: es decoracion. Si el sistema pide menos
+   movimiento, se apaga completo y el sitio queda igual de legible.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .site-motion .site-aurora__blob,
+  .site-motion .site-edge-sweep,
+  .site-motion .site-text-gradient,
+  .site-motion .site-eyebrow__dot::after,
+  .site-motion .site-eyebrow__rule,
+  .site-motion .site-float {
+    animation: none !important;
+  }
+
+  .site-motion .site-card,
+  .site-motion .site-icon-well,
+  .site-motion .group:hover .site-icon-well {
+    transition: none;
+    transform: none;
+  }
+}

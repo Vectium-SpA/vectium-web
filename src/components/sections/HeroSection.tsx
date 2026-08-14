@@ -1,195 +1,103 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
+import { ArrowRight } from "lucide-react";
+import LatticeCanvas from "@/components/site/LatticeCanvas";
 
-const subtitles = [
-  "Software a medida",
-  "Páginas Web de alto impacto",
-  "Apps Móviles multiplataforma",
-  "Soluciones Cloud escalables",
-];
-
-function useTypewriter(texts: string[], speed = 60, pause = 2000) {
-  const [display, setDisplay] = useState("");
-  const [textIndex, setTextIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const current = texts[textIndex];
-    let timeout: NodeJS.Timeout;
-
-    if (!isDeleting && charIndex < current.length) {
-      timeout = setTimeout(() => setCharIndex((c) => c + 1), speed);
-    } else if (!isDeleting && charIndex === current.length) {
-      timeout = setTimeout(() => setIsDeleting(true), pause);
-    } else if (isDeleting && charIndex > 0) {
-      timeout = setTimeout(() => setCharIndex((c) => c - 1), speed / 2);
-    } else if (isDeleting && charIndex === 0) {
-      setIsDeleting(false);
-      setTextIndex((t) => (t + 1) % texts.length);
-    }
-
-    setDisplay(current.substring(0, charIndex));
-    return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, textIndex, texts, speed, pause]);
-
-  return display;
-}
-
-function FloatingParticles() {
-  const particles = Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    size: Math.random() * 3 + 1,
-    duration: Math.random() * 10 + 15,
-    delay: Math.random() * 10,
-  }));
-
-  return (
-    <div className="absolute inset-0 overflow-hidden">
-      {particles.map((p) => (
-        <div
-          key={p.id}
-          className="absolute rounded-full bg-vectium-accent/20 animate-float"
-          style={{
-            left: p.left,
-            top: p.top,
-            width: p.size,
-            height: p.size,
-            animationDuration: `${p.duration}s`,
-            animationDelay: `${p.delay}s`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
+/**
+ * Hero del rediseno v2.
+ *
+ * Dos decisiones que no se cambian sin pensarlo:
+ *
+ * 1. NADA aca arranca en opacity:0. El handoff lo pide explicitamente: el
+ *    contenido tiene que ser legible sin JavaScript, y framer-motion serializa
+ *    el estado inicial en el HTML del servidor. Si el titular arrancara oculto,
+ *    sin JS no habria hero. Los reveals van solo bajo el pliegue.
+ *
+ * 2. El canvas se monta despues de `mounted` y recibe `themeKey`. Sus colores
+ *    salen de los tokens --site-accent*, que dependen del tema; sin esperar a
+ *    la hidratacion leeria los del tema equivocado.
+ */
 export function HeroSection() {
-  const typed = useTypewriter(subtitles);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const sectionRef = useRef<HTMLElement>(null);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (sectionRef.current) {
-      const rect = sectionRef.current.getBoundingClientRect();
-      setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    }
-  }, []);
+  useEffect(() => setMounted(true), []);
 
   return (
-    <section
-      ref={sectionRef}
-      onMouseMove={handleMouseMove}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-vectium-black"
-    >
-      {/* Cursor glow */}
+    <section className="relative isolate overflow-hidden bg-site-bg">
+      {/* Reticula 3D. Solo tras hidratar: necesita los tokens del tema activo. */}
+      {mounted && (
+        <LatticeCanvas
+          className="pointer-events-none absolute inset-0 z-0"
+          themeKey={resolvedTheme}
+        />
+      )}
+
+      {/* Degradado que funde la reticula con el fondo y protege la lectura */}
       <div
-        className="pointer-events-none absolute z-0 hidden lg:block"
+        className="pointer-events-none absolute inset-0 z-[1]"
         style={{
-          left: mousePos.x - 200,
-          top: mousePos.y - 200,
-          width: 400,
-          height: 400,
-          background: "radial-gradient(circle, rgba(0,169,165,0.08) 0%, transparent 70%)",
+          background:
+            "radial-gradient(120% 80% at 72% 45%, transparent 0%, color-mix(in srgb, var(--site-bg) 55%, transparent) 55%, var(--site-bg) 100%)",
         }}
       />
 
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--color-vectium-gray-900)_0%,_var(--color-vectium-black)_70%)]" />
+      <div className="relative z-[2] mx-auto max-w-[1200px] px-6 py-28 sm:py-36 lg:px-8 lg:py-44">
+        <span className="font-[family-name:var(--font-site-mono)] text-[11.5px] font-medium uppercase tracking-[0.18em] text-site-accent">
+          Software a medida · Chile
+        </span>
 
-      {/* Grid pattern - animated */}
-      <div className="absolute inset-0 bg-grid-pattern animate-grid-drift" />
+        {/* El minimo del clamp era 2.5rem (40px). A 320px de ancho la palabra
+            "Infraestructura" medía 277px contra 272px disponibles y desbordaba
+            el documento. Baja a 2rem, que la deja entrar con holgura. */}
+        <h1 className="mt-5 max-w-[16ch] text-balance font-[family-name:var(--font-site-serif)] text-[clamp(2rem,7vw,4rem)] font-normal leading-[1.06] tracking-[-0.025em] text-site-ink-strong">
+          Infraestructura{" "}
+          <span className="bg-gradient-to-r from-site-accent to-site-accent-light bg-clip-text text-transparent">
+            digital
+          </span>{" "}
+          para empresas chilenas
+        </h1>
 
-      {/* Floating particles */}
-      <FloatingParticles />
+        {/*
+          Antes esta bajada cerraba con Farmateca y sus 2.994 medicamentos.
+          Decision de Andres (2026-08-14): la descripcion principal va GENERAL.
+          Un dato de producto en el primer parrafo hace leer a Vectium como "la
+          empresa de Farmateca" en vez de como una desarrolladora; Farmateca ya
+          tiene su tarjeta en los destacados y su propia seccion.
 
-      {/* Decorative orbs */}
-      <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-vectium-accent/5 blur-3xl animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full bg-vectium-gray-700/10 blur-3xl animate-pulse-slow" style={{ animationDelay: "2s" }} />
+          Nada de trayectoria ni cartera: habla de CAPACIDAD, que es cierto hoy
+          y no depende de los ~8 meses que tiene la SpA (Ley 19.496 art. 28).
+        */}
+        <p className="mt-7 max-w-[50ch] text-pretty font-[family-name:var(--font-site-sans)] text-[19.5px] font-light leading-[1.62] text-site-muted">
+          Transformamos ideas en soluciones digitales. Arquitectura de software,
+          plataformas web y aplicaciones móviles de alto impacto.
+        </p>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-6 text-center lg:px-8">
-        {/* Logo mark */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mx-auto mb-8 inline-flex items-center rounded-full border border-vectium-gray-800 bg-vectium-gray-900/50 px-6 py-2 backdrop-blur-sm"
-        >
-          <span className="font-[family-name:var(--font-display)] text-lg font-bold text-vectium-white">
-            Vectium
-          </span>
-          <span className="ml-2 text-xs tracking-widest text-vectium-gray-500 uppercase">
-            SpA
-          </span>
-        </motion.div>
-
-        {/* Main heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-gradient text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
-        >
-          Transformamos Ideas en
-          <br />
-          Soluciones Digitales
-        </motion.h1>
-
-        {/* Typewriter subtitle */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mx-auto mt-6 max-w-2xl"
-        >
-          <p className="text-lg text-vectium-gray-400 sm:text-xl h-8">
-            {typed}
-            <span className="animate-blink text-vectium-accent">|</span>
-          </p>
-        </motion.div>
-
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
-        >
+        <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
           <Link
-            href="/soluciones"
-            className="group relative inline-flex items-center overflow-hidden rounded-xl bg-vectium-accent px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-vectium-accent/20 transition-all hover:bg-vectium-accent-dark hover:shadow-xl hover:shadow-vectium-accent/30"
+            href="/proyectos"
+            className="group inline-flex items-center justify-center gap-2 rounded-lg bg-site-accent px-7 py-3.5 font-[family-name:var(--font-site-sans)] text-[15px] font-semibold text-site-bg transition-colors hover:bg-site-accent-light"
           >
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-            Conoce Nuestros Proyectos
+            Ver nuestros proyectos
+            <ArrowRight
+              size={17}
+              className="transition-transform group-hover:translate-x-0.5"
+            />
           </Link>
           <Link
             href="/contacto"
-            className="inline-flex items-center rounded-xl border border-vectium-gray-700 px-8 py-3.5 text-sm font-semibold text-vectium-gray-300 transition-all hover:border-vectium-gray-500 hover:text-vectium-white"
+            className="inline-flex items-center justify-center rounded-lg border border-site-border px-7 py-3.5 font-[family-name:var(--font-site-sans)] text-[15px] font-semibold text-site-ink transition-colors hover:border-site-accent hover:text-site-accent"
           >
-            Contáctanos
+            Conversemos
           </Link>
-        </motion.div>
+        </div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="mt-20"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="mx-auto h-10 w-6 rounded-full border-2 border-vectium-gray-700 p-1"
-          >
-            <div className="h-2 w-1.5 rounded-full bg-vectium-gray-500 mx-auto" />
-          </motion.div>
-        </motion.div>
+        <p className="mt-8 font-[family-name:var(--font-site-mono)] text-[12.5px] tracking-[0.04em] text-site-muted">
+          contacto@vectium.cl
+        </p>
       </div>
     </section>
   );

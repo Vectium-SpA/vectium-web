@@ -7,7 +7,7 @@ import { PageHero } from "@/components/layout/PageHero";
 export const metadata: Metadata = {
   title: "Contacto",
   description:
-    "Contáctanos para conocer más sobre nuestras soluciones digitales. Estamos en Santiago, Chile.",
+    "Contáctanos para conocer más sobre nuestras soluciones digitales. Trabajamos en remoto desde la Región de Coquimbo, con alcance en todo Chile.",
 };
 
 export default function ContactoPage() {

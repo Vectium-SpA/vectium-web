@@ -3,6 +3,70 @@
 /* Dark mode class-based (para Farmateca) */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ---------------------------------------------------------------------------
+   Tema del SITIO CORPORATIVO (rediseno v2).
+
+   Va por `data-theme` y NO por la clase `.dark` a proposito. La clase `.dark`
+   ya es de Farmateca: `app/farmateca/web/app/layout.tsx` se la agrega al
+   <html> por su cuenta y sus componentes la usan en 540 lugares. Si el toggle
+   corporativo escribiera esa misma clase, los dos se pelearian el <html> en
+   produccion. Con `data-theme` cada uno vive por su lado.
+
+   Regla: NUNCA redefinir aca los tokens --color-vectium-* ni --color-farmateca-*.
+   Estos son tokens NUEVOS.
+   --------------------------------------------------------------------------- */
+/* `:is` y no `:where`: :where() aporta especificidad CERO, asi que
+   site-dark:bg-x empataba con la utilidad base bg-y y ganaba la que Tailwind
+   emitiera al final. Con :is() el selector toma la especificidad del atributo
+   y el override es determinista. */
+@custom-variant site-dark (&:is([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  /* Paleta clara — tomada del prototipo Home-Propuesta-v1-clara */
+  --site-bg: #FFFFFF;
+  --site-bg-deep: #F6F7F8;
+  --site-surface: #F2F3F5;
+  --site-border: #D8DCE0;
+  --site-ink: #1C2024;
+  --site-ink-strong: #14171A;
+  --site-muted: #5C646C;
+  --site-muted-dim: #8A929A;
+  --site-accent: #3B5A73;
+  --site-accent-light: #5C7F9B;
+  --site-accent-pale: #EAF0F5;
+}
+
+[data-theme="dark"] {
+  /* Paleta oscura — tokens exactos del handoff Home-Propuesta-v2 */
+  --site-bg: #0B0E11;
+  --site-bg-deep: #070A0C;
+  --site-surface: #101519;
+  --site-border: #1F272E;
+  --site-ink: #EAEEF2;
+  --site-ink-strong: #FFFFFF;
+  --site-muted: #9AA6B2;
+  --site-muted-dim: #6B7681;
+  --site-accent: #7FB6D6;
+  --site-accent-light: #BFE3F5;
+  --site-accent-pale: #EAF6FD;
+}
+
+/* `inline` hace que el token apunte a la variable en tiempo de uso, no que
+   hornee el valor: es lo que permite que cambie al voltear el tema. */
+@theme inline {
+  --color-site-bg: var(--site-bg);
+  --color-site-bg-deep: var(--site-bg-deep);
+  --color-site-surface: var(--site-surface);
+  --color-site-border: var(--site-border);
+  --color-site-ink: var(--site-ink);
+  --color-site-ink-strong: var(--site-ink-strong);
+  --color-site-muted: var(--site-muted);
+  --color-site-muted-dim: var(--site-muted-dim);
+  --color-site-accent: var(--site-accent);
+  --color-site-accent-light: var(--site-accent-light);
+  --color-site-accent-pale: var(--site-accent-pale);
+}
+
 @theme {
   /* Vectium brand colors */
   --color-vectium-black: #1A1A1A;
@@ -48,6 +112,12 @@
 
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Playfair Display', 'Georgia', serif;
+
+  /* Tipografia del rediseno v2 del sitio corporativo. Se suman, no reemplazan:
+     Farmateca sigue usando --font-sans. */
+  --font-site-serif: var(--font-source-serif), 'Georgia', serif;
+  --font-site-sans: var(--font-source-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-site-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
 @layer base {
@@ -94,28 +164,28 @@
     height: 100px;
     margin-top: -1px;
     margin-bottom: -1px;
-    background: linear-gradient(to bottom, var(--color-vectium-black), var(--color-vectium-gray-50));
+    background: linear-gradient(to bottom, var(--site-bg-deep), var(--site-surface));
   }
 
   .section-divider-light-to-white {
     height: 80px;
     margin-top: -1px;
     margin-bottom: -1px;
-    background: linear-gradient(to bottom, var(--color-vectium-gray-50), var(--color-vectium-white));
+    background: linear-gradient(to bottom, var(--site-surface), var(--site-bg));
   }
 
   .section-divider-white-to-dark {
     height: 100px;
     margin-top: -1px;
     margin-bottom: -1px;
-    background: linear-gradient(to bottom, var(--color-vectium-white), var(--color-vectium-black));
+    background: linear-gradient(to bottom, var(--site-bg), var(--site-bg-deep));
   }
 
   .section-divider-light-to-dark {
     height: 100px;
     margin-top: -1px;
     margin-bottom: -1px;
-    background: linear-gradient(to bottom, var(--color-vectium-gray-50), var(--color-vectium-black));
+    background: linear-gradient(to bottom, var(--site-surface), var(--site-bg-deep));
   }
 
   /* Animations */

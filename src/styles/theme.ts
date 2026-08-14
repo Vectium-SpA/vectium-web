@@ -26,8 +26,8 @@ export const vectiumTheme = {
   ],
   company: {
     name: 'Vectium SpA',
-    tagline: 'Innovación Tecnológica para el Sector Salud',
+    tagline: 'Software a medida para empresas chilenas',
     email: 'contacto@vectium.cl',
-    location: 'Chile',
+    location: 'Las Condes, Región Metropolitana · operamos desde la Región de Coquimbo',
   },
 } as const;

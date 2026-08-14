@@ -48,3 +48,6 @@ next-env.d.ts
 
 # Claude
 .claude/
+
+# Material de entrada local (disenos, capturas, assets sin procesar)
+_entrada.local.*
