@@ -7,29 +7,32 @@ import { SiteAurora } from "@/components/site/SiteAurora";
 /**
  * Bloque de marca a pantalla ancha: el isologo grande sobre la aurora.
  *
- * ┌─ CÓMO CAMBIAR AL LOGO 3D CROMADO (es una linea por tema) ───────────────┐
- * │ Andres tiene 5 renders 3D del isologo. Cuando los suba a                │
- * │ `_entrada.local.logos/`, se optimizan, se copian a `public/marca/` y se │
- * │ cambian SOLO las dos constantes de abajo. Nada mas de este archivo      │
- * │ necesita tocarse: el layout, el tema y la animacion ya estan resueltos. │
+ * ┌─ POR QUE UNA SOLA IMAGEN Y NO DOS ──────────────────────────────────────┐
+ * │ La primera version servia `og-image.png` en tema oscuro. Se veia MAL y  │
+ * │ Andres lo cazo en el iPad: ese archivo tiene el fondo PINTADO —         │
+ * │ verificado muestreando el pixel (0,0): alfa 255, RGB(18,18,15)— asi que │
+ * │ en la pagina aparecia como una tarjeta gris con grilla y esquinas       │
+ * │ redondeadas flotando, en vez de un logo.                                │
  * │                                                                         │
- * │ ⚠️ Los renders traen FONDO INCRUSTADO (unos oscuros, otros claros) y    │
- * │ ninguno es transparente. Por eso hay dos fuentes y no una: la oscura    │
- * │ sobre tema oscuro y la clara sobre tema claro. Si se pone la oscura en  │
- * │ tema claro queda un recuadro gris flotando en la pagina.                │
+ * │ `logo.png` en cambio tiene alfa 0 en las esquinas: fondo REALMENTE      │
+ * │ transparente. Por eso ahora se usa esa sola imagen en los dos temas, y  │
+ * │ el color se resuelve con un filtro CSS.                                 │
  * │                                                                         │
- * │ Mismo patron que ya usa el logo de MercadoPago en TechStackSection.     │
+ * │ `brightness(0) invert(1)` = aplasta la tinta a negro y la invierte a    │
+ * │ blanco puro, respetando el canal alfa. Es mas predecible que `invert`   │
+ * │ solo, que sobre la tinta casi-negra del logo daria un blanco sucio.     │
+ * │                                                                         │
+ * │ ⚠️ Si algun dia se cambia por los renders 3D CROMADOS: no sirven tal    │
+ * │ cual. Los 5 traen fondo incrustado (4 oscuros, 1 claro) y ninguno es    │
+ * │ transparente — reintroducirian exactamente el recuadro que este commit  │
+ * │ elimina. Hay que recortarlos a PNG con alfa primero. Y OJO: al cromado  │
+ * │ NO se le puede aplicar este filtro, porque le mataria los degradados    │
+ * │ metalicos, que son todo su valor; ese caso si necesita dos archivos.    │
  * └─────────────────────────────────────────────────────────────────────────┘
- *
- * Hoy apunta al isologo plano de `vectium-icons`, que es un asset real y
- * correcto: el bloque funciona y se ve bien desde ya, no es un placeholder
- * roto. El cromado es una mejora, no un requisito.
  */
 
-/** Fuente para tema OSCURO. Cambiar a "/marca/isologo-3d-oscuro.png" al subirlo. */
-const LOGO_OSCURO = "/og-image.png";
-/** Fuente para tema CLARO. Cambiar a "/marca/isologo-3d-claro.png" al subirlo. */
-const LOGO_CLARO = "/logo.png";
+/** Isologo plano de vectium-icons. Fondo transparente verificado (alfa 0). */
+const LOGO = "/logo.png";
 
 export function BrandMoment() {
   const ref = useRef(null);
@@ -49,25 +52,14 @@ export function BrandMoment() {
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="w-full"
         >
-          {/* El intercambio por tema se hace con CSS y no con JS a proposito:
-              con `useTheme` habria que esperar a que monte, y el logo pegaria
-              un salto visible al hidratar. Asi las dos <img> se sirven y el
-              navegador oculta la que no corresponde, sin parpadeo. */}
-          <picture>
-            <img
-              src={LOGO_CLARO}
-              alt="Vectium"
-              className="mx-auto block h-auto w-full max-w-[min(560px,80vw)] object-contain site-dark:hidden"
-            />
-          </picture>
-          <picture>
-            <img
-              src={LOGO_OSCURO}
-              alt="Vectium"
-              aria-hidden="true"
-              className="mx-auto hidden h-auto w-full max-w-[min(560px,80vw)] rounded-2xl object-contain site-dark:block"
-            />
-          </picture>
+          {/* El color se resuelve por CSS y no con JS: con `useTheme` habria
+              que esperar a que monte y el logo pegaria un salto al hidratar. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={LOGO}
+            alt="Vectium"
+            className="mx-auto block h-auto w-full max-w-[min(520px,78vw)] object-contain site-dark:[filter:brightness(0)_invert(1)]"
+          />
         </motion.div>
 
         <motion.p
