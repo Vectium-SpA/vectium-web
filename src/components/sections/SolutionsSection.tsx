@@ -59,6 +59,7 @@ const featuredProjects = [
     tags: ["Salud", "Mobile", "Web"],
     link: "/farmateca",
     isInternal: true,
+    cta: "Ver más detalles",
   },
   {
     title: "Reservas para Restaurantes",
@@ -70,6 +71,19 @@ const featuredProjects = [
     // reservas convierte mucho mejor tocando el producto que leyendo sobre el.
     link: "https://resto-web-sage.vercel.app",
     isInternal: false,
+    cta: "Ver la demo en vivo",
+  },
+  {
+    // La marca visible es "Gestionala"; "mypyme" es solo el identificador
+    // tecnico (repo, Supabase, Vercel). Ver `docs/10-marca-gestionala.md`.
+    title: "Gestionala",
+    subtitle: "Punto de venta, caja e inventario",
+    description:
+      "Punto de venta, control de caja e inventario y flujo de caja para pequeños comercios. Se instala como aplicación y sigue vendiendo sin conexión. Sitio público disponible.",
+    tags: ["POS", "Offline", "Pagos"],
+    link: "https://mypyme-blond.vercel.app",
+    isInternal: false,
+    cta: "Ver el sitio",
   },
 ];
 
@@ -143,7 +157,9 @@ export function SolutionsSection() {
         />
 
         {/* Featured Projects Grid */}
-        <div className="mt-12 grid gap-8 lg:grid-cols-2">
+        {/* 3 destacados: 1 col en celular, 2 en tablet y 3 en escritorio. Con
+            `lg:grid-cols-2` el tercero quedaba solo en una fila a media pagina. */}
+        <div className="mt-12 grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {featuredProjects.map((project, index) => (
             <motion.div
               key={project.title}
@@ -187,7 +203,7 @@ export function SolutionsSection() {
                   href={project.link}
                   className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-site-accent transition-all hover:gap-3"
                 >
-                  Ver más detalles
+                  {project.cta}
                   <ArrowRight size={16} />
                 </Link>
               ) : (
@@ -200,7 +216,10 @@ export function SolutionsSection() {
                   rel="noopener noreferrer"
                   className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-site-accent transition-all hover:gap-3"
                 >
-                  Ver la demo en vivo
+                  {/* El texto lo define cada proyecto: resto-web lleva a una
+                      demo operable y Gestionala a su sitio publico. Decir
+                      "demo en vivo" en los dos prometia de mas en uno. */}
+                  {project.cta}
                   <ExternalLink size={15} />
                 </a>
               )}

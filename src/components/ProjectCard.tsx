@@ -14,17 +14,23 @@ const categoryLabels: Record<Project["category"], string> = {
   software: "Software",
 };
 
+// Los chips traian colores fijos de Tailwind (bg-blue-100 / text-blue-800),
+// pensados para fondo claro. Con el tema oscuro por defecto quedaban parches
+// pastel sobre tarjetas oscuras, fuera de la paleta del sitio. Ahora usan el
+// color como TINTE sobre el fondo del tema, asi funcionan en claro y oscuro.
 const categoryColors: Record<Project["category"], string> = {
-  mobile: "bg-blue-100 text-blue-800",
-  web: "bg-green-100 text-green-800",
-  fullstack: "bg-purple-100 text-purple-800",
-  software: "bg-orange-100 text-orange-800",
+  mobile: "bg-sky-500/10 text-sky-600 site-dark:text-sky-300 border-sky-500/25",
+  web: "bg-emerald-500/10 text-emerald-700 site-dark:text-emerald-300 border-emerald-500/25",
+  fullstack: "bg-violet-500/10 text-violet-700 site-dark:text-violet-300 border-violet-500/25",
+  software: "bg-amber-500/10 text-amber-700 site-dark:text-amber-300 border-amber-500/25",
 };
 
 const statusColors: Record<Project["status"], string> = {
-  "En producción": "bg-green-100 text-green-800",
-  "En desarrollo": "bg-yellow-100 text-yellow-800",
-  Completado: "bg-site-surface text-site-ink",
+  "En producción":
+    "bg-emerald-500/15 text-emerald-800 site-dark:text-emerald-200 border-emerald-500/30",
+  "En desarrollo":
+    "bg-amber-500/15 text-amber-900 site-dark:text-amber-200 border-amber-500/30",
+  Completado: "bg-site-surface text-site-ink border-site-border",
 };
 
 export default function ProjectCard({ project }: ProjectCardProps) {
@@ -32,34 +38,38 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     <motion.div
       whileHover={{ scale: 1.02, y: -5 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="group bg-site-bg rounded-xl shadow-lg overflow-hidden"
+      className="site-card group flex h-full flex-col overflow-hidden rounded-xl border border-site-border bg-site-bg shadow-lg"
     >
       {/* Project image */}
-      <div className="relative h-48 bg-gradient-to-br from-site-accent to-site-accent-light overflow-hidden">
+      <div className="relative h-48 overflow-hidden bg-gradient-to-br from-site-accent to-site-accent-light">
         {project.image ? (
+          /* object-CONTAIN y no object-cover: las imagenes de proyecto son
+             isotipos cuadrados, y `cover` en una caja 16:9 les recortaba la
+             cabeza y los pies. `contain` con padding los muestra enteros. */
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            className="h-full w-full object-contain p-8 transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-white text-6xl font-bold opacity-20">
+          <div className="flex h-full w-full items-center justify-center text-6xl font-bold text-white opacity-20">
             {project.title.charAt(0)}
           </div>
         )}
 
         {/* Status badge */}
-        <div className="absolute top-4 right-4">
+        <div className="absolute right-4 top-4">
           <span
-            className={`px-3 py-1 text-xs font-semibold rounded-full ${statusColors[project.status]}`}
+            className={`rounded-full border px-3 py-1 text-xs font-semibold backdrop-blur-md ${statusColors[project.status]}`}
           >
             {project.status}
           </span>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-6">
+      {/* Content. flex-1 + mt-auto en la fila de botones deja todos los "Ver
+          proyecto" alineados abajo aunque las descripciones midan distinto. */}
+      <div className="flex flex-1 flex-col p-6">
         <div className="mb-4">
           <h3 className="text-2xl font-bold text-site-ink-strong mb-1 group-hover:text-site-accent transition-colors">
             {project.title}
@@ -75,7 +85,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
         <div className="mb-4">
           <span
-            className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${categoryColors[project.category]}`}
+            className={`inline-block rounded-full border px-3 py-1 text-xs font-semibold ${categoryColors[project.category]}`}
           >
             {categoryLabels[project.category]}
           </span>
@@ -97,7 +107,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </div>
         </div>
 
-        <div className="flex gap-3 mt-6">
+        <div className="mt-auto flex gap-3 pt-6">
           {project.link && (
             <a
               href={project.link}
@@ -113,7 +123,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.githubLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-site-surface hover:bg-site-bg-deep text-white py-2 px-4 rounded-lg font-medium transition-all"
+              /* Era `text-white` fijo: en tema claro el icono de GitHub quedaba
+                 blanco sobre una superficie clara, es decir invisible. */
+              className="rounded-lg bg-site-surface px-4 py-2 font-medium text-site-ink transition-all hover:bg-site-bg-deep"
               aria-label="Ver en GitHub"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

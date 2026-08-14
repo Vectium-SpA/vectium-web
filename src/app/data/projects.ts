@@ -51,23 +51,34 @@ export const projects: Project[] = [
     link: "https://resto-web-sage.vercel.app",
   },
   {
-    id: "gestion-pyme",
-    title: "Gestión para Pymes",
-    subtitle: "Ventas, inventario y cobros",
+    // El identificador TECNICO sigue siendo "mypyme" en GitHub, Supabase,
+    // Vercel y los planes de Flow — cambiarlo rompe cosas. Pero la MARCA
+    // VISIBLE es "Gestionala", siempre. Fuente: `docs/10-marca-gestionala.md`
+    // en C:\mypyme, que es el documento de identidad del producto.
+    id: "gestionala",
+    title: "Gestionala",
+    subtitle: "Punto de venta, caja e inventario",
     description:
-      "Plataforma de gestión para pequeños comercios: control de inventario, ventas y cobros en línea. Funciona como aplicación instalable y sigue operando sin conexión, con lectura de códigos de barras desde la cámara y digitalización de documentos por reconocimiento óptico.",
+      "Sistema de gestión para pequeños comercios y negocios de servicio: punto de venta, control de caja e inventario, flujo de caja con reportes y comprobantes de venta. Se instala como aplicación y sigue vendiendo sin conexión, sincronizando cuando vuelve la señal. Lee códigos de barras con la cámara y digitaliza documentos por reconocimiento óptico. Se adapta al rubro, desde un minimarket hasta una barbería o una consulta.",
     category: "web",
     stack: [
       "Next.js",
       "Supabase",
+      "PostgreSQL",
       "MercadoPago",
       "PWA / Serwist",
       "IndexedDB",
       "Tesseract OCR",
+      "Recharts",
       "TypeScript",
     ],
+    // "En desarrollo" y NO "En produccion": esta desplegado y funcionando en
+    // una URL publica, pero todavia no tiene comercios usandolo. No se afirma
+    // una adopcion que no existe (Ley 19.496 art. 28).
     status: "En desarrollo",
     featured: true,
+    image: "/projects/gestionala/isotipo.png",
+    link: "https://mypyme-blond.vercel.app",
   },
   {
     id: "control-operacional",

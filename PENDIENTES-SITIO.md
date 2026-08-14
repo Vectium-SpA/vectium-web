@@ -1,6 +1,6 @@
 # Pendientes del sitio Vectium
 
-**Generado:** 2026-08-14 · **Estado del trabajo:** PR [#3](https://github.com/Vectium-SpA/vectium-web/pull/3), rama `fix/identidad-legal-sii`, 11 commits, sin mergear. Actualizado 2026-08-14 tras las respuestas de Andrés.
+**Generado:** 2026-08-14 · **Estado del trabajo:** PR [#3](https://github.com/Vectium-SpA/vectium-web/pull/3), rama `fix/identidad-legal-sii`, **sin mergear**. Actualizado 2026-08-14 tras aplicar el feedback de diseño de Andrés (capa visual, tema oscuro por defecto, responsive 320→3440px y énfasis en Gestionala).
 
 Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de abajo.
 
@@ -15,15 +15,29 @@ Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de a
 
 ---
 
-## 🎨 1. FEEDBACK DE DISEÑO — lo primero del próximo chat
+## ✅ 1. FEEDBACK DE DISEÑO — APLICADO (2026-08-14)
 
-Andrés revisó el sitio en local el **2026-08-14** y tiene **varias mejoras de diseño** que quiere
-aplicar. Todavía no las detalló: se abre un chat nuevo para eso, con contexto fresco.
+Andrés revisó el sitio en local, pidió tres cosas y las tres están hechas y verificadas.
 
-- [ ] **Que Andrés liste qué quiere cambiar del diseño.** Todo lo demás de este documento espera:
-      no tiene sentido mergear y después rehacer.
-- [ ] Ojo: el contenido y los datos **ya están correctos y verificados**. Lo que viene es
-      **presentación**, no información. No reabrir cifras, claims ni identidad legal.
+- [x] **Más color, degradados y animación.** El sitio se caía después del hero. Se creó una capa
+      de movimiento (`src/styles/site-motion.css` + `components/site/`): aurora de fondo por
+      sección, halo que sigue al cursor en las tarjetas, titulares palabra por palabra, barra de
+      progreso de lectura, contador de cifras, y los chips del stack iluminándose con el color de
+      marca real de cada tecnología. **Toda la paleta sale de los tokens `--site-accent*`**: no se
+      inventó ni un color.
+- [x] **Tema oscuro por defecto.** `SiteThemeProvider` → `defaultTheme="dark"`. `enableSystem`
+      queda en `false` a propósito: si no, el SO del visitante pisaría el default.
+- [x] **Responsive impecable.** Auditado por medición en **8 rutas × 5 anchos**
+      (320/390/768/1024/3440) = 40 combinaciones, **todas en 0px de desborde**. Se corrigieron 4
+      desbordes reales; el peor era el `<input>` del newsletter del footer (sin `min-w-0`, un item
+      flex no baja de su ancho intrínseco), que ensanchaba el documento en **todas** las páginas.
+- [x] **Énfasis en Gestionala** (ver bloque 6).
+
+> ⚠️ **La capa visual NO toca `globals.css`.** Vive en un archivo aparte y **todas** sus reglas
+> cuelgan de `.site-motion`, clase que pone solo `SiteChrome`, que ya retorna temprano en
+> `/farmateca/*`. La hoja igual se descarga en esas rutas (Next empaqueta el CSS por ruta), así que
+> **el aislamiento es el scope, no el archivo**. Si agregas una regla ahí, arráncala con
+> `.site-motion`. Verificado: 0 nodos `.site-motion` / `.site-aurora` / `.site-card` en Farmateca.
 
 ---
 
@@ -32,15 +46,22 @@ aplicar. Todavía no las detalló: se abre un chat nuevo para eso, con contexto 
 - [ ] Abrir el **preview de Vercel** del PR (lo genera solo al abrir el PR).
 - [ ] Home: hero con retícula 3D, 4 servicios, cifras, stack, contacto.
 - [ ] Probar el **selector de tema** (esquina del nav) en claro y oscuro.
+      Ahora **abre en oscuro** por defecto; comprobar que el toggle a claro se recuerda al recargar.
 - [ ] Las 7 internas: `/soluciones` `/proyectos` `/sobre-nosotros` `/contacto` `/faq`
       `/privacidad` `/terminos`.
+- [ ] **Los 3 destacados del home**: Farmateca, resto-web y **Gestionala**. Que los tres enlaces
+      abran (los dos externos van a Vercel).
+- [ ] **Mirarlo en el iPad y en el celular.** El responsive quedó medido en 0px de desborde de
+      320px a 3440px, pero el juicio visual es tuyo.
 - [ ] **Comprobar que Farmateca no se movió**: `/farmateca` y `/farmateca/web`.
       *(Verificado por código y por render, pero es producción con usuarios: míralo tú también.)*
 - [ ] Mergear a `main` → despliega solo.
 
 ---
 
-## ✅ 2. Datos de Andrés — RESPONDIDOS y aplicados (2026-08-14)
+## ✅ BLOQUE 0b. Datos de Andrés — RESPONDIDOS y aplicados (2026-08-14)
+<!-- Antes decia "## 2." y chocaba con el bloque de arriba: habia dos secciones 2. -->
+
 
 - [x] **Cifras de Farmateca corregidas**: **2.994 medicamentos** (yo había publicado 2.556) y
       **450 compuestos** (el FAQ decía "200+"). 222 farmacias se confirma.
@@ -98,7 +119,36 @@ aplicar. Todavía no las detalló: se abre un chat nuevo para eso, con contexto 
 
 ---
 
-## 6. resto-web — el otro frente
+## ✅ 6. Gestionala (mypyme) — ÉNFASIS APLICADO (2026-08-14)
+
+Andrés pidió darle más peso al proyecto de `C:\mypyme`. Estaba como el más débil de los tres
+destacados: nombre genérico ("Gestión para Pymes"), **sin enlace y sin imagen**.
+
+- [x] **Se publica con su marca real: "Gestionala".** Fuente: `C:\mypyme\docs\10-marca-gestionala.md`,
+      que es el documento de identidad del producto. ⚠️ **"mypyme" es solo el identificador
+      TÉCNICO** (repo GitHub, proyecto Supabase `igpplasotoshtuwbdzmf`, proyecto Vercel
+      `mypyme-blond`, planes de Flow) y **no se cambia** — cambiarlo rompe cosas.
+- [x] **Enlace público:** `https://mypyme-blond.vercel.app`. Verificado con `curl` → **200**, y es
+      una landing pública real ("Gestionala — POS, caja e inventario para tu negocio"), no un muro
+      de login.
+- [x] **Isotipo real** copiado desde `C:\mypyme\public\brand\icon-512.png` →
+      `public/projects/gestionala/isotipo.png` (+ el isologo con texto, por si se necesita).
+- [x] **Sumado a los 3 destacados del home**, que antes solo tenían Farmateca y resto-web. La
+      grilla pasó de 2 a 3 columnas.
+- [x] Descripción real y verificada contra el repo: POS, caja, inventario, flujo de caja, PWA
+      offline, códigos de barras por cámara, OCR, multi-rubro.
+
+- [ ] 🔲 **Queda su estado en "En desarrollo", NO "En producción".** Está desplegado y funcionando,
+      pero **no tiene comercios usándolo** (0 usuarios). Afirmar adopción que no existe es Ley
+      19.496 art. 28. Cambiarlo recién cuando haya un cliente real.
+- [ ] ⚠️ **RIESGO VIVO: el Supabase de mypyme se auto-pausa por inactividad** (free tier). Hoy está
+      `ACTIVE_HEALTHY`, pero si se pausa, el enlace publicado desde vectium.cl lleva a una app
+      rota. Si el sitio va a apuntar ahí de forma permanente, hay que **revisarlo periódicamente**
+      o sacar el enlace. Se restaura con `restore_project` (2–3 min).
+
+---
+
+## 7. resto-web — el otro frente
 
 - [ ] **Mandar los ~10 mensajes de WhatsApp** de la Lista-Ataque Tanda 1.
       *Esto es lo único que hace avanzar el negocio hoy; el resto es infraestructura.*
@@ -135,3 +185,10 @@ aplicar. Todavía no las detalló: se abre un chat nuevo para eso, con contexto 
 4. **La clase `.dark` es de Farmateca.** Lo corporativo usa `data-theme` + variante `site-dark`.
 5. **Nunca `push` directo a `main`.** Auto-despliega y el Vercel de este proyecto está en la
    cuenta `vectiumspa@gmail.com`, fuera del alcance de Claude. Siempre rama + PR.
+6. **Toda regla de `site-motion.css` arranca con `.site-motion`.** Ese scope es lo único que
+   mantiene la capa visual fuera de Farmateca: el archivo igual se descarga en `/farmateca/*`
+   porque Next empaqueta el CSS por ruta. Una sola regla suelta se filtra a producción.
+7. **La marca visible de `mypyme` es "Gestionala".** "mypyme" es el identificador técnico (repo,
+   Supabase, Vercel, planes de Flow) y no se cambia. En el sitio nunca aparece "mypyme".
+8. **Ningún proyecto se anuncia "En producción" sin usuarios reales.** Gestionala está desplegada
+   y funcionando, pero con 0 comercios usándola: va como "En desarrollo" hasta que haya uno.
