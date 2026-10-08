@@ -111,7 +111,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {project.link && (
             <a
               href={project.link}
-              target="_blank"
+              // Los enlaces internos (empiezan con "/") se abren en la misma
+              // pestana; los externos, en una nueva.
+              target={project.link.startsWith("/") ? undefined : "_blank"}
               rel="noopener noreferrer"
               className="flex-1 bg-site-accent hover:bg-site-accent-light text-site-bg text-center py-2 px-4 rounded-lg font-medium transition-all"
             >

@@ -32,8 +32,8 @@ export const projects: Project[] = [
   },
   {
     id: "reservas-restaurantes",
-    title: "Reservas para Restaurantes",
-    subtitle: "Plataforma multi-restaurante",
+    title: "resto-web",
+    subtitle: "Sitio y reservas para restaurantes",
     description:
       "Sistema completo de reservas y gestión de salón: la web pública donde el comensal reserva, el panel del restaurante en tiempo real, correos automáticos con invitación de calendario, señas en línea y sincronización con Google Calendar. Cada restaurante opera con sus datos aislados. Demostración pública disponible.",
     category: "web",
@@ -48,7 +48,8 @@ export const projects: Project[] = [
     ],
     status: "En producción",
     featured: true,
-    link: "https://resto-web-sage.vercel.app",
+    // Pagina de producto con demo publica, paquetes y precios (2026-10-08).
+    link: "/soluciones/resto-web",
   },
   {
     // El identificador TECNICO sigue siendo "mypyme" en GitHub, Supabase,
@@ -140,6 +141,43 @@ export const projects: Project[] = [
     stack: ["Next.js", "Prisma", "MDXEditor", "PDF", "TypeScript"],
     status: "En desarrollo",
     featured: false,
+    link: "https://cvriola.vercel.app",
+  },
+  {
+    id: "legaldocs-pro",
+    title: "LegalDocs Pro",
+    subtitle: "Generador de documentos legales",
+    description:
+      "Plataforma para generar, gestionar y digitalizar documentos legales empresariales: 58 plantillas en 10 categorías, exportación a PDF y Word, historial sincronizado en la nube y un módulo de reconocimiento óptico (OCR) para extraer y verificar texto de documentos escaneados.",
+    category: "web",
+    stack: ["Next.js", "Firebase", "Tesseract OCR", "jsPDF", "docx", "Zustand", "TypeScript"],
+    status: "En desarrollo",
+    featured: false,
+    link: "https://legis-enterprise.vercel.app",
+  },
+  {
+    id: "sommerville-assistant",
+    title: "Sommerville Assistant",
+    subtitle: "Guía interactiva de ingeniería de software",
+    description:
+      "Herramienta que, a partir de preguntas sobre un proyecto, recomienda proceso, metodología y prácticas con un algoritmo de puntaje, y genera diagramas, checklists, plantillas y un informe en PDF. Incluye un glosario de 2.100 términos. Proyecto académico basado en el libro de Ian Sommerville, sin afiliación con el autor.",
+    category: "web",
+    stack: ["Next.js", "Mermaid", "React PDF", "n8n", "Zod", "TypeScript"],
+    status: "Completado",
+    featured: false,
+    link: "https://sommerville-assistant.vercel.app",
+  },
+  {
+    id: "portafolio-fundador",
+    title: "Portafolio del fundador",
+    subtitle: "Automatización e integración de IA",
+    description:
+      "Sitio personal de Andrés Cariola con sus soluciones de automatización e integración de inteligencia artificial: casos, tablero interactivo y galería de proyectos.",
+    category: "web",
+    stack: ["Next.js", "Chart.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
+    status: "En producción",
+    featured: false,
+    link: "https://mi-portafolio-one-kohl.vercel.app",
   },
 ];
 

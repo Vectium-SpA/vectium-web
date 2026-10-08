@@ -20,7 +20,7 @@
 |---|---|---|---|---|
 | 0 | **Urgente** | (a) Formulario funcionando de verdad. (b) Repo privado sin romper el deploy | (a) la contraseña del buzón contacto@vectium.cl, cargada por él en Vercel. (b) ✅ respondido: **Hobby** → el repo queda público hasta pasar a Pro (no tiene secretos) | ⏳ (a) |
 | 1 | **FAQ y contenido** — ✅ FAQ rediseñada (7 categorías, 34 preguntas, datos estructurados), stack con 16 tecnologías (n8n, Workspace, Apps Script, Claude, Vercel, GitHub; logos monocromos visibles en claro; PostgreSQL y Google Cloud corregidos) y 3 frases sobredimensionadas reescritas. Publicado el 2026-10-08 | FAQ rediseñada (tipografía y encuadre al nivel del resto del sitio) + preguntas nuevas: facturación e IVA, contratos y propiedad del código, datos personales (21.719), pagos directos, plazos, garantías, n8n y Google Workspace. Tecnologías al día. Revisión del inicio y de cada página con lo nuevo (Cómo trabajamos, referidos, cumplimiento) | Nada | ⏳ |
-| 2 | **Proyectos** | Los 5 nuevos con link a su demo (Vercel) y los buenos de siempre con link. Tarjeta con captura, stack y "ver demo" | Confirmar cuáles destacar; resto-web necesita demo público | ⏳ |
+| 2 | **Proyectos** — ✅ 2026-10-08: LegalDocs Pro, Sommerville Assistant y Portafolio del fundador con link; cvriola con link; resto-web ahora con **página de producto `/soluciones/resto-web`** (demo pública, galería sin datos de contacto, ciclo animado, 3 paquetes con precio, condiciones, comparación de MODELOS sin precios de terceros, FAQ). ⏸️ **Austranet**: la URL y el título muestran el nombre de la empresa cliente (regla: no nombrar clientes) → pendiente de decisión de Andrés | resto-web: demo pública ✅ (DEMO_PUBLIC, no escribe nada). Andrés: cambiar el email de reservas de MAREA a contacto@vectium.cl | 🟡 |
 | 3 | **Mostrar calidad** | Secciones con formatos de `vectium-comercial` (sin su contenido): diagramas de flujo animados (los de Diego), flujos por paquete (resto-web), wireframes | Nada | ⏳ |
 | 4 | **Trabaja con nosotros** | Página con 3 áreas (desarrollo, marketing, ventas): **banco de talentos**, no vacantes inventadas. Formulario con CV + consentimiento 21.719 + plazo de conservación. Suma el programa de referidos ("refiere y gana") | Confirmar que es banco de talentos y no vacantes abiertas | ⏳ |
 | 5 | **Contenido gratis que vende** | Ver la propuesta de abajo | Elegir el primer producto | ⏳ |
@@ -40,6 +40,24 @@ está configurado (sin DKIM ni `send.`), pero vectium.cl tiene **servidor de cor
 (`MX mail.vectium.cl`, SPF con `+a +mx`). Lo más simple: enviar por **SMTP del buzón
 contacto@vectium.cl** (sale desde el dominio, sin tocar DNS). Andrés carga la contraseña del
 buzón en Vercel (`SMTP_PASS`, Sensitive). Alternativa: Resend + 3 registros DNS.
+
+### resto-web: qué se publica y qué no (decidido 2026-10-08)
+
+- **Público:** la demo MAREA (modo demo, sin escribir nada), landing, deck de venta (sin
+  cifras de CoverManager: no son oficiales), flujos por paquete, diagramas, wireframes, y
+  paquetes con precio de lista: Vitrina $190.000 + $20.000/mes, Reservas $350.000 +
+  $50.000/mes, Completo $590.000 + $60.000/mes, todo + IVA; plan desde el mes 13 con los
+  primeros 12 meses como **bonificación comercial independiente** (regla legal 5).
+- **Nunca:** guiones, playbook, prospectos, hub de vendedores, propuesta/acuerdo de
+  colaboración, contrato, costos y márgenes, desglose de valor, benchmark, auditorías,
+  pendientes, docs técnicos de MP, credenciales, `clientes.dc.html` (tiene la clave).
+- **Comparación:** de MODELOS (plataforma de suscripción vs sitio propio), sin tabla de
+  precios. Precios públicos de referencia verificados el 2026-10-08: SimpleReserva
+  ($9.990-$39.990/mes + IVA), ReserBar ($29.000-$329.000/mes), Reserva Tu Mesa
+  ($50.000-$150.000/mes + IVA). CoverManager, TheFork y Meitre NO publican precios.
+- **Pendiente (parte C):** actualizar deck y propuesta de `vectium-comercial` a los precios
+  nuevos (Reservas $40.000 → $50.000, Completo $60.000), cambiar "Primer año incluido" por la
+  bonificación, quitar cifras de CoverManager, y publicar el deck en PDF en la página.
 
 ### Fase 5 — contenido gratis que vende (propuesta)
 

@@ -62,16 +62,17 @@ const featuredProjects = [
     cta: "Ver más detalles",
   },
   {
-    title: "Reservas para Restaurantes",
+    title: "resto-web · Reservas para restaurantes",
     subtitle: "Plataforma multi-restaurante",
     description:
       "Reservas en línea, panel de salón en tiempo real, correos automáticos, señas y sincronización con Google Calendar. Demostración pública disponible.",
     tags: ["SaaS", "Pagos", "Tiempo real"],
-    // Va DIRECTO a la demo publica, no a /proyectos: el que llega buscando
-    // reservas convierte mucho mejor tocando el producto que leyendo sobre el.
-    link: "https://resto-web-sage.vercel.app",
-    isInternal: false,
-    cta: "Ver la demo en vivo",
+    // Va a la pagina de producto (2026-10-08): ahi esta la demo publica, los
+    // paquetes con precio y como funciona. Antes iba directo a la demo, que
+    // estaba con clave y devolvia 401.
+    link: "/soluciones/resto-web",
+    isInternal: true,
+    cta: "Ver demo, paquetes y precios",
   },
   {
     // La marca visible es "Gestionala"; "mypyme" es solo el identificador
