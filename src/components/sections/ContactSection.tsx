@@ -134,12 +134,12 @@ export function ContactSection() {
                 <div>
                   <h3 className="font-semibold text-site-ink-strong">WhatsApp</h3>
                   <a
-                    href="https://wa.me/56949337486"
+                    href="https://wa.me/56992841001"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-site-muted transition-colors hover:text-site-accent"
                   >
-                    +56 9 4933 7486
+                    +56 9 9284 1001
                   </a>
                 </div>
               </div>

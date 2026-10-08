@@ -137,7 +137,7 @@ versión plana. No hay que redibujar nada.
 - [x] **Certificaciones** publicadas discretas al pie del stack: *Checkout Pro* (MercadoPago
       Developers) y *Claude 101* (Anthropic). Sin fechas ni códigos: son respaldo, no argumento de
       venta. Encabezado "de nuestro equipo" porque están a nombre de Andrés, no de la SpA.
-- [x] **WhatsApp** `+56 9 4933 7486` en contacto y footer, con enlace `wa.me`.
+- [x] **WhatsApp** `+56 9 9284 1001` en contacto y footer, con enlace `wa.me` (cambiado desde `+56 9 4933 7486` el 2026-10-08, a pedido de Andrés).
 - [x] **Afirmaciones falsas eliminadas**: clientes internacionales (nunca cerró uno), plazos
       publicados, "planes de mantenimiento", soporte "24/7", demos cada 1-2 semanas.
 - [x] **Sin precios publicados**, sin testimonio, sin sección de fundador — decisión de Andrés.

@@ -67,7 +67,7 @@ export function Footer() {
                 muerto. Vuelve cuando exista la cuenta. */}
             <div className="mt-6 flex items-center gap-4">
               <a
-                href="https://wa.me/56949337486"
+                href="https://wa.me/56992841001"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-site-muted transition-colors hover:text-site-ink-strong"
