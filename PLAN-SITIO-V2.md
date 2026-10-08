@@ -18,8 +18,8 @@
 
 | # | Fase | Qué incluye | Necesita de Andrés | Estado |
 |---|---|---|---|---|
-| 0 | **Urgente** | (a) Formulario funcionando de verdad. (b) Repo privado sin romper el deploy | (a) canal de aviso (ver abajo). (b) mirar el plan del Vercel de vectiumspa | ⏳ |
-| 1 | **FAQ y contenido** | FAQ rediseñada (tipografía y encuadre al nivel del resto del sitio) + preguntas nuevas: facturación e IVA, contratos y propiedad del código, datos personales (21.719), pagos directos, plazos, garantías, n8n y Google Workspace. Tecnologías al día. Revisión del inicio y de cada página con lo nuevo (Cómo trabajamos, referidos, cumplimiento) | Nada | ⏳ |
+| 0 | **Urgente** | (a) Formulario funcionando de verdad. (b) Repo privado sin romper el deploy | (a) la contraseña del buzón contacto@vectium.cl, cargada por él en Vercel. (b) ✅ respondido: **Hobby** → el repo queda público hasta pasar a Pro (no tiene secretos) | ⏳ (a) |
+| 1 | **FAQ y contenido** — ✅ FAQ rediseñada (8 categorías, 40 preguntas, datos estructurados), stack con 16 tecnologías (n8n, Workspace, Apps Script, Claude, Vercel, GitHub; logos monocromos visibles en claro; PostgreSQL y Google Cloud corregidos) y 3 frases sobredimensionadas reescritas. Publicado el 2026-10-08 | FAQ rediseñada (tipografía y encuadre al nivel del resto del sitio) + preguntas nuevas: facturación e IVA, contratos y propiedad del código, datos personales (21.719), pagos directos, plazos, garantías, n8n y Google Workspace. Tecnologías al día. Revisión del inicio y de cada página con lo nuevo (Cómo trabajamos, referidos, cumplimiento) | Nada | ⏳ |
 | 2 | **Proyectos** | Los 5 nuevos con link a su demo (Vercel) y los buenos de siempre con link. Tarjeta con captura, stack y "ver demo" | Confirmar cuáles destacar; resto-web necesita demo público | ⏳ |
 | 3 | **Mostrar calidad** | Secciones con formatos de `vectium-comercial` (sin su contenido): diagramas de flujo animados (los de Diego), flujos por paquete (resto-web), wireframes | Nada | ⏳ |
 | 4 | **Trabaja con nosotros** | Página con 3 áreas (desarrollo, marketing, ventas): **banco de talentos**, no vacantes inventadas. Formulario con CV + consentimiento 21.719 + plazo de conservación. Suma el programa de referidos ("refiere y gana") | Confirmar que es banco de talentos y no vacantes abiertas | ⏳ |
@@ -35,8 +35,11 @@ Propuesta: **ruta de servidor propia** `/api/contacto`:
 4. Consentimiento de datos (21.719) y enlace a privacidad en el formulario.
 5. Botón de WhatsApp como alternativa inmediata (ya existe).
 
-Canal de correo: **Gmail de vectiumspa con contraseña de aplicación** — es la MISMA que
-destraba el login de Eunacom Studio (SMTP), así que un solo paso de Andrés resuelve las dos.
+Canal de correo (decidido el 2026-10-08): **el dominio profesional**. DNS revisado: Resend NO
+está configurado (sin DKIM ni `send.`), pero vectium.cl tiene **servidor de correo propio**
+(`MX mail.vectium.cl`, SPF con `+a +mx`). Lo más simple: enviar por **SMTP del buzón
+contacto@vectium.cl** (sale desde el dominio, sin tocar DNS). Andrés carga la contraseña del
+buzón en Vercel (`SMTP_PASS`, Sensitive). Alternativa: Resend + 3 registros DNS.
 
 ### Fase 5 — contenido gratis que vende (propuesta)
 

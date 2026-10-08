@@ -1,46 +1,63 @@
 "use client";
 
-import type { Metadata } from "next";
-import { PageHero } from "@/components/layout/PageHero";
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
+import { PageHero } from "@/components/layout/PageHero";
 import { SiteAurora } from "@/components/site/SiteAurora";
+import { FAQ_SECCIONES, type Pregunta } from "./preguntas";
 
-interface FAQItemProps {
-  question: string;
-  answer: string;
-}
+/*
+ * Rediseno 2026-10-08 (Andres: "texto sobredimensionado y sin encuadre").
+ * Antes: pregunta a text-lg, respuesta a 16px en color de titulo y SIN padding
+ * lateral, asi que el texto tocaba el borde de la tarjeta. Ahora la escala es
+ * la misma del resto del sitio (15-16px pregunta, 14.5-15px respuesta en
+ * text-site-muted) y todo va con px-5 sm:px-7 dentro de la tarjeta.
+ * El contenido vive en preguntas.ts: ahi estan las reglas de que se puede afirmar.
+ */
 
-function FAQItem({ question, answer }: FAQItemProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
+function Item({ p, abierto, alternar }: { p: Pregunta; abierto: boolean; alternar: () => void }) {
   return (
-    <div className="border-b border-site-border last:border-0">
+    <div className="border-b border-site-border/70 last:border-0">
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between py-5 text-left transition-colors hover:bg-site-surface"
+        type="button"
+        onClick={alternar}
+        aria-expanded={abierto}
+        className="group flex w-full items-start justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-site-surface/60 sm:px-7 sm:py-5"
       >
-        <span className="text-lg font-semibold text-site-ink pr-4">
-          {question}
+        <span className="text-[15px] font-semibold leading-snug text-site-ink-strong sm:text-base">
+          {p.q}
         </span>
         <ChevronDown
-          className={`ml-4 h-5 w-5 shrink-0 text-site-muted transition-transform duration-300 ${
-            isOpen ? "rotate-180" : ""
+          size={18}
+          className={`mt-0.5 shrink-0 text-site-muted transition-transform duration-300 group-hover:text-site-accent ${
+            abierto ? "rotate-180 text-site-accent" : ""
           }`}
         />
       </button>
       <AnimatePresence initial={false}>
-        {isOpen && (
+        {abierto && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="pb-5 pr-12 text-site-ink leading-relaxed">
-              {answer}
+            <div className="px-5 pb-5 sm:px-7 sm:pb-6">
+              <p className="max-w-[68ch] text-pretty text-[14.5px] leading-relaxed text-site-muted sm:text-[15px]">
+                {p.a}
+              </p>
+              {p.link && (
+                <Link
+                  href={p.link.href}
+                  className="group/l mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-site-accent transition-colors hover:text-site-accent-light"
+                >
+                  {p.link.label}
+                  <ArrowRight size={14} className="transition-transform group-hover/l:translate-x-0.5" />
+                </Link>
+              )}
             </div>
           </motion.div>
         )}
@@ -50,176 +67,101 @@ function FAQItem({ question, answer }: FAQItemProps) {
 }
 
 export default function FAQPage() {
-  const faqSections = [
-    {
-      title: "Sobre Vectium",
-      questions: [
-        {
-          question: "¿Qué es Vectium SpA?",
-          answer:
-            "Vectium SpA (RUT 78.312.836-5) es una empresa chilena de desarrollo de software especializada en aplicaciones móviles (Flutter), páginas web (Next.js) y sistemas a medida. Nos constituimos en diciembre de 2025 sobre la base de varios años de experiencia previa de nuestro fundador, y nos enfocamos en transformar ideas en soluciones digitales de alto impacto para empresas y organizaciones.",
-        },
-        {
-          question: "¿Dónde están ubicados?",
-          answer:
-            "Nuestro domicilio legal está en El Trovador 4280, Oficina 307, Las Condes, Región Metropolitana, y trabajamos en remoto desde la Región de Coquimbo, con alcance nacional. Puedes contactarnos en contacto@vectium.cl para consultas sobre proyectos o servicios.",
-        },
-        {
-          question: "¿Qué tecnologías utilizan?",
-          answer:
-            "Trabajamos con un stack tecnológico moderno que incluye React, Next.js 16, Flutter, TypeScript, Firebase, Google Cloud Platform, Tailwind CSS, PostgreSQL y otras herramientas de vanguardia. Seleccionamos las tecnologías más adecuadas según las necesidades de cada proyecto.",
-        },
-      ],
-    },
-    {
-      title: "Servicios",
-      questions: [
-        {
-          question: "¿Qué servicios ofrecen?",
-          answer:
-            "Ofrecemos desarrollo de software a medida, diseño y desarrollo de páginas web responsivas, aplicaciones móviles Android/iOS (nativas e híbridas), sistemas empresariales, integración con servicios cloud (Firebase, GCP), consultoría tecnológica y mantenimiento post-lanzamiento.",
-        },
-        {
-          question: "¿Cuánto demora un proyecto típico?",
-          answer:
-            "Depende del alcance, y por eso no publicamos plazos genéricos: comprometer un tiempo antes de conocer el proyecto es la forma más rápida de incumplirlo. Después de la reunión inicial entregamos una estimación por escrito, con las etapas y qué entra en cada una.",
-        },
-        {
-          question: "¿Hacen mantenimiento después del lanzamiento?",
-          answer:
-            "Sí, es un servicio que podemos tomar: actualizaciones, corrección de errores, mejoras de seguridad y evolución de funcionalidades. No lo vendemos como un plan cerrado con precio fijo, sino que se evalúa según lo que el sistema realmente necesita y se acuerda por escrito.",
-        },
-      ],
-    },
-    {
-      title: "Farmateca",
-      questions: [
-        {
-          question: "¿Qué es Farmateca?",
-          answer:
-            "Farmateca es una aplicación bibliomédica chilena con información detallada de más de 2.994 medicamentos y 450 compuestos farmacológicos. Funciona 100% offline y está disponible en Android, iOS y versión Web. Es una herramienta educativa para profesionales y estudiantes de la salud.",
-        },
-        {
-          question: "¿Farmateca es gratis?",
-          answer:
-            "Farmateca tiene un modelo freemium: el acceso básico es gratuito con funcionalidades esenciales. El Plan Premium ($3,990/mes o $34,990/año) desbloquea búsqueda por familia farmacológica, filtros por laboratorio, comparaciones avanzadas y otras funcionalidades premium.",
-        },
-        {
-          question: "¿La información de Farmateca es oficial?",
-          answer:
-            "Farmateca proporciona contenido educativo basado en fuentes bibliográficas reconocidas. Sin embargo, NO reemplaza la consulta con profesionales de salud ni constituye consejo médico. Siempre debes verificar la información con fuentes oficiales como el ISP Chile (Instituto de Salud Pública) y leer los prospectos oficiales de medicamentos.",
-        },
-        {
-          question: "¿Necesito internet para usar Farmateca?",
-          answer:
-            "No, una de las ventajas de Farmateca es que funciona 100% offline después de la instalación inicial. Toda la base de datos de medicamentos está disponible localmente en tu dispositivo, por lo que puedes consultar información incluso sin conexión a internet.",
-        },
-      ],
-    },
-    {
-      title: "Proceso de Trabajo",
-      questions: [
-        {
-          question: "¿Cómo empezamos un proyecto con Vectium?",
-          answer:
-            "El proceso típico incluye: (1) Contacto inicial vía email o formulario web, (2) Reunión de descubrimiento para entender tus necesidades, (3) Propuesta técnica y presupuesto, (4) Fase de diseño y prototipado, (5) Desarrollo, (6) Pruebas, (7) Lanzamiento y capacitación. Mantenemos comunicación constante en cada etapa.",
-        },
-        {
-          question: "¿Qué pasa si necesito cambios después del lanzamiento?",
-          answer:
-            "Después del lanzamiento, puedes solicitar cambios y nuevas funcionalidades. Evaluamos el alcance de lo que necesitas y entregamos una cotización antes de trabajar. Nos interesa mantener una relación de largo plazo, no cerrar y desaparecer.",
-        },
-        {
-          question: "¿Qué incluye el soporte técnico?",
-          answer:
-            "Resolución de errores, actualizaciones de seguridad, respaldo de datos y optimización de rendimiento. El alcance y la disponibilidad se acuerdan por escrito con cada cliente: preferimos comprometer lo que podemos cumplir antes que ofrecer una cobertura que no sostendríamos.",
-        },
-      ],
-    },
-    {
-      title: "Preguntas Técnicas",
-      questions: [
-        {
-          question: "¿Por qué eligen Next.js para desarrollo web?",
-          answer:
-            "Next.js 16 nos permite crear sitios web extremadamente rápidos con React Server Components, optimización automática de imágenes, SSR/SSG para mejor SEO, y excelente experiencia de desarrollo. Es ideal para sitios corporativos, landing pages y aplicaciones web complejas.",
-        },
-        {
-          question: "¿Qué es Firebase y por qué lo usan?",
-          answer:
-            "Firebase es una plataforma de Google Cloud que nos permite desarrollar aplicaciones más rápido con autenticación integrada, base de datos en tiempo real (Firestore), almacenamiento de archivos, hosting y analytics. Reduce significativamente el tiempo de desarrollo de funcionalidades backend.",
-        },
-        {
-          question: "¿Mis datos están seguros en la nube?",
-          answer:
-            "Sí, todos nuestros proyectos implementan las mejores prácticas de seguridad: cifrado HTTPS (TLS 1.3), cifrado de datos en reposo, autenticación robusta, backups automáticos y compliance con estándares internacionales. Firebase/GCP tienen certificaciones SOC 2, ISO 27001 y cumplen con regulaciones de privacidad.",
-        },
-        {
-          question: "¿Desarrollan apps para Android e iOS simultáneamente?",
-          answer:
-            "Sí, usando Flutter podemos desarrollar aplicaciones que funcionan tanto en Android como iOS desde una única base de código. Esto reduce el tiempo de desarrollo y costos de mantenimiento, manteniendo rendimiento nativo y acceso a todas las funcionalidades del dispositivo.",
-        },
-      ],
-    },
-  ];
+  // Una sola pregunta abierta a la vez por seccion: la pagina no se alarga sin control.
+  const [abiertas, setAbiertas] = useState<Record<string, number | null>>({});
+
+  // Datos estructurados FAQPage para Google (texto plano, sin enlaces).
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ_SECCIONES.flatMap((s) =>
+      s.preguntas.map((p) => ({
+        "@type": "Question",
+        name: p.q,
+        acceptedAnswer: { "@type": "Answer", text: p.a },
+      })),
+    ),
+  };
 
   return (
     <div className="min-h-screen bg-site-bg">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       <PageHero
-        badge="CENTRO DE AYUDA"
-        title="Preguntas Frecuentes"
-        description="Encuentra respuestas a las preguntas más comunes sobre nuestros servicios, tecnologías y productos."
+        badge="Preguntas frecuentes"
+        title="Respuestas claras, antes de empezar"
+        description="Servicios, precios y facturación, contratos, datos personales y tecnología. Si tu duda no está aquí, escríbenos."
       />
 
       <div className="relative isolate overflow-hidden">
         <SiteAurora variant="split" />
 
-        <div className="relative z-[2] mx-auto max-w-4xl px-6 py-16 lg:px-8">
-          {faqSections.map((section, sectionIndex) => (
+        <div className="relative z-[2] mx-auto max-w-4xl px-6 py-14 sm:py-16 lg:px-8">
+          {/* Indice de categorias */}
+          <nav aria-label="Categorías" className="mb-12 flex flex-wrap justify-center gap-2">
+            {FAQ_SECCIONES.map((s) => (
+              <a
+                key={s.id}
+                href={`#${s.id}`}
+                className="rounded-full border border-site-border bg-site-bg/70 px-4 py-1.5 text-[13px] font-medium text-site-muted backdrop-blur-xl transition-colors hover:border-site-accent/50 hover:text-site-accent"
+              >
+                {s.titulo}
+              </a>
+            ))}
+          </nav>
+
+          {FAQ_SECCIONES.map((s) => (
             <motion.section
-              key={sectionIndex}
-              initial={{ opacity: 0, y: 24 }}
+              key={s.id}
+              id={s.id}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-12 last:mb-0"
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-12 scroll-mt-28 last:mb-0"
             >
-              <h2 className="mb-6 border-b-2 border-site-accent pb-3 text-[clamp(1.25rem,3.5vw,1.5rem)] font-bold text-site-ink">
-                {section.title}
-              </h2>
-              <div className="site-card site-tint overflow-hidden rounded-xl border border-site-border bg-site-bg/70 backdrop-blur-xl">
-                {section.questions.map((faq, index) => (
-                  <FAQItem
-                    key={index}
-                    question={faq.question}
-                    answer={faq.answer}
+              <div className="mb-4 flex items-center gap-3">
+                <span className="site-eyebrow text-xs font-semibold uppercase tracking-widest text-site-accent">
+                  <span className="site-eyebrow__dot" />
+                  {s.titulo}
+                </span>
+                <span className="h-px flex-1 bg-site-border" />
+              </div>
+              {s.bajada && <p className="mb-4 text-sm text-site-muted">{s.bajada}</p>}
+              <div className="site-card site-tint overflow-hidden rounded-2xl border border-site-border bg-site-bg/70 backdrop-blur-xl">
+                {s.preguntas.map((p, i) => (
+                  <Item
+                    key={p.q}
+                    p={p}
+                    abierto={abiertas[s.id] === i}
+                    alternar={() => setAbiertas((a) => ({ ...a, [s.id]: a[s.id] === i ? null : i }))}
                   />
                 ))}
               </div>
             </motion.section>
           ))}
 
-          {/* Call to Action */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="site-card site-tint-strong mt-16 rounded-2xl border border-site-accent/20 bg-gradient-to-br from-site-accent/5 to-site-accent/10 p-8 text-center"
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="site-card site-tint-strong relative mt-16 rounded-2xl border border-site-accent/20 bg-gradient-to-br from-site-accent/5 to-site-accent/10 px-6 py-9 text-center sm:px-10"
           >
             <div className="site-edge-sweep absolute inset-x-0 top-0 h-1" />
-            <h3 className="mb-3 text-balance text-[clamp(1.25rem,3.5vw,1.5rem)] font-bold text-site-ink">
-              ¿No encuentras lo que buscas?
-            </h3>
-            <p className="mb-6 text-pretty text-site-ink">
-              Nuestro equipo está disponible para responder cualquier pregunta adicional.
+            <h2 className="text-balance text-[clamp(1.2rem,3vw,1.45rem)] font-bold text-site-ink-strong">
+              ¿No encontraste lo que buscabas?
+            </h2>
+            <p className="mx-auto mt-2 max-w-md text-pretty text-[15px] text-site-muted">
+              Cuéntanos tu caso y te respondemos personalmente.
             </p>
-            <a
+            <Link
               href="/contacto"
-              className="inline-flex items-center justify-center rounded-lg bg-site-accent px-8 py-3 text-base font-semibold text-site-bg shadow-lg transition-all hover:bg-site-accent-light hover:shadow-xl"
+              className="group mt-6 inline-flex items-center gap-2 rounded-xl bg-site-accent px-7 py-3 text-sm font-semibold text-site-bg shadow-lg shadow-site-accent/20 transition-all hover:bg-site-accent-light"
             >
               Contáctanos
-            </a>
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            </Link>
           </motion.div>
         </div>
       </div>

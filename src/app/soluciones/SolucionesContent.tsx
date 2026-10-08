@@ -9,10 +9,10 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { useSpotlight } from "@/components/site/useSpotlight";
 
 const processSteps = [
-  { icon: Search, step: "01", title: "Descubrimiento", description: "Analizamos tus necesidades, objetivos de negocio y usuarios finales para definir la estrategia perfecta." },
-  { icon: Lightbulb, step: "02", title: "Diseño", description: "Creamos prototipos y diseños UX/UI que garantizan una experiencia de usuario excepcional." },
+  { icon: Search, step: "01", title: "Descubrimiento", description: "Analizamos tus necesidades, objetivos de negocio y usuarios finales para definir qué conviene construir y qué no." },
+  { icon: Lightbulb, step: "02", title: "Diseño", description: "Prototipos y diseños que revisas antes de construir, pensados para que tu equipo los use sin capacitación compleja." },
   { icon: Code, step: "03", title: "Desarrollo", description: "Implementamos con las mejores prácticas, código limpio y tecnologías de vanguardia." },
-  { icon: Rocket, step: "04", title: "Lanzamiento", description: "Desplegamos, monitoreamos y optimizamos para asegurar el éxito de tu producto digital." },
+  { icon: Rocket, step: "04", title: "Lanzamiento", description: "Publicamos, capacitamos a tu equipo y seguimos acompañándote con soporte y mejoras." },
 ];
 
 export function SolucionesContent() {
@@ -32,7 +32,7 @@ export function SolucionesContent() {
           eyebrow="Metodología"
           title="Nuestro proceso"
           titleAccent="de trabajo"
-          subtitle="Un enfoque estructurado que garantiza resultados excepcionales en cada proyecto."
+          subtitle="Un proceso ordenado, por escrito y por entregas: sabes qué se hace, cuándo y cuánto cuesta."
           className="mb-14 sm:mb-16"
         />
 

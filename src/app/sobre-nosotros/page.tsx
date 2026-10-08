@@ -17,7 +17,7 @@ export default function SobreNosotrosPage() {
       <PageHero
         badge="Nuestra Historia"
         title="Impulsando la innovación desde Chile"
-        description="Somos un equipo apasionado por la tecnología, dedicado a crear soluciones digitales que transforman industrias."
+        description="Desarrollo de software chileno: sistemas, aplicaciones y automatizaciones hechos a la medida de cada negocio, con el estándar técnico de una empresa grande."
       />
       <AboutSection />
       <SobreNosotrosContent />
