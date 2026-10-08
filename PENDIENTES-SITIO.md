@@ -19,6 +19,22 @@ Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de a
 - ⚠️ Las capturas con Chrome headless salen vacías en todo el sitio: las animaciones
   `useInView` no se disparan. Para revisar, navegador real bajando con el teclado.
 
+## 🆕 2026-10-08 — Fondo continuo entre secciones (sin cortes)
+
+Andrés reclamó (5 capturas) que al pasar de una sección a otra el color saltaba con una línea
+marcada. **Causa:** cada `<section>` pintaba su fondo sólido (`bg-site-bg` / `-surface` /
+`-bg-deep`) y la aurora se recortaba en su borde. **Arreglo, todo en `site-motion.css`
+(bloque "FONDO CONTINUO") y dos clases nuevas (`site-hero-veil`, `site-brand-moment`):**
+- Secciones `bg` y `surface` transparentes sobre un fondo único (`--site-page-bg`).
+- Zonas profundas (cabeceras, Tecnología, footer) se **funden arriba y abajo** con curva suave
+  de 5 paradas (una rampa lineal se ve como mancha gris).
+- Aurora, retículas y el velo de la cabecera se desvanecen en los bordes.
+- **BrandMoment en tema claro = panel oscuro redondeado con margen**, no banda fundida: una
+  banda negra no puede fundirse en blanco sin un gris sucio y dejaba su texto ilegible.
+- **Medido** (salto de luminosidad entre filas en cada borde, 0-255, 4 páginas × 2 temas, por
+  CDP con `localStorage.theme`): oscuro **27,2 → 1,0**; claro **232,7 → 0,7**.
+  Script de medición: estaba en el TEMP de la sesión; la receta está aquí si se necesita repetir.
+
 ### Lo que sigue del sitio (de la lista de Andrés, 2026-10-08)
 - [ ] **Formulario de contacto:** envía por EmailJS desde el navegador. No se pudo comprobar si
       llega (el proyecto está en otro equipo de Vercel que la CLI de `cariolaflex` no ve).

@@ -50,7 +50,7 @@ export function PageHero({ badge, title, description }: PageHeroProps) {
       {/* Velo que funde la reticula con el fondo y protege la lectura del
           titular, igual que en el hero del home. */}
       <div
-        className="pointer-events-none absolute inset-0 z-[1]"
+        className="site-hero-veil pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
             "radial-gradient(90% 70% at 50% 45%, transparent 0%, color-mix(in srgb, var(--site-bg-deep) 55%, transparent) 60%, var(--site-bg-deep) 100%)",

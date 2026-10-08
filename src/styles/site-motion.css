@@ -374,3 +374,128 @@
     transform: none;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FONDO CONTINUO — una sola tira, sin cortes entre secciones (2026-10-08)
+   ══════════════════════════════════════════════════════════════════════════
+   Antes cada <section> pintaba su propio fondo solido (bg-site-bg, -surface,
+   -bg-deep) y la aurora se recortaba en el borde de la seccion. Resultado:
+   en cada union habia un salto de color con una linea marcada y un brillo
+   cortado en seco (lo reclamo Andres con 5 capturas).
+
+   Ahora:
+   1. Las secciones "claras" (bg y surface) son transparentes: todas se apoyan
+      en el fondo unico de .site-motion.
+   2. Las zonas profundas (cabeceras, Tecnologia, BrandMoment, footer) se
+      conservan, pero se FUNDEN arriba y abajo con el fondo de la pagina.
+   3. Aurora y reticulas se desvanecen en los bordes en vez de cortarse.
+
+   --site-page-bg se declara en .site-motion y se resuelve AHI: aunque
+   BrandMoment redefina --site-bg* con su paleta oscura, dentro de el
+   --site-page-bg sigue siendo el fondo real de la pagina. Por eso su banda
+   oscura funde bien tambien en el tema claro.
+   Los colores siguen saliendo solo de los tokens: no se invento ninguno. */
+
+.site-motion {
+  --site-page-bg: var(--site-bg);
+  --site-fade: clamp(72px, 14%, 200px);
+}
+
+.site-motion section.bg-site-bg,
+.site-motion section.bg-site-surface {
+  background-color: transparent;
+}
+
+/* El fundido no es lineal: una rampa recta de claro a oscuro se ve como una
+   mancha gris corrida (paso en BrandMoment, tema claro). Con 5 paradas en
+   curva suave (lento - rapido - lento) el ojo no encuentra el borde. */
+.site-motion section.bg-site-bg-deep,
+.site-motion footer.bg-site-bg-deep {
+  --f: var(--site-fade);
+  --deep-12: color-mix(in srgb, var(--site-bg-deep) 12%, var(--site-page-bg));
+  --deep-45: color-mix(in srgb, var(--site-bg-deep) 45%, var(--site-page-bg));
+  --deep-82: color-mix(in srgb, var(--site-bg-deep) 82%, var(--site-page-bg));
+  background-color: transparent;
+  background-image: linear-gradient(
+    to bottom,
+    var(--site-page-bg) 0,
+    var(--deep-12) calc(var(--f) * 0.3),
+    var(--deep-45) calc(var(--f) * 0.55),
+    var(--deep-82) calc(var(--f) * 0.8),
+    var(--site-bg-deep) var(--f),
+    var(--site-bg-deep) calc(100% - var(--f)),
+    var(--deep-82) calc(100% - var(--f) * 0.8),
+    var(--deep-45) calc(100% - var(--f) * 0.55),
+    var(--deep-12) calc(100% - var(--f) * 0.3),
+    var(--site-page-bg) 100%
+  );
+}
+
+/* La banda de marca es OSCURA tambien en el tema claro: el contraste es
+   maximo y necesita un fundido mas largo que el resto. */
+.site-motion section.site-brand-moment {
+  --f: clamp(140px, 26%, 260px);
+}
+
+/* ...pero en el TEMA CLARO no se funde: una banda casi negra dentro de una
+   pagina blanca no puede desvanecerse sin pasar por un gris sucio, y su texto
+   claro quedaba encima de la zona aclarada e ilegible (medido 2026-10-08).
+   En claro pasa a ser un PANEL oscuro con esquinas y margen: un objeto
+   disenado sobre la pagina, no un corte entre modulos. */
+[data-theme="light"] .site-motion section.site-brand-moment,
+:root:not([data-theme="dark"]) .site-motion section.site-brand-moment {
+  background-image: none;
+  background-color: var(--site-bg-deep);
+  margin: clamp(24px, 4vw, 56px) clamp(12px, 3vw, 40px);
+  border-radius: clamp(20px, 2.4vw, 32px);
+  box-shadow: 0 30px 60px -30px rgba(7, 10, 12, 0.45);
+}
+[data-theme="light"] .site-motion section.site-brand-moment .site-aurora,
+:root:not([data-theme="dark"]) .site-motion section.site-brand-moment .site-aurora {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* El footer cierra la pagina: solo funde arriba. */
+.site-motion footer.bg-site-bg-deep {
+  background-image: linear-gradient(
+    to bottom,
+    var(--site-page-bg) 0,
+    var(--site-bg-deep) clamp(48px, 30%, 120px)
+  );
+}
+
+/* El velo de PageHero termina en --site-bg-deep en sus bordes: sin esto,
+   volvia a pintar el color profundo justo en el borde inferior de la
+   cabecera y quedaba el corte (medido: salto de 3,5 en oscuro y 6,6 en claro).
+   Solo se desvanece abajo; arriba queda bajo el navbar. */
+.site-motion .site-hero-veil {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--site-fade)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--site-fade)), transparent 100%);
+}
+
+/* Los divisores del home ya no tienen dos colores que unir. Se quedan como
+   espacio, sin pintar una franja. */
+.site-motion [class^="section-divider-"],
+.site-motion [class*=" section-divider-"] {
+  background: none;
+}
+
+.site-motion .site-aurora,
+.site-motion .bg-grid-pattern,
+.site-motion .bg-dot-pattern {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--site-fade),
+    #000 calc(100% - var(--site-fade)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--site-fade),
+    #000 calc(100% - var(--site-fade)),
+    transparent 100%
+  );
+}

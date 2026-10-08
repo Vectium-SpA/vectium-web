@@ -75,7 +75,7 @@ export function BrandMoment() {
     <section
       ref={ref}
       style={PALETA_OSCURA}
-      className="relative isolate overflow-hidden bg-site-bg-deep py-20 sm:py-24 lg:py-28"
+      className="site-brand-moment relative isolate overflow-hidden bg-site-bg-deep py-20 sm:py-24 lg:py-28"
     >
       <SiteAurora variant="center" />
 
