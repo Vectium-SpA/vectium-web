@@ -6,6 +6,31 @@ Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de a
 
 ---
 
+## 🆕 2026-10-08 — Página "Cómo trabajamos" PUBLICADA
+
+- ✅ **`/como-trabajamos`** en producción (commit `7550361`, verificado en vectium.cl: 200 y
+  en el sitemap). Seis etapas, qué recibe el cliente y cumplimiento normativo (21.719,
+  17.336, pagos directos al comercio, 19.496/20.416, aviso antes de suspender, firma y
+  factura electrónicas). Enlazada en menú, footer, sitemap y desde Soluciones.
+- 🔴 **Regla de contenido:** todo sale del contrato real de Huerto y Jardín
+  (`vectium-comercial/proyectos/huerto-jardin/docs/GUIA-CONTRATO.md`). **No prometer** que el
+  código sea del cliente (va en licencia de Vectium) ni respaldos "diarios". Si un contrato
+  cambia una garantía, se cambia la página (comentario arriba de `ComoTrabajamosContent.tsx`).
+- ⚠️ Las capturas con Chrome headless salen vacías en todo el sitio: las animaciones
+  `useInView` no se disparan. Para revisar, navegador real bajando con el teclado.
+
+### Lo que sigue del sitio (de la lista de Andrés, 2026-10-08)
+- [ ] **Formulario de contacto:** envía por EmailJS desde el navegador. No se pudo comprobar si
+      llega (el proyecto está en otro equipo de Vercel que la CLI de `cariolaflex` no ve).
+      Prueba: mandar un mensaje desde vectium.cl/contacto y mirar contacto@vectium.cl.
+- [ ] **Vulnerabilidades: ahora son 37** (3 críticas, 20 altas) según GitHub al 2026-10-08.
+      Ver §3 abajo; no actualizar a ciegas (Farmateca en producción).
+- [ ] Más proyectos en `/proyectos`, herramientas y animaciones (después).
+- [ ] Palabra clave "La Serena" en `layout.tsx`: decir que se opera desde ahí está bien; una
+      dirección física, no.
+
+---
+
 ## ✅ BLOQUE 0 — Resuelto (2026-08-14)
 
 - [x] **Factura electrónica.** Andrés confirmó que **sí se puede emitir**: las opciones están
