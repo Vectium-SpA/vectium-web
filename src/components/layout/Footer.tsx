@@ -11,6 +11,7 @@ import { subscribeNewsletter } from "@/lib/emailjs";
 const footerLinks = [
   { label: "Sobre Nosotros", href: "/sobre-nosotros" },
   { label: "Soluciones", href: "/soluciones" },
+  { label: "Cómo trabajamos", href: "/como-trabajamos" },
   { label: "Proyectos", href: "/proyectos" },
   { label: "Contacto", href: "/contacto" },
   { label: "Preguntas Frecuentes", href: "/faq" },

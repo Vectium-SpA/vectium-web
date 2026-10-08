@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
-import { Search, Lightbulb, Code, Rocket } from "lucide-react";
+import { Search, Lightbulb, Code, Rocket, ArrowRight } from "lucide-react";
 import { SiteAurora } from "@/components/site/SiteAurora";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { useSpotlight } from "@/components/site/useSpotlight";
@@ -60,6 +61,16 @@ export function SolucionesContent() {
               <p className="mt-2 text-sm leading-relaxed text-site-muted">{item.description}</p>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Link
+            href="/como-trabajamos"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-site-accent transition-colors hover:text-site-accent-light"
+          >
+            Ver las etapas, qué recibes y el cumplimiento normativo
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>
