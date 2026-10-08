@@ -4,6 +4,35 @@
 > Orden = prioridad. **No se abre una fase hasta cerrar la anterior.** Cada fase se publica sola.
 > Estado vivo en la tabla de abajo; el detalle técnico de lo ya hecho, en `PENDIENTES-SITIO.md`.
 
+## ▶️ RETOMAR — al cierre del 2026-10-08
+
+**Publicado y verificado en vectium.cl el 2026-10-08:** página `/como-trabajamos`, fondo continuo
+entre secciones (sin cortes, claro y oscuro, medido), WhatsApp → +56 9 9284 1001, FAQ rediseñada
+(7 categorías, 34 preguntas), stack con 16 tecnologías, `/soluciones/resto-web` (producto con demo
+pública, paquetes y precios) y proyectos nuevos con link. **resto-web**: demo pública
+(`DEMO_PUBLIC=true`) que no escribe nada real (`prototipo-web-restaurant/lib/demo-publica.ts`).
+
+### Pendientes, en orden
+
+| # | Qué | Quién | Estado |
+|---|---|---|---|
+| 1 | **Formulario de contacto ROTO** (EmailJS sin variables). Construir `/api/contacto`: Zod + honeypot + límite por IP, guarda en Firestore, aviso a contacto@vectium.cl y respuesta automática por **SMTP del buzón contacto@vectium.cl** (`mail.vectium.cl`). Mismo arreglo para el newsletter del footer | Andrés carga `SMTP_PASS` (Sensitive) en el Vercel de **vectiumspa** (Claude no ve ese equipo); Claude construye | ⏳ |
+| 2 | **Parte C de resto-web:** en `vectium-comercial/proyectos/resto-web/` poner al día deck (01) y propuesta (02): Reservas $50.000/mes, Completo $60.000/mes, "Primer año incluido" → bonificación de 12 meses independiente, quitar cifras de CoverManager; exportar el deck a PDF y enlazarlo en `/soluciones/resto-web` | Claude | ⏳ |
+| 3 | **Austranet:** la URL `austranet-cco.vercel.app` y el título muestran el nombre de la empresa cliente; el sitio ya lo tiene sin nombre como "Control Operacional". ¿Enlazar o no? | Andrés decide | ⏸️ |
+| 4 | Email de reservas de MAREA (demo pública) muestra **cariolaflex@gmail.com** → cambiarlo en el panel por contacto@vectium.cl | Andrés | ⏳ |
+| 5 | Fase 3 (formatos de vectium-comercial: diagramas animados de Diego, flujos), fase 4 (Trabaja con nosotros = banco de talentos, 3 áreas, CV + consentimiento 21.719), fase 5 (diagnóstico digital express → auditoría pagada) | Claude | ⏳ |
+| 6 | Repo `Vectium-SpA/vectium-web` **público**: no tiene secretos (barrido 2026-10-08). Volverlo privado solo cuando el Vercel de vectiumspa pase a **Pro** (Hobby no despliega repos privados de organización) | Andrés | ⏸️ |
+| 7 | 37 vulnerabilidades de Dependabot (3 críticas): hay una tarea aparte sugerida; no actualizar a ciegas (Farmateca en producción) | — | ⏸️ |
+
+### Cómo verificar (aprendido en esta sesión)
+- Capturas con Chrome **headless simple salen vacías** (las animaciones `useInView` no se disparan) y
+  el panel del navegador no desplaza en algunas páginas. Lo que funciona: **CDP** con ventana alta
+  (`scripts/medir_uniones.py` tiene el patrón; fija el tema con `localStorage.theme`).
+- Antes de publicar texto: todo sale de contratos reales; nada de "grandes empresas", años, clientes,
+  "garantiza"; capturas sin correos ni teléfonos; empresas clientes sin nombre.
+- En Git Bash, un `\v` o `\r` dentro de un script de Python en heredoc **se come la barra** y deja un
+  carácter de control en rutas Windows: editar con la herramienta Edit o con `chr(92)`.
+
 ## Diagnóstico (verificado el 2026-10-08)
 
 | Qué | Estado | Evidencia |
