@@ -33,7 +33,7 @@ marcada. **Causa:** cada `<section>` pintaba su fondo sólido (`bg-site-bg` / `-
   banda negra no puede fundirse en blanco sin un gris sucio y dejaba su texto ilegible.
 - **Medido** (salto de luminosidad entre filas en cada borde, 0-255, 4 páginas × 2 temas, por
   CDP con `localStorage.theme`): oscuro **27,2 → 1,0**; claro **232,7 → 0,7**.
-  Script de medición: estaba en el TEMP de la sesión; la receta está aquí si se necesita repetir.
+  Para repetir la medición: `scripts/medir_uniones.py` (instrucciones en su docstring).
 
 ### Lo que sigue del sitio (de la lista de Andrés, 2026-10-08)
 - [ ] **Formulario de contacto:** envía por EmailJS desde el navegador. No se pudo comprobar si
