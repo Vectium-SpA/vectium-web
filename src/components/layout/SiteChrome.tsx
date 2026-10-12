@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { Analytics } from "@vercel/analytics/next";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
 import "@/styles/site-motion.css";
 
@@ -30,6 +31,10 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           Farmateca, que sale por el return de arriba. */}
       <ScrollProgress />
       {children}
+      {/* Estadisticas de visitas sin cookies ni datos personales (Vercel Web
+          Analytics). Tambien dentro del envoltorio: mide solo el sitio
+          corporativo y no agrega nada a Farmateca. */}
+      <Analytics />
     </div>
   );
 }
