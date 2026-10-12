@@ -163,19 +163,30 @@ versión plana. No hay que redibujar nada.
 
 ---
 
-## 3. Vulnerabilidades — rama aparte
+## 3. Vulnerabilidades — rama `chore/actualizar-dependencias-seguridad` (2026-10-12, PR abierto)
 
-**23 alertas en `main`, 1 crítica.** No es un `npm audit fix` a ciegas: subir Next y Firebase
-**toca a Farmateca**, que está en producción.
+**`npm audit`: de 23 a 10. Críticas de 2 a 0; altas de 12 a 4.** Sin `--force` y sin tocar las
+versiones de `firebase` ni `firebase-admin`.
 
-- [ ] Rama nueva desde `main`, después de mergear el PR #3.
-- [ ] **Next 16.2.9 → 16.2.11+** — resuelve **8 de las 23** (4 high + 4 medium).
-- [ ] **`websocket-driver` < 0.7.5** (la crítica). Cadena:
-      `firebase@12.8.0 → @firebase/database → faye-websocket → websocket-driver@0.7.4`.
-      Se arregla subiendo `firebase`, o con un `override` si el upgrade no lo trae.
-- [ ] Resto (postcss, js-yaml, brace-expansion, nanoid, sharp, uuid, protobufjs): transitivas,
-      varias solo de desarrollo.
-- [ ] `tsc` + `build` + **revisión manual de Farmateca** antes de mergear.
+- [x] **Next 16.2.9 → 16.3.8.** Es la versión mínima que cierra todos los avisos de Next, incluidas
+      las ejecuciones remotas de código en la optimización de imágenes y en `next/og`.
+- [x] **Transitivas dentro de su rango:** `websocket-driver` 0.7.5 (la crítica de julio), `postcss`,
+      `sharp` 0.35.5, `nanoid`, `js-yaml`, `source-map-js`, `brace-expansion`, `browserslist`,
+      `protobufjs`, `@fastify/busboy`.
+- [x] Verificado: `tsc`, `build`, y prueba de humo en local (21 rutas de lectura, optimizador de
+      imágenes en WebP y AVIF, cabeceras de seguridad). **No se probaron login ni pagos de Farmateca.**
+
+**Lo que queda, y por qué no va en este PR:**
+
+- [ ] **4 altas: `firebase` → `@firebase/firestore` → `@grpc/grpc-js`.** Ninguna versión de
+      `firebase` lo trae corregido todavía (`npm audit` propone bajar a la 9.14, que no sirve).
+      Riesgo acotado: el aviso es sobre el contexto de autenticación de gRPC, el sitio usa Firestore
+      cliente desde el navegador y no expone ningún servidor gRPC. No se analizó más a fondo.
+      Revisar cuando salga una versión de `firebase` que lo corrija.
+- [ ] **6 moderadas: `firebase-admin` → `@google-cloud/storage` → `uuid`.** Se corrigen subiendo
+      `firebase-admin` a 14.4 o más, pero eso cambia `google-gax` de versión mayor, y por ahí pasa
+      el webhook de pagos de Flow. Va en un PR aparte, **con un pago de prueba en sandbox**.
+- [ ] Next 16.4 (salió el 2026-10-06): sin apuro; 16.3.8 no tiene avisos abiertos.
 
 ---
 
