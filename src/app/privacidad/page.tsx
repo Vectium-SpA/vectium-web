@@ -65,14 +65,20 @@ export default function PrivacidadPage() {
               2.2. Datos de Navegación
             </h3>
             <p className="text-lg text-site-ink leading-relaxed mb-4">
-              Utilizamos cookies técnicas esenciales y Google Analytics para:
+              Medimos las visitas al sitio con estadísticas agregadas (Vercel Web
+              Analytics), que no usan cookies ni permiten identificarte. Registran:
             </p>
             <ul className="list-disc pl-6 text-lg text-site-ink space-y-2">
-              <li>Dirección IP (anonimizada)</li>
-              <li>Tipo de navegador y sistema operativo</li>
-              <li>Páginas visitadas y tiempo de permanencia</li>
+              <li>Páginas visitadas</li>
+              <li>Tipo de navegador, sistema operativo y dispositivo</li>
+              <li>País de origen aproximado</li>
               <li>Origen de la visita (referrer)</li>
             </ul>
+            <p className="text-lg text-site-ink leading-relaxed mt-4">
+              Al enviar el formulario de contacto guardamos, además, un identificador
+              derivado de tu dirección IP que no permite reconstruirla, solo para
+              evitar el envío masivo de mensajes.
+            </p>
 
             <h3 className="text-xl font-semibold text-site-ink mb-3 mt-6">
               2.3. Datos en Farmateca App
@@ -128,8 +134,13 @@ export default function PrivacidadPage() {
                 almacenan con cifrado en reposo
               </li>
               <li>
+                <strong>Correo del dominio</strong>: las consultas del formulario de contacto llegan
+                además al buzón contacto@vectium.cl, alojado en nuestro servidor de correo
+              </li>
+              <li>
                 <strong>Retención</strong>: Conservamos tus datos mientras mantengas una cuenta activa
-                o según lo exija la legislación chilena
+                o según lo exija la legislación chilena. Las consultas del formulario se conservan solo
+                mientras sean necesarias para responderte y dar seguimiento a tu solicitud
               </li>
             </ul>
             <p className="text-lg text-site-ink leading-relaxed mt-4">
@@ -179,22 +190,21 @@ export default function PrivacidadPage() {
               6. Uso de Cookies
             </h2>
             <p className="text-lg text-site-ink leading-relaxed mb-4">
-              Utilizamos cookies para mejorar tu experiencia en nuestro sitio web:
+              Usamos solo lo necesario para que el sitio funcione:
             </p>
             <ul className="list-disc pl-6 text-lg text-site-ink space-y-2">
               <li>
-                <strong>Cookies esenciales</strong>: Necesarias para el funcionamiento del sitio
-                (autenticación, preferencias)
+                <strong>Cookies y almacenamiento esenciales</strong>: Necesarios para el funcionamiento
+                del sitio (autenticación en Farmateca, preferencia de tema claro u oscuro)
               </li>
               <li>
-                <strong>Cookies analíticas</strong>: Google Analytics para entender cómo los usuarios
-                interactúan con nuestro sitio
+                <strong>Sin cookies analíticas ni publicitarias</strong>: las estadísticas de visitas
+                del punto 2.2 no instalan cookies ni te siguen entre sitios
               </li>
             </ul>
             <p className="text-lg text-site-ink leading-relaxed mt-4">
               Puedes configurar tu navegador para rechazar cookies, aunque esto puede afectar la
-              funcionalidad del sitio. Las cookies analíticas son opcionales y puedes desactivarlas
-              desde el banner de cookies.
+              funcionalidad del sitio.
             </p>
           </section>
 

@@ -6,6 +6,18 @@ Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de a
 
 ---
 
+## 🆕 2026-10-12 — Formulario por servidor, analítica y lint (rama `fix/contacto-servidor-analitica`, PR abierto)
+
+- ✅ `/api/contacto` reemplaza a EmailJS en el formulario de contacto y en el newsletter del footer. Detalle y
+  forma de probar en `PLAN-SITIO-V2.md`.
+- ✅ El formulario ahora informa el uso de los datos con enlace a privacidad, y el newsletter lleva casilla de
+  consentimiento sin premarcar.
+- ✅ Analítica de visitas sin cookies (Vercel Web Analytics), solo en el sitio corporativo.
+- ✅ `/privacidad` corregida: decía que se usaba Google Analytics y un banner de cookies; ninguno existe.
+- ✅ `npm run lint` vuelve a funcionar (0 errores).
+- ⏳ **De Andrés antes de mergear:** `SMTP_PASS` en Vercel (Production y Preview), activar Analytics, y un
+  mensaje de prueba desde el preview.
+
 ## 🆕 2026-10-08 — Página "Cómo trabajamos" PUBLICADA
 
 - ✅ **`/como-trabajamos`** en producción (commit `7550361`, verificado en vectium.cl: 200 y
@@ -36,9 +48,7 @@ marcada. **Causa:** cada `<section>` pintaba su fondo sólido (`bg-site-bg` / `-
   Para repetir la medición: `scripts/medir_uniones.py` (instrucciones en su docstring).
 
 ### Lo que sigue del sitio (de la lista de Andrés, 2026-10-08)
-- [ ] **Formulario de contacto:** envía por EmailJS desde el navegador. No se pudo comprobar si
-      llega (el proyecto está en otro equipo de Vercel que la CLI de `cariolaflex` no ve).
-      Prueba: mandar un mensaje desde vectium.cl/contacto y mirar contacto@vectium.cl.
+- [x] **Formulario de contacto:** resuelto el 2026-10-12 (ver arriba); falta `SMTP_PASS` y mergear.
 - [ ] **Vulnerabilidades: ahora son 37** (3 críticas, 20 altas) según GitHub al 2026-10-08.
       Ver §3 abajo; no actualizar a ciegas (Farmateca en producción).
 - [ ] Más proyectos en `/proyectos`, herramientas y animaciones (después).
