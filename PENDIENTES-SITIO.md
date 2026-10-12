@@ -6,6 +6,19 @@ Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de a
 
 ---
 
+## 🆕 2026-10-12 — Formulario por servidor, analítica y lint (PR #4, mergeado a `main` el 2026-10-12)
+
+- ✅ `/api/contacto` reemplaza a EmailJS en el formulario de contacto y en el newsletter del footer. Detalle y
+  forma de probar en `PLAN-SITIO-V2.md`.
+- ✅ El formulario ahora informa el uso de los datos con enlace a privacidad, y el newsletter lleva casilla de
+  consentimiento sin premarcar.
+- ✅ Analítica de visitas sin cookies (Vercel Web Analytics), solo en el sitio corporativo.
+- ✅ `/privacidad` corregida: decía que se usaba Google Analytics y un banner de cookies; ninguno existe.
+- ✅ `npm run lint` vuelve a funcionar (0 errores).
+- ⏳ **De Andrés:** `SMTP_PASS` en Vercel (Production y Preview), activar Analytics, y un mensaje de
+  prueba desde vectium.cl/contacto. Mientras falte `SMTP_PASS`, las consultas se guardan en Firestore
+  (`vectium_contactos`) pero no llega el aviso por correo.
+
 ## 🆕 2026-10-08 — Página "Cómo trabajamos" PUBLICADA
 
 - ✅ **`/como-trabajamos`** en producción (commit `7550361`, verificado en vectium.cl: 200 y
@@ -36,9 +49,7 @@ marcada. **Causa:** cada `<section>` pintaba su fondo sólido (`bg-site-bg` / `-
   Para repetir la medición: `scripts/medir_uniones.py` (instrucciones en su docstring).
 
 ### Lo que sigue del sitio (de la lista de Andrés, 2026-10-08)
-- [ ] **Formulario de contacto:** envía por EmailJS desde el navegador. No se pudo comprobar si
-      llega (el proyecto está en otro equipo de Vercel que la CLI de `cariolaflex` no ve).
-      Prueba: mandar un mensaje desde vectium.cl/contacto y mirar contacto@vectium.cl.
+- [x] **Formulario de contacto:** resuelto el 2026-10-12 (ver arriba); falta `SMTP_PASS` y mergear.
 - [ ] **Vulnerabilidades: ahora son 37** (3 críticas, 20 altas) según GitHub al 2026-10-08.
       Ver §3 abajo; no actualizar a ciegas (Farmateca en producción).
 - [ ] Más proyectos en `/proyectos`, herramientas y animaciones (después).
@@ -163,7 +174,7 @@ versión plana. No hay que redibujar nada.
 
 ---
 
-## 3. Vulnerabilidades — rama `chore/actualizar-dependencias-seguridad` (2026-10-12, PR abierto)
+## 3. Vulnerabilidades — PR #5, mergeado a `main` el 2026-10-12
 
 **`npm audit`: de 23 a 10. Críticas de 2 a 0; altas de 12 a 4.** Sin `--force` y sin tocar las
 versiones de `firebase` ni `firebase-admin`.
@@ -174,7 +185,7 @@ versiones de `firebase` ni `firebase-admin`.
       `sharp` 0.35.5, `nanoid`, `js-yaml`, `source-map-js`, `brace-expansion`, `browserslist`,
       `protobufjs`, `@fastify/busboy`.
 - [x] Verificado: `tsc`, `build`, y prueba de humo en local (21 rutas de lectura, optimizador de
-      imágenes en WebP y AVIF, cabeceras de seguridad). **No se probaron login ni pagos de Farmateca.**
+      imágenes en WebP y AVIF, cabeceras de seguridad). **No se probaron login ni pagos de Farmateca: los prueba Andrés en producción.**
 
 **Lo que queda, y por qué no va en este PR:**
 
@@ -187,6 +198,22 @@ versiones de `firebase` ni `firebase-admin`.
       `firebase-admin` a 14.4 o más, pero eso cambia `google-gax` de versión mayor, y por ahí pasa
       el webhook de pagos de Flow. Va en un PR aparte, **con un pago de prueba en sandbox**.
 - [ ] Next 16.4 (salió el 2026-10-06): sin apuro; 16.3.8 no tiene avisos abiertos.
+
+---
+
+## 3b. Endurecimiento pendiente (heredado del PR #1 de junio, cerrado el 2026-10-12)
+
+El PR #1 solo agregaba un documento (`PENDIENTES_WEB.md`). Su punto crítico, las reglas de Firestore
+que dejaban auto-otorgarse premium, **está resuelto desde el 30-06** (`firestore.rules`). Sigue abierto:
+
+- [ ] **Autorización en dos rutas de Farmateca:** `/api/farmateca/flow/subscribe` y
+      `/api/farmateca/revenuecat/check` aceptan el `uid` que manda el navegador, sin verificar el
+      token de Firebase de quien llama. Toca pagos: con OK de Andrés y prueba en sandbox.
+- [ ] `verifyFlowSignature` compara con `===`; pasar a `crypto.timingSafeEqual`.
+- [ ] Regla de `feedback` en Firestore: cualquier usuario con sesión puede leer todo el feedback.
+- [ ] CSP: no hay. Partir en modo `report-only`.
+- [ ] Términos, sección 5 ("tal cual", "no garantizamos"): revisar contra el Estatuto Pyme y contra
+      lo que promete `/como-trabajamos`.
 
 ---
 

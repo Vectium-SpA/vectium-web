@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,12 +10,13 @@ import { toast } from "sonner";
 import { Mail, MapPin, MessageCircle, Github, Send } from "lucide-react";
 import { vectiumTheme } from "@/styles/theme";
 import { contactSchema, type ContactFormData } from "@/lib/validations/contact";
-import { sendContactEmail } from "@/lib/emailjs";
+import { enviarContacto } from "@/lib/contacto/cliente";
 import { SiteAurora } from "@/components/site/SiteAurora";
 import { SectionHeading } from "@/components/site/SectionHeading";
 
 export function ContactSection() {
   const ref = useRef(null);
+  const router = useRouter();
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -29,21 +32,10 @@ export function ContactSection() {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
 
-    // Anti-spam: honeypot check
-    const honeypot = (document.querySelector('input[name="website"]') as HTMLInputElement)?.value;
-    if (honeypot) {
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
-      const result = await sendContactEmail({
-        name: data.name,
-        email: data.email,
-        company: data.company,
-        phone: data.phone,
-        message: data.message,
-      });
+      // El honeypot (`website`) viaja con el resto: lo descarta el servidor,
+      // que es donde un bot no puede saltarse la revision.
+      const result = await enviarContacto(data);
 
       if (result.success) {
         toast.success("¡Mensaje enviado correctamente!", {
@@ -51,11 +43,12 @@ export function ContactSection() {
         });
         reset();
         setTimeout(() => {
-          window.location.href = "/contacto/gracias";
+          router.push("/contacto/gracias");
         }, 2000);
       } else {
         toast.error("Error al enviar el mensaje", {
           description:
+            result.error ??
             "Por favor intenta nuevamente o escríbenos directamente a contacto@vectium.cl",
         });
       }
@@ -177,10 +170,11 @@ export function ContactSection() {
               {/* Honeypot field - anti spam */}
               <input
                 type="text"
-                name="website"
+                {...register("website")}
                 className="hidden"
                 tabIndex={-1}
                 autoComplete="off"
+                aria-hidden="true"
               />
 
               <div className="grid gap-6 sm:grid-cols-2">
@@ -315,6 +309,20 @@ export function ContactSection() {
                     </>
                   )}
                 </button>
+                {/* Informacion al titular antes de enviar (Ley 21.719): para
+                    que se usan los datos y donde leer el detalle. */}
+                <p className="mt-3 text-xs leading-relaxed text-site-muted">
+                  Usaremos tus datos solo para responder tu consulta. Puedes
+                  pedir que los eliminemos cuando quieras. Más detalle en
+                  nuestra{" "}
+                  <Link
+                    href="/privacidad"
+                    className="text-site-accent hover:underline"
+                  >
+                    Política de Privacidad
+                  </Link>
+                  .
+                </p>
               </div>
             </form>
           </motion.div>

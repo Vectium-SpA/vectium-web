@@ -4,7 +4,7 @@
 > Orden = prioridad. **No se abre una fase hasta cerrar la anterior.** Cada fase se publica sola.
 > Estado vivo en la tabla de abajo; el detalle técnico de lo ya hecho, en `PENDIENTES-SITIO.md`.
 
-## ▶️ RETOMAR — al cierre del 2026-10-08
+## ▶️ RETOMAR — al cierre del 2026-10-12
 
 **Publicado y verificado en vectium.cl el 2026-10-08:** página `/como-trabajamos`, fondo continuo
 entre secciones (sin cortes, claro y oscuro, medido), WhatsApp → +56 9 9284 1001, FAQ rediseñada
@@ -16,13 +16,30 @@ pública, paquetes y precios) y proyectos nuevos con link. **resto-web**: demo p
 
 | # | Qué | Quién | Estado |
 |---|---|---|---|
-| 1 | **Formulario de contacto ROTO** (EmailJS sin variables). Construir `/api/contacto`: Zod + honeypot + límite por IP, guarda en Firestore, aviso a contacto@vectium.cl y respuesta automática por **SMTP del buzón contacto@vectium.cl** (`mail.vectium.cl`). Mismo arreglo para el newsletter del footer | Andrés carga `SMTP_PASS` (Sensitive) en el Vercel de **vectiumspa** (Claude no ve ese equipo); Claude construye | ⏳ |
+| 1 | **Formulario de contacto y newsletter** — ✅ en `main` desde el 2026-10-12 (PR #4 mergeado). `/api/contacto`: valida en servidor, honeypot, límite por IP, guarda en Firestore (`vectium_contactos`), aviso y respuesta automática por SMTP. EmailJS eliminado. Suma analítica sin cookies (Vercel Web Analytics), lint repuesto y la política de privacidad corregida (decía Google Analytics y banner de cookies, que no existen) | **Andrés:** (1) cargar `SMTP_PASS` (Sensitive) en el Vercel de vectiumspa, en Production y Preview; (2) activar Analytics en ese proyecto; (3) mandar un mensaje de prueba desde vectium.cl/contacto. **Mientras no esté `SMTP_PASS`, las consultas se guardan pero no llega aviso: mirarlas en Firestore** | 🟡 publicado; falta `SMTP_PASS` |
 | 2 | **Parte C de resto-web:** en `vectium-comercial/proyectos/resto-web/` poner al día deck (01) y propuesta (02): Reservas $50.000/mes, Completo $60.000/mes, "Primer año incluido" → bonificación de 12 meses independiente, quitar cifras de CoverManager; exportar el deck a PDF y enlazarlo en `/soluciones/resto-web` | Claude | ⏳ |
 | 3 | **Austranet:** la URL `austranet-cco.vercel.app` y el título muestran el nombre de la empresa cliente; el sitio ya lo tiene sin nombre como "Control Operacional". ¿Enlazar o no? | Andrés decide | ⏸️ |
 | 4 | Email de reservas de MAREA (demo pública) muestra **cariolaflex@gmail.com** → cambiarlo en el panel por contacto@vectium.cl | Andrés | ⏳ |
 | 5 | Fase 3 (formatos de vectium-comercial: diagramas animados de Diego, flujos), fase 4 (Trabaja con nosotros = banco de talentos, 3 áreas, CV + consentimiento 21.719), fase 5 (diagnóstico digital express → auditoría pagada) | Claude | ⏳ |
 | 6 | Repo `Vectium-SpA/vectium-web` **público**: no tiene secretos (barrido 2026-10-08). Volverlo privado solo cuando el Vercel de vectiumspa pase a **Pro** (Hobby no despliega repos privados de organización) | Andrés | ⏸️ |
-| 7 | 37 vulnerabilidades de Dependabot (3 críticas): hay una tarea aparte sugerida; no actualizar a ciegas (Farmateca en producción) | — | ⏸️ |
+| 7 | Vulnerabilidades: ✅ 2026-10-12, Next 16.3.8 y transitivas en `main` (PR #5): críticas en 0. Quedan las que dependen de `firebase` (sin versión corregida) y de `firebase-admin` (va aparte, con pago de prueba en sandbox). Detalle en `PENDIENTES-SITIO.md` §3 | Andrés: probar login y un pago de Farmateca en producción | 🟡 |
+
+### Formulario por servidor (2026-10-12): cómo funciona y cómo probarlo
+- **Sin `SMTP_PASS` el formulario igual funciona:** la consulta queda guardada en Firestore y la persona ve el
+  mensaje de éxito; solo no sale el correo. Con `SMTP_PASS` llega el aviso a contacto@vectium.cl (se contesta
+  con "Responder") y la persona recibe una respuesta automática. Si fallan las dos cosas, ve un error que la
+  manda a contacto@vectium.cl o WhatsApp.
+- **Dónde ver las consultas:** Firebase Console → proyecto `farmateca` → Firestore → `vectium_contactos`. Cada
+  documento anota si el aviso y la respuesta salieron (`correo.aviso`, `correo.respuesta`).
+- **La respuesta automática no repite nada de lo que escribió la persona**, a propósito: si lo hiciera, el
+  formulario serviría para mandarle texto ajeno a un tercero desde nuestro dominio.
+- **Probar en local sin tocar producción:** `.env.local` tiene la cuenta de servicio real. Para probar la ruta,
+  apartarlo y apuntar `SMTP_HOST` a un SMTP falso en 127.0.0.1. El 12-10 se probaron 13 casos así (válido,
+  inválido, honeypot, origen ajeno, newsletter con y sin casilla, límite por IP, nada configurado).
+- **Opcional:** en Firestore, política TTL sobre el campo `expira` de `vectium_contactos_limite`, para que los
+  contadores del límite por IP se borren solos.
+- **Lint:** `npm run lint` usa ESLint directo (Next 16 quitó `next lint`). Pasa con 0 errores; los avisos que
+  quedan son deuda visible, casi toda de Farmateca, que no se toca.
 
 ### Cómo verificar (aprendido en esta sesión)
 - Capturas con Chrome **headless simple salen vacías** (las animaciones `useInView` no se disparan) y

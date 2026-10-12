@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Github, MessageCircle, Mail, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { vectiumTheme } from "@/styles/theme";
-import { subscribeNewsletter } from "@/lib/emailjs";
+import { suscribirNewsletter } from "@/lib/contacto/cliente";
 
 const footerLinks = [
   { label: "Sobre Nosotros", href: "/sobre-nosotros" },
@@ -22,21 +22,24 @@ const footerLinks = [
 export function Footer() {
   const pathname = usePathname();
   const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
   const [sending, setSending] = useState(false);
 
   const onSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || sending) return;
+    if (!email.trim() || !consent || sending) return;
     setSending(true);
-    const res = await subscribeNewsletter(email.trim());
+    const res = await suscribirNewsletter(email.trim());
     if (res.success) {
       toast.success("¡Listo! Te anotamos.", {
         description: "Te escribiremos cuando haya novedades.",
       });
       setEmail("");
+      setConsent(false);
     } else {
       toast.error("No pudimos registrar tu correo", {
-        description: `Escríbenos directamente a ${vectiumTheme.company.email}`,
+        description:
+          res.error ?? `Escríbenos directamente a ${vectiumTheme.company.email}`,
       });
     }
     setSending(false);
@@ -162,12 +165,24 @@ export function Footer() {
                 >
                   {sending ? "Enviando…" : "Suscribir"}
                 </button>
+                {/* Comunicacion comercial: la casilla va sin premarcar y es
+                    obligatoria (`basis-full` la baja a su propia linea). */}
+                <label className="flex basis-full items-start gap-2 text-[11px] leading-relaxed text-site-muted">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={consent}
+                    onChange={(e) => setConsent(e.target.checked)}
+                    disabled={sending}
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-[var(--site-accent)]"
+                  />
+                  <span>
+                    Acepto recibir novedades de Vectium por correo. Puedes
+                    darte de baja cuando quieras escribiendo a{" "}
+                    {vectiumTheme.company.email}.
+                  </span>
+                </label>
               </form>
-              <p className="mt-2 text-[11px] leading-relaxed text-site-muted">
-                Al suscribirte aceptas que usemos tu correo para enviarte
-                novedades. Puedes darte de baja cuando quieras escribiendo a{" "}
-                {vectiumTheme.company.email}.
-              </p>
             </div>
           </div>
         </div>
