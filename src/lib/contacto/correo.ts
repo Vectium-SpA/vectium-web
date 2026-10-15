@@ -107,6 +107,57 @@ export function responderConsulta(email: string): Promise<EstadoCorreo> {
   });
 }
 
+/** Datos del aviso de un diagnóstico, ya armados en texto por la ruta. */
+export interface AvisoDiagnostico {
+  negocio: string;
+  nombre: string;
+  email: string;
+  /** Líneas del resumen: respuestas, problemas, módulos y perfil. */
+  resumen: string[];
+  puntaje: number;
+}
+
+/** Aviso interno de un diagnóstico completado en vectium.cl/diagnostico. */
+export function avisarDiagnostico(d: AvisoDiagnostico): Promise<EstadoCorreo> {
+  return enviar({
+    to: destino(),
+    replyTo: d.email,
+    subject: unaLinea(`Nuevo diagnóstico (${d.puntaje}/5): ${d.negocio}`),
+    text: [
+      'Nuevo diagnóstico desde vectium.cl/diagnostico',
+      '',
+      ...d.resumen,
+      '',
+      'Para contestar, responde este correo: va directo a la persona.',
+    ].join('\n'),
+  });
+}
+
+/**
+ * Respuesta automática a quien hizo el diagnóstico. Igual que en contacto, NO
+ * repite nada de lo que la persona escribió.
+ */
+export function responderDiagnostico(email: string): Promise<EstadoCorreo> {
+  return enviar({
+    to: email,
+    subject: 'Recibimos tu diagnóstico | Vectium',
+    text: [
+      'Hola,',
+      '',
+      'Recibimos tu diagnóstico en vectium.cl. Lo vamos a revisar y te escribiremos',
+      'para coordinar una conversación de 15 minutos, sin costo.',
+      '',
+      `Si prefieres hablar antes, escríbenos por WhatsApp: ${WHATSAPP}`,
+      '',
+      'Vectium SpA',
+      'https://vectium.cl',
+      '',
+      'Recibes este correo porque completaste el diagnóstico de vectium.cl.',
+      `Si no fuiste tú, puedes ignorarlo o avisarnos a ${CORREO}.`,
+    ].join('\n'),
+  });
+}
+
 /** Aviso interno de una suscripción al newsletter del footer. */
 export function avisarSuscripcion(email: string): Promise<EstadoCorreo> {
   return enviar({
