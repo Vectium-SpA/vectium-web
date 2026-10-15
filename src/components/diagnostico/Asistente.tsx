@@ -161,6 +161,12 @@ export function Asistente() {
   const arriba = useRef<HTMLDivElement>(null);
   const subir = () => arriba.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
+  // Al enviar, encuadrar el mensaje de éxito: el botón queda abajo y, sin
+  // esto, la persona ve el pie de página y no sabe si se envió.
+  useEffect(() => {
+    if (enviado) subir();
+  }, [enviado]);
+
   // Guardar el avance (sincroniza con un sistema externo: el almacenamiento).
   useEffect(() => {
     if (enviado) return;
@@ -309,7 +315,7 @@ export function Asistente() {
 
   if (enviado) {
     return (
-      <div className="rounded-2xl border border-site-border bg-site-bg p-8 text-center shadow-sm">
+      <div ref={arriba} className="scroll-mt-24 rounded-2xl border border-site-border bg-site-bg p-8 text-center shadow-sm">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-site-accent/10 text-site-accent">
           <Check size={28} />
         </div>
