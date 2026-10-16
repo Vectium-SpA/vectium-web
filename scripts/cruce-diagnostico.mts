@@ -83,7 +83,7 @@ for (const x of DETALLES) {
 if (!d.CONDICIONES_GENERALES.every((k: string) => k in generales))
   errores.push('CONDICIONES_GENERALES tiene una pregunta que el cruce no conoce');
 
-const normalizar = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+const normalizar = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 const porSinonimo = new Map<string, Set<string>>();
 for (const c of CATEGORIAS)
   for (const r of c.rubros)
