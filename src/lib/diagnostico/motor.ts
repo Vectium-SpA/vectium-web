@@ -68,15 +68,21 @@ export interface RubroEncontrado {
   rubro: Rubro;
 }
 
-/** Rubros de todas las categorías que calzan con la búsqueda, por nombre o sinónimo. */
+/**
+ * Rubros de todas las categorías que calzan con la búsqueda, por nombre o
+ * sinónimo. Los que calzan por el nombre van primero: "taller" muestra
+ * "Taller mecánico" antes que una academia que tiene "taller" de sinónimo.
+ */
 export function buscarRubros(busqueda: string): RubroEncontrado[] {
   if (normalizar(busqueda).length < 2) return [];
-  return CATEGORIAS.flatMap((categoria) =>
+  const encontrados = CATEGORIAS.flatMap((categoria) =>
     categoria.rubros
       .filter((rubro) => !rubro.id.startsWith('otro'))
       .filter((rubro) => coincide(busqueda, [rubro.nombre, ...(rubro.sinonimos ?? [])]))
       .map((rubro) => ({ categoria, rubro }))
   );
+  const porNombre = (e: RubroEncontrado) => (coincide(busqueda, [e.rubro.nombre]) ? 0 : 1);
+  return encontrados.sort((a, b) => porNombre(a) - porNombre(b));
 }
 
 /** Rubros de una categoría que calzan con la búsqueda; los "otro" siempre quedan. */
