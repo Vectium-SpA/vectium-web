@@ -8,6 +8,7 @@ import {
   MAX_BUSQUEDAS,
   MAX_PROBLEMAS,
   MODULOS,
+  ORIGENES,
   PLAZOS,
   PRESENCIA_ACTIVA,
   PROBLEMAS,
@@ -62,6 +63,7 @@ export const diagnosticoApiSchema = z
       busquedas: z.array(z.string().trim().max(60)).max(MAX_BUSQUEDAS).optional(),
       incorporar: z.array(unaDe(Object.keys(MODULOS))).max(Object.keys(MODULOS).length).optional(),
       comentario: z.string().trim().max(500).optional(),
+      origen: unaDe(ids(ORIGENES)).optional(),
     }),
     contacto: z.object({
       nombre: z.string().trim().min(2, 'Escribe tu nombre').max(100),

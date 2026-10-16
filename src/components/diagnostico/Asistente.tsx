@@ -29,6 +29,7 @@ import {
   modulosRecomendados,
   separarModulos,
   normalizar,
+  origenDesdeEnlace,
   problemasOrdenados,
   type Respuestas,
 } from "@/lib/diagnostico/motor";
@@ -192,16 +193,20 @@ function SinResultados({ busqueda, children }: { busqueda: string; children: Rea
 
 /** El avance guardado, si existe. Solo corre en el navegador (ver AsistenteCliente). */
 function leerGuardado(): { r: Respuestas; paso: number } {
+  // El origen del enlace (?origen=qr) se toma la primera vez; un avance
+  // guardado conserva el suyo.
+  const origen = origenDesdeEnlace(window.location.search);
   try {
     const guardado = localStorage.getItem(CLAVE);
     if (guardado) {
       const datos = JSON.parse(guardado) as { r?: Respuestas; paso?: number };
-      return { r: { ...VACIAS, ...datos.r }, paso: typeof datos.paso === "number" ? datos.paso : 0 };
+      const r = { ...VACIAS, ...datos.r };
+      return { r: { ...r, origen: r.origen ?? origen }, paso: typeof datos.paso === "number" ? datos.paso : 0 };
     }
   } catch {
     /* sin almacenamiento o dato corrupto: se parte de cero */
   }
-  return { r: VACIAS, paso: 0 };
+  return { r: { ...VACIAS, origen }, paso: 0 };
 }
 
 export function Asistente() {
@@ -352,7 +357,7 @@ export function Asistente() {
   const reiniciar = () => {
     setBusqueda("");
     setVerMas(false);
-    setR(VACIAS);
+    setR({ ...VACIAS, origen: r.origen });
     setContacto(CONTACTO_VACIO);
     setPaso(0);
     setEnviado(false);
@@ -395,6 +400,7 @@ export function Asistente() {
             busquedas: r.busquedas?.length ? r.busquedas : undefined,
             incorporar: seleccionados,
             comentario: r.comentario?.trim() || undefined,
+            origen: r.origen || undefined,
           },
           contacto: {
             nombre: contacto.nombre.trim(),
