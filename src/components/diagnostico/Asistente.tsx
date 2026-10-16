@@ -2,23 +2,31 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check, MessageCircle, Send } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, MessageCircle, Search, Send } from "lucide-react";
 import {
   CATEGORIAS,
   COMUNAS,
+  GRUPOS,
   HERRAMIENTAS,
+  HERRAMIENTAS_CON_NOMBRE,
   LOCALES,
+  MAX_BUSQUEDAS,
   MAX_PROBLEMAS,
   PLAZOS,
   PRESENCIA_ACTIVA,
+  SISTEMAS,
   TRABAJADORES,
   VENDE_EMPRESAS,
   type Opcion,
 } from "@/lib/diagnostico/datos";
 import {
+  buscarProblemas,
+  buscarRubros,
   categoriaPorId,
   detallesPara,
+  filtrarRubros,
   modulosRecomendados,
+  normalizar,
   problemasOrdenados,
   type Respuestas,
 } from "@/lib/diagnostico/motor";
@@ -34,7 +42,11 @@ import {
  */
 
 const WHATSAPP = "https://wa.me/56992841001";
-const CLAVE = "vectium-diagnostico-v1";
+// v2: cambiaron las categorías; un avance guardado con las de v1 no sirve.
+const CLAVE = "vectium-diagnostico-v2";
+
+/** Desde cuántas opciones una lista muestra su buscador. */
+const LISTA_LARGA = 10;
 
 const VACIAS: Respuestas = {
   negocio: "",
@@ -51,6 +63,7 @@ const VACIAS: Respuestas = {
   problemas: [],
   detalles: {},
   plazo: "",
+  busquedas: [],
 };
 
 interface Contacto {
@@ -131,6 +144,46 @@ function Unica({ opciones, valor, onChange }: { opciones: Opcion[]; valor: strin
   );
 }
 
+function Buscador({
+  valor,
+  onChange,
+  placeholder,
+  etiqueta,
+}: {
+  valor: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  etiqueta: string;
+}) {
+  return (
+    <label className="relative block">
+      <span className="sr-only">{etiqueta}</span>
+      <Search
+        size={16}
+        aria-hidden="true"
+        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-site-muted"
+      />
+      <input
+        type="search"
+        value={valor}
+        maxLength={60}
+        onChange={(e) => onChange(e.target.value)}
+        className={`${campo.replace("mt-1.5 ", "")} pl-11`}
+        placeholder={placeholder}
+        autoComplete="off"
+      />
+    </label>
+  );
+}
+
+function SinResultados({ busqueda, children }: { busqueda: string; children: React.ReactNode }) {
+  return (
+    <p className="rounded-xl border border-dashed border-site-border p-4 text-sm text-site-muted" aria-live="polite">
+      No encontramos «{busqueda.trim()}». {children}
+    </p>
+  );
+}
+
 // ─── Asistente ───────────────────────────────────────────────────────────────
 
 /** El avance guardado, si existe. Solo corre en el navegador (ver AsistenteCliente). */
@@ -152,6 +205,8 @@ export function Asistente() {
   const [r, setR] = useState<Respuestas>(inicial.r);
   const [paso, setPaso] = useState(inicial.paso);
   const [verMas, setVerMas] = useState(false);
+  // Lo escrito en el buscador de la pantalla actual. Se limpia al cambiar de paso.
+  const [busqueda, setBusqueda] = useState("");
   const [contacto, setContacto] = useState<Contacto>(CONTACTO_VACIO);
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
@@ -235,18 +290,48 @@ export function Asistente() {
     }
   };
 
-  const siguiente = () => {
+  // ¿Lo escrito en el buscador de esta pantalla no encontró nada?
+  const sinResultado = (): boolean => {
+    if (normalizar(busqueda).length < 3) return false;
+    if (actual === "categoria") return buscarRubros(busqueda).length === 0;
+    if (actual === "rubro" && categoria)
+      return filtrarRubros(categoria.rubros, busqueda).every((x) => x.id.startsWith("otro"));
+    if (actual === "problemas") return buscarProblemas(busqueda).length === 0;
+    return false;
+  };
+
+  // Al salir de una pantalla, una búsqueda que no encontró nada se guarda para
+  // el aviso a Vectium: así se sabe qué falta en las listas.
+  const cambiarPaso = (delta: number) => {
     setError(null);
-    setPaso((p) => Math.min(p + 1, pasos.length - 1));
+    if (sinResultado()) {
+      const termino = busqueda.trim().slice(0, 60);
+      setR((prev) => {
+        const lista = prev.busquedas ?? [];
+        if (lista.length >= MAX_BUSQUEDAS || lista.some((b) => normalizar(b) === normalizar(termino))) return prev;
+        return { ...prev, busquedas: [...lista, termino] };
+      });
+    }
+    setBusqueda("");
+    setPaso((p) => Math.min(Math.max(p + delta, 0), pasos.length - 1));
     subir();
   };
-  const anterior = () => {
+  const siguiente = () => cambiarPaso(1);
+  const anterior = () => cambiarPaso(-1);
+
+  // Elegir un rubro desde el buscador fija también la categoría y salta la
+  // pantalla de rubros (con "Atrás" se puede revisar).
+  const elegirDesdeBuscador = (categoriaId: string, rubroId: string) => {
+    setR((prev) => ({ ...prev, categoria: categoriaId, rubro: rubroId, rubroOtro: "" }));
+    setBusqueda("");
     setError(null);
-    setPaso((p) => Math.max(p - 1, 0));
+    setPaso(pasos.indexOf("tamano"));
     subir();
   };
 
   const reiniciar = () => {
+    setBusqueda("");
+    setVerMas(false);
     setR(VACIAS);
     setContacto(CONTACTO_VACIO);
     setPaso(0);
@@ -282,7 +367,10 @@ export function Asistente() {
             ...r,
             detalles: vigentes,
             rubroOtro: r.rubroOtro?.trim() || undefined,
-            sistemaCual: r.herramientas.includes("sistema") ? r.sistemaCual?.trim() || undefined : undefined,
+            sistemaCual: r.herramientas.some((h) => HERRAMIENTAS_CON_NOMBRE.includes(h))
+              ? r.sistemaCual?.trim() || undefined
+              : undefined,
+            busquedas: r.busquedas?.length ? r.busquedas : undefined,
           },
           contacto: {
             nombre: contacto.nombre.trim(),
@@ -366,9 +454,37 @@ export function Asistente() {
     }
 
     if (actual === "categoria") {
+      const encontrados = buscarRubros(busqueda);
+      const buscando = normalizar(busqueda).length >= 2;
       return (
-        <Pregunta titulo="¿Qué tipo de negocio es?">
-          <div role="radiogroup" className="grid gap-2">
+        <Pregunta titulo="¿Qué tipo de negocio es?" ayuda="Búscalo por su nombre o elige la categoría más parecida.">
+          <Buscador
+            valor={busqueda}
+            onChange={setBusqueda}
+            etiqueta="Buscar tu tipo de negocio"
+            placeholder="Por ejemplo: ferretería, taller, cabañas, kine"
+          />
+          {buscando && encontrados.length > 0 && (
+            <div role="radiogroup" aria-label="Resultados de la búsqueda" className="grid gap-2">
+              {encontrados.slice(0, 8).map(({ categoria: c, rubro: x }) => (
+                <OpcionBoton
+                  key={x.id}
+                  activa={r.rubro === x.id}
+                  descripcion={c.nombre}
+                  onClick={() => elegirDesdeBuscador(c.id, x.id)}
+                >
+                  {x.nombre}
+                </OpcionBoton>
+              ))}
+            </div>
+          )}
+          {buscando && encontrados.length === 0 && (
+            <SinResultados busqueda={busqueda}>
+              Elige abajo la categoría más parecida; dentro de cada una hay una opción «Otro» para contarnos qué haces.
+            </SinResultados>
+          )}
+          {buscando && <p className="pt-2 text-sm font-medium text-site-ink">O elige una categoría</p>}
+          <div role="radiogroup" className="grid gap-2 sm:grid-cols-2">
             {CATEGORIAS.map((c) => (
               <OpcionBoton
                 key={c.id}
@@ -394,10 +510,23 @@ export function Asistente() {
     if (actual === "rubro" && categoria) {
       const elegido = categoria.rubros.find((x) => x.id === r.rubro);
       const esOtro = elegido?.id.startsWith("otro");
+      const larga = categoria.rubros.length > LISTA_LARGA;
+      const visibles = filtrarRubros(categoria.rubros, busqueda);
       return (
         <Pregunta titulo="¿Cuál de estos se parece más a tu negocio?">
-          <div role="radiogroup" className="grid gap-2">
-            {categoria.rubros.map((x) => (
+          {larga && (
+            <Buscador
+              valor={busqueda}
+              onChange={setBusqueda}
+              etiqueta={`Buscar en ${categoria.nombre}`}
+              placeholder="Escribe para filtrar la lista"
+            />
+          )}
+          {sinResultado() && (
+            <SinResultados busqueda={busqueda}>Marca «Otro» y cuéntanos qué haces.</SinResultados>
+          )}
+          <div role="radiogroup" className="grid gap-2 sm:grid-cols-2">
+            {visibles.map((x) => (
               <OpcionBoton key={x.id} activa={r.rubro === x.id} onClick={() => set("rubro", x.id)}>
                 {x.nombre}
               </OpcionBoton>
@@ -415,7 +544,7 @@ export function Asistente() {
               />
             </label>
           )}
-          {r.rubro === "salud" && (
+          {r.categoria === "salud" && (
             <p className="rounded-xl bg-site-accent/10 p-3 text-xs text-site-ink">
               Este diagnóstico pregunta por la gestión de tu consulta, nunca por tus pacientes. No escribas datos de
               pacientes en ningún campo.
@@ -453,17 +582,24 @@ export function Asistente() {
               </OpcionBoton>
             ))}
           </div>
-          {r.herramientas.includes("sistema") && (
+          {r.herramientas.some((h) => HERRAMIENTAS_CON_NOMBRE.includes(h)) && (
             <label className="block text-sm font-medium text-site-ink">
-              ¿Cuál sistema usas? <span className="text-site-muted">(opcional)</span>
+              ¿Cuáles usas? <span className="text-site-muted">(opcional)</span>
               <input
                 type="text"
+                list="diagnostico-sistemas"
                 value={r.sistemaCual ?? ""}
                 maxLength={100}
                 onChange={(e) => set("sistemaCual", e.target.value)}
                 className={campo}
-                placeholder="Por ejemplo: Bsale, Getnet, un Excel con macros"
+                placeholder="Escribe y elige: Bsale, Getnet, AgendaPro…"
+                autoComplete="off"
               />
+              <datalist id="diagnostico-sistemas">
+                {SISTEMAS.map((s) => (
+                  <option key={s} value={s} />
+                ))}
+              </datalist>
             </label>
           )}
           <p className="pt-2 text-sm font-medium text-site-ink">¿Publicas en las redes o en el sitio de tu negocio?</p>
@@ -473,32 +609,66 @@ export function Asistente() {
     }
 
     if (actual === "problemas") {
-      const { tipicos, otros } = problemasOrdenados(r.categoria);
-      const lista = verMas ? [...tipicos, ...otros] : tipicos;
+      const { tipicos, otros } = problemasOrdenados(r.categoria, r.rubro);
       const lleno = r.problemas.length >= MAX_PROBLEMAS;
+      const buscando = normalizar(busqueda).length >= 2;
+      const encontrados = buscarProblemas(busqueda);
+      const casilla = (p: (typeof tipicos)[number]) => {
+        const activa = r.problemas.includes(p.id);
+        return (
+          <OpcionBoton key={p.id} multiple activa={activa} onClick={() => toggle("problemas", p.id, MAX_PROBLEMAS)}>
+            <span className={!activa && lleno ? "opacity-50" : undefined}>{p.texto}</span>
+          </OpcionBoton>
+        );
+      };
+      // Lo marcado desde el buscador o desde "ver más" sigue a la vista al cerrar la búsqueda.
+      const marcadosFuera = otros.filter((p) => r.problemas.includes(p.id));
       return (
         <Pregunta
           titulo="¿Qué te gustaría resolver?"
           ayuda={`Marca hasta ${MAX_PROBLEMAS}, lo que más te pesa primero. Arriba están los más comunes en tu rubro.`}
         >
-          <div className="grid gap-2">
-            {lista.map((p) => {
-              const activa = r.problemas.includes(p.id);
-              return (
-                <OpcionBoton key={p.id} multiple activa={activa} onClick={() => toggle("problemas", p.id, MAX_PROBLEMAS)}>
-                  <span className={!activa && lleno ? "opacity-50" : undefined}>{p.texto}</span>
-                </OpcionBoton>
-              );
-            })}
-          </div>
-          {!verMas && otros.length > 0 && (
-            <button
-              type="button"
-              onClick={() => setVerMas(true)}
-              className="text-sm font-semibold text-site-accent hover:underline"
-            >
-              Ver más opciones
-            </button>
+          <Buscador
+            valor={busqueda}
+            onChange={setBusqueda}
+            etiqueta="Buscar un problema"
+            placeholder="Busca: facturas, turnos, Booking, WhatsApp, n8n…"
+          />
+          {buscando ? (
+            encontrados.length > 0 ? (
+              <div className="grid gap-2">{encontrados.map(casilla)}</div>
+            ) : (
+              <SinResultados busqueda={busqueda}>
+                Marca lo más parecido o «No sé por dónde partir»: lo vemos en la conversación.
+              </SinResultados>
+            )
+          ) : (
+            <>
+              <div className="grid gap-2">
+                {tipicos.map(casilla)}
+                {!verMas && marcadosFuera.map(casilla)}
+              </div>
+              {verMas &&
+                GRUPOS.map((g) => {
+                  const delGrupo = otros.filter((p) => p.grupo === g.id);
+                  if (!delGrupo.length) return null;
+                  return (
+                    <div key={g.id} className="space-y-2 pt-2">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-site-muted">{g.nombre}</p>
+                      <div className="grid gap-2">{delGrupo.map(casilla)}</div>
+                    </div>
+                  );
+                })}
+              {!verMas && otros.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setVerMas(true)}
+                  className="text-sm font-semibold text-site-accent hover:underline"
+                >
+                  Ver todas las opciones ({otros.length} más)
+                </button>
+              )}
+            </>
           )}
           <p className="text-xs text-site-muted" aria-live="polite">
             {r.problemas.length} de {MAX_PROBLEMAS} marcados

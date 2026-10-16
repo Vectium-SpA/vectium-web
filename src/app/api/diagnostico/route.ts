@@ -44,13 +44,16 @@ function resumen(r: Respuestas, contacto: { nombre: string; email: string; telef
     `Trabajadores: ${texto(TRABAJADORES, r.trabajadores)}`,
     `Locales:      ${texto(LOCALES, r.locales)}`,
     `Vende a empresas: ${texto(VENDE_EMPRESAS, r.vendeEmpresas)}`,
-    `Hoy usa:      ${herramientas}${r.sistemaCual ? ` (sistema: ${r.sistemaCual})` : ''}`,
+    `Hoy usa:      ${herramientas}${r.sistemaCual ? ` (cuáles: ${r.sistemaCual})` : ''}`,
     `Publica en redes o sitio: ${texto(PRESENCIA_ACTIVA, r.presenciaActiva)}`,
     `Plazo:        ${texto(PLAZOS, r.plazo)}`,
     '',
     'Problemas que marcó:',
     ...resultado.problemas.map((p) => `  - ${p.texto}`),
     ...(detalles.length ? ['', 'Detalle:', ...detalles] : []),
+    ...(r.busquedas?.length
+      ? ['', 'Buscó y no encontró (sumar a la lista):', ...r.busquedas.map((b) => `  - "${b}"`)]
+      : []),
     '',
     'Módulos sugeridos (en orden):',
     ...resultado.modulos.map((m) => `  - ${m.modulo.nombre}`),

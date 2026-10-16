@@ -1,12 +1,14 @@
 import {
   CATEGORIAS,
   DETALLES,
+  MAX_TIPICOS,
   MODULOS,
   PROBLEMAS,
   type Categoria,
   type Modulo,
   type PreguntaDetalle,
   type Problema,
+  type Rubro,
 } from './datos';
 
 /**
@@ -35,6 +37,8 @@ export interface Respuestas {
   problemas: string[];
   detalles: Record<string, string>;
   plazo: string;
+  /** Lo que la persona buscó y no encontró: sirve para completar las listas. */
+  busquedas?: string[];
 }
 
 export function categoriaPorId(id: string): Categoria | undefined {
@@ -47,19 +51,84 @@ export function nombreRubro(categoria: string, rubro: string, rubroOtro?: string
   return rubroOtro?.trim() ? `${r.nombre}: ${rubroOtro.trim()}` : r.nombre;
 }
 
-/** Los problemas típicos del rubro primero; el resto después, en su orden. */
-export function problemasOrdenados(categoria: string): { tipicos: Problema[]; otros: Problema[] } {
-  const tipicosIds = categoriaPorId(categoria)?.tipicos ?? [];
-  const tipicos = tipicosIds
-    .map((id) => PROBLEMAS.find((p) => p.id === id))
-    .filter((p): p is Problema => Boolean(p));
-  const otros = PROBLEMAS.filter((p) => !tipicosIds.includes(p.id));
+/** Minúsculas y sin tildes, para buscar "almacen" y encontrar "Almacén". */
+export function normalizar(texto: string): string {
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+/** Cada palabra de la búsqueda tiene que aparecer en alguno de los textos. */
+function coincide(busqueda: string, textos: string[]): boolean {
+  const palabras = normalizar(busqueda).split(/\s+/).filter(Boolean);
+  const pajar = textos.map(normalizar).join(' | ');
+  return palabras.length > 0 && palabras.every((p) => pajar.includes(p));
+}
+
+export interface RubroEncontrado {
+  categoria: Categoria;
+  rubro: Rubro;
+}
+
+/**
+ * Rubros de todas las categorías que calzan con la búsqueda, por nombre o
+ * sinónimo. Los que calzan por el nombre van primero: "taller" muestra
+ * "Taller mecánico" antes que una academia que tiene "taller" de sinónimo.
+ */
+export function buscarRubros(busqueda: string): RubroEncontrado[] {
+  if (normalizar(busqueda).length < 2) return [];
+  const encontrados = CATEGORIAS.flatMap((categoria) =>
+    categoria.rubros
+      .filter((rubro) => !rubro.id.startsWith('otro'))
+      .filter((rubro) => coincide(busqueda, [rubro.nombre, ...(rubro.sinonimos ?? [])]))
+      .map((rubro) => ({ categoria, rubro }))
+  );
+  const porNombre = (e: RubroEncontrado) => (coincide(busqueda, [e.rubro.nombre]) ? 0 : 1);
+  return encontrados.sort((a, b) => porNombre(a) - porNombre(b));
+}
+
+/** Rubros de una categoría que calzan con la búsqueda; los "otro" siempre quedan. */
+export function filtrarRubros(rubros: Rubro[], busqueda: string): Rubro[] {
+  if (normalizar(busqueda).length < 2) return rubros;
+  return rubros.filter(
+    (r) => r.id.startsWith('otro') || coincide(busqueda, [r.nombre, ...(r.sinonimos ?? [])])
+  );
+}
+
+/** Problemas que calzan con la búsqueda, por su texto o sus palabras clave. */
+export function buscarProblemas(busqueda: string): Problema[] {
+  if (normalizar(busqueda).length < 2) return [];
+  return PROBLEMAS.filter((p) => coincide(busqueda, [p.texto, ...(p.palabras ?? [])]));
+}
+
+const porId = (ids: string[]) =>
+  ids.map((id) => PROBLEMAS.find((p) => p.id === id)).filter((p): p is Problema => Boolean(p));
+
+/**
+ * Los problemas típicos primero: los propios del rubro y después los de su
+ * categoría, sin repetir y hasta MAX_TIPICOS. El resto va en "otros".
+ */
+export function problemasOrdenados(categoria: string, rubro?: string): { tipicos: Problema[]; otros: Problema[] } {
+  const cat = categoriaPorId(categoria);
+  const propios = cat?.rubros.find((r) => r.id === rubro)?.tipicos ?? [];
+  const ids = [...new Set([...propios, ...(cat?.tipicos ?? [])])].slice(0, MAX_TIPICOS);
+  const tipicos = porId(ids);
+  const otros = PROBLEMAS.filter((p) => !ids.includes(p.id));
   return { tipicos, otros };
 }
 
-/** Las preguntas de detalle de los problemas marcados, hasta MAX_DETALLES. */
+/**
+ * Las preguntas de detalle de los problemas marcados, hasta MAX_DETALLES:
+ * primero una por problema, en el orden en que se marcaron; si queda espacio,
+ * las segundas. Así cada problema importante tiene al menos una pregunta.
+ */
 export function detallesPara(problemas: string[]): PreguntaDetalle[] {
-  return DETALLES.filter((d) => problemas.includes(d.problema)).slice(0, MAX_DETALLES);
+  const porProblema = problemas.map((id) => DETALLES.filter((d) => d.problema === id));
+  const elegidas: PreguntaDetalle[] = [];
+  for (let ronda = 0; elegidas.length < MAX_DETALLES; ronda++) {
+    const deEstaRonda = porProblema.map((lista) => lista[ronda]).filter((d): d is PreguntaDetalle => Boolean(d));
+    if (!deEstaRonda.length) break;
+    elegidas.push(...deEstaRonda);
+  }
+  return elegidas.slice(0, MAX_DETALLES);
 }
 
 export interface ModuloRecomendado {
@@ -110,7 +179,7 @@ export function perfilDelNegocio(r: Respuestas): Perfil {
   if (['2', '3_mas'].includes(r.locales)) criterios.push('Más de un local');
   if (['si', 'a_veces'].includes(r.vendeEmpresas)) criterios.push('Vende a empresas');
   const manual = r.herramientas.some((h) => h === 'cuaderno' || h === 'excel');
-  const dolorDeGestion = r.problemas.some((p) => ['ganancia', 'stock', 'cobrar', 'compras', 'iva'].includes(p));
+  const dolorDeGestion = r.problemas.some((p) => ['ganancia', 'caja', 'costos', 'stock', 'cobrar', 'compras', 'iva', 'suscripciones'].includes(p));
   if (manual && dolorDeGestion) criterios.push('Lleva la gestión a mano y le cuesta');
   if (r.presenciaActiva === 'si') criterios.push('Cuida su presencia (publica seguido)');
   return { puntaje: criterios.length, criterios };

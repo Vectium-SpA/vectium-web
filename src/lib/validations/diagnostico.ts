@@ -5,6 +5,7 @@ import {
   DETALLES,
   HERRAMIENTAS,
   LOCALES,
+  MAX_BUSQUEDAS,
   MAX_PROBLEMAS,
   PLAZOS,
   PRESENCIA_ACTIVA,
@@ -50,6 +51,7 @@ export const diagnosticoApiSchema = z
         'Respuesta inválida'
       ),
       plazo: unaDe(ids(PLAZOS)),
+      busquedas: z.array(z.string().trim().max(60)).max(MAX_BUSQUEDAS).optional(),
     }),
     contacto: z.object({
       nombre: z.string().trim().min(2, 'Escribe tu nombre').max(100),
