@@ -2,6 +2,7 @@ import { after, NextRequest, NextResponse } from 'next/server';
 import { diagnosticoApiSchema } from '@/lib/validations/diagnostico';
 import { anotarCorreo, guardarConsulta, hashIp, superaLimite } from '@/lib/contacto/registro';
 import { avisarDiagnostico, responderDiagnostico } from '@/lib/contacto/correo';
+import type { FichaDiagnostico } from '@/lib/contacto/plantillas';
 import { armarPaquetes, calcularResultado, formatearRut, nombreRubro, type Respuestas } from '@/lib/diagnostico/motor';
 import {
   COMUNAS,
@@ -27,61 +28,46 @@ function respuesta(status: number, error: string) {
 
 const texto = (opciones: Opcion[], id: string) => opciones.find((o) => o.id === id)?.texto ?? id;
 
-/** El resumen que llega por correo, recalculado en el servidor. */
-function resumen(r: Respuestas, contacto: { nombre: string; email: string; telefono?: string }): string[] {
+/** Lo que muestra el aviso por correo, recalculado en el servidor. */
+function ficha(r: Respuestas, contacto: { nombre: string; email: string; telefono?: string }): FichaDiagnostico {
   const resultado = calcularResultado(r);
   const paquetes = armarPaquetes(resultado.modulos);
-  const detalles = Object.entries(r.detalles).map(([pid, oid]) => {
-    const p = DETALLES.find((d) => d.id === pid);
-    return `  - ${p?.texto ?? pid} ${p ? texto(p.opciones, oid) : oid}`;
-  });
   const herramientas = r.herramientas.map((h) => texto(HERRAMIENTAS, h)).join(', ');
 
-  return [
-    `Negocio:      ${r.negocio}`,
-    ...(r.razonSocial ? [`Razón social: ${r.razonSocial}`] : []),
-    ...(r.rut ? [`RUT:          ${formatearRut(r.rut) ?? r.rut}`] : []),
-    `Comuna:       ${texto(COMUNAS, r.comuna)}`,
-    `Llegó desde:  ${r.origen ? texto(ORIGENES, r.origen) : 'enlace directo (sin origen)'}`,
-    `Rubro:        ${nombreRubro(r.categoria, r.rubro, r.rubroOtro)}`,
-    `Contacto:     ${contacto.nombre} · ${contacto.email}${contacto.telefono ? ` · ${contacto.telefono}` : ''}`,
-    '',
-    `Trabajadores: ${texto(TRABAJADORES, r.trabajadores)}`,
-    `Locales:      ${texto(LOCALES, r.locales)}`,
-    `Vende a empresas: ${texto(VENDE_EMPRESAS, r.vendeEmpresas)}`,
-    `Hoy usa:      ${herramientas}${r.sistemaCual ? ` (cuáles: ${r.sistemaCual})` : ''}`,
-    `Publica en redes o sitio: ${texto(PRESENCIA_ACTIVA, r.presenciaActiva)}`,
-    `Plazo:        ${texto(PLAZOS, r.plazo)}`,
-    '',
-    'Problemas que marcó:',
-    ...resultado.problemas.map((p) => `  - ${p.texto}`),
-    ...(detalles.length ? ['', 'Detalle:', ...detalles] : []),
-    ...(r.busquedas?.length
-      ? ['', 'Buscó y no encontró (sumar a la lista):', ...r.busquedas.map((b) => `  - "${b}"`)]
-      : []),
-    '',
-    'Quiere incorporar (en orden):',
-    ...(resultado.modulos.length
-      ? resultado.modulos.map((m) => `  - ${m.modulo.nombre}`)
-      : ['  (no marcó ninguno: prefiere conversarlo)']),
-    ...(resultado.descartados.length
-      ? ['', 'Descartó:', ...resultado.descartados.map((m) => `  - ${m.modulo.nombre}`)]
-      : []),
-    ...(r.comentario ? ['', 'Algo más que contó:', `  ${r.comentario}`] : []),
-    ...(paquetes.recomendado.length
-      ? [
-          '',
-          'Propuesta de paquete (sin precios: se ponen con el catálogo):',
-          `  Recomendado: ${paquetes.recomendado.map((m) => m.nombre).join(' + ')}`,
-          ...(paquetes.menor.length ? [`  Menor:       ${paquetes.menor.map((m) => m.nombre).join(' + ')}`] : []),
-        ]
-      : []),
-    '',
-    `Perfil del negocio: ${resultado.perfil.puntaje}/5`,
-    ...(resultado.perfil.criterios.length
-      ? resultado.perfil.criterios.map((c) => `  + ${c}`)
-      : ['  (ninguna señal de tamaño todavía)']),
+  const datos: [string, string][] = [
+    ['Rubro', nombreRubro(r.categoria, r.rubro, r.rubroOtro)],
+    ...(r.razonSocial ? ([['Razón social', r.razonSocial]] as [string, string][]) : []),
+    ...(r.rut ? ([['RUT', formatearRut(r.rut) ?? r.rut]] as [string, string][]) : []),
+    ['Comuna', texto(COMUNAS, r.comuna)],
+    ['Llegó desde', r.origen ? texto(ORIGENES, r.origen) : 'Enlace directo (sin origen)'],
+    ['Trabajadores', texto(TRABAJADORES, r.trabajadores)],
+    ['Locales', texto(LOCALES, r.locales)],
+    ['Vende a empresas', texto(VENDE_EMPRESAS, r.vendeEmpresas)],
+    ['Hoy usa', `${herramientas}${r.sistemaCual ? ` (cuáles: ${r.sistemaCual})` : ''}`],
+    ['Publica en redes', texto(PRESENCIA_ACTIVA, r.presenciaActiva)],
+    ['Plazo', texto(PLAZOS, r.plazo)],
   ];
+
+  return {
+    negocio: r.negocio,
+    puntaje: resultado.perfil.puntaje,
+    criterios: resultado.perfil.criterios,
+    contacto,
+    datos,
+    problemas: resultado.problemas.map((p) => p.texto),
+    detalles: Object.entries(r.detalles).map(([pid, oid]) => {
+      const p = DETALLES.find((d) => d.id === pid);
+      return [p?.texto ?? pid, p ? texto(p.opciones, oid) : oid];
+    }),
+    incorporar: resultado.modulos.map((m) => m.modulo.nombre),
+    descartados: resultado.descartados.map((m) => m.modulo.nombre),
+    paquetes: {
+      recomendado: paquetes.recomendado.map((m) => m.nombre),
+      menor: paquetes.menor.map((m) => m.nombre),
+    },
+    comentario: r.comentario,
+    busquedas: r.busquedas ?? [],
+  };
 }
 
 /**
@@ -152,14 +138,7 @@ export async function POST(req: NextRequest) {
     ipHash,
   });
 
-  const avisar = () =>
-    avisarDiagnostico({
-      negocio: respuestas.negocio,
-      nombre: contacto.nombre,
-      email,
-      resumen: resumen(respuestas, { nombre: contacto.nombre, email, telefono }),
-      puntaje: resultado.perfil.puntaje,
-    });
+  const avisar = () => avisarDiagnostico(ficha(respuestas, { nombre: contacto.nombre, email, telefono }));
 
   // Con el diagnóstico ya guardado, los correos salen después de responder:
   // el SMTP tarda varios segundos y la persona no tiene por qué esperarlo.
