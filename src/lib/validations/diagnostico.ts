@@ -14,6 +14,7 @@ import {
   VENDE_EMPRESAS,
   type Opcion,
 } from '@/lib/diagnostico/datos';
+import { formatearRut } from '@/lib/diagnostico/motor';
 
 /**
  * Validación del diagnóstico en el servidor. Cada respuesta tiene que ser una
@@ -31,6 +32,12 @@ export const diagnosticoApiSchema = z
   .object({
     respuestas: z.object({
       negocio: z.string().trim().min(2, 'Escribe el nombre del negocio').max(100),
+      razonSocial: z.string().trim().max(120).optional(),
+      rut: z
+        .string()
+        .trim()
+        .optional()
+        .refine((v) => !v || formatearRut(v) !== null, 'RUT inválido'),
       comuna: unaDe(ids(COMUNAS)),
       categoria: unaDe(CATEGORIAS.map((c) => c.id)),
       rubro: unaDe(RUBROS),

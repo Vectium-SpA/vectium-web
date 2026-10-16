@@ -24,6 +24,9 @@ export const MAX_DETALLES = 5;
 
 export interface Respuestas {
   negocio: string;
+  /** Opcionales. Si el RUT es de una persona natural, es un dato personal. */
+  razonSocial?: string;
+  rut?: string;
   comuna: string;
   categoria: string;
   rubro: string;
@@ -41,6 +44,28 @@ export interface Respuestas {
   busquedas?: string[];
 }
 
+/**
+ * Valida un RUT chileno con su dígito verificador (módulo 11) y lo devuelve
+ * con formato 12.345.678-9. Devuelve null si no es válido. Acepta puntos,
+ * guion y espacios, y la K en minúscula.
+ */
+export function formatearRut(entrada: string): string | null {
+  const limpio = entrada.replace(/[.\s-]/g, '').toUpperCase();
+  if (!/^\d{7,8}[\dK]$/.test(limpio)) return null;
+  const cuerpo = limpio.slice(0, -1);
+  const dv = limpio.slice(-1);
+  let suma = 0;
+  let factor = 2;
+  for (let i = cuerpo.length - 1; i >= 0; i--) {
+    suma += Number(cuerpo[i]) * factor;
+    factor = factor === 7 ? 2 : factor + 1;
+  }
+  const resto = 11 - (suma % 11);
+  const esperado = resto === 11 ? '0' : resto === 10 ? 'K' : String(resto);
+  if (dv !== esperado) return null;
+  return `${cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}-${dv}`;
+}
+
 export function categoriaPorId(id: string): Categoria | undefined {
   return CATEGORIAS.find((c) => c.id === id);
 }
@@ -56,11 +81,15 @@ export function normalizar(texto: string): string {
   return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 }
 
-/** Cada palabra de la búsqueda tiene que aparecer en alguno de los textos. */
+/**
+ * Cada palabra de la búsqueda tiene que ser el comienzo de alguna palabra de
+ * los textos: "kine" encuentra "kinesiología", pero "pos" no encuentra
+ * "depósitos" ni "imposiciones".
+ */
 function coincide(busqueda: string, textos: string[]): boolean {
-  const palabras = normalizar(busqueda).split(/\s+/).filter(Boolean);
-  const pajar = textos.map(normalizar).join(' | ');
-  return palabras.length > 0 && palabras.every((p) => pajar.includes(p));
+  const palabras = normalizar(busqueda).split(/[^a-z0-9]+/).filter(Boolean);
+  const pajar = textos.flatMap((t) => normalizar(t).split(/[^a-z0-9]+/)).filter(Boolean);
+  return palabras.length > 0 && palabras.every((p) => pajar.some((w) => w.startsWith(p)));
 }
 
 export interface RubroEncontrado {
