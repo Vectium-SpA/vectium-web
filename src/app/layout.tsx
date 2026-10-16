@@ -62,6 +62,8 @@ export const metadata: Metadata = {
     "apps móviles",
     "software a medida",
     "Chile",
+    "Vallenar",
+    "Atacama",
     "La Serena",
   ],
   authors: [{ name: "Vectium SpA" }],

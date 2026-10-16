@@ -29,6 +29,6 @@ export const vectiumTheme = {
     name: 'Vectium SpA',
     tagline: 'Software a medida para empresas chilenas',
     email: 'contacto@vectium.cl',
-    location: 'Las Condes, Región Metropolitana · operamos desde la Región de Coquimbo',
+    location: 'Las Condes, Región Metropolitana · operamos desde la Región de Atacama',
   },
 } as const;
