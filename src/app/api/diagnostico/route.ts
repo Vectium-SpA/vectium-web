@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { diagnosticoApiSchema } from '@/lib/validations/diagnostico';
 import { anotarCorreo, guardarConsulta, hashIp, superaLimite } from '@/lib/contacto/registro';
 import { avisarDiagnostico, responderDiagnostico } from '@/lib/contacto/correo';
-import { calcularResultado, nombreRubro, type Respuestas } from '@/lib/diagnostico/motor';
+import { calcularResultado, formatearRut, nombreRubro, type Respuestas } from '@/lib/diagnostico/motor';
 import {
   COMUNAS,
   DETALLES,
@@ -37,6 +37,8 @@ function resumen(r: Respuestas, contacto: { nombre: string; email: string; telef
 
   return [
     `Negocio:      ${r.negocio}`,
+    ...(r.razonSocial ? [`Razón social: ${r.razonSocial}`] : []),
+    ...(r.rut ? [`RUT:          ${formatearRut(r.rut) ?? r.rut}`] : []),
     `Comuna:       ${texto(COMUNAS, r.comuna)}`,
     `Rubro:        ${nombreRubro(r.categoria, r.rubro, r.rubroOtro)}`,
     `Contacto:     ${contacto.nombre} · ${contacto.email}${contacto.telefono ? ` · ${contacto.telefono}` : ''}`,
@@ -100,6 +102,8 @@ export async function POST(req: NextRequest) {
     return respuesta(400, 'Revisa las respuestas del diagnóstico.');
   }
   const { respuestas, contacto, website } = parsed.data;
+  // Se guarda con un solo formato (12.345.678-9), escriba como escriba la persona.
+  if (respuestas.rut) respuestas.rut = formatearRut(respuestas.rut) ?? undefined;
 
   if (website) return NextResponse.json({ ok: true });
 

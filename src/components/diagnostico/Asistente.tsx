@@ -24,6 +24,7 @@ import {
   buscarRubros,
   categoriaPorId,
   detallesPara,
+  formatearRut,
   filtrarRubros,
   modulosRecomendados,
   normalizar,
@@ -50,6 +51,8 @@ const LISTA_LARGA = 10;
 
 const VACIAS: Respuestas = {
   negocio: "",
+  razonSocial: "",
+  rut: "",
   comuna: "",
   categoria: "",
   rubro: "",
@@ -207,6 +210,8 @@ export function Asistente() {
   const [verMas, setVerMas] = useState(false);
   // Lo escrito en el buscador de la pantalla actual. Se limpia al cambiar de paso.
   const [busqueda, setBusqueda] = useState("");
+  // El aviso de RUT inválido aparece al salir del campo, no mientras se escribe.
+  const [rutTocado, setRutTocado] = useState(false);
   const [contacto, setContacto] = useState<Contacto>(CONTACTO_VACIO);
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
@@ -249,6 +254,7 @@ export function Asistente() {
 
   const detalles = useMemo(() => detallesPara(r.problemas), [r.problemas]);
   const categoria = categoriaPorId(r.categoria);
+  const rutValido = !r.rut?.trim() || formatearRut(r.rut) !== null;
 
   // La lista de pasos depende de los problemas marcados.
   const pasos = useMemo(
@@ -271,7 +277,7 @@ export function Asistente() {
   const completo = (id: string): boolean => {
     switch (id) {
       case "negocio":
-        return r.negocio.trim().length >= 2 && Boolean(r.comuna);
+        return r.negocio.trim().length >= 2 && Boolean(r.comuna) && rutValido;
       case "categoria":
         return Boolean(categoria);
       case "rubro":
@@ -367,6 +373,8 @@ export function Asistente() {
             ...r,
             detalles: vigentes,
             rubroOtro: r.rubroOtro?.trim() || undefined,
+            razonSocial: r.razonSocial?.trim() || undefined,
+            rut: r.rut?.trim() ? formatearRut(r.rut) ?? undefined : undefined,
             sistemaCual: r.herramientas.some((h) => HERRAMIENTAS_CON_NOMBRE.includes(h))
               ? r.sistemaCual?.trim() || undefined
               : undefined,
@@ -447,6 +455,47 @@ export function Asistente() {
               placeholder="Por ejemplo: Ferretería El Cerro"
             />
           </label>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm font-medium text-site-ink">
+              Razón social <span className="text-site-muted">(opcional)</span>
+              <input
+                type="text"
+                value={r.razonSocial ?? ""}
+                maxLength={120}
+                autoComplete="organization"
+                onChange={(e) => set("razonSocial", e.target.value)}
+                className={campo}
+                placeholder="Por ejemplo: Comercial El Cerro SpA"
+              />
+            </label>
+            <label className="block text-sm font-medium text-site-ink">
+              RUT de la empresa <span className="text-site-muted">(opcional)</span>
+              <input
+                type="text"
+                inputMode="text"
+                value={r.rut ?? ""}
+                maxLength={12}
+                onChange={(e) => set("rut", e.target.value)}
+                onBlur={() => {
+                  setRutTocado(true);
+                  const f = r.rut?.trim() ? formatearRut(r.rut) : null;
+                  if (f) set("rut", f);
+                }}
+                aria-invalid={rutTocado && !rutValido}
+                className={campo}
+                placeholder="76.123.456-7"
+              />
+            </label>
+          </div>
+          {rutTocado && !rutValido ? (
+            <p role="alert" className="text-xs text-red-500">
+              Ese RUT no es válido. Revísalo o déjalo en blanco.
+            </p>
+          ) : (
+            <p className="text-xs text-site-muted">
+              Si tu negocio está a tu nombre, el RUT es un dato personal: puedes dejarlo en blanco.
+            </p>
+          )}
           <p className="pt-2 text-sm font-medium text-site-ink">¿En qué comuna está?</p>
           <Unica opciones={COMUNAS} valor={r.comuna} onChange={(v) => set("comuna", v)} />
         </Pregunta>
