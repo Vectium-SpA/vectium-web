@@ -94,10 +94,39 @@ for (const c of CATEGORIAS)
 for (const [k, rubros] of porSinonimo)
   if (rubros.size > 1) avisos.push(`"${k}" está en varios rubros: ${[...rubros].join(', ')}`);
 
+// Territorio y zonas: 346 comunas con ids únicos en el país, y cada zona apunta
+// a regiones, comunas y rubros que existen.
+const t = await import(pathToFileURL(resolve('src/lib/diagnostico/territorio.ts')).href);
+type RegionT = { id: string; iso: string; comunas: { id: string }[] };
+const REGIONES: RegionT[] = t.REGIONES;
+repetidos(REGIONES.map((r) => r.id), 'región');
+repetidos(REGIONES.map((r) => r.iso), 'código ISO de región');
+repetidos(REGIONES.flatMap((r) => r.comunas.map((c) => c.id)), 'comuna');
+const totalComunas = REGIONES.reduce((n, r) => n + r.comunas.length, 0);
+if (REGIONES.length !== 16) errores.push(`se esperaban 16 regiones y hay ${REGIONES.length}`);
+if (totalComunas !== 346) errores.push(`se esperaban 346 comunas y hay ${totalComunas}`);
+const rubros = new Set<string>(CATEGORIAS.flatMap((c: { rubros: { id: string }[] }) => c.rubros.map((r) => r.id)));
+for (const [regionId, zona] of Object.entries(d.ZONAS as Record<string, { rubros: string[]; porComuna?: Record<string, string[]> }>)) {
+  const region = REGIONES.find((r) => r.id === regionId);
+  if (!region) {
+    errores.push(`zona de una región que no existe: ${regionId}`);
+    continue;
+  }
+  const listas: [string, string[]][] = [[regionId, zona.rubros], ...Object.entries(zona.porComuna ?? {})];
+  for (const [dueno, lista] of listas) {
+    if (dueno !== regionId && !region.comunas.some((c) => c.id === dueno))
+      errores.push(`zona ${regionId}: la comuna ${dueno} no es de esa región`);
+    for (const r of lista) if (!rubros.has(r)) errores.push(`zona ${dueno}: rubro inexistente ${r}`);
+    if (lista.length > d.MAX_ZONA) avisos.push(`zona ${dueno}: ${lista.length} rubros, se muestran ${d.MAX_ZONA}`);
+  }
+}
+for (const r of REGIONES) if (!d.ZONAS[r.id]) avisos.push(`región sin rubros frecuentes: ${r.id}`);
+
 const totalRubros = CATEGORIAS.reduce((n: number, c: { rubros: unknown[] }) => n + c.rubros.length, 0);
 console.log(
   `${CATEGORIAS.length} categorías · ${totalRubros} rubros · ${PROBLEMAS.length} problemas · ` +
-    `${Object.keys(MODULOS).length} módulos · ${DETALLES.length} preguntas`
+    `${Object.keys(MODULOS).length} módulos · ${DETALLES.length} preguntas · ` +
+    `${REGIONES.length} regiones · ${totalComunas} comunas`
 );
 errores.forEach((e) => console.log('ERROR', e));
 avisos.forEach((a) => console.log('aviso', a));

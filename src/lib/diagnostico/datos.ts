@@ -54,7 +54,7 @@ export const CATEGORIAS: Categoria[] = [
       { id: 'mascotas', nombre: 'Tienda de mascotas', sinonimos: ['pet shop', 'alimento para mascotas', 'acuario'], tipicos: ['clientes'] },
       { id: 'deportes', nombre: 'Deportes, bicicletas y aire libre', sinonimos: ['camping', 'pesca', 'outdoor', 'bicicletas'], tipicos: ['variantes'] },
       { id: 'joyeria', nombre: 'Joyería y relojería', sinonimos: ['bisutería', 'relojes', 'joyas'] },
-      { id: 'distribuidora', nombre: 'Distribuidora o venta por mayor', sinonimos: ['mayorista', 'distribución', 'por mayor', 'proveedor'], tipicos: ['precios', 'despacho', 'cobrar', 'transferencias'] },
+      { id: 'distribuidora', nombre: 'Distribuidora o venta por mayor', sinonimos: ['mayorista', 'distribución', 'por mayor', 'proveedor', 'importadora', 'zofri', 'zona franca'], tipicos: ['precios', 'despacho', 'cobrar', 'transferencias'] },
       { id: 'gas_agua', nombre: 'Gas, agua, leña o combustible', sinonimos: ['distribuidor de gas', 'agua purificada', 'carbón', 'bencinera', 'leña'], tipicos: ['despacho', 'pedidos'] },
       { id: 'automotora', nombre: 'Automotora o venta de vehículos', sinonimos: ['autos usados', 'motos', 'compraventa de autos'], tipicos: ['documentos', 'clientes'] },
       { id: 'sin_local', nombre: 'Vendo por internet o en ferias (sin local)', sinonimos: ['emprendimiento', 'instagram', 'marketplace', 'feria', 'tienda online'], tipicos: ['pedidos', 'tienda', 'pagos', 'stock', 'presencia'] },
@@ -181,6 +181,7 @@ export const CATEGORIAS: Categoria[] = [
       { id: 'lavado_autos', nombre: 'Lavado de autos', sinonimos: ['lavado', 'detailing', 'estética automotriz'], tipicos: ['reservas', 'caja', 'clientes'] },
       { id: 'arriendo', nombre: 'Arriendo de vehículos o maquinaria', sinonimos: ['rent a car', 'camionetas', 'maquinaria', 'equipos'], tipicos: ['reservas', 'mantenciones'] },
       { id: 'reparto', nombre: 'Reparto y mensajería', sinonimos: ['courier', 'despacho', 'última milla'], tipicos: ['despacho', 'whatsapp'] },
+      { id: 'logistica', nombre: 'Bodegaje, logística y comercio exterior', sinonimos: ['bodega', 'agencia de aduanas', 'puerto', 'importación', 'exportación', 'centro de distribución'], tipicos: ['documentos', 'facturar', 'despacho'] },
       { id: 'otro_transporte', nombre: 'Otro negocio de transporte' },
     ],
   },
@@ -197,6 +198,8 @@ export const CATEGORIAS: Categoria[] = [
       { id: 'agroindustria', nombre: 'Agroindustria y productos elaborados', sinonimos: ['aceite de oliva', 'pisco', 'vino', 'deshidratados', 'packing', 'mermeladas'], tipicos: ['stock', 'tienda', 'costos', 'vencimientos', 'marca'] },
       { id: 'ganaderia', nombre: 'Ganadería y lechería', sinonimos: ['crianza', 'caprinos', 'quesos de cabra', 'apicultura'], tipicos: ['costos', 'stock', 'pedidos'] },
       { id: 'pesca', nombre: 'Pesca y productos del mar', sinonimos: ['pesca artesanal', 'caleta', 'mariscos'], tipicos: ['pedidos', 'cobrar', 'despacho'] },
+      { id: 'acuicultura', nombre: 'Acuicultura y servicios a salmoneras', sinonimos: ['salmones', 'mitílidos', 'choritos', 'ostiones', 'centro de cultivo', 'buzos'], tipicos: ['personal', 'flota', 'ordenes'] },
+      { id: 'forestal', nombre: 'Forestal y aserradero', sinonimos: ['madera', 'aserradero', 'plantaciones', 'faena forestal', 'viveros forestales'], tipicos: ['flota', 'personal', 'costos'] },
       { id: 'fabrica', nombre: 'Fábrica o taller de producción', sinonimos: ['manufactura', 'confección', 'imprenta industrial'], tipicos: ['costos', 'stock', 'compras', 'pedidos'] },
       { id: 'reciclaje', nombre: 'Reciclaje y gestión de residuos', sinonimos: ['retiro de escombros', 'chatarra', 'residuos'], tipicos: ['ordenes', 'documentos', 'flota'] },
       { id: 'otro_industria', nombre: 'Otra industria o producción' },
@@ -1163,18 +1166,53 @@ export const DETALLES: PreguntaDetalle[] = [
 
 // ─── Preguntas generales ─────────────────────────────────────────────────────
 
-export const COMUNAS: Opcion[] = [
-  { id: 'vallenar', texto: 'Vallenar' },
-  { id: 'huasco', texto: 'Huasco' },
-  { id: 'freirina', texto: 'Freirina' },
-  { id: 'alto_del_carmen', texto: 'Alto del Carmen' },
-  { id: 'copiapo', texto: 'Copiapó' },
-  { id: 'caldera', texto: 'Caldera' },
-  { id: 'tierra_amarilla', texto: 'Tierra Amarilla' },
-  { id: 'chanaral', texto: 'Chañaral' },
-  { id: 'diego_de_almagro', texto: 'Diego de Almagro' },
-  { id: 'otra', texto: 'Fuera de Atacama' },
-];
+export interface Zona {
+  /** Rubros frecuentes de la región, en orden: se ofrecen antes de las categorías. */
+  rubros: string[];
+  /** Comunas con un perfil distinto al de su región (id de comuna → rubros). */
+  porComuna?: Record<string, string[]>;
+}
+
+/**
+ * Lo que más se ve en cada zona, según su perfil productivo: minería en el
+ * norte, agro en el centro, forestal en el centro sur y acuicultura y turismo en
+ * el sur. Atajo, no filtro: todas las categorías siguen disponibles.
+ * Las claves son ids de región (`territorio.ts`); el cruce revisa que existan.
+ */
+export const ZONAS: Record<string, Zona> = {
+  arica: { rubros: ['productor_agricola', 'distribuidora', 'logistica', 'tours', 'hostal', 'restaurante'] },
+  tarapaca: { rubros: ['distribuidora', 'logistica', 'mineria', 'pesca', 'tours', 'restaurante'] },
+  antofagasta: {
+    rubros: ['mineria', 'maestranza', 'mantencion_industrial', 'pasajeros', 'arriendo', 'construccion'],
+    porComuna: { san_pedro_de_atacama: ['tours', 'hostal', 'cabanas', 'restaurante', 'pasajeros'] },
+  },
+  atacama: {
+    rubros: ['mineria', 'maestranza', 'mantencion_industrial', 'productor_agricola', 'agroindustria', 'pesca'],
+    porComuna: {
+      vallenar: ['mineria', 'productor_agricola', 'agroindustria', 'ferreteria', 'taller', 'restaurante'],
+      alto_del_carmen: ['productor_agricola', 'agroindustria', 'ganaderia', 'cabanas', 'tours'],
+      freirina: ['productor_agricola', 'agroindustria', 'ganaderia', 'pesca', 'cabanas'],
+      huasco: ['pesca', 'mantencion_industrial', 'restaurante', 'hostal', 'productor_agricola'],
+      caldera: ['pesca', 'acuicultura', 'cabanas', 'restaurante', 'tours'],
+      chanaral: ['pesca', 'mineria', 'cabanas', 'restaurante'],
+    },
+  },
+  coquimbo: { rubros: ['tours', 'cabanas', 'agroindustria', 'productor_agricola', 'mineria', 'pesca'] },
+  valparaiso: { rubros: ['logistica', 'tours', 'restaurante', 'cabanas', 'productor_agricola', 'agroindustria'] },
+  metropolitana: { rubros: ['restaurante', 'minimarket', 'construccion', 'contabilidad', 'peluqueria', 'taller'] },
+  ohiggins: { rubros: ['productor_agricola', 'agroindustria', 'carga', 'arriendo', 'mineria', 'cabanas'] },
+  maule: { rubros: ['productor_agricola', 'agroindustria', 'forestal', 'carga', 'cabanas'] },
+  nuble: { rubros: ['productor_agricola', 'forestal', 'agroindustria', 'ganaderia', 'cabanas'] },
+  biobio: { rubros: ['forestal', 'fabrica', 'pesca', 'logistica', 'maestranza', 'construccion'] },
+  araucania: { rubros: ['productor_agricola', 'ganaderia', 'forestal', 'tours', 'cabanas', 'agroindustria'] },
+  los_rios: { rubros: ['ganaderia', 'forestal', 'tours', 'cabanas', 'bar', 'agroindustria'] },
+  los_lagos: { rubros: ['acuicultura', 'ganaderia', 'pesca', 'tours', 'cabanas', 'agroindustria'] },
+  aysen: { rubros: ['tours', 'cabanas', 'acuicultura', 'ganaderia', 'pesca'] },
+  magallanes: { rubros: ['tours', 'hotel', 'ganaderia', 'pesca', 'acuicultura', 'carga'] },
+};
+
+/** Cuántos rubros de la zona se muestran como atajo. */
+export const MAX_ZONA = 6;
 
 export const TRABAJADORES: Opcion[] = [
   { id: '1_2', texto: '1 o 2 personas' },
