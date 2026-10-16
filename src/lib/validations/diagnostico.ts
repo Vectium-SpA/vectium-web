@@ -9,13 +9,14 @@ import {
   MODULOS,
   ORIGENES,
   PLAZOS,
+  PREGUNTAS_NEGOCIO,
   PRESENCIA_ACTIVA,
   PROBLEMAS,
   TRABAJADORES,
   VENDE_EMPRESAS,
   type Opcion,
 } from '@/lib/diagnostico/datos';
-import { formatearRut } from '@/lib/diagnostico/motor';
+import { formatearRut, opcionesVisibles } from '@/lib/diagnostico/motor';
 import { FUERA_DE_CHILE, REGIONES } from '@/lib/diagnostico/territorio';
 
 /**
@@ -51,6 +52,7 @@ export const diagnosticoApiSchema = z
       herramientas: z.array(unaDe(ids(HERRAMIENTAS))).min(1).max(HERRAMIENTAS.length),
       sistemaCual: z.string().trim().max(100).optional(),
       presenciaActiva: unaDe(ids(PRESENCIA_ACTIVA)),
+      sobreNegocio: z.record(z.string(), z.array(z.string()).max(20)),
       problemas: z.array(unaDe(PROBLEMAS.map((p) => p.id))).min(1).max(MAX_PROBLEMAS),
       detalles: z.record(z.string(), z.string()).refine(
         (d) =>
@@ -85,6 +87,19 @@ export const diagnosticoApiSchema = z
     const cat = CATEGORIAS.find((c) => c.id === d.respuestas.categoria);
     return Boolean(cat?.rubros.some((r) => r.id === d.respuestas.rubro));
   }, 'El rubro no corresponde a la categoría')
+  .refine(({ respuestas: { categoria, sobreNegocio } }) => {
+    // Cada pregunta de «cómo es tu negocio» respondida con opciones que esa
+    // categoría ve: una sola si no es múltiple, y la exclusiva sin otras.
+    if (Object.keys(sobreNegocio).some((k) => !PREGUNTAS_NEGOCIO.some((p) => p.id === k))) return false;
+    return PREGUNTAS_NEGOCIO.every((p) => {
+      const marcadas = sobreNegocio[p.id] ?? [];
+      const visibles = opcionesVisibles(p, categoria);
+      if (marcadas.length === 0 || (!p.multiple && marcadas.length > 1)) return false;
+      if (new Set(marcadas).size !== marcadas.length) return false;
+      if (!marcadas.every((id) => visibles.some((o) => o.id === id))) return false;
+      return marcadas.length === 1 || !marcadas.some((id) => visibles.find((o) => o.id === id)?.exclusiva);
+    });
+  }, 'Revisa las preguntas sobre tu negocio')
   .refine(({ respuestas: { region, comuna } }) => {
     if (region === FUERA_DE_CHILE) return comuna === '';
     return Boolean(REGIONES.find((r) => r.id === region)?.comunas.some((c) => c.id === comuna));

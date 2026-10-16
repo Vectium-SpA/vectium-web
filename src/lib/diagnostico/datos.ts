@@ -38,25 +38,25 @@ export const CATEGORIAS: Categoria[] = [
     descripcion: 'Vendes productos en un local, por mayor o por menor, o por internet.',
     tipicos: ['stock', 'ganancia', 'cobrar', 'compras', 'caja', 'pedidos', 'iva'],
     rubros: [
-      { id: 'ferreteria', nombre: 'Ferretería y materiales de construcción', sinonimos: ['barraca', 'maderas', 'pinturería', 'áridos', 'sanitarios', 'materiales'], tipicos: ['precios', 'cotizaciones'] },
+      { id: 'ferreteria', nombre: 'Ferretería y materiales de construcción', sinonimos: ['barraca', 'maderas', 'pinturería', 'áridos', 'sanitarios', 'materiales', 'materiales eléctricos'], tipicos: ['precios', 'cotizaciones'] },
       { id: 'repuestos', nombre: 'Repuestos y accesorios para vehículos', sinonimos: ['autopartes', 'baterías', 'neumáticos', 'accesorios 4x4', 'repuestos'], tipicos: ['precios'] },
       { id: 'agricola', nombre: 'Insumos agrícolas y riego', sinonimos: ['semillas', 'fertilizantes', 'forraje', 'agroveterinaria', 'riego', 'agrícola'], tipicos: ['precios', 'vencimientos'] },
       { id: 'vivero', nombre: 'Florería y vivero', sinonimos: ['plantas', 'flores', 'maceteros', 'plantas de interior'], tipicos: ['pedidos', 'presencia'] },
       { id: 'minimarket', nombre: 'Minimarket o almacén', sinonimos: ['almacén', 'supermercado', 'abarrotes', 'negocio de barrio'], tipicos: ['pos', 'vencimientos', 'caja'] },
       { id: 'botilleria', nombre: 'Botillería', sinonimos: ['licores', 'vinos', 'depósito de bebidas', 'cervezas'], tipicos: ['pos', 'caja', 'vencimientos'] },
-      { id: 'frescos', nombre: 'Carnicería, verdulería o alimentos frescos', sinonimos: ['frutería', 'pescadería', 'avícola', 'quesería', 'verdulería', 'carnicería'], tipicos: ['vencimientos', 'caja'] },
+      { id: 'frescos', nombre: 'Carnicería, verdulería o alimentos frescos', sinonimos: ['frutería', 'pescadería', 'avícola', 'quesería', 'verdulería', 'carnicería'], tipicos: ['trazabilidad', 'vencimientos', 'caja'] },
       { id: 'ropa', nombre: 'Ropa, calzado y accesorios', sinonimos: ['boutique', 'zapatería', 'ropa infantil', 'lencería', 'tienda de ropa'], tipicos: ['variantes', 'tienda'] },
       { id: 'ropa_trabajo', nombre: 'Ropa de trabajo y elementos de seguridad', sinonimos: ['epp', 'ropa corporativa', 'bordados', 'uniformes', 'seguridad industrial'], tipicos: ['variantes', 'cotizaciones', 'cobrar'] },
-      { id: 'hogar', nombre: 'Hogar, muebles y electrodomésticos', sinonimos: ['colchones', 'decoración', 'línea blanca', 'cortinas', 'mueblería'], tipicos: ['despacho'] },
+      { id: 'hogar', nombre: 'Hogar, muebles y electrodomésticos', sinonimos: ['colchones', 'decoración', 'línea blanca', 'cortinas', 'mueblería'], tipicos: ['garantias', 'despacho'] },
       { id: 'libreria', nombre: 'Librería, juguetería y regalos', sinonimos: ['papelería', 'útiles escolares', 'cotillón', 'bazar', 'regalos'], tipicos: ['pos', 'variantes'] },
-      { id: 'tecnologia', nombre: 'Tecnología y celulares', sinonimos: ['computación', 'accesorios', 'gamer', 'celulares'], tipicos: ['ordenes'] },
+      { id: 'tecnologia', nombre: 'Tecnología y celulares', sinonimos: ['computación', 'accesorios', 'gamer', 'celulares'], tipicos: ['garantias', 'ordenes'] },
       { id: 'farmacia', nombre: 'Farmacia, perfumería o tienda naturista', sinonimos: ['cosmética', 'suplementos', 'droguería', 'naturista'], tipicos: ['pos', 'vencimientos'] },
       { id: 'mascotas', nombre: 'Tienda de mascotas', sinonimos: ['pet shop', 'alimento para mascotas', 'acuario'], tipicos: ['clientes'] },
       { id: 'deportes', nombre: 'Deportes, bicicletas y aire libre', sinonimos: ['camping', 'pesca', 'outdoor', 'bicicletas'], tipicos: ['variantes'] },
       { id: 'joyeria', nombre: 'Joyería y relojería', sinonimos: ['bisutería', 'relojes', 'joyas'] },
       { id: 'distribuidora', nombre: 'Distribuidora o venta por mayor', sinonimos: ['mayorista', 'distribución', 'por mayor', 'proveedor', 'importadora', 'zofri', 'zona franca'], tipicos: ['precios', 'despacho', 'cobrar', 'transferencias'] },
       { id: 'gas_agua', nombre: 'Gas, agua, leña o combustible', sinonimos: ['distribuidor de gas', 'agua purificada', 'carbón', 'bencinera', 'leña'], tipicos: ['despacho', 'pedidos'] },
-      { id: 'automotora', nombre: 'Automotora o venta de vehículos', sinonimos: ['autos usados', 'motos', 'compraventa de autos'], tipicos: ['documentos', 'clientes'] },
+      { id: 'automotora', nombre: 'Automotora o venta de vehículos', sinonimos: ['autos usados', 'motos', 'compraventa de autos'], tipicos: ['garantias', 'documentos', 'clientes'] },
       { id: 'sin_local', nombre: 'Vendo por internet o en ferias (sin local)', sinonimos: ['emprendimiento', 'instagram', 'marketplace', 'feria', 'tienda online'], tipicos: ['pedidos', 'tienda', 'pagos', 'stock', 'presencia'] },
       { id: 'otro_comercio', nombre: 'Otro tipo de comercio' },
     ],
@@ -67,9 +67,9 @@ export const CATEGORIAS: Categoria[] = [
     descripcion: 'Restaurantes, cafés, bares, comida para llevar y eventos.',
     tipicos: ['reservas', 'pedidos', 'costos', 'stock', 'caja', 'presencia', 'clientes'],
     rubros: [
-      { id: 'restaurante', nombre: 'Restaurante', sinonimos: ['picada', 'cocinería', 'parrilla', 'comida casera', 'marisquería'], tipicos: ['piezas'] },
+      { id: 'restaurante', nombre: 'Restaurante', sinonimos: ['picada', 'cocinería', 'parrilla', 'comida casera', 'marisquería'], tipicos: ['resenas', 'piezas'] },
       { id: 'cafe', nombre: 'Café, pastelería o heladería', sinonimos: ['cafetería', 'tortas', 'repostería', 'salón de té'], tipicos: ['pedidos'] },
-      { id: 'bar', nombre: 'Bar, pub o cervecería', sinonimos: ['restobar', 'discoteca', 'karaoke'], tipicos: ['caja', 'personal'] },
+      { id: 'bar', nombre: 'Bar, pub o cervecería', sinonimos: ['restobar', 'discoteca', 'karaoke', 'cervecería artesanal'], tipicos: ['caja', 'personal'] },
       { id: 'delivery', nombre: 'Comida rápida o delivery', sinonimos: ['sushi', 'pizza', 'completos', 'hamburguesas', 'food truck', 'cocina oculta'], tipicos: ['pedidos', 'despacho', 'costos', 'whatsapp'] },
       { id: 'panaderia', nombre: 'Panadería o amasandería', sinonimos: ['pan', 'empanadas', 'panificadora'], tipicos: ['vencimientos', 'despacho'] },
       { id: 'banqueteria', nombre: 'Banquetería y eventos', sinonimos: ['catering', 'cóctel', 'coffee break'], tipicos: ['cotizaciones', 'cobrar', 'costos', 'personal'] },
@@ -85,10 +85,11 @@ export const CATEGORIAS: Categoria[] = [
     tipicos: ['reservas', 'canales', 'pagos', 'presencia', 'clientes', 'cobrar'],
     rubros: [
       { id: 'hotel', nombre: 'Hotel o apart-hotel', sinonimos: ['apart', 'hotel boutique'], tipicos: ['personal'] },
-      { id: 'hostal', nombre: 'Hostal o residencial', sinonimos: ['pensión', 'alojamiento para trabajadores', 'contratistas'], tipicos: ['cobrar', 'facturar'] },
-      { id: 'cabanas', nombre: 'Cabañas, camping o arriendo por día', sinonimos: ['parcela', 'airbnb', 'glamping', 'quincho'], tipicos: ['canales', 'reservas', 'pagos'] },
-      { id: 'tours', nombre: 'Tours y agencia de turismo', sinonimos: ['guía', 'turismo aventura', 'astroturismo', 'ruta del pisco', 'olivos'], tipicos: ['tienda', 'piezas'] },
+      { id: 'hostal', nombre: 'Hostal o residencial', sinonimos: ['pensión', 'alojamiento para trabajadores', 'contratistas'], tipicos: ['resenas', 'cobrar', 'facturar'] },
+      { id: 'cabanas', nombre: 'Cabañas, camping o arriendo por día', sinonimos: ['parcela', 'airbnb', 'glamping', 'quincho'], tipicos: ['resenas', 'canales', 'reservas', 'pagos'] },
+      { id: 'tours', nombre: 'Tours y agencia de turismo', sinonimos: ['guía', 'turismo aventura', 'astroturismo', 'ruta del pisco', 'olivos', 'trekking', 'kayak'], tipicos: ['tienda', 'piezas'] },
       { id: 'eventos', nombre: 'Centro de eventos o recinto', sinonimos: ['salón de eventos', 'piscina', 'quinchos'], tipicos: ['reservas', 'cotizaciones', 'pagos'] },
+      { id: 'produccion_eventos', nombre: 'Producción de eventos, sonido e iluminación', sinonimos: ['sonido', 'iluminación', 'dj', 'arriendo de mobiliario', 'carpas', 'juegos inflables', 'matrimonios'], tipicos: ['cotizaciones', 'reservas', 'cobrar'] },
       { id: 'otro_alojamiento', nombre: 'Otro negocio de alojamiento o turismo' },
     ],
   },
@@ -102,7 +103,7 @@ export const CATEGORIAS: Categoria[] = [
       { id: 'kinesiologia', nombre: 'Kinesiología y rehabilitación', sinonimos: ['fisioterapia', 'fonoaudiología', 'terapia ocupacional', 'kine', 'clínica kinesiológica'], tipicos: ['reservas_avanzadas', 'suscripciones'] },
       { id: 'psicologia', nombre: 'Psicología y terapias', sinonimos: ['psicopedagogía', 'terapia familiar', 'psicólogo'], tipicos: ['marca_personal'] },
       { id: 'nutricion', nombre: 'Nutrición', sinonimos: ['nutricionista', 'dietista'], tipicos: ['suscripciones', 'marca_personal'] },
-      { id: 'medico', nombre: 'Consulta médica o centro médico', sinonimos: ['médico general', 'especialista', 'policlínico', 'clínica', 'clínica general'], tipicos: ['reservas_avanzadas', 'locales'] },
+      { id: 'medico', nombre: 'Consulta médica o centro médico', sinonimos: ['médico general', 'especialista', 'policlínico', 'clínica', 'clínica general', 'matrona', 'ginecología'], tipicos: ['reservas_avanzadas', 'locales'] },
       { id: 'laboratorio', nombre: 'Laboratorio o toma de muestras', sinonimos: ['laboratorio clínico', 'imagenología', 'exámenes'], tipicos: ['documentos'] },
       { id: 'optica', nombre: 'Óptica', sinonimos: ['lentes', 'oftalmología', 'contactología'], tipicos: ['stock', 'ordenes'] },
       { id: 'podologia', nombre: 'Podología y enfermería', sinonimos: ['podólogo', 'enfermería a domicilio', 'cuidadores'], tipicos: ['personal'] },
@@ -159,9 +160,10 @@ export const CATEGORIAS: Categoria[] = [
       { id: 'aseo', nombre: 'Aseo y limpieza', sinonimos: ['aseo industrial', 'lavado de alfombras', 'sanitización', 'limpieza'], tipicos: ['asistencia', 'sueldos', 'documentos'] },
       { id: 'plagas', nombre: 'Control de plagas', sinonimos: ['fumigación', 'desratización'], tipicos: ['mantenciones', 'documentos'] },
       { id: 'seguridad', nombre: 'Seguridad y cámaras', sinonimos: ['guardias', 'alarmas', 'cctv', 'cercos eléctricos'], tipicos: ['asistencia', 'sueldos', 'mantenciones'] },
-      { id: 'servicio_tecnico', nombre: 'Servicio técnico y reparaciones', sinonimos: ['electrodomésticos', 'reparación de celulares', 'computadores', 'línea blanca'], tipicos: ['ordenes', 'stock', 'whatsapp'] },
+      { id: 'servicio_tecnico', nombre: 'Servicio técnico y reparaciones', sinonimos: ['electrodomésticos', 'reparación de celulares', 'computadores', 'línea blanca'], tipicos: ['garantias', 'ordenes', 'stock', 'whatsapp'] },
       { id: 'lavanderia', nombre: 'Lavandería y tintorería', sinonimos: ['lavado', 'planchado'], tipicos: ['ordenes', 'despacho'] },
       { id: 'funeraria', nombre: 'Funeraria', sinonimos: ['servicios funerarios'], tipicos: ['cobrar', 'personal'] },
+      { id: 'costura', nombre: 'Costura, tapicería y arreglos', sinonimos: ['costurera', 'modista', 'arreglos de ropa', 'tapicería', 'confección a medida'], tipicos: ['ordenes', 'whatsapp'] },
       { id: 'otro_oficios', nombre: 'Otro servicio a domicilio' },
     ],
   },
@@ -182,6 +184,7 @@ export const CATEGORIAS: Categoria[] = [
       { id: 'arriendo', nombre: 'Arriendo de vehículos o maquinaria', sinonimos: ['rent a car', 'camionetas', 'maquinaria', 'equipos'], tipicos: ['reservas', 'mantenciones'] },
       { id: 'reparto', nombre: 'Reparto y mensajería', sinonimos: ['courier', 'despacho', 'última milla'], tipicos: ['despacho', 'whatsapp'] },
       { id: 'logistica', nombre: 'Bodegaje, logística y comercio exterior', sinonimos: ['bodega', 'agencia de aduanas', 'puerto', 'importación', 'exportación', 'centro de distribución'], tipicos: ['documentos', 'facturar', 'despacho'] },
+      { id: 'estacionamiento', nombre: 'Estacionamiento', sinonimos: ['parking', 'estacionamientos', 'guarda de vehículos'], tipicos: ['caja', 'suscripciones', 'pos'] },
       { id: 'otro_transporte', nombre: 'Otro negocio de transporte' },
     ],
   },
@@ -191,14 +194,14 @@ export const CATEGORIAS: Categoria[] = [
     descripcion: 'Contratistas, maestranzas, productores y agroindustria.',
     tipicos: ['documentos', 'cotizaciones', 'cobrar', 'flujo', 'personal', 'proyectos', 'ganancia'],
     rubros: [
-      { id: 'mineria', nombre: 'Servicios a la minería', sinonimos: ['contratista minero', 'proveedor de faena', 'acreditación', 'minería'] },
-      { id: 'maestranza', nombre: 'Maestranza y metalmecánica', sinonimos: ['tornería', 'soldadura industrial', 'estructuras'], tipicos: ['ordenes', 'compras'] },
-      { id: 'mantencion_industrial', nombre: 'Mantención industrial', sinonimos: ['mantención eléctrica', 'mantención mecánica', 'montaje'], tipicos: ['mantenciones', 'ordenes'] },
+      { id: 'mineria', nombre: 'Servicios a la minería', sinonimos: ['contratista minero', 'proveedor de faena', 'acreditación', 'minería'], tipicos: ['licitaciones'] },
+      { id: 'maestranza', nombre: 'Maestranza y metalmecánica', sinonimos: ['tornería', 'soldadura industrial', 'estructuras'], tipicos: ['licitaciones', 'ordenes', 'compras'] },
+      { id: 'mantencion_industrial', nombre: 'Mantención industrial', sinonimos: ['mantención eléctrica', 'mantención mecánica', 'montaje'], tipicos: ['licitaciones', 'mantenciones', 'ordenes'] },
       { id: 'productor_agricola', nombre: 'Productor agrícola', sinonimos: ['uva de mesa', 'olivos', 'frutales', 'hortalizas', 'temporeros'], tipicos: ['costos', 'personal', 'asistencia', 'compras'] },
-      { id: 'agroindustria', nombre: 'Agroindustria y productos elaborados', sinonimos: ['aceite de oliva', 'pisco', 'vino', 'deshidratados', 'packing', 'mermeladas'], tipicos: ['stock', 'tienda', 'costos', 'vencimientos', 'marca'] },
+      { id: 'agroindustria', nombre: 'Agroindustria y productos elaborados', sinonimos: ['aceite de oliva', 'pisco', 'vino', 'deshidratados', 'packing', 'mermeladas'], tipicos: ['trazabilidad', 'stock', 'tienda', 'costos', 'vencimientos', 'marca'] },
       { id: 'ganaderia', nombre: 'Ganadería y lechería', sinonimos: ['crianza', 'caprinos', 'quesos de cabra', 'apicultura'], tipicos: ['costos', 'stock', 'pedidos'] },
-      { id: 'pesca', nombre: 'Pesca y productos del mar', sinonimos: ['pesca artesanal', 'caleta', 'mariscos'], tipicos: ['pedidos', 'cobrar', 'despacho'] },
-      { id: 'acuicultura', nombre: 'Acuicultura y servicios a salmoneras', sinonimos: ['salmones', 'mitílidos', 'choritos', 'ostiones', 'centro de cultivo', 'buzos'], tipicos: ['personal', 'flota', 'ordenes'] },
+      { id: 'pesca', nombre: 'Pesca y productos del mar', sinonimos: ['pesca artesanal', 'caleta', 'mariscos'], tipicos: ['trazabilidad', 'pedidos', 'cobrar', 'despacho'] },
+      { id: 'acuicultura', nombre: 'Acuicultura y servicios a salmoneras', sinonimos: ['salmones', 'mitílidos', 'choritos', 'ostiones', 'centro de cultivo', 'buzos'], tipicos: ['trazabilidad', 'personal', 'flota', 'ordenes'] },
       { id: 'forestal', nombre: 'Forestal y aserradero', sinonimos: ['madera', 'aserradero', 'plantaciones', 'faena forestal', 'viveros forestales'], tipicos: ['flota', 'personal', 'costos'] },
       { id: 'fabrica', nombre: 'Fábrica o taller de producción', sinonimos: ['manufactura', 'confección', 'imprenta industrial'], tipicos: ['costos', 'stock', 'compras', 'pedidos'] },
       { id: 'reciclaje', nombre: 'Reciclaje y gestión de residuos', sinonimos: ['retiro de escombros', 'chatarra', 'residuos'], tipicos: ['ordenes', 'documentos', 'flota'] },
@@ -221,6 +224,8 @@ export const CATEGORIAS: Categoria[] = [
       { id: 'seguros', nombre: 'Seguros y créditos', sinonimos: ['corredora de seguros', 'financiera', 'cobranza'], tipicos: ['clientes'] },
       { id: 'gestion_admin', nombre: 'Oficina de administración y gestión', sinonimos: ['back office', 'gestoría', 'cobranza externa', 'asesoría administrativa', 'outsourcing', 'administración'], tipicos: ['tareas', 'reportes', 'transferencias', 'integraciones'] },
       { id: 'consultoria', nombre: 'Consultoría y recursos humanos', sinonimos: ['reclutamiento', 'consultora', 'coaching'], tipicos: ['proyectos', 'marca_personal'] },
+      { id: 'grafica', nombre: 'Imprenta, gráfica y fotocopias', sinonimos: ['fotocopias', 'serigrafía', 'sublimación', 'gigantografías', 'letreros', 'impresión'], tipicos: ['cotizaciones', 'ordenes', 'whatsapp'] },
+      { id: 'coworking', nombre: 'Coworking y arriendo de oficinas o salas', sinonimos: ['oficina compartida', 'arriendo de salas', 'salas de reunión', 'oficina virtual'], tipicos: ['reservas_avanzadas', 'suscripciones', 'cobrar'] },
       { id: 'otro_profesional', nombre: 'Otro servicio profesional' },
     ],
   },
@@ -541,6 +546,10 @@ export const PROBLEMAS: Problema[] = [
   { id: 'workspace', grupo: 'tecnologia', texto: 'Quiero correo con mi dominio y mis archivos ordenados en la nube', modulos: ['workspace'], palabras: ['google workspace', 'gmail', 'drive', 'correo corporativo', 'dominio'] },
   { id: 'app', grupo: 'tecnologia', texto: 'Necesito una aplicación propia para mis clientes o mi equipo', modulos: ['app'], palabras: ['app móvil', 'plataforma', 'a medida', 'celular'] },
   { id: 'sistema', grupo: 'tecnologia', texto: 'Tengo un sistema que no me sirve o me sale caro', modulos: ['revision', 'integraciones'], palabras: ['cambiar de sistema', 'migrar', 'software'] },
+  { id: 'licitaciones', grupo: 'ventas', texto: 'Postulo a licitaciones o portales de proveedores y se me pasan plazos o papeles', modulos: ['documentos', 'cotizaciones'], palabras: ['mercado público', 'licitación', 'chileproveedores', 'sicep', 'achilles', 'portal de proveedores'] },
+  { id: 'trazabilidad', grupo: 'operacion', texto: 'Necesito saber de qué lote, proveedor o fecha viene cada producto', modulos: ['inventario', 'documentos'], palabras: ['lote', 'trazabilidad', 'sag', 'resolución sanitaria', 'fecha de elaboración'] },
+  { id: 'garantias', grupo: 'operacion', texto: 'Se me pierden las garantías, devoluciones y reclamos', modulos: ['ordenes', 'fidelizacion'], palabras: ['garantía', 'devolución', 'postventa', 'reclamo', 'cambio'] },
+  { id: 'resenas', grupo: 'presencia', texto: 'Tengo pocas reseñas en Google o no alcanzo a responderlas', modulos: ['presencia', 'whatsapp'], palabras: ['reseñas', 'google maps', 'opiniones', 'estrellas', 'comentarios'] },
   { id: 'auditoria', grupo: 'tecnologia', texto: 'No sé por dónde partir: quiero que alguien lo revise conmigo', modulos: ['revision'], palabras: ['asesoría', 'diagnóstico', 'auditoría', 'consultoría'] },
 ];
 
@@ -553,8 +562,9 @@ export interface Opcion {
 
 /**
  * Condición para que una pregunta aparezca: la respuesta a otra pregunta de
- * detalle (por su id) o a una pregunta general (`vendeEmpresas`,
- * `trabajadores`, `locales`) tiene que ser una de `en`.
+ * detalle (por su id), a una pregunta general (`vendeEmpresas`,
+ * `trabajadores`, `locales`) o a una de «cómo es tu negocio»
+ * (`PANTALLAS_NEGOCIO`, alguna de las marcadas) tiene que ser una de `en`.
  */
 export interface Condicion {
   pregunta: string;
@@ -581,6 +591,72 @@ export const CONDICIONES_GENERALES = ['vendeEmpresas', 'trabajadores', 'locales'
  * un máximo de MAX_DETALLES, así el formulario se detiene solo.
  */
 export const DETALLES: PreguntaDetalle[] = [
+  {
+    id: 'licitaciones_donde',
+    problema: 'licitaciones',
+    texto: '¿Dónde postulas o te acreditas como proveedor?',
+    opciones: [
+      { id: 'mercado_publico', texto: 'Mercado Público' },
+      { id: 'mineras', texto: 'Portales de mineras o grandes empresas (SICEP, Achilles u otros)' },
+      { id: 'privadas', texto: 'Licitaciones privadas por correo' },
+      { id: 'varias', texto: 'En varios de estos' },
+    ],
+  },
+  {
+    id: 'trazabilidad_por',
+    problema: 'trazabilidad',
+    texto: '¿Para qué necesitas saber de dónde viene cada producto?',
+    opciones: [
+      { id: 'exigencia', texto: 'Me lo exige un cliente o una norma (SAG, Seremi de Salud)' },
+      { id: 'mermas', texto: 'Para controlar mermas y vencimientos' },
+      { id: 'reclamos', texto: 'Para responder bien si hay un reclamo' },
+      { id: 'exportar', texto: 'Para exportar' },
+    ],
+  },
+  {
+    id: 'garantias_mes',
+    problema: 'garantias',
+    texto: '¿Cuántos casos de garantía, cambio o reclamo tienes al mes?',
+    opciones: [
+      { id: 'menos_5', texto: 'Menos de 5' },
+      { id: '5_20', texto: 'Entre 5 y 20' },
+      { id: 'mas_20', texto: 'Más de 20' },
+    ],
+  },
+  {
+    id: 'resenas_cuantas',
+    problema: 'resenas',
+    texto: '¿Cuántas reseñas tiene tu negocio en Google?',
+    opciones: [
+      { id: 'ninguna', texto: 'No tengo ficha en Google o no tiene reseñas' },
+      { id: 'menos_20', texto: 'Menos de 20' },
+      { id: '20_100', texto: 'Entre 20 y 100' },
+      { id: 'mas_100', texto: 'Más de 100' },
+    ],
+  },
+  {
+    id: 'pedidos_apps',
+    problema: 'pedidos',
+    si: { pregunta: 'canales', en: ['apps_reparto'] },
+    texto: '¿En cuántas aplicaciones de reparto estás?',
+    opciones: [
+      { id: 'una', texto: 'Una' },
+      { id: 'dos', texto: 'Dos' },
+      { id: 'tres_mas', texto: 'Tres o más' },
+    ],
+  },
+  {
+    id: 'transferencias_como',
+    problema: 'transferencias',
+    si: { pregunta: 'pagos', en: ['transferencia'] },
+    texto: '¿Cómo sabes hoy quién te transfirió?',
+    opciones: [
+      { id: 'cartola', texto: 'Reviso la cartola del banco a mano' },
+      { id: 'comprobantes', texto: 'Me mandan el comprobante por WhatsApp' },
+      { id: 'contador', texto: 'Lo revisa el contador' },
+      { id: 'no_se', texto: 'Muchas veces no lo sé' },
+    ],
+  },
   {
     id: 'stock_productos',
     problema: 'stock',
@@ -1242,13 +1318,14 @@ export const HERRAMIENTAS: Opcion[] = [
   { id: 'maquina', texto: 'Una máquina para cobrar con tarjeta' },
   { id: 'agenda', texto: 'Una aplicación de reservas o agenda' },
   { id: 'tienda', texto: 'Una tienda en línea' },
+  { id: 'contable', texto: 'Un software contable o de remuneraciones' },
   { id: 'google', texto: 'Google Drive, Sheets o Gmail' },
   { id: 'redes', texto: 'WhatsApp e Instagram' },
   { id: 'nada', texto: 'Nada en especial' },
 ];
 
 /** Herramientas que, marcadas, abren la pregunta "¿cuáles usas?". */
-export const HERRAMIENTAS_CON_NOMBRE = ['sistema', 'facturador', 'maquina', 'agenda', 'tienda'];
+export const HERRAMIENTAS_CON_NOMBRE = ['sistema', 'facturador', 'maquina', 'agenda', 'tienda', 'contable'];
 
 /**
  * Sugerencias para "¿cuáles usas?". Es texto libre: la lista solo ayuda a
@@ -1256,32 +1333,52 @@ export const HERRAMIENTAS_CON_NOMBRE = ['sistema', 'facturador', 'maquina', 'age
  */
 export const SISTEMAS: string[] = [
   'AgendaPro',
+  'Airbnb',
+  'Booking',
   'Bsale',
+  'Buk',
+  'Chipax',
+  'Clay',
   'Defontana',
   'Dentalink',
   'Excel con macros',
   'Facturador gratuito del SII',
+  'Flow',
   'Fudo',
+  'GeoVictoria',
   'Getnet',
   'Google Sheets',
+  'HubSpot',
   'Jumpseller',
   'Justo',
   'Kame ERP',
+  'Khipu',
   'Laudus',
+  'Lioren',
   'Manager',
   'Medilink',
+  'Mercado Libre',
   'Mercado Pago',
+  'Mercado Público',
+  'Microsoft 365',
   'Nubox',
   'Obuma',
   'Odoo',
   'OpenFactura',
+  'PedidosYa',
+  'Rappi',
   'Relbase',
   'Reservo',
+  'Rex+',
   'Shopify',
+  'SimpleFactura',
   'Softland',
   'SumUp',
+  'Talana',
   'Toteat',
   'Transbank',
+  'Tuu',
+  'Uber Eats',
   'WooCommerce',
 ];
 
@@ -1290,6 +1387,156 @@ export const PRESENCIA_ACTIVA: Opcion[] = [
   { id: 'a_veces', texto: 'De vez en cuando' },
   { id: 'no', texto: 'No' },
 ];
+
+// ─── Cómo es tu negocio (fase F2) ────────────────────────────────────────────
+
+export interface OpcionNegocio extends Opcion {
+  /** Problemas que esta respuesta hace sospechar: se ofrecen primero en «¿Qué te gustaría resolver?». */
+  sugiere?: string[];
+  /** Si existe, la opción solo se muestra a estas categorías. */
+  categorias?: string[];
+  /** Marcarla desmarca las demás, y al revés (como «Nada en especial»). */
+  exclusiva?: boolean;
+}
+
+export interface PreguntaNegocio {
+  id: string;
+  texto: string;
+  /** Cómo aparece en el aviso a Vectium. */
+  etiqueta: string;
+  multiple?: boolean;
+  opciones: OpcionNegocio[];
+}
+
+export interface PantallaNegocio {
+  id: string;
+  titulo: string;
+  ayuda?: string;
+  preguntas: PreguntaNegocio[];
+}
+
+/**
+ * Tres pantallas sobre cómo vende, cobra y se organiza el negocio. Cada
+ * respuesta puede sugerir problemas (se ofrecen primero, sin marcarlos) y
+ * encadenar preguntas de detalle (`si.pregunta` con el id de la pregunta).
+ */
+export const PANTALLAS_NEGOCIO: PantallaNegocio[] = [
+  {
+    id: 'ventas',
+    titulo: '¿Cómo vendes y cómo te pagan?',
+    ayuda: 'Marca todo lo que corresponda.',
+    preguntas: [
+      {
+        id: 'canales',
+        texto: '¿Por dónde te compran o te contactan?',
+        etiqueta: 'Vende por',
+        multiple: true,
+        opciones: [
+          { id: 'local', texto: 'En mi local' },
+          { id: 'whatsapp', texto: 'WhatsApp', sugiere: ['pedidos', 'whatsapp'] },
+          { id: 'redes', texto: 'Instagram o Facebook', sugiere: ['pedidos', 'presencia'] },
+          { id: 'telefono', texto: 'Por teléfono', sugiere: ['pedidos'] },
+          { id: 'web', texto: 'Mi sitio web o tienda en línea', sugiere: ['tienda'] },
+          { id: 'apps_reparto', texto: 'Aplicaciones de reparto (PedidosYa, Uber Eats, Rappi)', sugiere: ['pedidos', 'integraciones'], categorias: ['gastronomia', 'comercio'] },
+          { id: 'marketplace', texto: 'Mercado Libre u otro marketplace', sugiere: ['stock', 'integraciones'], categorias: ['comercio'] },
+          { id: 'plataformas', texto: 'Booking, Airbnb u otra plataforma', sugiere: ['canales'], categorias: ['alojamiento'] },
+          { id: 'agenda_app', texto: 'Una aplicación de reservas', sugiere: ['reservas', 'confirmaciones'], categorias: ['salud', 'belleza', 'deporte_educacion'] },
+          { id: 'terreno', texto: 'En terreno o a domicilio', sugiere: ['personal', 'ordenes'] },
+          { id: 'licitaciones', texto: 'Licitaciones o portales de proveedores', sugiere: ['licitaciones', 'documentos'], categorias: ['industria', 'oficios', 'transporte', 'profesionales', 'comercio'] },
+          { id: 'recomendacion', texto: 'Más que nada por recomendación', sugiere: ['presencia', 'resenas'] },
+        ],
+      },
+      {
+        id: 'pagos',
+        texto: '¿Cómo te pagan?',
+        etiqueta: 'Le pagan con',
+        multiple: true,
+        opciones: [
+          { id: 'efectivo', texto: 'Efectivo', sugiere: ['caja'] },
+          { id: 'tarjeta', texto: 'Débito o crédito con máquina', sugiere: ['caja'] },
+          { id: 'transferencia', texto: 'Transferencia', sugiere: ['transferencias'] },
+          { id: 'link', texto: 'Link de pago o pago en línea', sugiere: ['pagos'] },
+          { id: 'cuotas', texto: 'Mensualidades o cuotas', sugiere: ['suscripciones'] },
+          { id: 'fiado', texto: 'Fiado o crédito de la casa', sugiere: ['cobrar'] },
+          { id: 'factura_plazo', texto: 'Factura a 30 días o más', sugiere: ['cobrar', 'flujo'] },
+          { id: 'cheque', texto: 'Cheque', sugiere: ['cobrar'] },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'ritmo',
+    titulo: '¿Cómo es el ritmo de tu negocio?',
+    preguntas: [
+      {
+        id: 'volumen',
+        texto: '¿Cuántas ventas o atenciones tienes en un día normal?',
+        etiqueta: 'Ventas o atenciones al día',
+        opciones: [
+          { id: 'menos_10', texto: 'Menos de 10' },
+          { id: '10_50', texto: 'Entre 10 y 50' },
+          { id: '50_200', texto: 'Entre 50 y 200', sugiere: ['pos', 'reportes'] },
+          { id: 'mas_200', texto: 'Más de 200', sugiere: ['pos', 'reportes'] },
+        ],
+      },
+      {
+        id: 'temporada',
+        texto: '¿Tienes temporadas altas y bajas?',
+        etiqueta: 'Temporadas',
+        opciones: [
+          { id: 'marcadas', texto: 'Sí, muy marcadas', sugiere: ['flujo', 'personal'] },
+          { id: 'algo', texto: 'Algo', sugiere: ['flujo'] },
+          { id: 'pareja', texto: 'No, es parejo todo el año' },
+        ],
+      },
+      {
+        id: 'antiguedad',
+        texto: '¿Hace cuánto funciona tu negocio?',
+        etiqueta: 'Funciona hace',
+        opciones: [
+          { id: 'por_abrir', texto: 'Todavía no abre', sugiere: ['marca', 'presencia'] },
+          { id: 'menos_1', texto: 'Menos de un año', sugiere: ['presencia'] },
+          { id: '1_3', texto: 'De uno a tres años' },
+          { id: '3_10', texto: 'De tres a diez años' },
+          { id: 'mas_10', texto: 'Más de diez años' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'cuentas',
+    titulo: '¿Cómo llevas los papeles y las cuentas?',
+    preguntas: [
+      {
+        id: 'documentos',
+        texto: '¿Qué documentos les entregas a tus clientes?',
+        etiqueta: 'Emite',
+        multiple: true,
+        opciones: [
+          { id: 'boleta', texto: 'Boleta' },
+          { id: 'factura', texto: 'Factura', sugiere: ['facturar', 'iva'] },
+          { id: 'guias', texto: 'Guías de despacho', sugiere: ['despacho', 'facturar'] },
+          { id: 'cotizaciones', texto: 'Cotizaciones o presupuestos', sugiere: ['cotizaciones'] },
+          { id: 'ninguno', texto: 'Ninguno todavía', sugiere: ['auditoria'], exclusiva: true },
+        ],
+      },
+      {
+        id: 'cuentas',
+        texto: '¿Quién lleva las cuentas del negocio?',
+        etiqueta: 'Lleva las cuentas',
+        opciones: [
+          { id: 'yo', texto: 'Yo, como puedo', sugiere: ['ganancia', 'dueno'] },
+          { id: 'equipo', texto: 'Alguien de mi equipo' },
+          { id: 'contador', texto: 'Un contador externo', sugiere: ['iva'] },
+          { id: 'nadie', texto: 'Nadie, en realidad', sugiere: ['ganancia', 'gastos'] },
+        ],
+      },
+    ],
+  },
+];
+
+/** Todas las preguntas de «cómo es tu negocio», sin las pantallas. */
+export const PREGUNTAS_NEGOCIO: PreguntaNegocio[] = PANTALLAS_NEGOCIO.flatMap((p) => p.preguntas);
 
 export const PLAZOS: Opcion[] = [
   { id: 'pronto', texto: 'Lo antes posible' },

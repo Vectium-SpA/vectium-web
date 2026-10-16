@@ -67,6 +67,21 @@ const generales: Record<string, { id: string }[]> = {
   trabajadores: d.TRABAJADORES,
   locales: d.LOCALES,
 };
+// «Cómo es tu negocio» (F2): ids únicos, sugerencias a problemas reales y
+// categorías que existen. Sus preguntas también pueden encadenar detalles.
+type OpcionNegocio = { id: string; sugiere?: string[]; categorias?: string[] };
+const categorias = new Set<string>(CATEGORIAS.map((c: { id: string }) => c.id));
+repetidos(d.PREGUNTAS_NEGOCIO.map((p: { id: string }) => p.id), 'pregunta de negocio');
+for (const p of d.PREGUNTAS_NEGOCIO as { id: string; opciones: OpcionNegocio[] }[]) {
+  if (p.id in generales || DETALLES.some((x: { id: string }) => x.id === p.id))
+    errores.push(`pregunta de negocio con id ya usado: ${p.id}`);
+  repetidos(p.opciones.map((o) => o.id), `opción de ${p.id}`);
+  for (const o of p.opciones) {
+    for (const s of o.sugiere ?? []) if (!problemas.has(s)) errores.push(`${p.id}.${o.id} sugiere un problema inexistente: ${s}`);
+    for (const c of o.categorias ?? []) if (!categorias.has(c)) errores.push(`${p.id}.${o.id}: categoría inexistente ${c}`);
+  }
+  generales[p.id] = p.opciones;
+}
 for (const x of DETALLES) {
   if (!x.si) continue;
   const padre = DETALLES.find((p: { id: string }) => p.id === x.si.pregunta);
