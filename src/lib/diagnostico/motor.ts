@@ -5,12 +5,15 @@ import {
   MAX_TIPICOS,
   MODULOS,
   ORIGENES,
+  PREGUNTAS_NEGOCIO,
   PROBLEMAS,
   MAX_ZONA,
   ZONAS,
   type Categoria,
   type Condicion,
   type Modulo,
+  type OpcionNegocio,
+  type PreguntaNegocio,
   type PreguntaDetalle,
   type Problema,
   type Rubro,
@@ -46,6 +49,8 @@ export interface Respuestas {
   herramientas: string[];
   sistemaCual?: string;
   presenciaActiva: string;
+  /** «Cómo es tu negocio»: id de pregunta → opciones marcadas (una sola si no es múltiple). */
+  sobreNegocio: Record<string, string[]>;
   problemas: string[];
   detalles: Record<string, string>;
   plazo: string;
@@ -196,25 +201,71 @@ export function buscarProblemas(busqueda: string): Problema[] {
   return PROBLEMAS.filter((p) => coincide(busqueda, [p.texto, ...(p.palabras ?? [])]));
 }
 
+/** Las opciones de una pregunta de negocio que se le muestran a esta categoría. */
+export function opcionesVisibles(pregunta: PreguntaNegocio, categoria: string): OpcionNegocio[] {
+  return pregunta.opciones.filter((o) => !o.categorias || o.categorias.includes(categoria));
+}
+
+/**
+ * Lo marcado en «cómo es tu negocio», solo con opciones válidas y visibles
+ * para la categoría: si la persona cambió de rubro, lo que ya no ve no cuenta.
+ */
+export function respuestasNegocioVigentes(
+  sobreNegocio: Record<string, string[]>,
+  categoria: string
+): Record<string, string[]> {
+  return Object.fromEntries(
+    PREGUNTAS_NEGOCIO.map((p) => {
+      const visibles = opcionesVisibles(p, categoria).map((o) => o.id);
+      return [p.id, (sobreNegocio[p.id] ?? []).filter((id) => visibles.includes(id))];
+    }).filter(([, ids]) => ids.length > 0)
+  );
+}
+
+/** Cuántos problemas sugeridos se ofrecen arriba de los típicos del rubro. */
+export const MAX_SUGERIDOS = 4;
+
+/**
+ * Los problemas que sugieren las respuestas de «cómo es tu negocio»: primero
+ * los que más respuestas sugieren y, a igualdad, en el orden de las preguntas.
+ */
+export function problemasSugeridos(sobreNegocio: Record<string, string[]>): string[] {
+  const votos = new Map<string, number>();
+  for (const p of PREGUNTAS_NEGOCIO)
+    for (const id of sobreNegocio[p.id] ?? [])
+      for (const s of p.opciones.find((o) => o.id === id)?.sugiere ?? []) votos.set(s, (votos.get(s) ?? 0) + 1);
+  return [...votos.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([id]) => id)
+    .slice(0, MAX_SUGERIDOS);
+}
+
 const porId = (ids: string[]) =>
   ids.map((id) => PROBLEMAS.find((p) => p.id === id)).filter((p): p is Problema => Boolean(p));
 
 /**
- * Los problemas típicos primero: los propios del rubro y después los de su
- * categoría, sin repetir y hasta MAX_TIPICOS. El resto va en "otros".
+ * Los problemas típicos primero: los que sugieren sus respuestas (hasta
+ * MAX_SUGERIDOS), después los propios del rubro y los de su categoría, sin
+ * repetir y hasta MAX_TIPICOS más los sugeridos. El resto va en "otros".
  */
-export function problemasOrdenados(categoria: string, rubro?: string): { tipicos: Problema[]; otros: Problema[] } {
+export function problemasOrdenados(
+  categoria: string,
+  rubro?: string,
+  sugeridos: string[] = []
+): { tipicos: Problema[]; otros: Problema[] } {
   const cat = categoriaPorId(categoria);
   const propios = cat?.rubros.find((r) => r.id === rubro)?.tipicos ?? [];
-  const ids = [...new Set([...propios, ...(cat?.tipicos ?? [])])].slice(0, MAX_TIPICOS);
+  const delRubro = [...new Set([...propios, ...(cat?.tipicos ?? [])])].filter((id) => !sugeridos.includes(id));
+  const ids = [...sugeridos, ...delRubro.slice(0, MAX_TIPICOS)];
   const tipicos = porId(ids);
   const otros = PROBLEMAS.filter((p) => !ids.includes(p.id));
   return { tipicos, otros };
 }
 
-/** La respuesta que dio la persona a una pregunta de detalle o general. */
-function respuestaA(r: RespuestasParaDetalles, pregunta: string): string | undefined {
+/** Lo que respondió la persona a una pregunta de detalle, general o de negocio. */
+function respuestaA(r: RespuestasParaDetalles, pregunta: string): string | string[] | undefined {
   if (pregunta in r.detalles) return r.detalles[pregunta];
+  if (r.sobreNegocio && pregunta in r.sobreNegocio) return r.sobreNegocio[pregunta];
   if ((CONDICIONES_GENERALES as readonly string[]).includes(pregunta)) {
     return r[pregunta as (typeof CONDICIONES_GENERALES)[number]];
   }
@@ -224,10 +275,12 @@ function respuestaA(r: RespuestasParaDetalles, pregunta: string): string | undef
 function seCumple(r: RespuestasParaDetalles, si?: Condicion): boolean {
   if (!si) return true;
   const valor = respuestaA(r, si.pregunta);
-  return valor !== undefined && si.en.includes(valor);
+  const valores = valor === undefined ? [] : Array.isArray(valor) ? valor : [valor];
+  return valores.some((v) => si.en.includes(v));
 }
 
-export type RespuestasParaDetalles = Pick<Respuestas, 'problemas' | 'detalles' | (typeof CONDICIONES_GENERALES)[number]>;
+export type RespuestasParaDetalles = Pick<Respuestas, 'problemas' | 'detalles' | (typeof CONDICIONES_GENERALES)[number]> &
+  Partial<Pick<Respuestas, 'sobreNegocio'>>;
 
 /**
  * Las preguntas de detalle que tocan, hasta MAX_DETALLES, en este orden:
@@ -284,8 +337,11 @@ export function modulosRecomendados(problemas: string[]): ModuloRecomendado[] {
     .map(([id, v]) => ({ modulo: MODULOS[id], problemas: v.problemas }));
 }
 
+/** Cuántas señales puede sumar el perfil (los criterios de `perfilDelNegocio`). */
+export const PUNTAJE_MAX = 7;
+
 export interface Perfil {
-  /** De 0 a 5. Uso interno: llega solo en el aviso a Vectium. */
+  /** De 0 a PUNTAJE_MAX. Uso interno: llega solo en el aviso a Vectium. */
   puntaje: number;
   criterios: string[];
 }
@@ -303,6 +359,9 @@ export function perfilDelNegocio(r: Respuestas): Perfil {
   const dolorDeGestion = r.problemas.some((p) => ['ganancia', 'caja', 'costos', 'stock', 'cobrar', 'compras', 'iva', 'suscripciones'].includes(p));
   if (manual && dolorDeGestion) criterios.push('Lleva la gestión a mano y le cuesta');
   if (r.presenciaActiva === 'si') criterios.push('Cuida su presencia (publica seguido)');
+  const negocio = r.sobreNegocio ?? {};
+  if (negocio.volumen?.some((v) => ['50_200', 'mas_200'].includes(v))) criterios.push('Mueve volumen (50 o más ventas al día)');
+  if (negocio.antiguedad?.some((v) => ['3_10', 'mas_10'].includes(v))) criterios.push('Lleva más de tres años funcionando');
   return { puntaje: criterios.length, criterios };
 }
 

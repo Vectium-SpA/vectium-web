@@ -9,6 +9,7 @@ import {
   formatearRut,
   nombreRubro,
   nombreUbicacion,
+  PUNTAJE_MAX,
   type Respuestas,
 } from '@/lib/diagnostico/motor';
 import {
@@ -17,6 +18,7 @@ import {
   LOCALES,
   ORIGENES,
   PLAZOS,
+  PREGUNTAS_NEGOCIO,
   PRESENCIA_ACTIVA,
   TRABAJADORES,
   VENDE_EMPRESAS,
@@ -51,12 +53,16 @@ function ficha(r: Respuestas, contacto: { nombre: string; email: string; telefon
     ['Vende a empresas', texto(VENDE_EMPRESAS, r.vendeEmpresas)],
     ['Hoy usa', `${herramientas}${r.sistemaCual ? ` (cuáles: ${r.sistemaCual})` : ''}`],
     ['Publica en redes', texto(PRESENCIA_ACTIVA, r.presenciaActiva)],
+    ...PREGUNTAS_NEGOCIO.map(
+      (p): [string, string] => [p.etiqueta, (r.sobreNegocio[p.id] ?? []).map((id) => texto(p.opciones, id)).join(', ')]
+    ),
     ['Plazo', texto(PLAZOS, r.plazo)],
   ];
 
   return {
     negocio: r.negocio,
     puntaje: resultado.perfil.puntaje,
+    puntajeMax: PUNTAJE_MAX,
     criterios: resultado.perfil.criterios,
     contacto,
     datos,

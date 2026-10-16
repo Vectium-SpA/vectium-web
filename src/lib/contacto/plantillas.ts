@@ -122,6 +122,8 @@ function boton(href: string, texto: string, principal = true): string {
 export interface FichaDiagnostico {
   negocio: string;
   puntaje: number;
+  /** Sobre cuánto se mide el puntaje (motor.ts, PUNTAJE_MAX). */
+  puntajeMax: number;
   criterios: string[];
   contacto: { nombre: string; email: string; telefono?: string };
   /** Datos del negocio: etiqueta y valor. */
@@ -137,7 +139,7 @@ export interface FichaDiagnostico {
 }
 
 export function asuntoDiagnostico(f: FichaDiagnostico): string {
-  return `Nuevo diagnóstico (${f.puntaje}/5): ${f.negocio}`.replace(/[\r\n]+/g, ' ').trim();
+  return `Nuevo diagnóstico (${f.puntaje}/${f.puntajeMax}): ${f.negocio}`.replace(/[\r\n]+/g, ' ').trim();
 }
 
 export function textoDiagnostico(f: FichaDiagnostico): string {
@@ -166,7 +168,7 @@ export function textoDiagnostico(f: FichaDiagnostico): string {
         ]
       : []),
     '',
-    `Perfil del negocio: ${f.puntaje}/5`,
+    `Perfil del negocio: ${f.puntaje}/${f.puntajeMax}`,
     ...(f.criterios.length ? f.criterios.map((c) => `  + ${c}`) : ['  (ninguna señal de tamaño todavía)']),
     '',
     'Para contestar, responde este correo: va directo a la persona.',
@@ -175,7 +177,7 @@ export function textoDiagnostico(f: FichaDiagnostico): string {
 
 export function htmlDiagnostico(f: FichaDiagnostico): string {
   const wa = enlaceWhatsApp(f.contacto.telefono);
-  const puntos = Array.from({ length: 5 }, (_, i) =>
+  const puntos = Array.from({ length: f.puntajeMax }, (_, i) =>
     `<span style="display:inline-block;width:10px;height:10px;border-radius:5px;margin-right:4px;background:${i < f.puntaje ? C.acento : C.borde};"></span>`
   ).join('');
 
@@ -187,7 +189,7 @@ export function htmlDiagnostico(f: FichaDiagnostico): string {
     <tr><td style="padding:16px 32px 4px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.acentoSuave};border-radius:10px;">
         <tr><td style="padding:14px 16px;">
-          <div style="color:${C.acento};font-size:13px;font-weight:700;margin-bottom:6px;">Perfil del negocio: ${f.puntaje}/5 &nbsp;${puntos}</div>
+          <div style="color:${C.acento};font-size:13px;font-weight:700;margin-bottom:6px;">Perfil del negocio: ${f.puntaje}/${f.puntajeMax} &nbsp;${puntos}</div>
           ${f.criterios.length ? lista(f.criterios, '+') : `<div style="color:${C.suave};font-size:14px;">Ninguna señal de tamaño todavía.</div>`}
         </td></tr>
       </table>
@@ -250,7 +252,7 @@ export function htmlDiagnostico(f: FichaDiagnostico): string {
 
   const pie = `<p style="color:${C.suave};font-size:12px;line-height:1.5;margin:0;">Llegó desde <a href="${SITIO}/diagnostico" style="color:${C.acento};">vectium.cl/diagnostico</a>. Para contestar, responde este correo: va directo a la persona.</p>`;
 
-  return marco(`${f.negocio} · perfil ${f.puntaje}/5 · ${f.problemas.length} problemas`, cuerpo, pie);
+  return marco(`${f.negocio} · perfil ${f.puntaje}/${f.puntajeMax} · ${f.problemas.length} problemas`, cuerpo, pie);
 }
 
 // ─── Respuestas automáticas (a quien escribió) ───────────────────────────────

@@ -11,6 +11,7 @@ import {
   LOCALES,
   MAX_BUSQUEDAS,
   MAX_PROBLEMAS,
+  PANTALLAS_NEGOCIO,
   PLAZOS,
   PRESENCIA_ACTIVA,
   SISTEMAS,
@@ -29,8 +30,11 @@ import {
   modulosRecomendados,
   separarModulos,
   normalizar,
+  opcionesVisibles,
   origenDesdeEnlace,
   problemasOrdenados,
+  problemasSugeridos,
+  respuestasNegocioVigentes,
   regionPorId,
   rubrosDeLaZona,
   type Respuestas,
@@ -48,8 +52,8 @@ import { FUERA_DE_CHILE, REGIONES } from "@/lib/diagnostico/territorio";
  */
 
 const WHATSAPP = "https://wa.me/56992841001";
-// v3: la ubicación pasó a región y comuna; un avance guardado antes no la tiene.
-const CLAVE = "vectium-diagnostico-v3";
+// v4: se sumaron las pantallas de «cómo es tu negocio» (v3: región y comuna).
+const CLAVE = "vectium-diagnostico-v4";
 
 /** Desde cuántas opciones una lista muestra su buscador. */
 const LISTA_LARGA = 10;
@@ -69,6 +73,7 @@ const VACIAS: Respuestas = {
   herramientas: [],
   sistemaCual: "",
   presenciaActiva: "",
+  sobreNegocio: {},
   problemas: [],
   detalles: {},
   plazo: "",
@@ -285,6 +290,21 @@ export function Asistente() {
       return { ...prev, [k]: [...lista, id] };
     });
 
+  // «Cómo es tu negocio»: una opción en las únicas; en las múltiples, la
+  // exclusiva («Ninguno todavía») desmarca las demás y al revés.
+  const marcarNegocio = (preguntaId: string, opcionId: string) =>
+    setR((prev) => {
+      const pregunta = PANTALLAS_NEGOCIO.flatMap((p) => p.preguntas).find((p) => p.id === preguntaId);
+      if (!pregunta) return prev;
+      const actuales = prev.sobreNegocio[preguntaId] ?? [];
+      let nuevas: string[];
+      if (!pregunta.multiple) nuevas = [opcionId];
+      else if (actuales.includes(opcionId)) nuevas = actuales.filter((x) => x !== opcionId);
+      else if (pregunta.opciones.find((o) => o.id === opcionId)?.exclusiva) nuevas = [opcionId];
+      else nuevas = [...actuales.filter((x) => !pregunta.opciones.find((o) => o.id === x)?.exclusiva), opcionId];
+      return { ...prev, sobreNegocio: { ...prev.sobreNegocio, [preguntaId]: nuevas } };
+    });
+
   // Cambia con cada respuesta: hay preguntas que se encadenan según lo respondido.
   const detalles = useMemo(() => detallesPara(r), [r]);
   // Pregunta final: los módulos sugeridos, todos marcados hasta que la persona
@@ -311,6 +331,7 @@ export function Asistente() {
       "rubro",
       "tamano",
       "herramientas",
+      ...PANTALLAS_NEGOCIO.map((p) => `negocio:${p.id}`),
       "problemas",
       ...detalles.map((d) => `detalle:${d.id}`),
       "incorporar",
@@ -342,6 +363,14 @@ export function Asistente() {
         return Boolean(r.plazo);
       default:
         if (id.startsWith("detalle:")) return Boolean(r.detalles[id.slice(8)]);
+        if (id.startsWith("negocio:")) {
+          const pantalla = PANTALLAS_NEGOCIO.find((p) => p.id === id.slice(8));
+          return Boolean(
+            pantalla?.preguntas.every((p) =>
+              (r.sobreNegocio[p.id] ?? []).some((o) => opcionesVisibles(p, r.categoria).some((x) => x.id === o))
+            )
+          );
+        }
         return true;
     }
   };
@@ -432,6 +461,7 @@ export function Asistente() {
               ? r.sistemaCual?.trim() || undefined
               : undefined,
             comuna: r.region === FUERA_DE_CHILE ? "" : r.comuna,
+            sobreNegocio: respuestasNegocioVigentes(r.sobreNegocio, r.categoria),
             busquedas: r.busquedas?.length ? r.busquedas : undefined,
             incorporar: seleccionados,
             comentario: r.comentario?.trim() || undefined,
@@ -795,15 +825,51 @@ export function Asistente() {
       );
     }
 
+    if (actual.startsWith("negocio:")) {
+      const pantalla = PANTALLAS_NEGOCIO.find((p) => p.id === actual.slice(8));
+      if (!pantalla) return null;
+      return (
+        <Pregunta titulo={pantalla.titulo} ayuda={pantalla.ayuda}>
+          {pantalla.preguntas.map((p, i) => (
+            <div key={p.id} className={i > 0 ? "space-y-4 pt-2" : "space-y-4"}>
+              <p className="text-sm font-medium text-site-ink">
+                {p.texto}
+                {p.multiple && <span className="text-site-muted"> (puedes marcar varias)</span>}
+              </p>
+              <div role={p.multiple ? "group" : "radiogroup"} aria-label={p.texto} className="grid gap-2 sm:grid-cols-2">
+                {opcionesVisibles(p, r.categoria).map((o) => (
+                  <OpcionBoton
+                    key={o.id}
+                    multiple={p.multiple}
+                    activa={(r.sobreNegocio[p.id] ?? []).includes(o.id)}
+                    onClick={() => marcarNegocio(p.id, o.id)}
+                  >
+                    {o.texto}
+                  </OpcionBoton>
+                ))}
+              </div>
+            </div>
+          ))}
+        </Pregunta>
+      );
+    }
+
     if (actual === "problemas") {
-      const { tipicos, otros } = problemasOrdenados(r.categoria, r.rubro);
+      const sugeridos = problemasSugeridos(respuestasNegocioVigentes(r.sobreNegocio, r.categoria));
+      const { tipicos, otros } = problemasOrdenados(r.categoria, r.rubro, sugeridos);
       const lleno = r.problemas.length >= MAX_PROBLEMAS;
       const buscando = normalizar(busqueda).length >= 2;
       const encontrados = buscarProblemas(busqueda);
       const casilla = (p: (typeof tipicos)[number]) => {
         const activa = r.problemas.includes(p.id);
         return (
-          <OpcionBoton key={p.id} multiple activa={activa} onClick={() => toggle("problemas", p.id, MAX_PROBLEMAS)}>
+          <OpcionBoton
+            key={p.id}
+            multiple
+            activa={activa}
+            descripcion={sugeridos.includes(p.id) ? "Por lo que nos contaste" : undefined}
+            onClick={() => toggle("problemas", p.id, MAX_PROBLEMAS)}
+          >
             <span className={!activa && lleno ? "opacity-50" : undefined}>{p.texto}</span>
           </OpcionBoton>
         );
