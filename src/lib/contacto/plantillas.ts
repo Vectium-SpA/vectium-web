@@ -253,31 +253,27 @@ export function htmlDiagnostico(f: FichaDiagnostico): string {
   return marco(`${f.negocio} · perfil ${f.puntaje}/5 · ${f.problemas.length} problemas`, cuerpo, pie);
 }
 
-// ─── Respuesta automática a quien hizo el diagnóstico ────────────────────────
-// NO repite nada de lo que la persona escribió: si lo hiciera, cualquiera
+// ─── Respuestas automáticas (a quien escribió) ───────────────────────────────
+// NO repiten nada de lo que la persona escribió: si lo hicieran, cualquiera
 // podría usar el formulario para mandarle texto propio a un tercero desde
 // nuestro dominio.
 
-export const ASUNTO_RESPUESTA_DIAGNOSTICO = 'Recibimos tu diagnóstico | Vectium';
-
-export function textoRespuestaDiagnostico(correo: string): string {
-  return [
-    'Hola,',
-    '',
-    'Recibimos tu diagnóstico en vectium.cl. Lo vamos a revisar y te escribiremos',
-    'para coordinar una conversación de 15 minutos, sin costo.',
-    '',
-    `Si prefieres hablar antes, escríbenos por WhatsApp: ${WHATSAPP_VECTIUM}`,
-    '',
-    'Vectium SpA',
-    'https://vectium.cl',
-    '',
-    'Recibes este correo porque completaste el diagnóstico de vectium.cl.',
-    `Si no fuiste tú, puedes ignorarlo o avisarnos a ${correo}.`,
-  ].join('\n');
+interface Respuesta {
+  previa: string;
+  etiqueta: string;
+  titulo: string;
+  texto: string;
+  pasos?: [string, string][];
+  /** Frase sobre los botones. */
+  antesDeBotones?: string;
+  /** Botones: enlace, texto y si es el principal. */
+  botones: [string, string, boolean][];
+  /** Por qué le llega el correo (va en el pie). */
+  motivo: string;
+  correo: string;
 }
 
-export function htmlRespuestaDiagnostico(correo: string): string {
+function respuesta(r: Respuesta): string {
   const paso = (n: number, titulo: string, texto: string) => `<tr>
       <td style="vertical-align:top;padding:8px 14px 8px 0;width:34px;">
         <div style="width:30px;height:30px;line-height:30px;border-radius:15px;background:${C.acentoSuave};color:${C.acento};font-weight:700;font-size:14px;text-align:center;">${n}</div>
@@ -288,27 +284,228 @@ export function htmlRespuestaDiagnostico(correo: string): string {
       </td>
     </tr>`;
 
-  const cuerpo = `<tr><td style="padding:26px 32px 4px;">
-      ${etiqueta('Diagnóstico recibido')}
-      <h1 style="color:${C.tinta};font-size:24px;line-height:1.25;font-weight:700;margin:0 0 10px;">¡Gracias! Ya tenemos tu diagnóstico</h1>
-      <p style="color:${C.texto};font-size:15px;line-height:1.6;margin:0;">Lo vamos a revisar con calma para preparar una conversación útil para tu negocio.</p>
-    </td></tr>
-    <tr><td style="padding:18px 32px 4px;">
+  const pasos = r.pasos
+    ? `<tr><td style="padding:18px 32px 4px;">
       ${etiqueta('Qué viene ahora')}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-        ${paso(1, 'Revisamos tus respuestas', 'Vemos qué problemas marcaste y qué podría ayudarte.')}
-        ${paso(2, 'Te escribimos', 'Te contactamos para coordinar un horario que te acomode.')}
-        ${paso(3, 'Conversamos 15 minutos', 'Sin costo y sin compromiso: te mostramos opciones concretas.')}
+        ${r.pasos.map(([t, d], i) => paso(i + 1, t, d)).join('')}
       </table>
+    </td></tr>`
+    : '';
+
+  const cuerpo = `<tr><td style="padding:26px 32px 4px;">
+      ${etiqueta(r.etiqueta)}
+      <h1 style="color:${C.tinta};font-size:24px;line-height:1.25;font-weight:700;margin:0 0 10px;">${r.titulo}</h1>
+      <p style="color:${C.texto};font-size:15px;line-height:1.6;margin:0;">${r.texto}</p>
     </td></tr>
+    ${pasos}
     <tr><td style="padding:18px 32px 24px;">
-      <p style="color:${C.texto};font-size:14px;margin:0 0 12px;">¿Prefieres adelantarte?</p>
-      ${boton(WHATSAPP_VECTIUM, 'Escribir por WhatsApp')}
-      ${boton(SITIO, 'Conocer Vectium', false)}
+      ${r.antesDeBotones ? `<p style="color:${C.texto};font-size:14px;margin:0 0 12px;">${r.antesDeBotones}</p>` : ''}
+      ${r.botones.map(([href, texto, principal]) => boton(href, texto, principal)).join('')}
     </td></tr>`;
 
   const pie = `<p style="color:${C.suave};font-size:12px;line-height:1.5;margin:0;"><strong style="color:${C.texto};">Vectium SpA</strong> · <a href="${SITIO}" style="color:${C.acento};">vectium.cl</a><br>
-    Recibes este correo porque completaste el diagnóstico de vectium.cl. Si no fuiste tú, puedes ignorarlo o avisarnos a <a href="mailto:${correo}" style="color:${C.acento};">${correo}</a>.</p>`;
+    ${r.motivo} Si no fuiste tú, puedes ignorarlo o avisarnos a <a href="mailto:${r.correo}" style="color:${C.acento};">${r.correo}</a>.</p>`;
 
-  return marco('Recibimos tu diagnóstico. Te escribiremos para coordinar 15 minutos.', cuerpo, pie);
+  return marco(r.previa, cuerpo, pie);
+}
+
+function pieTexto(motivo: string, correo: string): string[] {
+  return ['Vectium SpA', 'https://vectium.cl', '', motivo, `Si no fuiste tú, puedes ignorarlo o avisarnos a ${correo}.`];
+}
+
+export const ASUNTO_RESPUESTA_DIAGNOSTICO = 'Recibimos tu diagnóstico | Vectium';
+const MOTIVO_DIAGNOSTICO = 'Recibes este correo porque completaste el diagnóstico de vectium.cl.';
+
+export function textoRespuestaDiagnostico(correo: string): string {
+  return [
+    'Hola,',
+    '',
+    'Recibimos tu diagnóstico en vectium.cl. Lo vamos a revisar y te escribiremos',
+    'para coordinar una conversación de 15 minutos, sin costo.',
+    '',
+    `Si prefieres hablar antes, escríbenos por WhatsApp: ${WHATSAPP_VECTIUM}`,
+    '',
+    ...pieTexto(MOTIVO_DIAGNOSTICO, correo),
+  ].join('\n');
+}
+
+export function htmlRespuestaDiagnostico(correo: string): string {
+  return respuesta({
+    previa: 'Recibimos tu diagnóstico. Te escribiremos para coordinar 15 minutos.',
+    etiqueta: 'Diagnóstico recibido',
+    titulo: '¡Gracias! Ya tenemos tu diagnóstico',
+    texto: 'Lo vamos a revisar con calma para preparar una conversación útil para tu negocio.',
+    pasos: [
+      ['Revisamos tus respuestas', 'Vemos qué problemas marcaste y qué podría ayudarte.'],
+      ['Te escribimos', 'Te contactamos para coordinar un horario que te acomode.'],
+      ['Conversamos 15 minutos', 'Sin costo y sin compromiso: te mostramos opciones concretas.'],
+    ],
+    antesDeBotones: '¿Prefieres adelantarte?',
+    botones: [
+      [WHATSAPP_VECTIUM, 'Escribir por WhatsApp', true],
+      [SITIO, 'Conocer Vectium', false],
+    ],
+    motivo: MOTIVO_DIAGNOSTICO,
+    correo,
+  });
+}
+
+// ─── Formulario de /contacto ─────────────────────────────────────────────────
+
+export interface FichaConsulta {
+  nombre: string;
+  email: string;
+  empresa?: string;
+  telefono?: string;
+  mensaje: string;
+}
+
+export function asuntoConsulta(c: FichaConsulta): string {
+  return `Nueva consulta web: ${c.nombre}`.replace(/[\r\n]+/g, ' ').trim();
+}
+
+export function textoConsulta(c: FichaConsulta): string {
+  return [
+    'Nueva consulta desde vectium.cl/contacto',
+    '',
+    `Nombre:   ${c.nombre}`,
+    `Correo:   ${c.email}`,
+    `Empresa:  ${c.empresa || 'No indicada'}`,
+    `Teléfono: ${c.telefono || 'No indicado'}`,
+    '',
+    'Mensaje:',
+    c.mensaje,
+    '',
+    'Para contestar, responde este correo: va directo a la persona.',
+  ].join('\n');
+}
+
+export function htmlConsulta(c: FichaConsulta): string {
+  const wa = enlaceWhatsApp(c.telefono);
+  const cuerpo = [
+    `<tr><td style="padding:24px 32px 6px;">
+      ${etiqueta('Nueva consulta')}
+      <h1 style="color:${C.tinta};font-size:24px;line-height:1.25;font-weight:700;margin:0 0 6px;">${escapar(c.nombre)}</h1>
+      <p style="color:${C.suave};font-size:14px;margin:0;"><a href="mailto:${escapar(c.email)}" style="color:${C.acento};">${escapar(c.email)}</a>${c.empresa ? ` · ${escapar(c.empresa)}` : ''}</p>
+    </td></tr>`,
+    `<tr><td style="padding:16px 32px 8px;">
+      ${boton(`mailto:${c.email}?subject=${encodeURIComponent('Tu consulta a Vectium')}`, 'Responder por correo')}
+      ${wa ? boton(wa, 'Escribir por WhatsApp', false) : ''}
+    </td></tr>`,
+    // Los saltos de línea del mensaje se respetan, ya escapado.
+    bloque(
+      'Mensaje',
+      `<div style="color:${C.texto};font-size:15px;line-height:1.6;border-left:3px solid ${C.acento};padding:4px 0 4px 12px;">${escapar(c.mensaje).replace(/\r?\n/g, '<br>')}</div>`
+    ),
+    bloque(
+      'Datos',
+      filas([
+        ['Empresa', c.empresa || 'No indicada'],
+        ['Teléfono', c.telefono || 'No indicado'],
+      ])
+    ),
+    '<tr><td style="padding:10px 0 0;"></td></tr>',
+  ].join('');
+  const pie = `<p style="color:${C.suave};font-size:12px;line-height:1.5;margin:0;">Llegó desde <a href="${SITIO}/contacto" style="color:${C.acento};">vectium.cl/contacto</a>. Para contestar, responde este correo: va directo a la persona.</p>`;
+  return marco(`Consulta de ${c.nombre}${c.empresa ? ` (${c.empresa})` : ''}`, cuerpo, pie);
+}
+
+export const ASUNTO_RESPUESTA_CONSULTA = 'Recibimos tu mensaje | Vectium';
+const MOTIVO_CONSULTA = 'Recibes este correo porque escribiste en el formulario de contacto de vectium.cl.';
+
+export function textoRespuestaConsulta(correo: string): string {
+  return [
+    'Hola,',
+    '',
+    'Recibimos tu mensaje en vectium.cl y ya lo estamos revisando.',
+    'Te responderemos a este mismo correo.',
+    '',
+    `Si prefieres hablar antes, escríbenos por WhatsApp: ${WHATSAPP_VECTIUM}`,
+    '',
+    ...pieTexto(MOTIVO_CONSULTA, correo),
+  ].join('\n');
+}
+
+export function htmlRespuestaConsulta(correo: string): string {
+  return respuesta({
+    previa: 'Recibimos tu mensaje. Te responderemos a este mismo correo.',
+    etiqueta: 'Mensaje recibido',
+    titulo: '¡Gracias por escribirnos!',
+    texto: 'Recibimos tu mensaje y ya lo estamos revisando. Te responderemos a este mismo correo.',
+    antesDeBotones: '¿Prefieres adelantarte?',
+    botones: [
+      [WHATSAPP_VECTIUM, 'Escribir por WhatsApp', true],
+      [`${SITIO}/diagnostico?origen=sitio`, 'Hacer el diagnóstico gratis', false],
+    ],
+    motivo: MOTIVO_CONSULTA,
+    correo,
+  });
+}
+
+// ─── Boletín del pie de página ───────────────────────────────────────────────
+
+export const ASUNTO_AVISO_SUSCRIPCION = 'Nueva suscripción al newsletter';
+
+export function textoAvisoSuscripcion(email: string): string {
+  return [
+    'Alguien se suscribió al newsletter desde el footer de vectium.cl.',
+    '',
+    `Correo: ${email}`,
+    'Consentimiento: casilla marcada por la persona al suscribirse.',
+    '',
+    'Recordatorio: cada correo comercial debe identificar al remitente y',
+    'ofrecer la baja (Ley 19.496, art. 28 B).',
+  ].join('\n');
+}
+
+export function htmlAvisoSuscripcion(email: string): string {
+  const cuerpo = [
+    `<tr><td style="padding:24px 32px 6px;">
+      ${etiqueta('Nueva suscripción')}
+      <h1 style="color:${C.tinta};font-size:22px;line-height:1.3;font-weight:700;margin:0;"><a href="mailto:${escapar(email)}" style="color:${C.tinta};text-decoration:none;">${escapar(email)}</a></h1>
+    </td></tr>`,
+    bloque(
+      'Detalle',
+      filas([
+        ['Desde', 'Pie de página de vectium.cl'],
+        ['Consentimiento', 'Casilla marcada por la persona'],
+      ])
+    ),
+    `<tr><td style="padding:12px 32px 20px;"><p style="color:${C.suave};font-size:13px;line-height:1.5;margin:0;">Recordatorio: cada correo comercial debe identificar al remitente y ofrecer la baja (Ley 19.496, art. 28 B).</p></td></tr>`,
+  ].join('');
+  const pie = `<p style="color:${C.suave};font-size:12px;margin:0;">Aviso interno de vectium.cl.</p>`;
+  return marco(`Nueva suscripción: ${email}`, cuerpo, pie);
+}
+
+export const ASUNTO_CONFIRMACION_SUSCRIPCION = 'Quedaste suscrito a las novedades de Vectium';
+const MOTIVO_SUSCRIPCION = 'Recibes este correo porque te suscribiste a las novedades en vectium.cl.';
+
+export function textoConfirmacionSuscripcion(correo: string): string {
+  return [
+    'Hola,',
+    '',
+    'Te suscribiste a las novedades de Vectium en vectium.cl.',
+    'Te escribiremos solo cuando tengamos algo que contar.',
+    '',
+    `Para darte de baja, responde este correo o escribe a ${correo}.`,
+    '',
+    ...pieTexto(MOTIVO_SUSCRIPCION, correo),
+  ].join('\n');
+}
+
+export function htmlConfirmacionSuscripcion(correo: string): string {
+  return respuesta({
+    previa: 'Te escribiremos solo cuando tengamos algo que contar.',
+    etiqueta: 'Suscripción confirmada',
+    titulo: 'Quedaste suscrito a las novedades',
+    texto:
+      'Te escribiremos solo cuando tengamos algo que contar. Puedes darte de baja cuando quieras: responde este correo o usa el botón de abajo.',
+    botones: [
+      [SITIO, 'Visitar vectium.cl', true],
+      [`mailto:${correo}?subject=${encodeURIComponent('Darme de baja del newsletter')}`, 'Darme de baja', false],
+    ],
+    motivo: MOTIVO_SUSCRIPCION,
+    correo,
+  });
 }

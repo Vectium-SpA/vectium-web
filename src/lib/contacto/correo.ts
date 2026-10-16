@@ -1,11 +1,23 @@
 import nodemailer, { type SendMailOptions } from 'nodemailer';
 import type { EstadoCorreo } from './registro';
 import {
+  ASUNTO_AVISO_SUSCRIPCION,
+  ASUNTO_CONFIRMACION_SUSCRIPCION,
+  ASUNTO_RESPUESTA_CONSULTA,
   ASUNTO_RESPUESTA_DIAGNOSTICO,
+  asuntoConsulta,
   asuntoDiagnostico,
+  htmlAvisoSuscripcion,
+  htmlConfirmacionSuscripcion,
+  htmlConsulta,
   htmlDiagnostico,
+  htmlRespuestaConsulta,
   htmlRespuestaDiagnostico,
+  textoAvisoSuscripcion,
+  textoConfirmacionSuscripcion,
+  textoConsulta,
   textoDiagnostico,
+  textoRespuestaConsulta,
   textoRespuestaDiagnostico,
   type FichaDiagnostico,
 } from './plantillas';
@@ -21,7 +33,6 @@ import {
  */
 
 const CORREO = 'contacto@vectium.cl';
-const WHATSAPP = 'https://wa.me/56992841001';
 
 function transporte() {
   const pass = process.env.SMTP_PASS;
@@ -68,23 +79,13 @@ export interface Consulta {
 
 /** Aviso interno: llega al buzón del equipo y se responde con "Responder". */
 export function avisarConsulta(c: Consulta): Promise<EstadoCorreo> {
+  const ficha = { nombre: c.name, email: c.email, empresa: c.company, telefono: c.phone, mensaje: c.message };
   return enviar({
     to: destino(),
     replyTo: c.email,
-    subject: unaLinea(`Nueva consulta web: ${c.name}`),
-    text: [
-      'Nueva consulta desde vectium.cl/contacto',
-      '',
-      `Nombre:   ${c.name}`,
-      `Correo:   ${c.email}`,
-      `Empresa:  ${c.company || 'No indicada'}`,
-      `Teléfono: ${c.phone || 'No indicado'}`,
-      '',
-      'Mensaje:',
-      c.message,
-      '',
-      'Para contestar, responde este correo: va directo a la persona.',
-    ].join('\n'),
+    subject: unaLinea(asuntoConsulta(ficha)),
+    text: textoConsulta(ficha),
+    html: htmlConsulta(ficha),
   });
 }
 
@@ -98,21 +99,9 @@ export function avisarConsulta(c: Consulta): Promise<EstadoCorreo> {
 export function responderConsulta(email: string): Promise<EstadoCorreo> {
   return enviar({
     to: email,
-    subject: 'Recibimos tu mensaje | Vectium',
-    text: [
-      'Hola,',
-      '',
-      'Recibimos tu mensaje en vectium.cl y ya lo estamos revisando.',
-      'Te responderemos a este mismo correo.',
-      '',
-      `Si prefieres hablar antes, escríbenos por WhatsApp: ${WHATSAPP}`,
-      '',
-      'Vectium SpA',
-      'https://vectium.cl',
-      '',
-      'Recibes este correo porque escribiste en el formulario de contacto de vectium.cl.',
-      `Si no fuiste tú, puedes ignorarlo o avisarnos a ${CORREO}.`,
-    ].join('\n'),
+    subject: ASUNTO_RESPUESTA_CONSULTA,
+    text: textoRespuestaConsulta(CORREO),
+    html: htmlRespuestaConsulta(CORREO),
   });
 }
 
@@ -148,16 +137,9 @@ export function avisarSuscripcion(email: string): Promise<EstadoCorreo> {
   return enviar({
     to: destino(),
     replyTo: email,
-    subject: 'Nueva suscripción al newsletter',
-    text: [
-      'Alguien se suscribió al newsletter desde el footer de vectium.cl.',
-      '',
-      `Correo: ${email}`,
-      'Consentimiento: casilla marcada por la persona al suscribirse.',
-      '',
-      'Recordatorio: cada correo comercial debe identificar al remitente y',
-      'ofrecer la baja (Ley 19.496, art. 28 B).',
-    ].join('\n'),
+    subject: ASUNTO_AVISO_SUSCRIPCION,
+    text: textoAvisoSuscripcion(email),
+    html: htmlAvisoSuscripcion(email),
   });
 }
 
@@ -165,17 +147,8 @@ export function avisarSuscripcion(email: string): Promise<EstadoCorreo> {
 export function confirmarSuscripcion(email: string): Promise<EstadoCorreo> {
   return enviar({
     to: email,
-    subject: 'Quedaste suscrito a las novedades de Vectium',
-    text: [
-      'Hola,',
-      '',
-      'Te suscribiste a las novedades de Vectium en vectium.cl.',
-      'Te escribiremos solo cuando tengamos algo que contar.',
-      '',
-      `Para darte de baja, responde este correo o escribe a ${CORREO}.`,
-      '',
-      'Vectium SpA',
-      'https://vectium.cl',
-    ].join('\n'),
+    subject: ASUNTO_CONFIRMACION_SUSCRIPCION,
+    text: textoConfirmacionSuscripcion(CORREO),
+    html: htmlConfirmacionSuscripcion(CORREO),
   });
 }

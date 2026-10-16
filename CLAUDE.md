@@ -47,6 +47,7 @@ vercel --prod      # deploy a producción (requiere login vercel)
 - `src/app/farmateca/` — todo el módulo Farmateca web
 - `src/components/` — componentes compartidos
 - `src/lib/` — utilidades, Firebase config, RevenueCat
+- `src/lib/contacto/` — envío de correos por SMTP (`correo.ts`), registro en Firestore (`registro.ts`) y plantillas HTML con logo de todos los correos del sitio (`plantillas.ts`: diagnóstico, contacto y boletín). Todo lo que escribe la persona pasa por `escapar()`, y las respuestas automáticas no repiten nada de lo que escribió. Logo de correo: `public/email/logo-vectium.png`
 - `.env.local` — variables de entorno (NO commitear)
 - `next.config.js` — config Next.js
 - `.vercel/` — config Vercel local
