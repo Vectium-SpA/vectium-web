@@ -2,12 +2,13 @@ import { after, NextRequest, NextResponse } from 'next/server';
 import { diagnosticoApiSchema } from '@/lib/validations/diagnostico';
 import { anotarCorreo, guardarConsulta, hashIp, superaLimite } from '@/lib/contacto/registro';
 import { avisarDiagnostico, responderDiagnostico } from '@/lib/contacto/correo';
-import { calcularResultado, formatearRut, nombreRubro, type Respuestas } from '@/lib/diagnostico/motor';
+import { armarPaquetes, calcularResultado, formatearRut, nombreRubro, type Respuestas } from '@/lib/diagnostico/motor';
 import {
   COMUNAS,
   DETALLES,
   HERRAMIENTAS,
   LOCALES,
+  ORIGENES,
   PLAZOS,
   PRESENCIA_ACTIVA,
   TRABAJADORES,
@@ -29,6 +30,7 @@ const texto = (opciones: Opcion[], id: string) => opciones.find((o) => o.id === 
 /** El resumen que llega por correo, recalculado en el servidor. */
 function resumen(r: Respuestas, contacto: { nombre: string; email: string; telefono?: string }): string[] {
   const resultado = calcularResultado(r);
+  const paquetes = armarPaquetes(resultado.modulos);
   const detalles = Object.entries(r.detalles).map(([pid, oid]) => {
     const p = DETALLES.find((d) => d.id === pid);
     return `  - ${p?.texto ?? pid} ${p ? texto(p.opciones, oid) : oid}`;
@@ -40,6 +42,7 @@ function resumen(r: Respuestas, contacto: { nombre: string; email: string; telef
     ...(r.razonSocial ? [`Razón social: ${r.razonSocial}`] : []),
     ...(r.rut ? [`RUT:          ${formatearRut(r.rut) ?? r.rut}`] : []),
     `Comuna:       ${texto(COMUNAS, r.comuna)}`,
+    `Llegó desde:  ${r.origen ? texto(ORIGENES, r.origen) : 'enlace directo (sin origen)'}`,
     `Rubro:        ${nombreRubro(r.categoria, r.rubro, r.rubroOtro)}`,
     `Contacto:     ${contacto.nombre} · ${contacto.email}${contacto.telefono ? ` · ${contacto.telefono}` : ''}`,
     '',
@@ -65,6 +68,14 @@ function resumen(r: Respuestas, contacto: { nombre: string; email: string; telef
       ? ['', 'Descartó:', ...resultado.descartados.map((m) => `  - ${m.modulo.nombre}`)]
       : []),
     ...(r.comentario ? ['', 'Algo más que contó:', `  ${r.comentario}`] : []),
+    ...(paquetes.recomendado.length
+      ? [
+          '',
+          'Propuesta de paquete (sin precios: se ponen con el catálogo):',
+          `  Recomendado: ${paquetes.recomendado.map((m) => m.nombre).join(' + ')}`,
+          ...(paquetes.menor.length ? [`  Menor:       ${paquetes.menor.map((m) => m.nombre).join(' + ')}`] : []),
+        ]
+      : []),
     '',
     `Perfil del negocio: ${resultado.perfil.puntaje}/5`,
     ...(resultado.perfil.criterios.length
@@ -137,6 +148,7 @@ export async function POST(req: NextRequest) {
     perfil: resultado.perfil.puntaje,
     consentimiento: 'Casilla "Acepto que Vectium me contacte por este diagnóstico" marcada por la persona',
     origen: 'vectium.cl/diagnostico',
+    canal: respuestas.origen ?? 'directo',
     ipHash,
   });
 

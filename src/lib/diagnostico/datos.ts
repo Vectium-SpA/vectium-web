@@ -1259,6 +1259,23 @@ export const PLAZOS: Opcion[] = [
   { id: 'explorando', texto: 'Solo estoy explorando' },
 ];
 
+/**
+ * De dónde llegó la persona: `vectium.cl/diagnostico?origen=qr`. Un valor que
+ * no esté en la lista queda como "otro"; sin parámetro, no se guarda origen.
+ */
+export const ORIGENES: Opcion[] = [
+  { id: 'qr', texto: 'Código QR' },
+  { id: 'tarjeta', texto: 'Tarjeta de presentación' },
+  { id: 'whatsapp', texto: 'WhatsApp' },
+  { id: 'instagram', texto: 'Instagram' },
+  { id: 'facebook', texto: 'Facebook' },
+  { id: 'google', texto: 'Google' },
+  { id: 'sitio', texto: 'Sitio de Vectium' },
+  { id: 'referido', texto: 'Recomendación' },
+  { id: 'entrevista', texto: 'Diagnóstico en el local' },
+  { id: 'otro', texto: 'Otro enlace' },
+];
+
 /** Máximo de problemas que se pueden marcar: obliga a priorizar. */
 export const MAX_PROBLEMAS = 5;
 

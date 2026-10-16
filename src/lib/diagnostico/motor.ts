@@ -4,6 +4,7 @@ import {
   DETALLES,
   MAX_TIPICOS,
   MODULOS,
+  ORIGENES,
   PROBLEMAS,
   type Categoria,
   type Condicion,
@@ -48,6 +49,15 @@ export interface Respuestas {
   incorporar?: string[];
   /** "Algo más que quieras contarnos" (texto libre, acotado). */
   comentario?: string;
+  /** De dónde llegó (parámetro `?origen=` del enlace). */
+  origen?: string;
+}
+
+/** Lee `?origen=` del enlace: un valor conocido, "otro" si no lo es, o nada. */
+export function origenDesdeEnlace(busqueda: string): string | undefined {
+  const valor = new URLSearchParams(busqueda).get('origen')?.trim().toLowerCase();
+  if (!valor) return undefined;
+  return ORIGENES.some((o) => o.id === valor) ? valor : 'otro';
 }
 
 /**
@@ -259,6 +269,24 @@ export function separarModulos(r: Pick<Respuestas, 'problemas' | 'incorporar'>):
     elegidos: todos.filter((m) => r.incorporar?.includes(m.modulo.id)),
     descartados: todos.filter((m) => !r.incorporar?.includes(m.modulo.id)),
   };
+}
+
+export interface Paquetes {
+  /** Todo lo que la persona eligió, en orden de importancia. */
+  recomendado: Modulo[];
+  /** Lo esencial para partir: los dos módulos que resuelven más. Vacío si no aplica. */
+  menor: Modulo[];
+}
+
+/**
+ * La propuesta de paquete para el aviso interno: uno recomendado y uno menor,
+ * como se arman las propuestas a mano. Solo nombres: los precios no viven en
+ * este repositorio (es público).
+ */
+export function armarPaquetes(modulos: ModuloRecomendado[]): Paquetes {
+  const recomendado = modulos.map((m) => m.modulo);
+  const menor = recomendado.length > 2 ? recomendado.slice(0, 2) : recomendado.length === 2 ? recomendado.slice(0, 1) : [];
+  return { recomendado, menor };
 }
 
 export interface Resultado {
