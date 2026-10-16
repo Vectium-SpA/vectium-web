@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { after, NextRequest, NextResponse } from 'next/server';
 import { diagnosticoApiSchema } from '@/lib/validations/diagnostico';
 import { anotarCorreo, guardarConsulta, hashIp, superaLimite } from '@/lib/contacto/registro';
 import { avisarDiagnostico, responderDiagnostico } from '@/lib/contacto/correo';
@@ -57,8 +57,14 @@ function resumen(r: Respuestas, contacto: { nombre: string; email: string; telef
       ? ['', 'Buscó y no encontró (sumar a la lista):', ...r.busquedas.map((b) => `  - "${b}"`)]
       : []),
     '',
-    'Módulos sugeridos (en orden):',
-    ...resultado.modulos.map((m) => `  - ${m.modulo.nombre}`),
+    'Quiere incorporar (en orden):',
+    ...(resultado.modulos.length
+      ? resultado.modulos.map((m) => `  - ${m.modulo.nombre}`)
+      : ['  (no marcó ninguno: prefiere conversarlo)']),
+    ...(resultado.descartados.length
+      ? ['', 'Descartó:', ...resultado.descartados.map((m) => `  - ${m.modulo.nombre}`)]
+      : []),
+    ...(r.comentario ? ['', 'Algo más que contó:', `  ${r.comentario}`] : []),
     '',
     `Perfil del negocio: ${resultado.perfil.puntaje}/5`,
     ...(resultado.perfil.criterios.length
@@ -134,21 +140,33 @@ export async function POST(req: NextRequest) {
     ipHash,
   });
 
-  const aviso = await avisarDiagnostico({
-    negocio: respuestas.negocio,
-    nombre: contacto.nombre,
-    email,
-    resumen: resumen(respuestas, { nombre: contacto.nombre, email, telefono }),
-    puntaje: resultado.perfil.puntaje,
-  });
-  const auto = await responderDiagnostico(email);
+  const avisar = () =>
+    avisarDiagnostico({
+      negocio: respuestas.negocio,
+      nombre: contacto.nombre,
+      email,
+      resumen: resumen(respuestas, { nombre: contacto.nombre, email, telefono }),
+      puntaje: resultado.perfil.puntaje,
+    });
 
-  if (id) await anotarCorreo(id, { aviso, respuesta: auto });
+  // Con el diagnóstico ya guardado, los correos salen después de responder:
+  // el SMTP tarda varios segundos y la persona no tiene por qué esperarlo.
+  if (id) {
+    after(async () => {
+      const aviso = await avisar();
+      const auto = await responderDiagnostico(email);
+      await anotarCorreo(id, { aviso, respuesta: auto });
+    });
+    return NextResponse.json({ ok: true });
+  }
 
-  if (!id && aviso !== 'enviado') {
+  // Si no se pudo guardar, el aviso por correo es lo único que queda: se
+  // manda antes de responder, y si también falla, se le dice a la persona.
+  const aviso = await avisar();
+  if (aviso !== 'enviado') {
     console.error('[Diagnostico] Envío perdido: no se guardó ni se avisó por correo.');
     return respuesta(503, `No pudimos registrar tu diagnóstico. ${AYUDA}`);
   }
-
+  after(() => responderDiagnostico(email));
   return NextResponse.json({ ok: true });
 }

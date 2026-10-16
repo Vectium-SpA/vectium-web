@@ -27,6 +27,7 @@ import {
   formatearRut,
   filtrarRubros,
   modulosRecomendados,
+  separarModulos,
   normalizar,
   problemasOrdenados,
   type Respuestas,
@@ -252,7 +253,19 @@ export function Asistente() {
       return { ...prev, [k]: [...lista, id] };
     });
 
-  const detalles = useMemo(() => detallesPara(r.problemas), [r.problemas]);
+  // Cambia con cada respuesta: hay preguntas que se encadenan según lo respondido.
+  const detalles = useMemo(() => detallesPara(r), [r]);
+  // Pregunta final: los módulos sugeridos, todos marcados hasta que la persona
+  // desmarque alguno.
+  const sugeridos = useMemo(() => modulosRecomendados(r.problemas), [r.problemas]);
+  const seleccionados = (r.incorporar ?? sugeridos.map((m) => m.modulo.id)).filter((id) =>
+    sugeridos.some((m) => m.modulo.id === id)
+  );
+  const alternarModulo = (id: string) =>
+    set(
+      "incorporar",
+      seleccionados.includes(id) ? seleccionados.filter((x) => x !== id) : [...seleccionados, id]
+    );
   const categoria = categoriaPorId(r.categoria);
   const rutValido = !r.rut?.trim() || formatearRut(r.rut) !== null;
 
@@ -266,6 +279,7 @@ export function Asistente() {
       "herramientas",
       "problemas",
       ...detalles.map((d) => `detalle:${d.id}`),
+      "incorporar",
       "plazo",
       "resultado",
     ],
@@ -379,6 +393,8 @@ export function Asistente() {
               ? r.sistemaCual?.trim() || undefined
               : undefined,
             busquedas: r.busquedas?.length ? r.busquedas : undefined,
+            incorporar: seleccionados,
+            comentario: r.comentario?.trim() || undefined,
           },
           contacto: {
             nombre: contacto.nombre.trim(),
@@ -740,6 +756,44 @@ export function Asistente() {
       );
     }
 
+    if (actual === "incorporar") {
+      return (
+        <Pregunta
+          titulo="¿Qué te gustaría incorporar?"
+          ayuda="Según lo que contaste, esto podría ayudarte. Desmarca lo que no te interese."
+        >
+          <div className="grid gap-2">
+            {sugeridos.map(({ modulo }) => (
+              <OpcionBoton
+                key={modulo.id}
+                multiple
+                activa={seleccionados.includes(modulo.id)}
+                descripcion={modulo.queResuelve}
+                onClick={() => alternarModulo(modulo.id)}
+              >
+                {modulo.nombre}
+              </OpcionBoton>
+            ))}
+          </div>
+          <label className="block pt-2 text-sm font-medium text-site-ink">
+            ¿Algo más que quieras contarnos? <span className="text-site-muted">(opcional)</span>
+            <textarea
+              value={r.comentario ?? ""}
+              maxLength={500}
+              rows={3}
+              onChange={(e) => set("comentario", e.target.value)}
+              className={campo}
+              placeholder="Por ejemplo: quiero partir por el stock y después ver la tienda en línea."
+            />
+          </label>
+          {/* Texto libre: se pide expresamente no escribir datos sensibles (Ley 21.719). */}
+          <p className="text-xs text-site-muted">
+            Cuéntanos de tu negocio. No escribas datos de salud ni datos de tus clientes o de otras personas.
+          </p>
+        </Pregunta>
+      );
+    }
+
     if (actual === "plazo") {
       return (
         <Pregunta titulo="¿Para cuándo te gustaría tenerlo resuelto?">
@@ -748,15 +802,19 @@ export function Asistente() {
       );
     }
 
-    // Resultado + contacto.
-    const modulos = modulosRecomendados(r.problemas);
+    // Resultado + contacto. Muestra lo que la persona marcó en la pregunta
+    // final; si desmarcó todo, muestra todo lo sugerido para conversarlo.
+    const { elegidos } = separarModulos({ problemas: r.problemas, incorporar: seleccionados });
+    const modulos = elegidos.length ? elegidos : sugeridos;
     return (
       <div className="space-y-8">
         <div>
           <h2 className="font-site-serif text-2xl font-semibold text-site-ink-strong">Tu resultado</h2>
           <p className="mt-1 text-sm text-site-muted">
-            Esto es lo que podría ayudarte, según lo que marcaste. Lo afinamos juntos en una conversación de 15
-            minutos, sin costo.
+            {elegidos.length
+              ? "Esto es lo que te interesa incorporar, según lo que marcaste."
+              : "No marcaste ninguna opción: esto es lo que podría ayudarte, según lo que contaste."}{" "}
+            Lo afinamos juntos en una conversación de 15 minutos, sin costo.
           </p>
         </div>
 

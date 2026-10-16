@@ -60,6 +60,29 @@ for (const m of Object.keys(MODULOS)) {
 }
 for (const x of DETALLES) if (!problemas.has(x.problema)) errores.push(`pregunta de un problema inexistente: ${x.id}`);
 
+// Preguntas encadenadas: la condición tiene que apuntar a una pregunta real y a
+// opciones que existan en ella.
+const generales: Record<string, { id: string }[]> = {
+  vendeEmpresas: d.VENDE_EMPRESAS,
+  trabajadores: d.TRABAJADORES,
+  locales: d.LOCALES,
+};
+for (const x of DETALLES) {
+  if (!x.si) continue;
+  const padre = DETALLES.find((p: { id: string }) => p.id === x.si.pregunta);
+  const opciones = padre ? padre.opciones : generales[x.si.pregunta];
+  if (!opciones) {
+    errores.push(`${x.id} se encadena a una pregunta que no existe: ${x.si.pregunta}`);
+    continue;
+  }
+  for (const v of x.si.en)
+    if (!opciones.some((o: { id: string }) => o.id === v)) errores.push(`${x.id}: "${v}" no es opción de ${x.si.pregunta}`);
+  if (padre && padre.problema !== x.problema) avisos.push(`${x.id} se encadena a una pregunta de otro problema (${padre.problema})`);
+  if (padre?.si) avisos.push(`${x.id} se encadena a otra encadenada (${padre.id}): revisar que pueda aparecer`);
+}
+if (!d.CONDICIONES_GENERALES.every((k: string) => k in generales))
+  errores.push('CONDICIONES_GENERALES tiene una pregunta que el cruce no conoce');
+
 const normalizar = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
 const porSinonimo = new Map<string, Set<string>>();
 for (const c of CATEGORIAS)

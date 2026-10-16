@@ -7,6 +7,7 @@ import {
   LOCALES,
   MAX_BUSQUEDAS,
   MAX_PROBLEMAS,
+  MODULOS,
   PLAZOS,
   PRESENCIA_ACTIVA,
   PROBLEMAS,
@@ -59,6 +60,8 @@ export const diagnosticoApiSchema = z
       ),
       plazo: unaDe(ids(PLAZOS)),
       busquedas: z.array(z.string().trim().max(60)).max(MAX_BUSQUEDAS).optional(),
+      incorporar: z.array(unaDe(Object.keys(MODULOS))).max(Object.keys(MODULOS).length).optional(),
+      comentario: z.string().trim().max(500).optional(),
     }),
     contacto: z.object({
       nombre: z.string().trim().min(2, 'Escribe tu nombre').max(100),

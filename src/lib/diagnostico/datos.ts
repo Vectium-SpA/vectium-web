@@ -548,18 +548,34 @@ export interface Opcion {
   texto: string;
 }
 
+/**
+ * Condición para que una pregunta aparezca: la respuesta a otra pregunta de
+ * detalle (por su id) o a una pregunta general (`vendeEmpresas`,
+ * `trabajadores`, `locales`) tiene que ser una de `en`.
+ */
+export interface Condicion {
+  pregunta: string;
+  en: string[];
+}
+
 export interface PreguntaDetalle {
   id: string;
   /** Aparece solo si la persona marcó este problema. */
   problema: string;
   texto: string;
   opciones: Opcion[];
+  /** Si existe, la pregunta aparece solo cuando se cumple (pregunta encadenada). */
+  si?: Condicion;
 }
 
+/** Preguntas generales que pueden encadenar una de detalle. */
+export const CONDICIONES_GENERALES = ['vendeEmpresas', 'trabajadores', 'locales'] as const;
+
 /**
- * Se muestran solo las de los problemas marcados, con un máximo de
- * MAX_DETALLES (motor.ts): primero una por problema, en el orden en que se
- * marcaron; si sobra espacio, las segundas. Así el formulario se detiene solo.
+ * Se muestran solo las de los problemas marcados (motor.ts, `detallesPara`):
+ * primero la primera de cada problema, que es su dato clave; después, las que
+ * se encadenan por una respuesta; al final, las segundas sin condición. Con
+ * un máximo de MAX_DETALLES, así el formulario se detiene solo.
  */
 export const DETALLES: PreguntaDetalle[] = [
   {
@@ -575,6 +591,7 @@ export const DETALLES: PreguntaDetalle[] = [
   {
     id: 'stock_codigos',
     problema: 'stock',
+    si: { pregunta: 'stock_productos', en: ['200_1000', 'mas_1000'] },
     texto: '¿Tus productos tienen código de barras?',
     opciones: [
       { id: 'si', texto: 'Sí, la mayoría' },
@@ -626,6 +643,7 @@ export const DETALLES: PreguntaDetalle[] = [
   {
     id: 'reservas_abono',
     problema: 'reservas',
+    si: { pregunta: 'reservas_como', en: ['telefono', 'redes', 'app'] },
     texto: '¿Te serviría cobrar un abono al reservar?',
     opciones: [
       { id: 'si', texto: 'Sí' },
@@ -749,6 +767,7 @@ export const DETALLES: PreguntaDetalle[] = [
   {
     id: 'facturar_cuantas',
     problema: 'facturar',
+    si: { pregunta: 'facturar_con', en: ['sii', 'sistema', 'contador'] },
     texto: '¿Cuántos documentos emites al mes?',
     opciones: [
       { id: 'menos_50', texto: 'Menos de 50' },
@@ -1050,6 +1069,83 @@ export const DETALLES: PreguntaDetalle[] = [
       { id: 'yo', texto: 'Yo mismo' },
       { id: 'contador', texto: 'Mi contador' },
       { id: 'sistema', texto: 'Un sistema de remuneraciones' },
+    ],
+  },
+  {
+    id: 'cobrar_dias',
+    problema: 'cobrar',
+    si: { pregunta: 'cobrar_quien', en: ['empresas', 'ambos'] },
+    texto: '¿A cuántos días te pagan las empresas?',
+    opciones: [
+      { id: 'contado', texto: 'Al contado o a 15 días' },
+      { id: '30', texto: 'A 30 días' },
+      { id: '60_mas', texto: 'A 60 días o más' },
+    ],
+  },
+  {
+    id: 'presencia_dominio',
+    problema: 'presencia',
+    si: { pregunta: 'presencia_hoy', en: ['nada', 'redes'] },
+    texto: '¿Tienes un dominio propio (por ejemplo, tunegocio.cl)?',
+    opciones: [
+      { id: 'si', texto: 'Sí' },
+      { id: 'no', texto: 'No' },
+      { id: 'no_se', texto: 'No lo sé' },
+    ],
+  },
+  {
+    id: 'pedidos_despacho',
+    problema: 'pedidos',
+    si: { pregunta: 'pedidos_cuantos', en: ['10_50', 'mas_50'] },
+    texto: '¿Cómo entregas esos pedidos?',
+    opciones: [
+      { id: 'retiro', texto: 'El cliente los retira' },
+      { id: 'propio', texto: 'Con reparto propio' },
+      { id: 'apps', texto: 'Con apps de delivery' },
+      { id: 'varios', texto: 'De varias formas' },
+    ],
+  },
+  {
+    id: 'flota_gps',
+    problema: 'flota',
+    si: { pregunta: 'flota_cuantos', en: ['4_10', 'mas_10'] },
+    texto: '¿Tus vehículos tienen GPS?',
+    opciones: [
+      { id: 'si', texto: 'Sí, todos' },
+      { id: 'algunos', texto: 'Algunos' },
+      { id: 'no', texto: 'No' },
+    ],
+  },
+  {
+    id: 'documentos_acreditados',
+    problema: 'documentos',
+    si: { pregunta: 'documentos_cuales', en: ['personas', 'varios'] },
+    texto: '¿A cuántos trabajadores debes mantener acreditados?',
+    opciones: [
+      { id: '1_10', texto: 'De 1 a 10' },
+      { id: '11_50', texto: 'De 11 a 50' },
+      { id: 'mas_50', texto: 'Más de 50' },
+    ],
+  },
+  {
+    id: 'personal_turnos',
+    problema: 'personal',
+    si: { pregunta: 'trabajadores', en: ['6_10', 'mas_10'] },
+    texto: '¿Trabajan por turnos rotativos?',
+    opciones: [
+      { id: 'si', texto: 'Sí' },
+      { id: 'no', texto: 'No, todos en el mismo horario' },
+    ],
+  },
+  {
+    id: 'locales_traspasos',
+    problema: 'locales',
+    si: { pregunta: 'locales', en: ['2', '3_mas'] },
+    texto: '¿Mueves mercadería entre tus locales o bodegas?',
+    opciones: [
+      { id: 'seguido', texto: 'Seguido' },
+      { id: 'a_veces', texto: 'A veces' },
+      { id: 'no', texto: 'No' },
     ],
   },
   {
