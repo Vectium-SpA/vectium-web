@@ -1,5 +1,14 @@
 import nodemailer, { type SendMailOptions } from 'nodemailer';
 import type { EstadoCorreo } from './registro';
+import {
+  ASUNTO_RESPUESTA_DIAGNOSTICO,
+  asuntoDiagnostico,
+  htmlDiagnostico,
+  htmlRespuestaDiagnostico,
+  textoDiagnostico,
+  textoRespuestaDiagnostico,
+  type FichaDiagnostico,
+} from './plantillas';
 
 /**
  * Correo del formulario de contacto, por SMTP del buzón del dominio.
@@ -107,29 +116,17 @@ export function responderConsulta(email: string): Promise<EstadoCorreo> {
   });
 }
 
-/** Datos del aviso de un diagnóstico, ya armados en texto por la ruta. */
-export interface AvisoDiagnostico {
-  negocio: string;
-  nombre: string;
-  email: string;
-  /** Líneas del resumen: respuestas, problemas, módulos y perfil. */
-  resumen: string[];
-  puntaje: number;
-}
-
-/** Aviso interno de un diagnóstico completado en vectium.cl/diagnostico. */
-export function avisarDiagnostico(d: AvisoDiagnostico): Promise<EstadoCorreo> {
+/**
+ * Aviso interno de un diagnóstico completado en vectium.cl/diagnostico, con
+ * diseño (HTML con logo) y texto plano para los correos que no muestran HTML.
+ */
+export function avisarDiagnostico(ficha: FichaDiagnostico): Promise<EstadoCorreo> {
   return enviar({
     to: destino(),
-    replyTo: d.email,
-    subject: unaLinea(`Nuevo diagnóstico (${d.puntaje}/5): ${d.negocio}`),
-    text: [
-      'Nuevo diagnóstico desde vectium.cl/diagnostico',
-      '',
-      ...d.resumen,
-      '',
-      'Para contestar, responde este correo: va directo a la persona.',
-    ].join('\n'),
+    replyTo: ficha.contacto.email,
+    subject: unaLinea(asuntoDiagnostico(ficha)),
+    text: textoDiagnostico(ficha),
+    html: htmlDiagnostico(ficha),
   });
 }
 
@@ -140,21 +137,9 @@ export function avisarDiagnostico(d: AvisoDiagnostico): Promise<EstadoCorreo> {
 export function responderDiagnostico(email: string): Promise<EstadoCorreo> {
   return enviar({
     to: email,
-    subject: 'Recibimos tu diagnóstico | Vectium',
-    text: [
-      'Hola,',
-      '',
-      'Recibimos tu diagnóstico en vectium.cl. Lo vamos a revisar y te escribiremos',
-      'para coordinar una conversación de 15 minutos, sin costo.',
-      '',
-      `Si prefieres hablar antes, escríbenos por WhatsApp: ${WHATSAPP}`,
-      '',
-      'Vectium SpA',
-      'https://vectium.cl',
-      '',
-      'Recibes este correo porque completaste el diagnóstico de vectium.cl.',
-      `Si no fuiste tú, puedes ignorarlo o avisarnos a ${CORREO}.`,
-    ].join('\n'),
+    subject: ASUNTO_RESPUESTA_DIAGNOSTICO,
+    text: textoRespuestaDiagnostico(CORREO),
+    html: htmlRespuestaDiagnostico(CORREO),
   });
 }
 
