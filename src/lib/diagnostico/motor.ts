@@ -1,10 +1,12 @@
 import {
   CATEGORIAS,
+  CONDICIONES_GENERALES,
   DETALLES,
   MAX_TIPICOS,
   MODULOS,
   PROBLEMAS,
   type Categoria,
+  type Condicion,
   type Modulo,
   type PreguntaDetalle,
   type Problema,
@@ -20,7 +22,7 @@ import {
  */
 
 /** Máximo de preguntas de profundización: el formulario se detiene solo. */
-export const MAX_DETALLES = 5;
+export const MAX_DETALLES = 8;
 
 export interface Respuestas {
   negocio: string;
@@ -42,6 +44,10 @@ export interface Respuestas {
   plazo: string;
   /** Lo que la persona buscó y no encontró: sirve para completar las listas. */
   busquedas?: string[];
+  /** Módulos sugeridos que la persona confirmó que le interesan. */
+  incorporar?: string[];
+  /** "Algo más que quieras contarnos" (texto libre, acotado). */
+  comentario?: string;
 }
 
 /**
@@ -144,20 +150,44 @@ export function problemasOrdenados(categoria: string, rubro?: string): { tipicos
   return { tipicos, otros };
 }
 
-/**
- * Las preguntas de detalle de los problemas marcados, hasta MAX_DETALLES:
- * primero una por problema, en el orden en que se marcaron; si queda espacio,
- * las segundas. Así cada problema importante tiene al menos una pregunta.
- */
-export function detallesPara(problemas: string[]): PreguntaDetalle[] {
-  const porProblema = problemas.map((id) => DETALLES.filter((d) => d.problema === id));
-  const elegidas: PreguntaDetalle[] = [];
-  for (let ronda = 0; elegidas.length < MAX_DETALLES; ronda++) {
-    const deEstaRonda = porProblema.map((lista) => lista[ronda]).filter((d): d is PreguntaDetalle => Boolean(d));
-    if (!deEstaRonda.length) break;
-    elegidas.push(...deEstaRonda);
+/** La respuesta que dio la persona a una pregunta de detalle o general. */
+function respuestaA(r: RespuestasParaDetalles, pregunta: string): string | undefined {
+  if (pregunta in r.detalles) return r.detalles[pregunta];
+  if ((CONDICIONES_GENERALES as readonly string[]).includes(pregunta)) {
+    return r[pregunta as (typeof CONDICIONES_GENERALES)[number]];
   }
-  return elegidas.slice(0, MAX_DETALLES);
+  return undefined;
+}
+
+function seCumple(r: RespuestasParaDetalles, si?: Condicion): boolean {
+  if (!si) return true;
+  const valor = respuestaA(r, si.pregunta);
+  return valor !== undefined && si.en.includes(valor);
+}
+
+export type RespuestasParaDetalles = Pick<Respuestas, 'problemas' | 'detalles' | (typeof CONDICIONES_GENERALES)[number]>;
+
+/**
+ * Las preguntas de detalle que tocan, hasta MAX_DETALLES, en este orden:
+ * 1. El dato clave de cada problema marcado (su primera pregunta sin
+ *    condición), en el orden en que se marcaron.
+ * 2. Las encadenadas cuya condición se cumple con lo ya respondido: así el
+ *    formulario pregunta más solo donde las respuestas lo justifican.
+ * 3. Las segundas sin condición, una por problema por vuelta.
+ * La lista cambia a medida que la persona responde.
+ */
+export function detallesPara(r: RespuestasParaDetalles): PreguntaDetalle[] {
+  const porProblema = r.problemas.map((id) => DETALLES.filter((d) => d.problema === id));
+  const claves = porProblema
+    .map((lista) => lista.find((d) => !d.si))
+    .filter((d): d is PreguntaDetalle => Boolean(d));
+  const encadenadas = porProblema.flatMap((lista) => lista.filter((d) => d.si && seCumple(r, d.si)));
+  const restantes = porProblema.map((lista) => lista.filter((d) => !d.si && !claves.includes(d)));
+  const segundas: PreguntaDetalle[] = [];
+  for (let vuelta = 0; restantes.some((l) => l[vuelta]); vuelta++) {
+    restantes.forEach((l) => l[vuelta] && segundas.push(l[vuelta]));
+  }
+  return [...claves, ...encadenadas, ...segundas].slice(0, MAX_DETALLES);
 }
 
 export interface ModuloRecomendado {
@@ -214,18 +244,39 @@ export function perfilDelNegocio(r: Respuestas): Perfil {
   return { puntaje: criterios.length, criterios };
 }
 
+/**
+ * Los módulos sugeridos, separados según la pregunta final: los que la
+ * persona marcó y los que descartó. Si no llegó a responderla, todos cuentan
+ * como elegidos.
+ */
+export function separarModulos(r: Pick<Respuestas, 'problemas' | 'incorporar'>): {
+  elegidos: ModuloRecomendado[];
+  descartados: ModuloRecomendado[];
+} {
+  const todos = modulosRecomendados(r.problemas);
+  if (!r.incorporar) return { elegidos: todos, descartados: [] };
+  return {
+    elegidos: todos.filter((m) => r.incorporar?.includes(m.modulo.id)),
+    descartados: todos.filter((m) => !r.incorporar?.includes(m.modulo.id)),
+  };
+}
+
 export interface Resultado {
   problemas: Problema[];
   modulos: ModuloRecomendado[];
+  /** Los sugeridos que la persona descartó en la pregunta final. */
+  descartados: ModuloRecomendado[];
   perfil: Perfil;
 }
 
 export function calcularResultado(r: Respuestas): Resultado {
+  const { elegidos, descartados } = separarModulos(r);
   return {
     problemas: r.problemas
       .map((id) => PROBLEMAS.find((p) => p.id === id))
       .filter((p): p is Problema => Boolean(p)),
-    modulos: modulosRecomendados(r.problemas),
+    modulos: elegidos,
+    descartados,
     perfil: perfilDelNegocio(r),
   };
 }
