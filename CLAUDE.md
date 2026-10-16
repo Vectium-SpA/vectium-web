@@ -28,8 +28,11 @@ vercel --prod      # deploy a producción (requiere login vercel)
 - `/` — Home corporativo Vectium
 - `/sobre-nosotros` — Quiénes somos
 - `/soluciones` — Servicios
+- `/soluciones/resto-web` — Solución para restaurantes
+- `/como-trabajamos` — Cómo trabajamos
 - `/proyectos` — Portafolio
 - `/contacto` — Formulario de contacto
+- `/diagnostico` — Diagnóstico del negocio: asistente que se adapta al rubro y recomienda módulos. Envía a `/api/diagnostico` (Firestore + aviso por correo). Rubros, problemas, módulos y preguntas viven en `src/lib/diagnostico/datos.ts`; el motor en `motor.ts`. Para ampliar listas se toca solo `datos.ts` y después se corre `node scripts/cruce-diagnostico.mts` (falla si algo apunta a un id que no existe). Si cambian los ids de categorías, subir la versión de la clave `vectium-diagnostico-vN` en `Asistente.tsx`. Para probar la ruta sin guardar ni enviar correos: un POST con el campo trampa `website` lleno valida y corta (200 = válido, 400 = inválido)
 - `/faq` — Preguntas frecuentes
 - `/privacidad` — Política de privacidad Vectium
 - `/terminos` — Términos de uso Vectium
