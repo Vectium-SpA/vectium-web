@@ -3,9 +3,15 @@ import { diagnosticoApiSchema } from '@/lib/validations/diagnostico';
 import { anotarCorreo, guardarConsulta, hashIp, superaLimite } from '@/lib/contacto/registro';
 import { avisarDiagnostico, responderDiagnostico } from '@/lib/contacto/correo';
 import type { FichaDiagnostico } from '@/lib/contacto/plantillas';
-import { armarPaquetes, calcularResultado, formatearRut, nombreRubro, type Respuestas } from '@/lib/diagnostico/motor';
 import {
-  COMUNAS,
+  armarPaquetes,
+  calcularResultado,
+  formatearRut,
+  nombreRubro,
+  nombreUbicacion,
+  type Respuestas,
+} from '@/lib/diagnostico/motor';
+import {
   DETALLES,
   HERRAMIENTAS,
   LOCALES,
@@ -38,7 +44,7 @@ function ficha(r: Respuestas, contacto: { nombre: string; email: string; telefon
     ['Rubro', nombreRubro(r.categoria, r.rubro, r.rubroOtro)],
     ...(r.razonSocial ? ([['Razón social', r.razonSocial]] as [string, string][]) : []),
     ...(r.rut ? ([['RUT', formatearRut(r.rut) ?? r.rut]] as [string, string][]) : []),
-    ['Comuna', texto(COMUNAS, r.comuna)],
+    ['Ubicación', nombreUbicacion(r.region, r.comuna)],
     ['Llegó desde', r.origen ? texto(ORIGENES, r.origen) : 'Enlace directo (sin origen)'],
     ['Trabajadores', texto(TRABAJADORES, r.trabajadores)],
     ['Locales', texto(LOCALES, r.locales)],

@@ -6,6 +6,8 @@ import {
   MODULOS,
   ORIGENES,
   PROBLEMAS,
+  MAX_ZONA,
+  ZONAS,
   type Categoria,
   type Condicion,
   type Modulo,
@@ -13,6 +15,7 @@ import {
   type Problema,
   type Rubro,
 } from './datos';
+import { FUERA_DE_CHILE, REGIONES, type Region } from './territorio';
 
 /**
  * Motor del diagnóstico: funciones puras sobre los datos de `datos.ts`.
@@ -30,6 +33,9 @@ export interface Respuestas {
   /** Opcionales. Si el RUT es de una persona natural, es un dato personal. */
   razonSocial?: string;
   rut?: string;
+  /** Id de región (`territorio.ts`) o FUERA_DE_CHILE. */
+  region: string;
+  /** Vacía si el negocio está fuera de Chile. */
   comuna: string;
   categoria: string;
   rubro: string;
@@ -82,6 +88,30 @@ export function formatearRut(entrada: string): string | null {
   return `${cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}-${dv}`;
 }
 
+export function regionPorId(id: string): Region | undefined {
+  return REGIONES.find((r) => r.id === id);
+}
+
+/** "Vallenar, Atacama", o "Fuera de Chile". */
+export function nombreUbicacion(region: string, comuna: string): string {
+  if (region === FUERA_DE_CHILE) return 'Fuera de Chile';
+  const reg = regionPorId(region);
+  if (!reg) return 'Sin indicar';
+  const com = reg.comunas.find((c) => c.id === comuna);
+  return com ? `${com.texto}, ${reg.nombre}` : reg.nombre;
+}
+
+/**
+ * La región que sugiere la conexión de la persona: Vercel manda el país y el
+ * código ISO de la región (sin «CL-»). Fuera de Chile o sin datos no sugiere
+ * nada. La comuna no se sugiere: por IP, casi todo Santiago sale como
+ * «Santiago» y quedaría marcada una comuna equivocada sin que se note.
+ */
+export function regionDesdeConexion(pais?: string | null, iso?: string | null): string | undefined {
+  if (pais?.toUpperCase() !== 'CL' || !iso) return undefined;
+  return REGIONES.find((r) => r.iso === iso.toUpperCase())?.id;
+}
+
 export function categoriaPorId(id: string): Categoria | undefined {
   return CATEGORIAS.find((c) => c.id === id);
 }
@@ -111,6 +141,28 @@ function coincide(busqueda: string, textos: string[]): boolean {
 export interface RubroEncontrado {
   categoria: Categoria;
   rubro: Rubro;
+}
+
+function rubroPorId(id: string): RubroEncontrado | undefined {
+  for (const categoria of CATEGORIAS) {
+    const rubro = categoria.rubros.find((r) => r.id === id);
+    if (rubro) return { categoria, rubro };
+  }
+  return undefined;
+}
+
+/**
+ * Los rubros frecuentes donde está el negocio: los de su comuna si tiene un
+ * perfil propio, si no los de su región. Vacío fuera de Chile o sin región.
+ */
+export function rubrosDeLaZona(region: string, comuna?: string): RubroEncontrado[] {
+  const zona = ZONAS[region];
+  if (!zona) return [];
+  const ids = (comuna && zona.porComuna?.[comuna]) || zona.rubros;
+  return ids
+    .map(rubroPorId)
+    .filter((e): e is RubroEncontrado => Boolean(e))
+    .slice(0, MAX_ZONA);
 }
 
 /**

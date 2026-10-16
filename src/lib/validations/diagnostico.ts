@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import {
   CATEGORIAS,
-  COMUNAS,
   DETALLES,
   HERRAMIENTAS,
   LOCALES,
@@ -17,6 +16,7 @@ import {
   type Opcion,
 } from '@/lib/diagnostico/datos';
 import { formatearRut } from '@/lib/diagnostico/motor';
+import { FUERA_DE_CHILE, REGIONES } from '@/lib/diagnostico/territorio';
 
 /**
  * Validación del diagnóstico en el servidor. Cada respuesta tiene que ser una
@@ -40,7 +40,8 @@ export const diagnosticoApiSchema = z
         .trim()
         .optional()
         .refine((v) => !v || formatearRut(v) !== null, 'RUT inválido'),
-      comuna: unaDe(ids(COMUNAS)),
+      region: unaDe([...REGIONES.map((r) => r.id), FUERA_DE_CHILE]),
+      comuna: z.string().max(40),
       categoria: unaDe(CATEGORIAS.map((c) => c.id)),
       rubro: unaDe(RUBROS),
       rubroOtro: z.string().trim().max(100).optional(),
@@ -83,6 +84,10 @@ export const diagnosticoApiSchema = z
   .refine((d) => {
     const cat = CATEGORIAS.find((c) => c.id === d.respuestas.categoria);
     return Boolean(cat?.rubros.some((r) => r.id === d.respuestas.rubro));
-  }, 'El rubro no corresponde a la categoría');
+  }, 'El rubro no corresponde a la categoría')
+  .refine(({ respuestas: { region, comuna } }) => {
+    if (region === FUERA_DE_CHILE) return comuna === '';
+    return Boolean(REGIONES.find((r) => r.id === region)?.comunas.some((c) => c.id === comuna));
+  }, 'La comuna no corresponde a la región');
 
 export type DiagnosticoApiData = z.infer<typeof diagnosticoApiSchema>;

@@ -2,10 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check, MessageCircle, Search, Send } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, MapPin, MessageCircle, Search, Send } from "lucide-react";
 import {
   CATEGORIAS,
-  COMUNAS,
   GRUPOS,
   HERRAMIENTAS,
   HERRAMIENTAS_CON_NOMBRE,
@@ -17,6 +16,7 @@ import {
   SISTEMAS,
   TRABAJADORES,
   VENDE_EMPRESAS,
+  ZONAS,
   type Opcion,
 } from "@/lib/diagnostico/datos";
 import {
@@ -31,8 +31,11 @@ import {
   normalizar,
   origenDesdeEnlace,
   problemasOrdenados,
+  regionPorId,
+  rubrosDeLaZona,
   type Respuestas,
 } from "@/lib/diagnostico/motor";
+import { FUERA_DE_CHILE, REGIONES } from "@/lib/diagnostico/territorio";
 
 /**
  * Asistente de vectium.cl/diagnostico.
@@ -45,8 +48,8 @@ import {
  */
 
 const WHATSAPP = "https://wa.me/56992841001";
-// v2: cambiaron las categorías; un avance guardado con las de v1 no sirve.
-const CLAVE = "vectium-diagnostico-v2";
+// v3: la ubicación pasó a región y comuna; un avance guardado antes no la tiene.
+const CLAVE = "vectium-diagnostico-v3";
 
 /** Desde cuántas opciones una lista muestra su buscador. */
 const LISTA_LARGA = 10;
@@ -55,6 +58,7 @@ const VACIAS: Respuestas = {
   negocio: "",
   razonSocial: "",
   rut: "",
+  region: "",
   comuna: "",
   categoria: "",
   rubro: "",
@@ -218,6 +222,8 @@ export function Asistente() {
   const [busqueda, setBusqueda] = useState("");
   // El aviso de RUT inválido aparece al salir del campo, no mientras se escribe.
   const [rutTocado, setRutTocado] = useState(false);
+  // La región que se marcó sola según la conexión (para avisarlo en pantalla).
+  const [sugerida, setSugerida] = useState<string | null>(null);
   const [contacto, setContacto] = useState<Contacto>(CONTACTO_VACIO);
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
@@ -232,6 +238,27 @@ export function Asistente() {
   useEffect(() => {
     if (enviado) subir();
   }, [enviado]);
+
+  // Sin región elegida, se sugiere la de la conexión (Vercel la deduce de la
+  // IP). Si falla o no hay dato, la persona la elige igual.
+  useEffect(() => {
+    if (inicial.r.region) return;
+    let vigente = true;
+    fetch("/api/ubicacion")
+      .then((res) => (res.ok ? res.json() : {}))
+      .then((u: { region?: string }) => {
+        const sugerencia = u.region;
+        if (!vigente || !sugerencia || !regionPorId(sugerencia)) return;
+        setR((prev) => (prev.region ? prev : { ...prev, region: sugerencia, comuna: "" }));
+        setSugerida(sugerencia);
+      })
+      .catch(() => {
+        /* sin sugerencia */
+      });
+    return () => {
+      vigente = false;
+    };
+  }, [inicial.r.region]);
 
   // Guardar el avance (sincroniza con un sistema externo: el almacenamiento).
   useEffect(() => {
@@ -272,12 +299,14 @@ export function Asistente() {
       seleccionados.includes(id) ? seleccionados.filter((x) => x !== id) : [...seleccionados, id]
     );
   const categoria = categoriaPorId(r.categoria);
+  const region = regionPorId(r.region);
   const rutValido = !r.rut?.trim() || formatearRut(r.rut) !== null;
 
   // La lista de pasos depende de los problemas marcados.
   const pasos = useMemo(
     () => [
       "negocio",
+      "ubicacion",
       "categoria",
       "rubro",
       "tamano",
@@ -296,7 +325,9 @@ export function Asistente() {
   const completo = (id: string): boolean => {
     switch (id) {
       case "negocio":
-        return r.negocio.trim().length >= 2 && Boolean(r.comuna) && rutValido;
+        return r.negocio.trim().length >= 2 && rutValido;
+      case "ubicacion":
+        return r.region === FUERA_DE_CHILE || Boolean(region?.comunas.some((c) => c.id === r.comuna));
       case "categoria":
         return Boolean(categoria);
       case "rubro":
@@ -318,6 +349,8 @@ export function Asistente() {
   // ¿Lo escrito en el buscador de esta pantalla no encontró nada?
   const sinResultado = (): boolean => {
     if (normalizar(busqueda).length < 3) return false;
+    if (actual === "ubicacion" && region)
+      return !region.comunas.some((c) => normalizar(c.texto).includes(normalizar(busqueda)));
     if (actual === "categoria") return buscarRubros(busqueda).length === 0;
     if (actual === "rubro" && categoria)
       return filtrarRubros(categoria.rubros, busqueda).every((x) => x.id.startsWith("otro"));
@@ -329,7 +362,8 @@ export function Asistente() {
   // el aviso a Vectium: así se sabe qué falta en las listas.
   const cambiarPaso = (delta: number) => {
     setError(null);
-    if (sinResultado()) {
+    // Las comunas no van: el aviso solo junta lo que falta en rubros y problemas.
+    if (actual !== "ubicacion" && sinResultado()) {
       const termino = busqueda.trim().slice(0, 60);
       setR((prev) => {
         const lista = prev.busquedas ?? [];
@@ -397,6 +431,7 @@ export function Asistente() {
             sistemaCual: r.herramientas.some((h) => HERRAMIENTAS_CON_NOMBRE.includes(h))
               ? r.sistemaCual?.trim() || undefined
               : undefined,
+            comuna: r.region === FUERA_DE_CHILE ? "" : r.comuna,
             busquedas: r.busquedas?.length ? r.busquedas : undefined,
             incorporar: seleccionados,
             comentario: r.comentario?.trim() || undefined,
@@ -518,8 +553,63 @@ export function Asistente() {
               Si tu negocio está a tu nombre, el RUT es un dato personal: puedes dejarlo en blanco.
             </p>
           )}
-          <p className="pt-2 text-sm font-medium text-site-ink">¿En qué comuna está?</p>
-          <Unica opciones={COMUNAS} valor={r.comuna} onChange={(v) => set("comuna", v)} />
+        </Pregunta>
+      );
+    }
+
+    if (actual === "ubicacion") {
+      const larga = (region?.comunas.length ?? 0) > LISTA_LARGA;
+      const filtro = normalizar(busqueda);
+      const comunas = (region?.comunas ?? []).filter(
+        (c) => filtro.length < 2 || normalizar(c.texto).includes(filtro)
+      );
+      return (
+        <Pregunta titulo="¿Dónde está tu negocio?" ayuda="Así te mostramos primero lo que más se ve en tu zona.">
+          <label className="block text-sm font-medium text-site-ink">
+            Región
+            <select
+              value={r.region}
+              onChange={(e) => {
+                setR((prev) => ({ ...prev, region: e.target.value, comuna: "" }));
+                setSugerida(null);
+                setBusqueda("");
+              }}
+              className={campo}
+            >
+              <option value="" disabled>
+                Elige tu región
+              </option>
+              {REGIONES.map((x) => (
+                <option key={x.id} value={x.id}>
+                  {x.nombre}
+                </option>
+              ))}
+              <option value={FUERA_DE_CHILE}>Fuera de Chile</option>
+            </select>
+          </label>
+          {sugerida && sugerida === r.region && (
+            <p className="flex items-start gap-2 text-xs text-site-muted">
+              <MapPin size={14} aria-hidden="true" className="mt-0.5 shrink-0 text-site-accent" />
+              La marcamos según tu conexión. Si no es la de tu negocio, cámbiala.
+            </p>
+          )}
+          {region && (
+            <>
+              <p className="pt-2 text-sm font-medium text-site-ink">¿En qué comuna?</p>
+              {larga && (
+                <Buscador
+                  valor={busqueda}
+                  onChange={setBusqueda}
+                  etiqueta={`Buscar comuna en ${region.nombre}`}
+                  placeholder="Escribe para filtrar las comunas"
+                />
+              )}
+              {sinResultado() && (
+                <SinResultados busqueda={busqueda}>Revisa que la región sea la correcta.</SinResultados>
+              )}
+              <Unica opciones={comunas} valor={r.comuna} onChange={(v) => set("comuna", v)} />
+            </>
+          )}
         </Pregunta>
       );
     }
@@ -527,6 +617,11 @@ export function Asistente() {
     if (actual === "categoria") {
       const encontrados = buscarRubros(busqueda);
       const buscando = normalizar(busqueda).length >= 2;
+      const deLaZona = rubrosDeLaZona(r.region, r.comuna);
+      // El título nombra la comuna solo si la lista es propia de ella.
+      const comunaZona = ZONAS[r.region]?.porComuna?.[r.comuna]
+        ? region?.comunas.find((c) => c.id === r.comuna)
+        : undefined;
       return (
         <Pregunta titulo="¿Qué tipo de negocio es?" ayuda="Búscalo por su nombre o elige la categoría más parecida.">
           <Buscador
@@ -554,7 +649,28 @@ export function Asistente() {
               Elige abajo la categoría más parecida; dentro de cada una hay una opción «Otro» para contarnos qué haces.
             </SinResultados>
           )}
-          {buscando && <p className="pt-2 text-sm font-medium text-site-ink">O elige una categoría</p>}
+          {!buscando && deLaZona.length > 0 && (
+            <>
+              <p className="pt-2 text-sm font-medium text-site-ink">
+                Frecuentes en {comunaZona?.texto ?? region?.nombre}
+              </p>
+              <div role="radiogroup" aria-label="Frecuentes en tu zona" className="grid gap-2 sm:grid-cols-2">
+                {deLaZona.map(({ categoria: c, rubro: x }) => (
+                  <OpcionBoton
+                    key={x.id}
+                    activa={r.rubro === x.id}
+                    descripcion={c.nombre}
+                    onClick={() => elegirDesdeBuscador(c.id, x.id)}
+                  >
+                    {x.nombre}
+                  </OpcionBoton>
+                ))}
+              </div>
+            </>
+          )}
+          {(buscando || deLaZona.length > 0) && (
+            <p className="pt-2 text-sm font-medium text-site-ink">O elige una categoría</p>
+          )}
           <div role="radiogroup" className="grid gap-2 sm:grid-cols-2">
             {CATEGORIAS.map((c) => (
               <OpcionBoton
