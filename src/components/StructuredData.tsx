@@ -41,8 +41,8 @@ export default function StructuredData() {
   };
 
   // Domicilio legal segun la Carpeta Tributaria del SII (El Trovador 4280 Of 307,
-  // Las Condes). NO declarar una direccion fisica en La Serena: la SpA no tiene
-  // sucursales registradas. La operacion desde la Region de Coquimbo se expresa
+  // Las Condes). NO declarar una direccion fisica en Vallenar ni en La Serena: la SpA no tiene
+  // sucursales registradas. La operacion desde Atacama (y los clientes de Coquimbo) se expresa
   // con `areaServed`, que es cierto y no finge un local.
   const localBusinessSchema = {
     "@context": "https://schema.org",
@@ -60,6 +60,7 @@ export default function StructuredData() {
       addressCountry: "CL",
     },
     areaServed: [
+      { "@type": "AdministrativeArea", name: "Región de Atacama" },
       { "@type": "AdministrativeArea", name: "Región de Coquimbo" },
       { "@type": "Country", name: "Chile" },
     ],

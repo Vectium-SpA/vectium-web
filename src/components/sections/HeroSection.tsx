@@ -95,6 +95,14 @@ export function HeroSection() {
           </Link>
         </div>
 
+        <Link
+          href="/diagnostico?origen=sitio"
+          className="group mt-6 inline-flex items-center gap-1.5 font-[family-name:var(--font-site-sans)] text-sm font-semibold text-site-accent transition-colors hover:text-site-accent-light"
+        >
+          ¿No sabes por dónde partir? Haz el diagnóstico gratis
+          <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+        </Link>
+
         <p className="mt-8 font-[family-name:var(--font-site-mono)] text-[12.5px] tracking-[0.04em] text-site-muted">
           contacto@vectium.cl
         </p>

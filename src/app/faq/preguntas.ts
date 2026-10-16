@@ -40,7 +40,7 @@ export const FAQ_SECCIONES: Seccion[] = [
       },
       {
         q: "¿Dónde están ubicados?",
-        a: "Nuestro domicilio legal está en El Trovador 4280, Oficina 307, Las Condes, Región Metropolitana. Operamos desde la Región de Coquimbo y atendemos a todo Chile, en persona o por videollamada.",
+        a: "Nuestro domicilio legal está en El Trovador 4280, Oficina 307, Las Condes, Región Metropolitana. Operamos desde la Región de Atacama y atendemos a todo Chile, en persona o por videollamada.",
       },
       {
         q: "¿Quién está detrás de Vectium?",

@@ -14,6 +14,7 @@ const footerLinks = [
   { label: "Cómo trabajamos", href: "/como-trabajamos" },
   { label: "Proyectos", href: "/proyectos" },
   { label: "Contacto", href: "/contacto" },
+  { label: "Diagnóstico gratis", href: "/diagnostico?origen=sitio" },
   { label: "Preguntas Frecuentes", href: "/faq" },
   { label: "Política de Privacidad", href: "/privacidad" },
   { label: "Términos de Uso", href: "/terminos" },
