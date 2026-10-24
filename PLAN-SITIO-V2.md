@@ -17,7 +17,7 @@ pública, paquetes y precios) y proyectos nuevos con link. **resto-web**: demo p
 | # | Qué | Quién | Estado |
 |---|---|---|---|
 | 1 | **Formulario de contacto y newsletter** — ✅ en `main` desde el 2026-10-12 (PR #4 mergeado). `/api/contacto`: valida en servidor, honeypot, límite por IP, guarda en Firestore (`vectium_contactos`), aviso y respuesta automática por SMTP. EmailJS eliminado. Suma analítica sin cookies (Vercel Web Analytics), lint repuesto y la política de privacidad corregida (decía Google Analytics y banner de cookies, que no existen) | **Andrés:** (1) cargar `SMTP_PASS` (Sensitive) en el Vercel de vectiumspa, en Production y Preview; (2) activar Analytics en ese proyecto; (3) mandar un mensaje de prueba desde vectium.cl/contacto. **Mientras no esté `SMTP_PASS`, las consultas se guardan pero no llega aviso: mirarlas en Firestore** | 🟡 publicado; falta `SMTP_PASS` |
-| 2 | **Parte C de resto-web:** en `vectium-comercial/proyectos/resto-web/` poner al día deck (01) y propuesta (02): Reservas $50.000/mes, Completo $60.000/mes, "Primer año incluido" → bonificación de 12 meses independiente, quitar cifras de CoverManager; exportar el deck a PDF y enlazarlo en `/soluciones/resto-web` | Claude | ⏳ |
+| 2 | **Parte C de resto-web:** en `vectium-comercial/proyectos/resto-web/` poner al día deck (01) y propuesta (02): Reservas $50.000/mes, Completo $60.000/mes, "Primer año incluido" → bonificación de 12 meses independiente, quitar cifras de CoverManager; exportar el deck a PDF y enlazarlo en `/soluciones/resto-web` | Claude | ✅ 24-10, rama `feat/decisiones-2026-10-24`: deck, propuestas, landing, contrato y acuerdo al día; PDF de 16 láminas en `public/resto-web/` y enlazado. Sumó el agregado CRM ("desde febrero de 2027") y el 10% al contado |
 | 3 | **Austranet:** la URL `austranet-cco.vercel.app` y el título muestran el nombre de la empresa cliente; el sitio ya lo tiene sin nombre como "Control Operacional". ¿Enlazar o no? | Andrés decide | ⏸️ |
 | 4 | Email de reservas de MAREA (demo pública) muestra **cariolaflex@gmail.com** → cambiarlo en el panel por contacto@vectium.cl | Andrés | ⏳ |
 | 5 | Fase 3 (formatos de vectium-comercial: diagramas animados de Diego, flujos), fase 4 (Trabaja con nosotros = banco de talentos, 3 áreas, CV + consentimiento 21.719), fase 5 (diagnóstico digital express → auditoría pagada) | Claude | ⏳ |
@@ -101,7 +101,7 @@ buzón en Vercel (`SMTP_PASS`, Sensitive). Alternativa: Resend + 3 registros DNS
   precios. Precios públicos de referencia verificados el 2026-10-08: SimpleReserva
   ($9.990-$39.990/mes + IVA), ReserBar ($29.000-$329.000/mes), Reserva Tu Mesa
   ($50.000-$150.000/mes + IVA). CoverManager, TheFork y Meitre NO publican precios.
-- **Pendiente (parte C):** actualizar deck y propuesta de `vectium-comercial` a los precios
+- ✅ **Hecho el 24-10 (parte C):** actualizar deck y propuesta de `vectium-comercial` a los precios
   nuevos (Reservas $40.000 → $50.000, Completo $60.000), cambiar "Primer año incluido" por la
   bonificación, quitar cifras de CoverManager, y publicar el deck en PDF en la página.
 
