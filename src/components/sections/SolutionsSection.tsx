@@ -75,16 +75,18 @@ const featuredProjects = [
     cta: "Ver demo, paquetes y precios",
   },
   {
-    // La marca visible es "Gestionala"; "mypyme" es solo el identificador
-    // tecnico (repo, Supabase, Vercel). Ver `docs/10-marca-gestionala.md`.
-    title: "Gestionala",
-    subtitle: "Punto de venta, caja e inventario",
+    // Hasta el 2026-10-24 este destacado era "Gestionala" con enlace a su
+    // sitio. Gestionala ya no se ofrece como producto (es el prototipo y
+    // banco de piezas): lo que se vende es un sistema de gestion propio
+    // para cada cliente. El enlace va al diagnostico, que es la entrada.
+    title: "Sistemas de gestión a medida",
+    subtitle: "Ventas, caja, stock, compras y flujo de caja",
     description:
-      "Punto de venta, control de caja e inventario y flujo de caja para pequeños comercios. Se instala como aplicación y sigue vendiendo sin conexión. Sitio público disponible.",
-    tags: ["POS", "Offline", "Pagos"],
-    link: "https://mypyme-blond.vercel.app",
-    isInternal: false,
-    cta: "Ver el sitio",
+      "Punto de venta, caja, inventario, compras con lectura de facturas, gastos y flujo de caja, armados para su negocio sobre una base propia ya probada. Sigue vendiendo sin conexión.",
+    tags: ["Gestión", "Offline", "A medida"],
+    link: "/diagnostico",
+    isInternal: true,
+    cta: "Pedir un diagnóstico",
   },
 ];
 
@@ -217,9 +219,8 @@ export function SolutionsSection() {
                   rel="noopener noreferrer"
                   className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-site-accent transition-all hover:gap-3"
                 >
-                  {/* El texto lo define cada proyecto: resto-web lleva a una
-                      demo operable y Gestionala a su sitio publico. Decir
-                      "demo en vivo" en los dos prometia de mas en uno. */}
+                  {/* El texto lo define cada proyecto. Decir "demo en vivo"
+                      en todos prometia de mas en alguno. */}
                   {project.cta}
                   <ExternalLink size={15} />
                 </a>

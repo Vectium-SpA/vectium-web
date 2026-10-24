@@ -21,6 +21,10 @@ import { useSpotlight } from "@/components/site/useSpotlight";
  *    no publican tarifas, y las cifras que circulan son de terceros.
  *  - Capturas sin datos de contacto: las de la agenda y los correos muestran
  *    correos y telefonos con formato real y NO se publican.
+ *  - 2026-10-24: 10% de descuento pagando la implementacion al contado (Reservas
+ *    y Completo, no Vitrina) y el agregado CRM como "desde febrero de 2027" a
+ *    precio de LISTA. Todavia no existe: se anuncia con fecha y nunca como
+ *    disponible. El precio fundador de Vallenar no se publica.
  */
 
 const DEMO_URL = "https://resto-web-sage.vercel.app";
@@ -86,7 +90,7 @@ const paquetes = [
 ];
 
 const condiciones = [
-  { l: "Pago de la implementación", v: "En dos pagos de 50%" },
+  { l: "Pago de la implementación", v: "En dos pagos de 50%, o al contado con 10% de descuento en Reservas y Completo" },
   { l: "Bonificación de lanzamiento", v: "Los primeros 12 meses del plan mensual no se cobran" },
   { l: "Comisión por reserva", v: "$0, siempre" },
   { l: "Rondas de ajuste", v: "2 incluidas" },
@@ -344,6 +348,40 @@ export function RestoWebContent() {
           <p className="mt-4 text-center text-xs leading-relaxed text-site-muted">
             La bonificación de los primeros 12 meses del plan es un beneficio comercial independiente de la implementación.
             Las condiciones exactas quedan en la propuesta y el contrato de cada restaurante.
+          </p>
+
+          <div className="mt-12 rounded-2xl border border-site-border bg-site-bg/70 p-7 backdrop-blur-xl sm:p-8">
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-site-accent">Agregado para Reservas y Completo</p>
+              <span className="rounded-full border border-site-accent/50 px-2.5 py-0.5 text-[10.5px] font-semibold uppercase tracking-wider text-site-accent">
+                Desde febrero de 2027
+              </span>
+            </div>
+            <h3 className="mt-2 text-2xl font-bold text-site-ink-strong">CRM: tus clientes y tu gestión</h3>
+            <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-site-ink">
+              La ficha de cada cliente (cuántas veces vino, si faltó a una reserva, notas como “cumpleaños” o “empresa”
+              que tu equipo ve cuando llega la reserva) más inventario, compras, gastos, caja y la planilla de turnos,
+              en el mismo panel de resto-web.
+            </p>
+            <p className="mt-4 text-[15px] font-semibold text-site-ink">
+              $290.000 <span className="text-[13px] font-normal text-site-muted">+ IVA de implementación</span> · $70.000{" "}
+              <span className="text-[13px] font-normal text-site-muted">+ IVA al mes</span>
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-site-muted">
+              Se suma a un paquete Reservas o Completo. No incluye control de asistencia ni remuneraciones.
+            </p>
+          </div>
+
+          <p className="mt-8 text-center">
+            <a
+              href="/resto-web/resto-web-deck-vectium.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-site-accent transition-all hover:gap-3"
+            >
+              Descargar la presentación en PDF (16 láminas)
+              <ExternalLink size={15} />
+            </a>
           </p>
         </div>
       </section>

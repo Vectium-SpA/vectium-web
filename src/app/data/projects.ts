@@ -56,11 +56,15 @@ export const projects: Project[] = [
     // Vercel y los planes de Flow — cambiarlo rompe cosas. Pero la MARCA
     // VISIBLE es "Gestionala", siempre. Fuente: `docs/10-marca-gestionala.md`
     // en C:\mypyme, que es el documento de identidad del producto.
+    // Desde el 2026-10-15 (reafirmado el 24-10) Gestionala NO se ofrece como
+    // producto: es el prototipo y banco de piezas de los sistemas de gestion
+    // de cada cliente. Por eso va sin enlace: su sitio todavia ofrece
+    // "prueba gratis" y planes, que ya no existen.
     id: "gestionala",
     title: "Gestionala",
-    subtitle: "Punto de venta, caja e inventario",
+    subtitle: "Prototipo de gestión, base de nuestros sistemas a medida",
     description:
-      "Sistema de gestión para pequeños comercios y negocios de servicio: punto de venta, control de caja e inventario, flujo de caja con reportes y comprobantes de venta. Se instala como aplicación y sigue vendiendo sin conexión, sincronizando cuando vuelve la señal. Lee códigos de barras con la cámara y digitaliza documentos por reconocimiento óptico. Se adapta al rubro, desde un minimarket hasta una barbería o una consulta.",
+      "Prototipo propio de gestión para comercios y negocios de servicio: punto de venta, control de caja e inventario, compras, flujo de caja con reportes y comprobantes de venta. Funciona como aplicación instalable y sigue vendiendo sin conexión. Lee códigos de barras con la cámara y digitaliza documentos por reconocimiento óptico. No se vende como producto: es la base probada desde la que armamos el sistema de gestión de cada cliente.",
     category: "web",
     stack: [
       "Next.js",
@@ -79,7 +83,6 @@ export const projects: Project[] = [
     status: "En desarrollo",
     featured: true,
     image: "/projects/gestionala/isotipo.png",
-    link: "https://mypyme-blond.vercel.app",
   },
   {
     id: "control-operacional",
