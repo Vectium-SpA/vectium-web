@@ -113,7 +113,7 @@ Embudo simple: **recurso gratis → correo con consentimiento → oferta pagada*
 |---|---|---|
 | **Diagnóstico digital express** (formulario de 10 preguntas → informe automático de 1 página) | **Auditoría digital completa** (web, SEO, ventas, redes) | skills `auditoria-negocio`, `auditoria-seo`, `auditoria-meta-ads` |
 | **Guías cortas** en el sitio: "Cómo ordenar la caja de tu pyme", "Reservas en línea sin no-shows", "Qué exige la Ley 21.719 a tu negocio desde diciembre" | Implementación (Gestionala / resto-web / a medida) | propuestas de H&J y resto-web, `CLAUDE-LEGAL-CHILE.md` |
-| **Clase gratis** (video corto o webinar) de automatización con IA y n8n | **Curso o taller pagado** | `C:\CursoClaudeDev` (curso full-stack con Claude, en desarrollo) |
+| **Clase gratis** (video corto o webinar) de automatización con IA y n8n | **Curso o taller pagado** | `C:\CariolaFlex\curso-cariola-dev` (curso full-stack con Claude, en desarrollo) |
 
 Reglas: el correo se pide con checkbox **sin premarcar** y cada envío lleva baja (Ley 19.496 art. 28 B).
 **Empezar por UNO**: el diagnóstico express, porque es el que se convierte en venta más directo
