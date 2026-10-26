@@ -301,7 +301,7 @@ export function RestoWebContent() {
                   <p className="text-xs font-semibold uppercase tracking-widest text-site-accent">{p.t}</p>
                   {p.destacado && (
                     <span className="rounded-full bg-site-accent px-2.5 py-0.5 text-[10.5px] font-semibold uppercase tracking-wider text-site-bg">
-                      El más elegido
+                      El recomendado
                     </span>
                   )}
                 </div>
