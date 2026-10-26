@@ -55,7 +55,7 @@ export const projects: Project[] = [
     // El identificador TECNICO sigue siendo "mypyme" en GitHub, Supabase,
     // Vercel y los planes de Flow — cambiarlo rompe cosas. Pero la MARCA
     // VISIBLE es "Gestionala", siempre. Fuente: `docs/10-marca-gestionala.md`
-    // en C:\mypyme, que es el documento de identidad del producto.
+    // en C:\Vectium\productos\gestionala, que es el documento de identidad del producto.
     // Desde el 2026-10-15 (reafirmado el 24-10) Gestionala NO se ofrece como
     // producto: es el prototipo y banco de piezas de los sistemas de gestion
     // de cada cliente. Por eso va sin enlace: su sitio todavia ofrece

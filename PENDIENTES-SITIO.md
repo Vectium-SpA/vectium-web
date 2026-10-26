@@ -244,17 +244,17 @@ que dejaban auto-otorgarse premium, **está resuelto desde el 30-06** (`firestor
 
 ## ✅ 6. Gestionala (mypyme) — ÉNFASIS APLICADO (2026-08-14)
 
-Andrés pidió darle más peso al proyecto de `C:\mypyme`. Estaba como el más débil de los tres
+Andrés pidió darle más peso al proyecto de `C:\Vectium\productos\gestionala`. Estaba como el más débil de los tres
 destacados: nombre genérico ("Gestión para Pymes"), **sin enlace y sin imagen**.
 
-- [x] **Se publica con su marca real: "Gestionala".** Fuente: `C:\mypyme\docs\10-marca-gestionala.md`,
+- [x] **Se publica con su marca real: "Gestionala".** Fuente: `C:\Vectium\productos\gestionala\docs\10-marca-gestionala.md`,
       que es el documento de identidad del producto. ⚠️ **"mypyme" es solo el identificador
       TÉCNICO** (repo GitHub, proyecto Supabase `igpplasotoshtuwbdzmf`, proyecto Vercel
       `mypyme-blond`, planes de Flow) y **no se cambia** — cambiarlo rompe cosas.
 - [x] **Enlace público:** `https://mypyme-blond.vercel.app`. Verificado con `curl` → **200**, y es
       una landing pública real ("Gestionala — POS, caja e inventario para tu negocio"), no un muro
       de login.
-- [x] **Isotipo real** copiado desde `C:\mypyme\public\brand\icon-512.png` →
+- [x] **Isotipo real** copiado desde `C:\Vectium\productos\gestionala\public\brand\icon-512.png` →
       `public/projects/gestionala/isotipo.png` (+ el isologo con texto, por si se necesita).
 - [x] **Sumado a los 3 destacados del home**, que antes solo tenían Farmateca y resto-web. La
       grilla pasó de 2 a 3 columnas.
