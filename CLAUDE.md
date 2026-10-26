@@ -1,5 +1,12 @@
 # vectium-web — Sitio web corporativo Vectium SpA
 
+> 📦 **Reubicado el 2026-10-26 (PC de Andrés).** Este repo vive en `C:\Vectium\productos\vectium-web` (antes `C:\Vectium\vectium-web`).
+> C:\ quedó en 3 carpetas que reflejan GitHub: `C:\CariolaFlex` (personal), `C:\Vectium`
+> (`productos`, `clientes`, `catalogo`, `sistema`) y `C:\CariolaConfig` (configuración, antes `C:\CariolaDev`).
+> Las rutas de este repo ya se actualizaron; si aparece una ruta vieja, es un resto: corregirla.
+> Plan y bitácora: `C:\CariolaConfig\Cariolaspace\PLAN-REORGANIZACION-C.md`.
+
+
 ## Proyecto
 Sitio web corporativo en vectium.cl que incluye landing de Vectium y la plataforma web de Farmateca.
 - **Dominio**: www.vectium.cl
