@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
 
-// Force dynamic rendering to ensure correct Vercel lambda registration
-export const dynamic = 'force-dynamic';
-
 export const metadata: Metadata = {
   title: "¡Gracias por contactarnos!",
   description:
