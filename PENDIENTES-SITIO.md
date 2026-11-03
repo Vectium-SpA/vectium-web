@@ -26,7 +26,7 @@ Orden de la lista = orden sugerido para hacerlo. Lo de arriba desbloquea lo de a
   17.336, pagos directos al comercio, 19.496/20.416, aviso antes de suspender, firma y
   factura electrónicas). Enlazada en menú, footer, sitemap y desde Soluciones.
 - 🔴 **Regla de contenido:** todo sale del contrato real de Huerto y Jardín
-  (`vectium-comercial/proyectos/huerto-jardin/docs/GUIA-CONTRATO.md`). **No prometer** que el
+  (`vectium-comercial/proyectos/mercadohuertoyjardin/docs/GUIA-CONTRATO.md`). **No prometer** que el
   código sea del cliente (va en licencia de Vectium) ni respaldos "diarios". Si un contrato
   cambia una garantía, se cambia la página (comentario arriba de `ComoTrabajamosContent.tsx`).
 - ⚠️ Las capturas con Chrome headless salen vacías en todo el sitio: las animaciones
