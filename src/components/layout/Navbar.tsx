@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { vectiumTheme } from "@/styles/theme";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { VectiumIsotipo, VectiumPalabra } from "@/components/site/VectiumLogo";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,15 +49,12 @@ export function Navbar() {
       */}
       <nav className="mx-auto flex max-w-[1200px] items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
         {/* min-w-0 deja que el logo se encoja en vez de empujar la fila. */}
-        <Link href="/" className="flex min-w-0 items-center gap-2">
-          <span className="font-[family-name:var(--font-site-serif)] text-[clamp(1.25rem,5vw,1.5rem)] font-normal tracking-tight text-site-ink-strong">
-            Vectium
-          </span>
-          {/* El "SpA" se oculta bajo 360px: es lo primero que sobra cuando no
-              hay ancho, y perderlo no rompe la marca. */}
-          <span className="hidden font-[family-name:var(--font-site-mono)] text-[10.5px] uppercase tracking-[0.18em] text-site-muted-dim min-[360px]:inline">
-            SpA
-          </span>
+        {/* Logo oficial (2026-11-11): el triángulo y la palabra VECTIUM en trazos.
+            El isologo con la palabra cruzando no se lee a esta altura; por eso aquí
+            van lado a lado. Toman el color del texto, así sirven en los dos temas. */}
+        <Link href="/" className="flex min-w-0 items-center gap-3 text-site-ink-strong" aria-label="Vectium, inicio">
+          <VectiumIsotipo className="h-7 w-auto shrink-0" />
+          <VectiumPalabra className="h-[11px] w-auto shrink-0 min-[360px]:h-3" />
         </Link>
 
         {/* Desktop Nav */}

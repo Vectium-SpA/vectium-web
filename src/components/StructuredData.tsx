@@ -8,9 +8,9 @@ export default function StructuredData() {
     taxID: "78.312.836-5",
     foundingDate: "2025-12-09",
     url: "https://vectium.cl",
-    logo: "https://vectium.cl/logo.png",
+    logo: "https://vectium.cl/marca/vectium-isologo-grafito.png",
     description:
-      "Desarrollo de software, páginas web y aplicaciones móviles de alto impacto",
+      "Empresa tecnológica chilena especializada en software a medida: plataformas, apps y sistemas de gestión hechos para cómo funciona cada negocio.",
     email: "contacto@vectium.cl",
     address: {
       "@type": "PostalAddress",
@@ -33,7 +33,7 @@ export default function StructuredData() {
     name: "Vectium",
     url: "https://vectium.cl",
     description:
-      "Desarrollo de software, páginas web y aplicaciones móviles de alto impacto",
+      "Empresa tecnológica chilena especializada en software a medida: plataformas, apps y sistemas de gestión hechos para cómo funciona cada negocio.",
     publisher: {
       "@type": "Organization",
       name: "Vectium SpA",

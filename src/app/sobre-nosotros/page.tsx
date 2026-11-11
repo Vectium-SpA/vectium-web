@@ -6,7 +6,7 @@ import { SobreNosotrosContent } from "./SobreNosotrosContent";
 export const metadata: Metadata = {
   title: "Sobre Nosotros",
   description:
-    "Conoce Vectium SpA, empresa tecnológica chilena especializada en desarrollo de software, web y apps móviles de alto impacto.",
+    "Conoce Vectium SpA, empresa tecnológica chilena especializada en software a medida: plataformas, apps y sistemas de gestión.",
 };
 
 export default function SobreNosotrosPage() {

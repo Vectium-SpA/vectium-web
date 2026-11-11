@@ -1,6 +1,7 @@
 import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { SolutionsSection } from "@/components/sections/SolutionsSection";
+import { CapacidadesSection } from "@/components/sections/CapacidadesSection";
 import { TechStackSection } from "@/components/sections/TechStackSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { BrandMoment } from "@/components/site/BrandMoment";
@@ -13,6 +14,8 @@ export default function HomePage() {
       <AboutSection />
       <div className="section-divider-light-to-white" />
       <SolutionsSection />
+      {/* Lo que ya construimos: capacidades reales, sin nombres de clientes (2026-11-11). */}
+      <CapacidadesSection />
       <div className="section-divider-white-to-dark" />
       <TechStackSection />
       <div className="section-divider-light-to-dark" />

@@ -7,6 +7,7 @@ import { Github, MessageCircle, Mail, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { vectiumTheme } from "@/styles/theme";
 import { suscribirNewsletter } from "@/lib/contacto/cliente";
+import { VectiumIsotipo, VectiumPalabra } from "@/components/site/VectiumLogo";
 
 const footerLinks = [
   { label: "Sobre Nosotros", href: "/sobre-nosotros" },
@@ -55,17 +56,16 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-3">
           {/* Column 1: Logo & Tagline */}
           <div>
-            <Link href="/" className="inline-block">
-              <span className="font-[family-name:var(--font-display)] text-2xl font-bold text-site-ink-strong">
-                Vectium
-              </span>
-              <span className="ml-1 text-xs font-light tracking-widest text-site-muted uppercase">
-                SpA
-              </span>
+            <Link href="/" className="inline-flex items-center gap-3 text-site-ink-strong" aria-label="Vectium, inicio">
+              <VectiumIsotipo className="h-9 w-auto" />
+              <VectiumPalabra className="h-3.5 w-auto" />
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed">
-              Transformamos ideas en soluciones digitales. Desarrollo de software,
-              páginas web y aplicaciones móviles de alto impacto.
+            <p className="mt-5 font-[family-name:var(--font-site-serif)] text-lg text-site-ink-strong">
+              Software a la medida de <em className="text-site-accent">tu negocio.</em>
+            </p>
+            <p className="mt-2 max-w-xs text-sm leading-relaxed">
+              Empresa tecnológica chilena especializada en software a medida: plataformas,
+              apps y sistemas de gestión hechos para cómo funciona cada negocio.
             </p>
             {/* LinkedIn salio: no existe la pagina y el href="#" era un link
                 muerto. Vuelve cuando exista la cuenta. */}

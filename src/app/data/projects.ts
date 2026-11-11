@@ -7,6 +7,8 @@ import { Project } from "@/app/types/project";
 //    encargo. Decision de Andres, 2026-08-14.
 // 3. Nada de tecnologias que no usamos (el sitio llego a anunciar React
 //    Native, que no esta en ningun proyecto: el stack movil es Flutter).
+// 4. `captura` solo de pantallas propias y sin datos de clientes (2026-11-11).
+//    El portafolio del fundador NO lleva captura: su portada nombra a un cliente.
 
 export const projects: Project[] = [
   {
@@ -28,6 +30,7 @@ export const projects: Project[] = [
     status: "En producción",
     featured: true,
     image: "/farmateca/logos/isotipo_farmateca.png",
+    captura: "/proyectos/farmateca/portada.webp",
     link: "https://www.vectium.cl/farmateca",
   },
   {
@@ -50,6 +53,8 @@ export const projects: Project[] = [
     featured: true,
     // Pagina de producto con demo publica, paquetes y precios (2026-10-08).
     link: "/soluciones/resto-web",
+    // MAREA es un restaurante ficticio de la demo: se puede mostrar.
+    captura: "/proyectos/resto-web/sitio-portada.webp",
   },
   {
     // El identificador TECNICO sigue siendo "mypyme" en GitHub, Supabase,
@@ -133,6 +138,7 @@ export const projects: Project[] = [
     status: "En producción",
     featured: false,
     link: "https://hormigon-armado.vercel.app",
+    captura: "/proyectos/hormigoncalc/portada.webp",
   },
   {
     id: "disenador-cv",
@@ -145,6 +151,7 @@ export const projects: Project[] = [
     status: "En desarrollo",
     featured: false,
     link: "https://cvriola.vercel.app",
+    captura: "/proyectos/disenador-cv/portada.webp",
   },
   {
     id: "legaldocs-pro",
@@ -169,6 +176,7 @@ export const projects: Project[] = [
     status: "Completado",
     featured: false,
     link: "https://sommerville-assistant.vercel.app",
+    captura: "/proyectos/sommerville-assistant/portada.webp",
   },
   {
     id: "portafolio-fundador",

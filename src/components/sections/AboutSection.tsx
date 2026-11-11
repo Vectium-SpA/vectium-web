@@ -15,7 +15,7 @@ const stats = [
   { value: "2.994", label: "Medicamentos en Farmateca" },
   { value: "222", label: "Farmacias Mapeadas" },
   { value: "1.257", label: "Descargas de Farmateca" },
-  { value: "3", label: "Áreas de Especialización" },
+  { value: "6", label: "Etapas en cada proyecto" },
 ];
 
 const values = [
@@ -23,19 +23,19 @@ const values = [
     icon: Target,
     title: "Misión",
     description:
-      "Crear soluciones tecnológicas innovadoras y escalables que impulsen el crecimiento y la transformación digital de nuestros clientes.",
+      "Construir software a medida que ordene la operación de cada negocio: ventas, stock, reservas, cobros y datos, en un solo lugar.",
   },
   {
     icon: Eye,
     title: "Visión",
     description:
-      "Ser la empresa de desarrollo de software líder en Chile, reconocida por la calidad, creatividad y compromiso con cada proyecto.",
+      "Que cada negocio con el que trabajamos tenga un sistema hecho para cómo funciona, que entienda y que controle.",
   },
   {
     icon: Heart,
     title: "Valores",
     description:
-      "Innovación constante, excelencia técnica, transparencia con nuestros clientes y pasión por crear productos digitales de impacto.",
+      "Todo por escrito, tus datos siempre tuyos, nada con costo extra sin tu aprobación y sistemas propios, no plantillas.",
   },
 ];
 
@@ -98,7 +98,7 @@ export function AboutSection() {
           eyebrow="Sobre Nosotros"
           title="Tecnología que"
           titleAccent="impulsa tu negocio"
-          subtitle="Vectium SpA es una empresa tecnológica chilena especializada en el desarrollo de software, páginas web y aplicaciones móviles de alto impacto."
+          subtitle="Vectium SpA es una empresa tecnológica chilena especializada en software a medida: plataformas, apps y sistemas de gestión hechos para cómo funciona cada negocio."
         />
 
         <div className="mt-16 grid gap-16 lg:grid-cols-2">

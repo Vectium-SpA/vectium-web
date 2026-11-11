@@ -13,9 +13,9 @@ export default function ProyectosPage() {
           por breakpoints y sin fondo tematizado. Usa la compartida: mismo
           ritmo de entrada que las otras 6 internas y tipografia fluida. */}
       <PageHero
-        badge="Portfolio"
+        badge="Proyectos"
         title="Nuestros Proyectos"
-        description="Soluciones digitales que transforman ideas en productos exitosos."
+        description="Productos propios y sistemas que construimos. Los trabajos hechos para clientes van sin su nombre."
       />
 
       {/* Projects Grid */}

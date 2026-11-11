@@ -148,9 +148,9 @@ export function TechStackSection() {
       <div className="relative z-[2] mx-auto max-w-7xl px-6 lg:px-8">
         <SectionHeading
           eyebrow="Tecnología"
-          title="Stack tecnológico"
-          titleAccent="de vanguardia"
-          subtitle="Utilizamos las tecnologías más avanzadas para crear soluciones robustas, escalables y de alto rendimiento."
+          title="Tecnologías"
+          titleAccent="probadas"
+          subtitle="Las herramientas que usamos a diario, elegidas para que tu sistema sea rápido, seguro y fácil de mantener."
         />
 
         <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-6">

@@ -18,7 +18,7 @@ export default function NotFound() {
         Volver al Inicio
       </Link>
       <p className="mt-8 text-sm text-site-muted">
-        Vectium SpA — Soluciones digitales de alto impacto
+        Vectium SpA — Software a la medida de tu negocio
       </p>
     </div>
   );
