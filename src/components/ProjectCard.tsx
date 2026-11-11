@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Project } from "@/app/types/project";
+import { VectiumIsotipo } from "@/components/site/VectiumLogo";
 
 interface ProjectCardProps {
   project: Project;
@@ -18,12 +19,10 @@ const categoryLabels: Record<Project["category"], string> = {
 // pensados para fondo claro. Con el tema oscuro por defecto quedaban parches
 // pastel sobre tarjetas oscuras, fuera de la paleta del sitio. Ahora usan el
 // color como TINTE sobre el fondo del tema, asi funcionan en claro y oscuro.
-const categoryColors: Record<Project["category"], string> = {
-  mobile: "bg-sky-500/10 text-sky-600 site-dark:text-sky-300 border-sky-500/25",
-  web: "bg-emerald-500/10 text-emerald-700 site-dark:text-emerald-300 border-emerald-500/25",
-  fullstack: "bg-violet-500/10 text-violet-700 site-dark:text-violet-300 border-violet-500/25",
-  software: "bg-amber-500/10 text-amber-700 site-dark:text-amber-300 border-amber-500/25",
-};
+// Todos los chips de categoría en el acento de la marca (2026-11-11). Antes usaban
+// celeste, verde, violeta y ámbar de Tailwind, fuera de la paleta.
+const CHIP = "bg-site-accent/10 text-site-accent border-site-accent/25";
+const categoryColors: Record<Project["category"], string> = { mobile: CHIP, web: CHIP, fullstack: CHIP, software: CHIP };
 
 const statusColors: Record<Project["status"], string> = {
   "En producción":
@@ -40,20 +39,36 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="site-card group flex h-full flex-col overflow-hidden rounded-xl border border-site-border bg-site-bg shadow-lg"
     >
-      {/* Project image */}
-      <div className="relative h-48 overflow-hidden bg-gradient-to-br from-site-accent to-site-accent-light">
-        {project.image ? (
-          /* object-CONTAIN y no object-cover: las imagenes de proyecto son
-             isotipos cuadrados, y `cover` en una caja 16:9 les recortaba la
-             cabeza y los pies. `contain` con padding los muestra enteros. */
+      {/* Imagen del proyecto (2026-11-11):
+          1. captura real en un marco de navegador;
+          2. si no hay captura, el logo del producto;
+          3. si no hay nada (trabajos para clientes, que no se muestran), el triángulo
+             de Vectium, tenue. */}
+      <div className="relative h-48 overflow-hidden bg-site-bg-deep">
+        {project.captura ? (
+          <div className="absolute inset-x-4 top-4 bottom-0 overflow-hidden rounded-t-lg border border-b-0 border-site-border bg-site-surface shadow-lg transition-transform duration-500 group-hover:-translate-y-1">
+            <div className="flex h-5 items-center gap-1.5 border-b border-site-border px-2.5" aria-hidden="true">
+              <span className="h-1.5 w-1.5 rounded-full bg-site-muted-dim/60" />
+              <span className="h-1.5 w-1.5 rounded-full bg-site-muted-dim/60" />
+              <span className="h-1.5 w-1.5 rounded-full bg-site-muted-dim/60" />
+            </div>
+            <img
+              src={project.captura}
+              alt={`Pantalla de ${project.title}`}
+              loading="lazy"
+              className="h-[calc(100%-1.25rem)] w-full object-cover object-top"
+            />
+          </div>
+        ) : project.image ? (
+          /* object-contain: los logos son cuadrados y `cover` los recortaba. */
           <img
             src={project.image}
             alt={project.title}
             className="h-full w-full object-contain p-8 transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-6xl font-bold text-white opacity-20">
-            {project.title.charAt(0)}
+          <div className="relative h-full w-full" aria-hidden="true">
+            <VectiumIsotipo className="absolute left-1/2 top-1/2 h-24 w-auto -translate-x-1/2 -translate-y-1/2 text-site-accent opacity-25 transition-opacity duration-500 group-hover:opacity-40" />
           </div>
         )}
 

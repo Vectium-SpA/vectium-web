@@ -15,7 +15,7 @@ export default function ContactoPage() {
       <PageHero
         badge="Hablemos"
         title="¿Tienes un proyecto en mente?"
-        description="Cuéntanos tu idea y juntos la convertiremos en una solución digital de alto impacto."
+        description="Cuéntanos qué necesitas y te respondemos con una propuesta concreta, sin compromiso."
       />
       <DiagnosticoCTA
         titulo="¿Prefieres que te orientemos primero?"

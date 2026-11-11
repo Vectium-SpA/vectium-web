@@ -11,7 +11,7 @@ import { useSpotlight } from "@/components/site/useSpotlight";
 const processSteps = [
   { icon: Search, step: "01", title: "Descubrimiento", description: "Analizamos tus necesidades, objetivos de negocio y usuarios finales para definir qué conviene construir y qué no." },
   { icon: Lightbulb, step: "02", title: "Diseño", description: "Prototipos y diseños que revisas antes de construir, pensados para que tu equipo los use sin capacitación compleja." },
-  { icon: Code, step: "03", title: "Desarrollo", description: "Implementamos con las mejores prácticas, código limpio y tecnologías de vanguardia." },
+  { icon: Code, step: "03", title: "Desarrollo", description: "Construimos por entregas, con código revisado y tecnologías probadas." },
   { icon: Rocket, step: "04", title: "Lanzamiento", description: "Publicamos, capacitamos a tu equipo y seguimos acompañándote con soporte y mejoras." },
 ];
 

@@ -54,11 +54,11 @@ export function HeroSection() {
             "Infraestructura" medía 277px contra 272px disponibles y desbordaba
             el documento. Baja a 2rem, que la deja entrar con holgura. */}
         <h1 className="mt-5 max-w-[16ch] text-balance font-[family-name:var(--font-site-serif)] text-[clamp(2rem,7vw,4rem)] font-normal leading-[1.06] tracking-[-0.025em] text-site-ink-strong">
-          Infraestructura{" "}
-          <span className="bg-gradient-to-r from-site-accent to-site-accent-light bg-clip-text text-transparent">
-            digital
-          </span>{" "}
-          para empresas chilenas
+          {/* Slogan de la marca (2026-11-11), el mismo de Instagram. */}
+          Software a la medida de{" "}
+          <span className="bg-gradient-to-r from-site-accent to-site-accent-light bg-clip-text pr-[0.12em] italic text-transparent">
+            tu negocio
+          </span>
         </h1>
 
         {/*
@@ -72,8 +72,8 @@ export function HeroSection() {
           y no depende de los ~8 meses que tiene la SpA (Ley 19.496 art. 28).
         */}
         <p className="mt-7 max-w-[50ch] text-pretty font-[family-name:var(--font-site-sans)] text-[19.5px] font-light leading-[1.62] text-site-muted">
-          Transformamos ideas en soluciones digitales. Arquitectura de software,
-          plataformas web y aplicaciones móviles de alto impacto.
+          Empresa tecnológica chilena. Plataformas, apps y sistemas de gestión
+          hechos para cómo funciona cada negocio. Sistemas propios, no plantillas.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">

@@ -15,6 +15,7 @@ import {
 import { SiteAurora } from "@/components/site/SiteAurora";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { useSpotlight } from "@/components/site/useSpotlight";
+import { VectiumIsotipo } from "@/components/site/VectiumLogo";
 
 // Cada pilar tiene que corresponder a trabajo que realmente hacemos. El bloque
 // movil llego a anunciar "React Native", que no usamos en ningun proyecto: el
@@ -60,6 +61,7 @@ const featuredProjects = [
     link: "/farmateca",
     isInternal: true,
     cta: "Ver más detalles",
+    captura: "/proyectos/farmateca/portada.webp",
   },
   {
     title: "resto-web · Reservas para restaurantes",
@@ -73,6 +75,7 @@ const featuredProjects = [
     link: "/soluciones/resto-web",
     isInternal: true,
     cta: "Ver demo, paquetes y precios",
+    captura: "/proyectos/resto-web/sitio-portada.webp",
   },
   {
     // Hasta el 2026-10-24 este destacado era "Gestionala" con enlace a su
@@ -87,6 +90,7 @@ const featuredProjects = [
     link: "/diagnostico",
     isInternal: true,
     cta: "Pedir un diagnóstico",
+    captura: undefined as string | undefined,
   },
 ];
 
@@ -175,6 +179,15 @@ export function SolutionsSection() {
               {/* Filo superior: mismo degradado de siempre, ahora con el brillo
                   que barre en loop para que la tarjeta destacada se note. */}
               <div className="site-edge-sweep absolute left-0 right-0 top-0 h-1" />
+
+              {/* Pantalla real (sin datos de clientes) o, si no hay, la marca. */}
+              <div className="relative -mx-2 mb-6 h-40 overflow-hidden rounded-xl border border-site-border bg-site-bg-deep">
+                {project.captura ? (
+                  <img src={project.captura} alt={`Pantalla de ${project.title}`} loading="lazy" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]" />
+                ) : (
+                  <VectiumIsotipo className="absolute -right-6 -bottom-10 h-48 w-auto text-site-accent opacity-[0.14]" />
+                )}
+              </div>
 
               <div className="inline-flex items-center gap-2 rounded-full border border-site-accent/25 bg-site-accent/10 px-4 py-1.5 text-xs font-semibold text-site-accent">
                 <Sparkles size={14} className="site-float" />

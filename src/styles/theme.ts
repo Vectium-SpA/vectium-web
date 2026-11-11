@@ -14,8 +14,9 @@ export const vectiumTheme = {
       50: '#F5F5F5',
     },
     white: '#FFFFFF',
-    accent: '#00A9A5',
-    accentDark: '#008B87',
+    // Paleta de marca 2026-11 (acero y grafito); el turquesa viejo se retiró.
+    accent: '#3B5A73',
+    accentDark: '#1C2024',
   },
   navLinks: [
     { label: 'Inicio', href: '/' },
@@ -27,7 +28,7 @@ export const vectiumTheme = {
   ],
   company: {
     name: 'Vectium SpA',
-    tagline: 'Software a medida para empresas chilenas',
+    tagline: 'Software a la medida de tu negocio',
     email: 'contacto@vectium.cl',
     location: 'Las Condes, Región Metropolitana · operamos desde la Región de Atacama',
   },

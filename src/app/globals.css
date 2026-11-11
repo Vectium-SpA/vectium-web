@@ -81,8 +81,9 @@
   --color-vectium-gray-100: #E8E8E8;
   --color-vectium-gray-50: #F5F5F5;
   --color-vectium-white: #FFFFFF;
-  --color-vectium-accent: #00A9A5;
-  --color-vectium-accent-dark: #008B87;
+  /* Acero y grafito de la marca (2026-11); el turquesa #00A9A5 se retiró. */
+  --color-vectium-accent: #3B5A73;
+  --color-vectium-accent-dark: #1C2024;
 
   /* Farmateca brand colors (paleta oficial 2026) */
   --color-farmateca-primary: #1e9db9;

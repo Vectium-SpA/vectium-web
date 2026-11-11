@@ -49,11 +49,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://vectium.cl"),
   title: {
-    default: "Vectium | Desarrollo de Software y Aplicaciones Móviles",
+    default: "Vectium | Software a la medida de tu negocio",
     template: "%s | Vectium",
   },
   description:
-    "Desarrollo de software, páginas web y aplicaciones móviles de alto impacto. Transformamos ideas en soluciones digitales.",
+    "Empresa tecnológica chilena especializada en software a medida: plataformas, apps y sistemas de gestión hechos para cómo funciona cada negocio.",
   keywords: [
     "desarrollo software",
     "aplicaciones móviles",
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     siteName: "Vectium",
     title: "Vectium | Desarrollo de Software y Aplicaciones Móviles",
     description:
-      "Desarrollo de software, páginas web y aplicaciones móviles de alto impacto.",
+      "Empresa tecnológica chilena especializada en software a medida: plataformas, apps y sistemas de gestión hechos para cómo funciona cada negocio.",
     images: [
       {
         url: "/og-image.png",
@@ -95,7 +95,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Vectium | Desarrollo de Software y Aplicaciones Móviles",
     description:
-      "Desarrollo de software, páginas web y aplicaciones móviles de alto impacto.",
+      "Empresa tecnológica chilena especializada en software a medida: plataformas, apps y sistemas de gestión hechos para cómo funciona cada negocio.",
     images: ["/og-image.png"],
   },
   robots: {

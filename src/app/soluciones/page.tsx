@@ -8,7 +8,7 @@ import { SolucionesContent } from "./SolucionesContent";
 export const metadata: Metadata = {
   title: "Soluciones",
   description:
-    "Descubre nuestras soluciones digitales: desarrollo de software, páginas web y aplicaciones móviles de alto impacto.",
+    "Plataformas a medida, aplicaciones móviles, sitios web, sistemas de gestión e integraciones, hechos para cómo funciona tu negocio.",
 };
 
 export default function SolucionesPage() {
