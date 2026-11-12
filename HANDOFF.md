@@ -1,5 +1,9 @@
 # HANDOFF — vectium-web → continuar desde el Mac de Joaquín
 
+> 📜 **Histórico (junio 2026).** El estado vigente está en `ESTADO.md` (2026-11-12). Desde entonces cambió:
+> el formulario ya no usa EmailJS (SMTP propio, `SMTP_PASS`), el equipo de Vercel se llama `vectium` y es
+> Pro, y el CLI de Firebase logueado con vectiumspa sí ve el proyecto `farmateca`.
+
 **Fecha:** 25-jun-2026 · **Preparado por:** Andrés (vía Claude) · **Para:** Joaquín
 **Repo:** https://github.com/Vectium-SpA/vectium-web (rama `main`)
 **Último commit en producción:** ver `git log -1` (incluye fixes de seguridad + paridad + dark mode)

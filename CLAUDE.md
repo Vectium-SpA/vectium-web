@@ -1,5 +1,8 @@
 # vectium-web — Sitio web corporativo Vectium SpA
 
+> ▶️ **Para retomar, leer primero `ESTADO.md`**: estado al 2026-11-12 (antes de la mudanza al Mac),
+> pendientes, conexiones y cómo reconectar. El plan del sitio sigue en `PLAN-SITIO-V2.md`.
+
 > 📦 **Reubicado el 2026-10-26 (PC de Andrés).** Este repo vive en `C:\Cariolaspace\Vectium\productos\vectium-web` (antes `C:\Cariolaspace\Vectium\vectium-web`).
 > C:\ quedó en 3 carpetas que reflejan GitHub: `C:\Cariolaspace\CariolaFlex` (personal), `C:\Cariolaspace\Vectium`
 > (`productos`, `clientes`, `catalogo`, `sistema`) y `C:\Cariolaspace\CariolaConfig` (configuración, antes `C:\CariolaDev`).
@@ -18,7 +21,7 @@ Sitio web corporativo en vectium.cl que incluye landing de Vectium y la platafor
 - Tailwind CSS v4
 - Framer Motion (animaciones)
 - Firebase (auth + Firestore)
-- RevenueCat JS SDK (`@revenuecat/purchases-js`) — entitlement: `'premium'`
+- RevenueCat por REST API desde el servidor (`/api/farmateca/revenuecat/check`), entitlement `'premium'`. El paquete `@revenuecat/purchases-js` está instalado pero no se usa
 - Zustand (estado global)
 - Vercel (hosting + edge functions)
 
@@ -60,8 +63,8 @@ vercel --prod      # deploy a producción (requiere login vercel)
 - `.vercel/` — config Vercel local
 
 ## Variables de entorno necesarias (`.env.local`)
-Ver `.env.example` para la lista completa.
-Las críticas son Firebase config + RevenueCat web API key.
+Ver `.env.example` para la lista completa y `ESTADO.md` §2 para qué hay en Vercel y en `.env.local`.
+Las críticas son la config de Firebase, `FIREBASE_ADMIN_SERVICE_ACCOUNT`, `REVENUECAT_SECRET_KEY`, las de Flow y `SMTP_PASS`.
 
 ## Notas importantes
 - RevenueCat entitlement debe ser `'premium'` (mismo que la app móvil)

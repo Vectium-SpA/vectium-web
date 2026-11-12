@@ -4,6 +4,10 @@
 > Orden = prioridad. **No se abre una fase hasta cerrar la anterior.** Cada fase se publica sola.
 > Estado vivo en la tabla de abajo; el detalle técnico de lo ya hecho, en `PENDIENTES-SITIO.md`.
 
+> 🆕 **2026-11-12:** el estado vigente, con lo hecho después del 12-10 y los pendientes al día, está en
+> `ESTADO.md`. Ya no aplica lo que sigue sobre `SMTP_PASS` (cargado en Vercel; los avisos llegan desde el
+> 15-10) ni lo de Analytics (activo). El punto 6 cambió: el equipo de Vercel es Pro desde el 2026-11-03.
+
 ## ▶️ RETOMAR — al cierre del 2026-10-12
 
 **Publicado y verificado en vectium.cl el 2026-10-08:** página `/como-trabajamos`, fondo continuo
